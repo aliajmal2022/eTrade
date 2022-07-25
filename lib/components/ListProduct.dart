@@ -14,7 +14,7 @@ class ListItems extends StatefulWidget {
   final List<Product> productItems;
   final String searchedInput;
   Widget route;
-  int editDiscount;
+  double editDiscount;
 
   @override
   State<ListItems> createState() => _ListItemsState();

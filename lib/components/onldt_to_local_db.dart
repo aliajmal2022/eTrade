@@ -13,10 +13,7 @@ class DataBaseDataLoad {
     PartiesName = Customer.customerList(ListOCustomer);
 
     ListOUser = await User.UserList(true);
-    for (var element in ListOUser) {
-      print(element.userName);
-    }
-    print("done");
+
     return true;
   }
 }

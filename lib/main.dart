@@ -1,3 +1,4 @@
+import 'package:eTrade/components/NavigationBar.dart';
 import 'package:eTrade/components/sharePreferences.dart';
 import 'package:eTrade/screen/ConnectionScreen.dart';
 import 'package:eTrade/screen/TakeOrderScreen.dart';
@@ -8,11 +9,12 @@ import 'dart:core';
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await UserSharePreferences.init();
+  // MyApp.isDark = await UserSharePreferences.setmode(false);
   MyApp.isExist = await MyApp.PreLoadDataBase();
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   static var isExist;
   static Future<bool> PreLoadDataBase() async {
     bool exist = await TakeOrderScreen.getdataFromDb();
@@ -20,20 +22,34 @@ class MyApp extends StatelessWidget {
   }
 
   static bool isDark = false;
-  var isexist = isExist;
-
   static final ValueNotifier<ThemeMode> themeNotifier =
       ValueNotifier(ThemeMode.light);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  var isexist = MyApp.isExist;
+  @override
+  void initState() {
+    setState(() {
+      if (UserSharePreferences.getmode() != null)
+        MyApp.isDark = UserSharePreferences.getmode();
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<ThemeMode>(
-        valueListenable: themeNotifier,
+        valueListenable: MyApp.themeNotifier,
         builder: (context, ThemeMode currentMode, __) {
           return MaterialApp(
             title: 'eTrade',
             debugShowCheckedModeBanner: false,
             theme: ThemeData(),
-            darkTheme: ThemeData.dark(),
+            darkTheme: MyApp.isDark ? ThemeData.dark() : ThemeData(),
             themeMode: currentMode,
             home: (isexist)
                 ? MySplashScreen()

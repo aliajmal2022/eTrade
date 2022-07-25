@@ -73,12 +73,12 @@ void setCartList(Product tempCartlist) {
 }
 
 class _AddItemModelSheetState extends State<AddItemModelSheet> {
-  int discount = 0;
+  double discount = 0;
   double discountRate = 0;
   final TextEditingController _discountcontroller = TextEditingController();
   double rate = 0;
   final TextEditingController _ratecontroller = TextEditingController();
-  double bonus = 0;
+  int bonus = 0;
   final TextEditingController _bonuscontroller = TextEditingController();
   double tO = 0;
   final TextEditingController _tocontroller = TextEditingController();
@@ -232,7 +232,7 @@ class _AddItemModelSheetState extends State<AddItemModelSheet> {
                             onChanged: (value) {
                               setState(() {
                                 if (value.isNotEmpty) {
-                                  discount = int.parse(value);
+                                  discount = double.parse(value);
                                 } else {
                                   discount = 0;
                                 }
@@ -268,7 +268,7 @@ class _AddItemModelSheetState extends State<AddItemModelSheet> {
                             onChanged: (value) {
                               setState(() {
                                 if (value.isNotEmpty) {
-                                  bonus = double.parse(value);
+                                  bonus = int.parse(value);
                                 } else {
                                   bonus = 0;
                                 }

@@ -17,8 +17,8 @@ class Product {
   String ID;
   double Price;
   int Quantity;
-  int discount;
-  double bonus;
+  double discount;
+  int bonus;
   double to;
 
   static Future<List<Product>> ProductLOdb(islocaldb) async {

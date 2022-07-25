@@ -7,8 +7,9 @@ class Customer {
     required this.discount,
     required this.partyName,
   });
-  int discount;
+  double discount;
   int partyId;
+  String address;
   String partyName = "Search Customer";
   bool match = false;
   Customer selectedCustomer(List<Customer> customer) {
@@ -44,6 +45,7 @@ class Customer {
         _customer.partyId = element['PartyID'];
         _customer.partyName = element['PartyName'];
         _customer.discount = element['Discount'];
+
         _listProduct.add(_customer);
       });
     }

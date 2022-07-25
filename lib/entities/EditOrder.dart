@@ -15,8 +15,8 @@ class EditOrder {
   int quantity;
   double rate;
   double amount;
-  int discount;
-  double bonus;
+  double discount;
+  int bonus;
   double to;
   static List<EditOrder> ViewOrderFromDb(var _orderDetail) {
     List<EditOrder> _listOrderView = [];

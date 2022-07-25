@@ -92,7 +92,9 @@ CREATE TABLE User(
   CREATE TABLE Party(
 	PartyID INTEGER PRIMARY KEY NOT NULL,
 	PartyName TEXT NOT NULL,
-  Discount INTEGER 
+  Discount REAL,
+  isPosted BOOLEAN NOT NULL, 
+  Address TEXT
  )
       ''');
     print("successfully created Party table");
@@ -101,10 +103,13 @@ CREATE TABLE User(
   Future<int> createParty(Customer customer) async {
     Database db = await instance.database;
     // updateItem(customer.partyId, customer.partyName, db);
+    bool isPosted = false;
     final data = {
       'PartyID': customer.partyId,
       'PartyName': customer.partyName,
       'Discount': customer.discount,
+      'isPosted': isPosted,
+      'Address':customer.,
     };
     return await db.insert('Party', data,
         conflictAlgorithm: ConflictAlgorithm.replace);
@@ -214,8 +219,8 @@ isPosted BOOLEAN NOT NULL
 	ItemID TEXT NOT NULL,
   Quantity INTEGER NOT NULL,
   RATE REAL NOT NULL,
-  Discount INTEGER,
-  Bonus Real,
+  Discount REAL,
+  Bonus INTEGER,
   [TO] Real,
   Amount REAL NOT NULL,
 	Dated TEXT NOT NULL,
@@ -366,19 +371,22 @@ isPosted BOOLEAN NOT NULL
   }
 
   static Future<void> deleteTable(Database database, String tableName) async {
-    if (tableName == "Order" ||
-        tableName == "OrderDetail" ||
-        tableName == "Recovery") {
-      await database.execute("delete from [$tableName];");
-      await database.execute(
-          "update sqlite_sequence set seq='0' where name='$tableName'");
-    } else {
+    // if (tableName == "Order" ||
+    //     tableName == "OrderDetail" ||
+    //     tableName == "Recovery") {
+    //   await database.execute("delete from [$tableName];");
+    //   await database.execute(
+    //       "update sqlite_sequence set seq='0' where name='$tableName'");
+    // } else {
+    try {
       await database.execute("""
   DELETE FROM $tableName 
       """);
-    }
+      // }
 
-    debugPrint("successfully deleted values from $tableName table");
+    } catch (e) {
+      debugPrint("successfully deleted values from $tableName table");
+    }
   }
 
   static Future<void> tablePosted() async {
@@ -387,17 +395,7 @@ isPosted BOOLEAN NOT NULL
       await db.execute("UPDATE [Order] SET isPosted=1");
       await db.execute("UPDATE [OrderDetail] SET isPosted=1");
       await db.execute("UPDATE [Recovery] SET isPosted=1");
-    } catch (e) {
-      debugPrint("Error During posting update");
-    }
-  }
-
-  static Future<void> tableNotPosted() async {
-    try {
-      Database db = await instance.database;
-      await db.execute("UPDATE [Order] SET isPosted=0");
-      await db.execute("UPDATE [OrderDetail] SET isPosted=0");
-      await db.execute("UPDATE [Recovery] SET isPosted=0");
+      await db.execute("UPDATE [Customer] SET isPosted=1");
     } catch (e) {
       debugPrint("Error During posting update");
     }

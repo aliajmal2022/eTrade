@@ -19,7 +19,7 @@ class NewUsrAddLocalDB extends StatefulWidget {
 class _NewUsrAddLocalDBState extends State<NewUsrAddLocalDB> {
   String InpName = "";
   final TextEditingController _controller = TextEditingController();
-  int discount = 0;
+  double discount = 0;
   final TextEditingController _discountcontroller = TextEditingController();
   bool valid = true;
   bool msg = true;
@@ -103,7 +103,7 @@ class _NewUsrAddLocalDBState extends State<NewUsrAddLocalDB> {
                           onChanged: (value) {
                             setState(() {
                               if (value.isNotEmpty) {
-                                discount = int.parse(value);
+                                discount = double.parse(value);
                               } else {
                                 discount = 0;
                               }
