@@ -85,7 +85,10 @@ class _CartScreenState extends State<CartScreen> {
                             recoveryID: 0,
                             dated: "",
                             party: Customer(
-                                partyId: 0, partyName: "", discount: 0)),
+                                address: "",
+                                partyId: 0,
+                                partyName: "",
+                                discount: 0)),
                         selectedIndex: 1,
                         orderList: [],
                         orderDate: widget.orderDate,
@@ -338,7 +341,8 @@ class _CartScreenState extends State<CartScreen> {
                                                     party: Customer(
                                                         discount: 0,
                                                         partyId: 0,
-                                                        partyName: "")),
+                                                        partyName: "",
+                                                        address: "")),
                                                 orderList: [],
                                                 orderId: 0,
                                                 orderDate: "",
@@ -399,6 +403,7 @@ class _CartScreenState extends State<CartScreen> {
                                                       dated: "",
                                                       party: Customer(
                                                           partyId: 0,
+                                                          address: "",
                                                           discount: 0,
                                                           partyName: "")),
                                                   orderList: [],

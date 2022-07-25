@@ -339,8 +339,8 @@ class _AddItemModelSheetState extends State<AddItemModelSheet> {
                       height: 10,
                     ),
                     MaterialButton(
-                        disabledElevation: 10.0,
-                        disabledColor: Color(0x0ff1e1e1),
+                        // disabledElevation: 10.0,
+                        disabledColor: Colors.grey,
                         onPressed: getQuantity() == 0
                             ? null
                             : () {
@@ -379,9 +379,7 @@ class _AddItemModelSheetState extends State<AddItemModelSheet> {
                         height: 50,
                         child: Text(
                           "Add Item",
-                          style: TextStyle(
-                              color: getQuantity() == 0 ? null : Colors.white,
-                              fontSize: 20),
+                          style: TextStyle(color: Colors.white, fontSize: 20),
                         ))
                   ]))),
         ),

@@ -37,7 +37,7 @@ class TakeOrderScreen extends StatefulWidget {
   @override
   State<TakeOrderScreen> createState() => _TakeOrderScreenState();
   static Customer customer =
-      new Customer(discount: 0, partyId: 0, partyName: "Search Customer");
+      new Customer(address: "",discount: 0, partyId: 0, partyName: "Search Customer");
   static List<Customer> partydb = [];
   static List<Product> productdb = [];
   static bool databaseExit = false;
@@ -122,7 +122,7 @@ class TakeOrderScreen extends StatefulWidget {
                         recoveryID: 0,
                         dated: "",
                         party:
-                            Customer(partyId: 0, partyName: "", discount: 0)),
+                            Customer(partyId: 0, partyName: "", discount: 0,address:"" )),
                     selectedIndex: 1,
                     orderDate: "",
                     orderList: [],
@@ -158,7 +158,7 @@ class _TakeOrderScreenState extends State<TakeOrderScreen> {
               Quantity: element.quantity);
           setCartList(product);
           var selectedParty = Customer(
-              discount: 0, partyId: 0, partyName: widget.orderPartyName);
+              discount: 0, partyId: 0,address: "", partyName: widget.orderPartyName);
           selectedParty =
               selectedParty.selectedCustomer(DataBaseDataLoad.ListOCustomer);
           widget.setParty(selectedParty);
@@ -189,7 +189,7 @@ class _TakeOrderScreenState extends State<TakeOrderScreen> {
           widget.setParty(TakeOrderScreen.customer);
         } else if (!TakeOrderScreen.isEditOrder) {
           widget.setParty(
-              Customer(discount: 0, partyId: 0, partyName: "Search Customer"));
+              Customer(discount: 0, partyId: 0,address: "", partyName: "Search Customer"));
         }
         TakeOrderScreen.isSync = false;
         TakeOrderScreen.isordered = false;
@@ -221,6 +221,7 @@ class _TakeOrderScreenState extends State<TakeOrderScreen> {
                       widget.setParty(Customer(
                           partyId: 0,
                           discount: 0,
+                          address: "",
                           partyName: "Search Customer"));
                       resetCartList();
                     });
@@ -238,6 +239,7 @@ class _TakeOrderScreenState extends State<TakeOrderScreen> {
                                     party: Customer(
                                         partyId: 0,
                                         partyName: "",
+                                        address: "",
                                         discount: 0)),
                                 orderList: [],
                                 orderDate: widget.orderDate,
@@ -361,6 +363,7 @@ class _TakeOrderScreenState extends State<TakeOrderScreen> {
                                   var selectedName = value as String;
                                   var selectedParty = Customer(
                                       discount: 0,
+                                      address: "",
                                       partyId: 0,
                                       partyName: selectedName);
                                   selectedParty =
@@ -403,6 +406,7 @@ class _TakeOrderScreenState extends State<TakeOrderScreen> {
                                               recoveryID: 0,
                                               party: Customer(
                                                   discount: 0,
+                                                  address: "",
                                                   partyId: 0,
                                                   partyName: ""),
                                               dated: "",
@@ -471,7 +475,7 @@ class _TakeOrderScreenState extends State<TakeOrderScreen> {
                                   recoveryID: 0,
                                   dated: "",
                                   party: Customer(
-                                      partyId: 0, partyName: "", discount: 0)),
+                                      partyId: 0, partyName: "", discount: 0,address: "")),
                               orderDate: widget.orderDate,
                               orderId: widget.orderID,
                               orderList: const [],

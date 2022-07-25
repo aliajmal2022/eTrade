@@ -67,6 +67,7 @@ class _MyDrawerState extends State<MyDrawer> {
                               recoveryID: 0,
                               dated: "",
                               party: Customer(
+                                                        address: "",
                                   partyId: 0, partyName: "", discount: 0)),
                           selectedIndex: 0,
                           orderList: [],
@@ -91,7 +92,10 @@ class _MyDrawerState extends State<MyDrawer> {
                           recoveryID: 0,
                           dated: "",
                           party:
-                              Customer(partyId: 0, partyName: "", discount: 0)),
+                              Customer
+                              (
+                                                        address: "",
+                                partyId: 0, partyName: "", discount: 0)),
                       selectedIndex: 0,
                       orderDate: "",
                       orderList: [],
@@ -184,6 +188,7 @@ class _MyDrawerState extends State<MyDrawer> {
                                             party: Customer(
                                                 partyId: 0,
                                                 partyName: "",
+                                                        address: "",
                                                 discount: 0)),
                                         selectedIndex: 0,
                                         orderDate: "",
@@ -236,6 +241,7 @@ class _MyDrawerState extends State<MyDrawer> {
                                         recoveryID: 0,
                                         dated: "",
                                         party: Customer(
+                                                        address: "",
                                             discount: 0,
                                             partyId: 0,
                                             partyName: "")),
@@ -321,6 +327,7 @@ class _MyDrawerState extends State<MyDrawer> {
                                             recoveryID: 0,
                                             dated: "",
                                             party: Customer(
+                                                        address: "",
                                                 discount: 0,
                                                 partyId: 0,
                                                 partyName: "")),
@@ -352,6 +359,7 @@ class _MyDrawerState extends State<MyDrawer> {
                                           dated: "",
                                           party: Customer(
                                               discount: 0,
+                                                        address: "",
                                               partyId: 0,
                                               partyName: "")),
                                       selectedIndex: 0,

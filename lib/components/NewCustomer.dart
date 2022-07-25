@@ -18,9 +18,11 @@ class NewUsrAddLocalDB extends StatefulWidget {
 
 class _NewUsrAddLocalDBState extends State<NewUsrAddLocalDB> {
   String InpName = "";
+  String address = "";
   final TextEditingController _controller = TextEditingController();
   double discount = 0;
   final TextEditingController _discountcontroller = TextEditingController();
+  final TextEditingController _addresscontroller = TextEditingController();
   bool valid = true;
   bool msg = true;
   @override
@@ -122,6 +124,39 @@ class _NewUsrAddLocalDBState extends State<NewUsrAddLocalDB> {
                           ),
                         ),
                       ),
+                      Flexible(
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 15.0),
+                          child: TextField(
+                            minLines:
+                                2, // any number you need (It works as the rows for the textarea)
+                            keyboardType: TextInputType.multiline,
+                            maxLines: null,
+                            maxLength: 270,
+                            // inputFormatters: [
+                            //   LengthLimitingTextInputFormatter(100),
+                            // ],
+                            controller: _addresscontroller,
+                            onChanged: (value) {
+                              setState(() {
+                                address = value.toLowerCase();
+                              });
+                            },
+                            decoration: InputDecoration(
+                              enabledBorder: OutlineInputBorder(
+                                  // borderSide: BorderSide(color: Colors.white),
+                                  ),
+                              focusedBorder: OutlineInputBorder(
+                                  // borderSide: BorderSide(color: Colors.white),
+                                  ),
+                              // fillColor: Colors.white,
+                              labelStyle: TextStyle(color: Colors.black),
+                              // focusColor: Colors.white,
+                              labelText: 'Description',
+                            ),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -156,6 +191,7 @@ class _NewUsrAddLocalDBState extends State<NewUsrAddLocalDB> {
                               if (valid) {
                                 int id = await SQLHelper.getIDForNCustomer();
                                 Customer nCustomer = Customer(
+                                    address: address,
                                     partyId: id,
                                     partyName: InpName,
                                     discount: discount);

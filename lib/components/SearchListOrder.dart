@@ -63,6 +63,7 @@ class _ListOfOrderState extends State<ListOfOrder> {
                                           recoveryID: 0,
                                           dated: "",
                                           party: Customer(
+                                            address: "",
                                             discount: 0,  partyId: 0, partyName: "")),
                                       orderDate:
                                           dummyOrderList[index].orderDate,

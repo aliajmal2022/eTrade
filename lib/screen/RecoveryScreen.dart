@@ -20,12 +20,12 @@ class RecoveryScreen extends StatefulWidget {
   int userID;
   @override
   State<RecoveryScreen> createState() => _RecoveryScreenState();
-  Customer customer =
-      Customer(partyId: 0, partyName: "Search Customer", discount: 0);
+  Customer customer = Customer(
+      partyId: 0, address: "", partyName: "Search Customer", discount: 0);
   static List<Recovery> recoveryList = [];
   static bool addRecoveryOrder = false;
-  static Customer tcustomer =
-      Customer(partyId: 0, partyName: "Search Customer", discount: 0);
+  static Customer tcustomer = Customer(
+      partyId: 0, address: "", partyName: "Search Customer", discount: 0);
   static bool isEditRecovery = false;
   static List<Customer> partydb = [];
   static void setPartydb(List<Customer> list) {
@@ -110,8 +110,11 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
           }
         }
       } else {
-        widget.setParty(
-            Customer(partyId: 0, discount: 0, partyName: "Search Customer"));
+        widget.setParty(Customer(
+            partyId: 0,
+            address: "",
+            discount: 0,
+            partyName: "Search Customer"));
         RecoveryScreen.amountcontroller.clear();
         RecoveryScreen.descriptioncontroller.clear();
         RecoveryScreen.isSync = false;
@@ -144,10 +147,12 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                       RecoveryScreen.getData = false;
                       RecoveryScreen.tcustomer = Customer(
                           partyId: 0,
+                          address: "",
                           discount: 0,
                           partyName: "Search Customer");
                       widget.setParty(Customer(
                           partyId: 0,
+                          address: "",
                           discount: 0,
                           partyName: "Search Customer"));
                       RecoveryScreen.amountcontroller.clear();
@@ -183,6 +188,7 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                                           dated: "",
                                           party: Customer(
                                               discount: 0,
+                                              address: "",
                                               partyId: 0,
                                               partyName: "")),
                                       selectedIndex: 2,
@@ -272,6 +278,7 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                             var selectedParty = Customer(
                                 discount: 0,
                                 partyId: 0,
+                                address: "",
                                 partyName: selectedName);
                             selectedParty = selectedParty.selectedCustomer(
                                 DataBaseDataLoad.ListOCustomer);
@@ -432,9 +439,11 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                                   widget.setParty(Customer(
                                       discount: 0,
                                       partyId: 0,
+                                      address: "",
                                       partyName: "Search Customer"));
                                   RecoveryScreen.tcustomer = Customer(
                                       discount: 0,
+                                      address: "",
                                       partyId: 0,
                                       partyName: "Search Customer");
                                   Navigator.pushAndRemoveUntil(
@@ -455,6 +464,7 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                                       party: Customer(
                                           partyId: widget.getParty().partyId,
                                           discount: widget.getParty().discount,
+                                          address: widget.getParty().address,
                                           partyName:
                                               widget.getParty().partyName),
                                       description: description,
@@ -469,9 +479,11 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                                   widget.setParty(Customer(
                                       partyId: 0,
                                       discount: 0,
+                                      address: "",
                                       partyName: "Search Customer"));
                                   RecoveryScreen.tcustomer = Customer(
                                       discount: 0,
+                                      address: "",
                                       partyId: 0,
                                       partyName: "Search Customer");
                                   Navigator.pushAndRemoveUntil(
@@ -487,7 +499,8 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                                                     party: Customer(
                                                         discount: 0,
                                                         partyId: 0,
-                                                        partyName: "")),
+                                                        partyName: "",
+                                                        address: "")),
                                                 orderDate: "",
                                                 orderId: 0,
                                                 orderList: [],

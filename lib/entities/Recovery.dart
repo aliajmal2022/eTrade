@@ -30,7 +30,8 @@ class Recovery {
             dated: "",
             description: "",
             isPost: false,
-            party: Customer(partyName: "", partyId: 0, discount: 0));
+            party:
+                Customer(partyName: "", partyId: 0, discount: 0, address: ""));
         recoveryOrder.party.partyId = element['PartyID'];
         recoveryOrder.party.partyName = element['PartyName'];
         recoveryOrder.amount = element['TotalValue'];

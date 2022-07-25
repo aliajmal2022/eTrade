@@ -186,7 +186,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                     });
                                   },
                             elevation: 20.0,
-                            disabledColor: Color(0x0ff1e1e1),
+                            disabledColor: Colors.grey,
+                            // disabledColor: Color(0x0ff1e1e1),
                             color: Color(0xff00620b),
                             shape: RoundedRectangleBorder(
                                 borderRadius:

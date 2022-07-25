@@ -6,6 +6,7 @@ class Customer {
     required this.partyId,
     required this.discount,
     required this.partyName,
+    required this.address,
   });
   double discount;
   int partyId;
@@ -14,7 +15,7 @@ class Customer {
   bool match = false;
   Customer selectedCustomer(List<Customer> customer) {
     Customer selectedcustomer =
-        Customer(partyId: 0, partyName: "", discount: 0);
+        Customer(partyId: 0, partyName: "", discount: 0, address: "");
     try {
       for (var element in customer) {
         if (element.partyName == partyName) {
@@ -41,7 +42,8 @@ class Customer {
     }
     if (_party.isNotEmpty) {
       _party.forEach((element) {
-        Customer _customer = Customer(partyId: 0, partyName: "", discount: 0);
+        Customer _customer =
+            Customer(partyId: 0, partyName: "", discount: 0, address: "");
         _customer.partyId = element['PartyID'];
         _customer.partyName = element['PartyName'];
         _customer.discount = element['Discount'];

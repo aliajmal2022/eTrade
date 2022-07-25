@@ -25,7 +25,10 @@ class _MySplashScreenState extends State<MySplashScreen> {
                             recoveryID: 0,
                             dated: "",
                             party: Customer(
-                                partyId: 0, partyName: "", discount: 0)),
+                                address: "",
+                                partyId: 0,
+                                partyName: "",
+                                discount: 0)),
                         orderId: 0,
                         orderList: [],
                         orderDate: "",

@@ -109,7 +109,7 @@ CREATE TABLE User(
       'PartyName': customer.partyName,
       'Discount': customer.discount,
       'isPosted': isPosted,
-      'Address':customer.,
+      'Address': customer.address,
     };
     return await db.insert('Party', data,
         conflictAlgorithm: ConflictAlgorithm.replace);

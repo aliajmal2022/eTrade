@@ -304,7 +304,8 @@ class _BookingTabBarItemState extends State<BookingTabBarItem> {
                                                         recoveryID: 0,
                                                         dated: "",
                                                         party: Customer(
-                                                          discount: 0,
+                                                            discount: 0,
+                                                            address: "",
                                                             partyId: 0,
                                                             partyName: "")),
                                                     orderDate: BookingTabBarItem
