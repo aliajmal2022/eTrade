@@ -1,0 +1,3 @@
+1.connection => ip.true => login.true(ip,flag,userid) =>HomeScreen
+2.masterReset=>ping.ip in bg ? login(reset)=>clear=>fetchAlldata:snackbar => HomeScreen 
+3.connectionfromDrawer(check)=> 1
