@@ -123,7 +123,7 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
     super.initState();
   }
 
-  String _groupValue = "";
+  String _groupValue = "Cash";
 
   @override
   Widget build(BuildContext context) {
@@ -246,6 +246,42 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                   SizedBox(
                     height: 10,
                   ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Check Your Payment Method.",
+                          style: TextStyle(fontSize: 18),
+                        ),
+                        RadioListTile(
+                          value: "Cash",
+                          contentPadding: EdgeInsets.all(0),
+                          groupValue: _groupValue,
+                          title: Text("Cash"),
+                          onChanged: (newValue) =>
+                              setState(() => _groupValue = newValue.toString()),
+                          activeColor: Color(0xff00620b),
+                          selected: false,
+                        ),
+                        RadioListTile(
+                          contentPadding: EdgeInsets.all(0),
+                          value: "Check",
+                          groupValue: _groupValue,
+                          title: Text("Check"),
+                          onChanged: (newValue) =>
+                              setState(() => _groupValue = newValue.toString()),
+                          activeColor: Color(0xff00620b),
+                          selected: false,
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
                   Row(
                     children: [
                       Flexible(
@@ -325,37 +361,6 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                                 size: 20,
                               ),
                             )),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Check Your Payment Method.",
-                        style: TextStyle(fontSize: 18),
-                      ),
-                      RadioListTile(
-                        value: "Check",
-                        groupValue: _groupValue,
-                        title: Text("Check"),
-                        onChanged: (newValue) =>
-                            setState(() => _groupValue = newValue.toString()),
-                        activeColor: Color(0xff00620b),
-                        selected: false,
-                      ),
-                      RadioListTile(
-                        value: "Cash",
-                        groupValue: _groupValue,
-                        title: Text("Cash"),
-                        onChanged: (newValue) =>
-                            setState(() => _groupValue = newValue.toString()),
-                        activeColor: Color(0xff00620b),
-                        selected: false,
                       ),
                     ],
                   ),

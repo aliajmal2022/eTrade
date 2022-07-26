@@ -27,7 +27,7 @@ class ViewBookingScreen extends StatefulWidget {
 }
 
 class _ViewBookingScreenState extends State<ViewBookingScreen>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
   openDrawer() async {
     await Future.delayed(Duration.zero);

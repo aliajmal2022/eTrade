@@ -67,8 +67,10 @@ class _MyDrawerState extends State<MyDrawer> {
                               recoveryID: 0,
                               dated: "",
                               party: Customer(
-                                                        address: "",
-                                  partyId: 0, partyName: "", discount: 0)),
+                                  address: "",
+                                  partyId: 0,
+                                  partyName: "",
+                                  discount: 0)),
                           selectedIndex: 0,
                           orderList: [],
                           orderDate: "",
@@ -91,11 +93,11 @@ class _MyDrawerState extends State<MyDrawer> {
                           description: "",
                           recoveryID: 0,
                           dated: "",
-                          party:
-                              Customer
-                              (
-                                                        address: "",
-                                partyId: 0, partyName: "", discount: 0)),
+                          party: Customer(
+                              address: "",
+                              partyId: 0,
+                              partyName: "",
+                              discount: 0)),
                       selectedIndex: 0,
                       orderDate: "",
                       orderList: [],
@@ -141,24 +143,36 @@ class _MyDrawerState extends State<MyDrawer> {
 // }
 
                 children: [
-                  Row(
-                    children: [
-                      Text("Dark Mode"),
-                      Switch(
-                        value: isSwitched,
-                        onChanged: (value) async {
-                          setState(() {
-                            isSwitched = value;
-                            MyApp.isDark = isSwitched;
-                            MyApp.themeNotifier.value =
-                                (MyApp.themeNotifier.value == ThemeMode.light)
-                                    ? ThemeMode.dark
-                                    : ThemeMode.light;
-                          });
-                          await UserSharePreferences.setmode(isSwitched);
-                        },
-                      ),
-                    ],
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(Icons.nightlight_outlined),
+                            Text(
+                              "Dark Mode",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
+                        Switch(
+                          value: isSwitched,
+                          onChanged: (value) async {
+                            setState(() {
+                              isSwitched = value;
+                              MyApp.isDark = isSwitched;
+                              MyApp.themeNotifier.value =
+                                  (MyApp.themeNotifier.value == ThemeMode.light)
+                                      ? ThemeMode.dark
+                                      : ThemeMode.light;
+                            });
+                            await UserSharePreferences.setmode(isSwitched);
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                   MaterialButton(
                       onPressed: () async {
@@ -188,7 +202,7 @@ class _MyDrawerState extends State<MyDrawer> {
                                             party: Customer(
                                                 partyId: 0,
                                                 partyName: "",
-                                                        address: "",
+                                                address: "",
                                                 discount: 0)),
                                         selectedIndex: 0,
                                         orderDate: "",
@@ -241,7 +255,7 @@ class _MyDrawerState extends State<MyDrawer> {
                                         recoveryID: 0,
                                         dated: "",
                                         party: Customer(
-                                                        address: "",
+                                            address: "",
                                             discount: 0,
                                             partyId: 0,
                                             partyName: "")),
@@ -327,7 +341,7 @@ class _MyDrawerState extends State<MyDrawer> {
                                             recoveryID: 0,
                                             dated: "",
                                             party: Customer(
-                                                        address: "",
+                                                address: "",
                                                 discount: 0,
                                                 partyId: 0,
                                                 partyName: "")),
@@ -359,7 +373,7 @@ class _MyDrawerState extends State<MyDrawer> {
                                           dated: "",
                                           party: Customer(
                                               discount: 0,
-                                                        address: "",
+                                              address: "",
                                               partyId: 0,
                                               partyName: "")),
                                       selectedIndex: 0,

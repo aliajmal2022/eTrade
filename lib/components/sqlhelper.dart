@@ -175,7 +175,7 @@ isPosted BOOLEAN NOT NULL
   static Future<List> getFromToViewOrder(var start, var end) async {
     Database db = await instance.database;
     var listOrder = await db.rawQuery(
-        "SELECT o.Dated,o.OrderID,o.TotalQuantity,p.PartyName FROM [Order] AS o INNER JOIN Party AS p ON p.PartyID = o.PartyID WHERE o.Dated BETWEEN '$start' AND '$end' and isPosted=0 ");
+        "SELECT o.Dated,o.OrderID,o.TotalQuantity,p.PartyName FROM [Order] AS o INNER JOIN Party AS p ON p.PartyID = o.PartyID WHERE o.Dated BETWEEN '$start' AND '$end' and o.isPosted=0 ");
 
     return listOrder;
   }
@@ -183,7 +183,7 @@ isPosted BOOLEAN NOT NULL
   static Future<List> getSpecificViewOrder(var date) async {
     Database db = await instance.database;
     var listOrder = await db.rawQuery(
-        "SELECT o.Dated,o.OrderID,o.TotalQuantity,p.PartyName FROM [Order] AS o INNER JOIN Party AS p ON p.PartyID = o.PartyID WHERE o.Dated ='${date}' and isPosted=0 ");
+        "SELECT o.Dated,o.OrderID,o.TotalQuantity,p.PartyName FROM [Order] AS o INNER JOIN Party AS p ON p.PartyID = o.PartyID WHERE o.Dated ='${date}' and o.isPosted=0 ");
 
     return listOrder;
   }
@@ -191,7 +191,7 @@ isPosted BOOLEAN NOT NULL
   static Future<List> getAllViewOrder() async {
     Database db = await instance.database;
     var listOrder = await db.rawQuery(
-        "SELECT o.Dated,o.OrderID,o.TotalQuantity,p.PartyName FROM [Order] AS o INNER JOIN Party AS p ON p.PartyID = o.PartyID WHERE  isPosted=0 ");
+        "SELECT o.Dated,o.OrderID,o.TotalQuantity,p.PartyName FROM [Order] AS o INNER JOIN Party AS p ON p.PartyID = o.PartyID WHERE  o.isPosted=0 ");
 
     return listOrder;
   }
@@ -293,7 +293,7 @@ isPosted BOOLEAN NOT NULL
   static Future<List> getFromToRecovery(var start, var end) async {
     Database db = await instance.database;
     var listRecovery = await db.rawQuery(
-        "SELECT r.Dated,r.Description,r.RecoveryID,r.Amount,p.PartyName,p.PartyID FROM Recovery AS r INNER JOIN Party AS p ON p.PartyID = r.PartyID WHERE r.Dated BETWEEN '$start' AND '$end' and isPosted=0");
+        "SELECT r.Dated,r.Description,r.RecoveryID,r.Amount,p.PartyName,p.PartyID FROM Recovery AS r INNER JOIN Party AS p ON p.PartyID = r.PartyID WHERE r.Dated BETWEEN '$start' AND '$end' and r.isPosted=0");
 
     return listRecovery;
   }
@@ -301,7 +301,7 @@ isPosted BOOLEAN NOT NULL
   static Future<List> getSpecificRecovery(var date) async {
     Database db = await instance.database;
     var listRecovery = await db.rawQuery(
-        "SELECT r.Dated,r.Description,r.RecoveryID,r.Amount,p.PartyName,p.PartyID FROM Recovery AS r INNER JOIN Party AS p ON p.PartyID = r.PartyID WHERE r.Dated = '$date' and isPosted=0");
+        "SELECT r.Dated,r.Description,r.RecoveryID,r.Amount,p.PartyName,p.PartyID FROM Recovery AS r INNER JOIN Party AS p ON p.PartyID = r.PartyID WHERE r.Dated = '$date' and r.isPosted=0");
 
     return listRecovery;
   }
@@ -309,7 +309,7 @@ isPosted BOOLEAN NOT NULL
   static Future<List> getAllRecovery() async {
     Database db = await instance.database;
     var listRecovery = await db.rawQuery(
-        "SELECT r.Dated,r.Description,r.RecoveryID,r.Amount,p.PartyName,p.PartyID FROM Recovery AS r INNER JOIN Party AS p ON p.PartyID = r.PartyID WHERE isPosted=0");
+        "SELECT r.Dated,r.Description,r.RecoveryID,r.Amount,p.PartyName,p.PartyID FROM Recovery AS r INNER JOIN Party AS p ON p.PartyID = r.PartyID WHERE r.isPosted=0");
 
     return listRecovery;
   }

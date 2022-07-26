@@ -30,7 +30,7 @@ class ViewRecoveryScreen extends StatefulWidget {
 }
 
 class _ViewRecoveryScreenState extends State<ViewRecoveryScreen>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   @override
   @override
   Widget build(BuildContext context) {

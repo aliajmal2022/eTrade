@@ -41,10 +41,10 @@ class _NewUsrAddLocalDBState extends State<NewUsrAddLocalDB> {
             // resizeToAvoidBottomInset: false,
             body: Center(
       child: SizedBox(
-          height: 400,
+          height: 500,
           width: double.infinity,
           child: Padding(
-              padding: const EdgeInsets.all(40.0),
+              padding: const EdgeInsets.all(50.0),
               child: Column(children: [
                 const Expanded(
                   flex: 1,
@@ -57,15 +57,13 @@ class _NewUsrAddLocalDBState extends State<NewUsrAddLocalDB> {
                   ),
                 ),
                 Expanded(
-                  flex: 2,
+                  flex: 3,
                   child: Column(
                     children: [
-                      const SizedBox(
-                        height: 10,
-                      ),
                       Expanded(
-                        flex: 1,
+                        flex: 2,
                         child: TextField(
+                          maxLength: 70,
                           autofocus: true,
                           keyboardType: TextInputType.name,
                           controller: _controller,
@@ -97,7 +95,7 @@ class _NewUsrAddLocalDBState extends State<NewUsrAddLocalDB> {
                         height: 10,
                       ),
                       Expanded(
-                        flex: 1,
+                        flex: 2,
                         child: TextField(
                           autofocus: true,
                           keyboardType: TextInputType.number,
@@ -124,18 +122,18 @@ class _NewUsrAddLocalDBState extends State<NewUsrAddLocalDB> {
                           ),
                         ),
                       ),
-                      Flexible(
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Expanded(
+                        flex: 3,
                         child: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 15.0),
                           child: TextField(
                             minLines:
                                 2, // any number you need (It works as the rows for the textarea)
                             keyboardType: TextInputType.multiline,
                             maxLines: null,
                             maxLength: 270,
-                            // inputFormatters: [
-                            //   LengthLimitingTextInputFormatter(100),
-                            // ],
                             controller: _addresscontroller,
                             onChanged: (value) {
                               setState(() {
@@ -143,16 +141,15 @@ class _NewUsrAddLocalDBState extends State<NewUsrAddLocalDB> {
                               });
                             },
                             decoration: InputDecoration(
-                              enabledBorder: OutlineInputBorder(
-                                  // borderSide: BorderSide(color: Colors.white),
-                                  ),
+                              border: const OutlineInputBorder(
+                                  borderSide: BorderSide(width: 20.0)),
                               focusedBorder: OutlineInputBorder(
-                                  // borderSide: BorderSide(color: Colors.white),
-                                  ),
-                              // fillColor: Colors.white,
-                              labelStyle: TextStyle(color: Colors.black),
-                              // focusColor: Colors.white,
-                              labelText: 'Description',
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide:
+                                    const BorderSide(color: Color(0xff00620b)),
+                              ),
+                              labelText: 'Address',
+                              labelStyle: TextStyle(color: Color(0xff00620b)),
                             ),
                           ),
                         ),

@@ -6,6 +6,7 @@ import 'package:eTrade/entities/Customer.dart';
 import 'package:eTrade/entities/EditOrder.dart';
 import 'package:eTrade/entities/ViewBooking.dart';
 import 'package:eTrade/entities/ViewRecovery.dart';
+import 'package:eTrade/main.dart';
 import 'package:eTrade/screen/TakeOrderScreen.dart';
 import 'package:eTrade/screen/ViewBookingScreen.dart';
 import 'package:eTrade/screen/ViewOrderScreen.dart';
@@ -193,9 +194,11 @@ class _BookingTabBarItemState extends State<BookingTabBarItem> {
                                   }),
                                   child: Text(
                                     "${prerange}",
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         fontSize: 19,
-                                        color: Colors.black,
+                                        color: (MyApp.isDark)
+                                            ? Colors.white
+                                            : Colors.black,
                                         fontWeight: FontWeight.normal),
                                   )),
                             ),
@@ -285,94 +288,114 @@ class _BookingTabBarItemState extends State<BookingTabBarItem> {
                             endActionPane: ActionPane(
                               motion: const ScrollMotion(),
                               children: [
-                                SlidableAction(
-                                  onPressed: (((context) async {
-                                    var orderDetail =
-                                        await BookingTabBarItem.getOrderDetail(
+                                Flexible(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(5.0),
+                                    child: SlidableAction(
+                                      onPressed: (((context) async {
+                                        var orderDetail =
+                                            await BookingTabBarItem
+                                                .getOrderDetail(
+                                                    BookingTabBarItem
+                                                        .listOfOrdered[index]
+                                                        .orderID);
+                                        TakeOrderScreen.isEditOrder = true;
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    MyNavigationBar(
+                                                        selectedIndex: 1,
+                                                        editRecovery:
+                                                            ViewRecovery(
+                                                                amount: 0,
+                                                                description: "",
+                                                                recoveryID: 0,
+                                                                dated: "",
+                                                                party: Customer(
+                                                                    discount: 0,
+                                                                    address: "",
+                                                                    partyId: 0,
+                                                                    partyName:
+                                                                        "")),
+                                                        orderDate:
+                                                            BookingTabBarItem
+                                                                .listOfOrdered[
+                                                                    index]
+                                                                .orderDate,
+                                                        orderList: orderDetail,
+                                                        orderPartyName:
+                                                            BookingTabBarItem
+                                                                .listOfOrdered[
+                                                                    index]
+                                                                .partyName,
+                                                        orderId:
+                                                            BookingTabBarItem
+                                                                .listOfOrdered[
+                                                                    index]
+                                                                .orderID)));
+                                      })),
+                                      backgroundColor: const Color(0xFF21B7CA),
+                                      foregroundColor: Colors.white,
+                                      icon: Icons.edit,
+                                      label: 'Edit',
+                                    ),
+                                  ),
+                                ),
+                                Flexible(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(5.0),
+                                    child: SlidableAction(
+                                      onPressed: (((context) async {
+                                        await SQLHelper.deleteItem(
+                                            "Order",
+                                            "OrderID",
                                             BookingTabBarItem
                                                 .listOfOrdered[index].orderID);
-                                    TakeOrderScreen.isEditOrder = true;
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                MyNavigationBar(
-                                                    selectedIndex: 1,
-                                                    editRecovery: ViewRecovery(
-                                                        amount: 0,
-                                                        description: "",
-                                                        recoveryID: 0,
-                                                        dated: "",
-                                                        party: Customer(
-                                                            discount: 0,
-                                                            address: "",
-                                                            partyId: 0,
-                                                            partyName: "")),
-                                                    orderDate: BookingTabBarItem
-                                                        .listOfOrdered[index]
-                                                        .orderDate,
-                                                    orderList: orderDetail,
-                                                    orderPartyName:
-                                                        BookingTabBarItem
-                                                            .listOfOrdered[
-                                                                index]
-                                                            .partyName,
-                                                    orderId: BookingTabBarItem
-                                                        .listOfOrdered[index]
-                                                        .orderID)));
-                                  })),
-                                  backgroundColor: const Color(0xFF21B7CA),
-                                  foregroundColor: Colors.white,
-                                  icon: Icons.edit,
-                                  label: 'Edit',
-                                ),
-                                SlidableAction(
-                                  onPressed: (((context) async {
-                                    await SQLHelper.deleteItem(
-                                        "Order",
-                                        "OrderID",
-                                        BookingTabBarItem
-                                            .listOfOrdered[index].orderID);
 
-                                    await SQLHelper.deleteItem(
-                                        "OrderDetail",
-                                        "OrderID",
-                                        BookingTabBarItem
-                                            .listOfOrdered[index].orderID);
+                                        await SQLHelper.deleteItem(
+                                            "OrderDetail",
+                                            "OrderID",
+                                            BookingTabBarItem
+                                                .listOfOrdered[index].orderID);
 
-                                    if (widget.tabName == "Search") {
-                                      _order =
-                                          await SQLHelper.getFromToViewOrder(
-                                              BookingTabBarItem.getFromDate(),
-                                              BookingTabBarItem.getToDate());
-                                    } else if (widget.tabName == "Today") {
-                                      String todayDate =
-                                          dateFormat.format(DateTime.now());
-                                      _order =
-                                          await SQLHelper.getSpecificViewOrder(
-                                              todayDate);
-                                    } else if (widget.tabName == "Yesterday") {
-                                      String yesterdayDate = dateFormat.format(
-                                          DateTime.now()
-                                              .subtract(Duration(days: 1)));
-                                      _order =
-                                          await SQLHelper.getSpecificViewOrder(
-                                              yesterdayDate);
-                                    } else {
-                                      _order =
-                                          await SQLHelper.getAllViewOrder();
-                                    }
-                                    BookingTabBarItem.listOfOrdered =
-                                        ViewOrderBooking.ViewOrderFromDb(
-                                            _order);
-                                    setState(() {
-                                      BookingTabBarItem.listOfOrdered;
-                                    });
-                                  })),
-                                  backgroundColor: const Color(0xFFFE4A49),
-                                  foregroundColor: Colors.white,
-                                  icon: Icons.delete,
-                                  label: 'Delete',
+                                        if (widget.tabName == "Search") {
+                                          _order = await SQLHelper
+                                              .getFromToViewOrder(
+                                                  BookingTabBarItem
+                                                      .getFromDate(),
+                                                  BookingTabBarItem
+                                                      .getToDate());
+                                        } else if (widget.tabName == "Today") {
+                                          String todayDate =
+                                              dateFormat.format(DateTime.now());
+                                          _order = await SQLHelper
+                                              .getSpecificViewOrder(todayDate);
+                                        } else if (widget.tabName ==
+                                            "Yesterday") {
+                                          String yesterdayDate =
+                                              dateFormat.format(DateTime.now()
+                                                  .subtract(Duration(days: 1)));
+                                          _order = await SQLHelper
+                                              .getSpecificViewOrder(
+                                                  yesterdayDate);
+                                        } else {
+                                          _order =
+                                              await SQLHelper.getAllViewOrder();
+                                        }
+                                        BookingTabBarItem.listOfOrdered =
+                                            ViewOrderBooking.ViewOrderFromDb(
+                                                _order);
+                                        setState(() {
+                                          BookingTabBarItem.listOfOrdered;
+                                        });
+                                      })),
+                                      backgroundColor: const Color(0xFFFE4A49),
+                                      foregroundColor: Colors.white,
+                                      icon: Icons.delete,
+                                      label: 'Delete',
+                                    ),
+                                  ),
                                 ),
                               ],
                             ),
@@ -382,10 +405,12 @@ class _BookingTabBarItemState extends State<BookingTabBarItem> {
                                 height: 110,
                                 width: double.infinity,
                                 decoration: BoxDecoration(
-                                    color: Colors.white,
+                                    color: (MyApp.isDark)
+                                        ? Color(0xff424242)
+                                        : Colors.white,
                                     boxShadow: [
                                       BoxShadow(
-                                        color: Colors.grey,
+                                        color: Colors.black,
                                         offset: Offset(0.0, 0.5), //(x,y)
                                         blurRadius: 3.0,
                                       ),
@@ -499,7 +524,9 @@ class _BookingTabBarItemState extends State<BookingTabBarItem> {
                                             child: Container(
                                               padding: EdgeInsets.all(8),
                                               decoration: BoxDecoration(
-                                                  color: Colors.grey.shade300,
+                                                  color: (MyApp.isDark)
+                                                      ? Colors.grey
+                                                      : Colors.grey.shade300,
                                                   // border: Border.all(
                                                   //     color:
                                                   //         Color(0xff00620b),

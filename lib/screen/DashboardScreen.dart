@@ -1,4 +1,5 @@
 import 'package:eTrade/components/drawer.dart';
+import 'package:eTrade/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -96,7 +97,8 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                       height: 200,
                       width: 200,
                       decoration: BoxDecoration(
-                          color: Colors.white,
+                          color:
+                              (MyApp.isDark) ? Color(0xff424242) : Colors.white,
                           boxShadow: [
                             BoxShadow(
                               color: Colors.black,
@@ -114,7 +116,9 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                               child: Text(
                             dashBoard[index].time,
                             style: TextStyle(
-                                color: Color(0xff00620b),
+                                color: (MyApp.isDark)
+                                    ? Colors.white
+                                    : Color(0xff00620b),
                                 fontWeight: FontWeight.bold,
                                 fontSize: 18),
                           )),
@@ -124,7 +128,9 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                             child: Divider(
                               thickness: 2,
                               height: 10,
-                              color: Colors.black,
+                              color: (MyApp.isDark)
+                                  ? Color(0xff00620b)
+                                  : Colors.black,
                             ),
                           ),
                           Row(

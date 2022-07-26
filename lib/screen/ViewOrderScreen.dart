@@ -7,6 +7,7 @@ import 'package:eTrade/entities/EditOrder.dart';
 import 'package:eTrade/entities/Order.dart';
 import 'package:eTrade/entities/Products.dart';
 import 'package:eTrade/entities/ViewBooking.dart';
+import 'package:eTrade/main.dart';
 import 'package:eTrade/screen/ViewBookingScreen.dart';
 import "package:flutter/material.dart";
 import 'package:flutter/services.dart';
@@ -205,7 +206,9 @@ class _ViewOrderScreenState extends State<ViewOrderScreen> {
               elevation: 50,
               child: Container(
                 decoration: BoxDecoration(
-                    color: Colors.grey.shade100,
+                    color: (MyApp.isDark)
+                        ? Color(0xff424242)
+                        : Colors.grey.shade100,
                     border: Border(
                       top: BorderSide(color: Color(0xff00620b), width: 4),
                     )),

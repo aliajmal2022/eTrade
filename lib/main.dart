@@ -34,8 +34,12 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     setState(() {
-      if (UserSharePreferences.getmode() != null)
-        MyApp.isDark = UserSharePreferences.getmode();
+      if (!isexist) {
+        UserSharePreferences.setmode(false);
+      }
+      MyApp.isDark = UserSharePreferences.getmode();
+      MyApp.themeNotifier.value =
+          (MyApp.isDark) ? ThemeMode.dark : ThemeMode.light;
     });
     super.initState();
   }
@@ -49,7 +53,7 @@ class _MyAppState extends State<MyApp> {
             title: 'eTrade',
             debugShowCheckedModeBanner: false,
             theme: ThemeData(),
-            darkTheme: MyApp.isDark ? ThemeData.dark() : ThemeData(),
+            darkTheme: ThemeData.dark(),
             themeMode: currentMode,
             home: (isexist)
                 ? MySplashScreen()

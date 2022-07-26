@@ -3,6 +3,7 @@ import 'package:eTrade/components/ViewRecoveryTabBar.dart';
 import 'package:eTrade/components/sqlhelper.dart';
 import 'package:eTrade/entities/ViewBooking.dart';
 import 'package:eTrade/entities/ViewRecovery.dart';
+import 'package:eTrade/main.dart';
 import 'package:eTrade/screen/TakeOrderScreen.dart';
 import 'package:eTrade/screen/RecoveryScreen.dart';
 import 'package:eTrade/screen/ViewRecoveryDetailScreen.dart';
@@ -25,9 +26,9 @@ class _ListOfRecoveryState extends State<ListOfRecovery> {
     dummyOrderList.clear();
 
     for (var element in list) {
-      if (element.partyName.toLowerCase().contains(widget.matchItem)) {
+      if (element.party.partyName.toLowerCase().contains(widget.matchItem)) {
         setState(() {
-          print(element.partyName.toLowerCase());
+          print(element.party.partyName.toLowerCase());
           dummyOrderList.add(element);
         });
       }
@@ -47,62 +48,75 @@ class _ListOfRecoveryState extends State<ListOfRecovery> {
                   endActionPane: ActionPane(
                     motion: const ScrollMotion(),
                     children: [
-                      SlidableAction(
-                        onPressed: (((context) async {
-                          RecoveryScreen.isEditRecovery = true;
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => MyNavigationBar(
-                                        selectedIndex: 3,
-                                        orderDate: "",
-                                        editRecovery: dummyOrderList[index],
-                                        orderList: [],
-                                        orderId: 0,
-                                        orderPartyName: "",
-                                      )));
-                        })),
-                        backgroundColor: const Color(0xFF21B7CA),
-                        foregroundColor: Colors.white,
-                        icon: Icons.edit,
-                        label: 'Edit',
+                      Flexible(
+                        child: Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: SlidableAction(
+                            onPressed: (((context) async {
+                              RecoveryScreen.isEditRecovery = true;
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => MyNavigationBar(
+                                            selectedIndex: 3,
+                                            orderDate: "",
+                                            editRecovery: dummyOrderList[index],
+                                            orderList: [],
+                                            orderId: 0,
+                                            orderPartyName: "",
+                                          )));
+                            })),
+                            backgroundColor: const Color(0xFF21B7CA),
+                            foregroundColor: Colors.white,
+                            icon: Icons.edit,
+                            label: 'Edit',
+                          ),
+                        ),
                       ),
-                      SlidableAction(
-                        onPressed: (((context) async {
-                          await SQLHelper.deleteItem("Recovery", "RecoveryID",
-                              dummyOrderList[index].recoveryID);
+                      Flexible(
+                        child: Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: SlidableAction(
+                            onPressed: (((context) async {
+                              await SQLHelper.deleteItem(
+                                  "Recovery",
+                                  "RecoveryID",
+                                  dummyOrderList[index].recoveryID);
 
-                          var _recovery;
-                          DateFormat dateFormat = DateFormat('dd/MM/yyyy');
-                          if (widget.tabName == "Search") {
-                            _recovery = await SQLHelper.getFromToRecovery(
-                                RecoveryTabBarItem.getFromDate(),
-                                RecoveryTabBarItem.getToDate());
-                          } else if (widget.tabName == "Today") {
-                            String todayDate =
-                                dateFormat.format(DateTime.now());
-                            _recovery =
-                                await SQLHelper.getSpecificRecovery(todayDate);
-                          } else if (widget.tabName == "Yesterday") {
-                            String yesterdayDate = dateFormat.format(
-                                DateTime.now().subtract(Duration(days: 1)));
-                            _recovery = await SQLHelper.getSpecificRecovery(
-                                yesterdayDate);
-                          } else {
-                            _recovery = await SQLHelper.getAllRecovery();
-                          }
-                          setState(() {
-                            RecoveryTabBarItem.listOfRecovery =
-                                ViewRecovery.ViewRecoveryFromDb(_recovery);
-                            if (RecoveryTabBarItem.listOfRecovery.isNotEmpty) {
-                              CheckList(RecoveryTabBarItem.listOfRecovery);
-                            }
-                          });
-                        })),
-                        backgroundColor: const Color(0xFFFE4A49),
-                        foregroundColor: Colors.white,
-                        icon: Icons.delete,
-                        label: 'Delete',
+                              var _recovery;
+                              DateFormat dateFormat = DateFormat('dd/MM/yyyy');
+                              if (widget.tabName == "Search") {
+                                _recovery = await SQLHelper.getFromToRecovery(
+                                    RecoveryTabBarItem.getFromDate(),
+                                    RecoveryTabBarItem.getToDate());
+                              } else if (widget.tabName == "Today") {
+                                String todayDate =
+                                    dateFormat.format(DateTime.now());
+                                _recovery = await SQLHelper.getSpecificRecovery(
+                                    todayDate);
+                              } else if (widget.tabName == "Yesterday") {
+                                String yesterdayDate = dateFormat.format(
+                                    DateTime.now().subtract(Duration(days: 1)));
+                                _recovery = await SQLHelper.getSpecificRecovery(
+                                    yesterdayDate);
+                              } else {
+                                _recovery = await SQLHelper.getAllRecovery();
+                              }
+                              setState(() {
+                                RecoveryTabBarItem.listOfRecovery =
+                                    ViewRecovery.ViewRecoveryFromDb(_recovery);
+                                if (RecoveryTabBarItem
+                                    .listOfRecovery.isNotEmpty) {
+                                  CheckList(RecoveryTabBarItem.listOfRecovery);
+                                }
+                              });
+                            })),
+                            backgroundColor: const Color(0xFFFE4A49),
+                            foregroundColor: Colors.white,
+                            icon: Icons.delete,
+                            label: 'Delete',
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -112,10 +126,12 @@ class _ListOfRecoveryState extends State<ListOfRecovery> {
                           height: 110,
                           width: double.infinity,
                           decoration: BoxDecoration(
-                              color: Colors.white,
+                              color: (MyApp.isDark)
+                                  ? Color(0xff424242)
+                                  : Colors.white,
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.grey,
+                                  color: Colors.black,
                                   offset: Offset(0.0, 0.5), //(x,y)
                                   blurRadius: 3.0,
                                 ),
@@ -199,7 +215,9 @@ class _ListOfRecoveryState extends State<ListOfRecovery> {
                                       child: Container(
                                         padding: EdgeInsets.all(8),
                                         decoration: BoxDecoration(
-                                            color: Colors.grey.shade300,
+                                            color: (MyApp.isDark)
+                                                ? Colors.grey
+                                                : Colors.grey.shade300,
                                             // border: Border.all(
                                             //     color:
                                             //         Color(0xff00620b),
