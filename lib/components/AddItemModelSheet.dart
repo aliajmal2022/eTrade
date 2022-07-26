@@ -47,8 +47,12 @@ List<Product> getCartList() {
 
 var quantity = 0;
 void resetCartList() {
-  CartList.clear();
-  print(CartList.isEmpty);
+  try {
+    CartList.clear();
+    print(CartList.isEmpty);
+  } catch (e) {
+    print("Something wrong during resest cartlist");
+  }
 }
 
 void setCartList(Product tempCartlist) {

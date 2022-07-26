@@ -36,15 +36,15 @@ class TakeOrderScreen extends StatefulWidget {
   String orderPartyName;
   @override
   State<TakeOrderScreen> createState() => _TakeOrderScreenState();
-  static Customer customer =
-      new Customer(address: "",discount: 0, partyId: 0, partyName: "Search Customer");
+  static Customer customer = new Customer(
+      address: "", discount: 0, partyId: 0, partyName: "Search Customer");
   static List<Customer> partydb = [];
   static List<Product> productdb = [];
   static bool databaseExit = false;
   static bool isonloading = false;
   static int orderId = 0;
   static String orderDATE = "";
-
+  static bool isSaleSpot = false;
   static Future<bool> getdataFromDb() async {
     bool isExist = await DataBaseDataLoad.DataLoading();
     if (isExist) {
@@ -121,8 +121,11 @@ class TakeOrderScreen extends StatefulWidget {
                         description: "",
                         recoveryID: 0,
                         dated: "",
-                        party:
-                            Customer(partyId: 0, partyName: "", discount: 0,address:"" )),
+                        party: Customer(
+                            partyId: 0,
+                            partyName: "",
+                            discount: 0,
+                            address: "")),
                     selectedIndex: 1,
                     orderDate: "",
                     orderList: [],
@@ -134,6 +137,13 @@ class TakeOrderScreen extends StatefulWidget {
   }
 
   static bool isSelectedOrder = false;
+  static Future<void> forSaleInVoice() async {
+    customer.partyId = 0;
+    customer.partyName = "Search Customer";
+    customer.discount = 0;
+    resetCartList();
+    await TakeOrderScreen.getdataFromDb();
+  }
 }
 
 class _TakeOrderScreenState extends State<TakeOrderScreen> {
@@ -152,13 +162,16 @@ class _TakeOrderScreenState extends State<TakeOrderScreen> {
               Title: element.itemName,
               Price: element.rate,
               ID: element.itemId,
-             bonus: element.bonus, 
-             to: element.to,
-             discount: element.discount,
+              bonus: element.bonus,
+              to: element.to,
+              discount: element.discount,
               Quantity: element.quantity);
           setCartList(product);
           var selectedParty = Customer(
-              discount: 0, partyId: 0,address: "", partyName: widget.orderPartyName);
+              discount: 0,
+              partyId: 0,
+              address: "",
+              partyName: widget.orderPartyName);
           selectedParty =
               selectedParty.selectedCustomer(DataBaseDataLoad.ListOCustomer);
           widget.setParty(selectedParty);
@@ -182,18 +195,24 @@ class _TakeOrderScreenState extends State<TakeOrderScreen> {
         TakeOrderScreen.isSelectedOrder ||
         TakeOrderScreen.isSync ||
         TakeOrderScreen.isonloading ||
+        TakeOrderScreen.isSaleSpot ||
         TakeOrderScreen.isordered) {
       PreLoadDataBase();
-      setState(() {
-        if (!TakeOrderScreen.isSync && !TakeOrderScreen.isordered) {
+      if (!TakeOrderScreen.isSync && !TakeOrderScreen.isordered) {
+        setState(() {
           widget.setParty(TakeOrderScreen.customer);
-        } else if (!TakeOrderScreen.isEditOrder) {
-          widget.setParty(
-              Customer(discount: 0, partyId: 0,address: "", partyName: "Search Customer"));
-        }
-        TakeOrderScreen.isSync = false;
-        TakeOrderScreen.isordered = false;
-      });
+        });
+      } else if (!TakeOrderScreen.isEditOrder) {
+        setState(() {
+          widget.setParty(Customer(
+              discount: 0,
+              partyId: 0,
+              address: "",
+              partyName: "Search Customer"));
+        });
+      }
+      TakeOrderScreen.isSync = false;
+      TakeOrderScreen.isordered = false;
     }
     super.initState();
   }
@@ -248,20 +267,56 @@ class _TakeOrderScreenState extends State<TakeOrderScreen> {
                         (route) => false);
                   },
                 )
-              : Builder(
-                  builder: (BuildContext context) {
-                    return IconButton(
-                      icon: Icon(
-                        Icons.menu,
-                      ),
-                      onPressed: () {
-                        Scaffold.of(context).openDrawer();
+              : (TakeOrderScreen.isSaleSpot)
+                  ? IconButton(
+                      icon: Icon(Icons.close),
+                      onPressed: () async {
+                        setState(() {
+                          TakeOrderScreen.isSaleSpot = false;
+                          widget.setParty(Customer(
+                              partyId: 0,
+                              discount: 0,
+                              address: "",
+                              partyName: "Search Customer"));
+                          resetCartList();
+                        });
+                        await TakeOrderScreen.getdataFromDb();
+                        Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => MyNavigationBar(
+                                    selectedIndex: 1,
+                                    editRecovery: ViewRecovery(
+                                        amount: 0,
+                                        description: "",
+                                        recoveryID: 0,
+                                        dated: "",
+                                        party: Customer(
+                                            partyId: 0,
+                                            partyName: "",
+                                            address: "",
+                                            discount: 0)),
+                                    orderList: [],
+                                    orderDate: widget.orderDate,
+                                    orderId: widget.orderID,
+                                    orderPartyName: "Search Customer")),
+                            (route) => false);
                       },
-                      tooltip: MaterialLocalizations.of(context)
-                          .openAppDrawerTooltip,
-                    );
-                  },
-                ),
+                    )
+                  : Builder(
+                      builder: (BuildContext context) {
+                        return IconButton(
+                          icon: Icon(
+                            Icons.menu,
+                          ),
+                          onPressed: () {
+                            Scaffold.of(context).openDrawer();
+                          },
+                          tooltip: MaterialLocalizations.of(context)
+                              .openAppDrawerTooltip,
+                        );
+                      },
+                    ),
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
@@ -269,7 +324,11 @@ class _TakeOrderScreenState extends State<TakeOrderScreen> {
                 flex: 6,
                 child: Center(
                   child: Text(
-                    TakeOrderScreen.isEditOrder ? 'Edit Order' : 'Take Order',
+                    TakeOrderScreen.isEditOrder
+                        ? 'Edit Order'
+                        : TakeOrderScreen.isSaleSpot
+                            ? 'Sale in Voice'
+                            : 'Take Order',
                     style: TextStyle(color: Colors.white),
                   ),
                 ),
@@ -475,7 +534,10 @@ class _TakeOrderScreenState extends State<TakeOrderScreen> {
                                   recoveryID: 0,
                                   dated: "",
                                   party: Customer(
-                                      partyId: 0, partyName: "", discount: 0,address: "")),
+                                      partyId: 0,
+                                      partyName: "",
+                                      discount: 0,
+                                      address: "")),
                               orderDate: widget.orderDate,
                               orderId: widget.orderID,
                               orderList: const [],

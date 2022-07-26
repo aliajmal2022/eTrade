@@ -6,6 +6,7 @@ import 'package:eTrade/entities/Customer.dart';
 import 'package:eTrade/entities/Order.dart';
 import 'package:eTrade/entities/Products.dart';
 import 'package:eTrade/entities/ViewRecovery.dart';
+import 'package:eTrade/main.dart';
 import 'package:eTrade/screen/TakeOrderScreen.dart';
 import "package:flutter/material.dart";
 import 'package:flutter/services.dart';
@@ -54,6 +55,7 @@ class _CartScreenState extends State<CartScreen> {
   DateFormat dateFormat = DateFormat('dd/MM/yyyy');
   TextEditingController controller = TextEditingController();
   String description = '';
+  bool isCash = TakeOrderScreen.isSaleSpot ? true : false;
   @override
   Widget build(BuildContext context) {
     final isLandscape =
@@ -103,7 +105,7 @@ class _CartScreenState extends State<CartScreen> {
               ),
             ),
             title: Text(
-              'Order Detail',
+              TakeOrderScreen.isSaleSpot ? 'Sale Detail' : 'Order Detail',
               style: TextStyle(color: Colors.white),
             ),
           ),
@@ -114,23 +116,48 @@ class _CartScreenState extends State<CartScreen> {
               : SingleChildScrollView(
                   child: Column(
                     children: [
-                      Padding(
+                      Container(
                         padding: const EdgeInsets.all(25.0),
                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Center(
-                                child: Text(
+                            Text(
                               "${widget.selecedCustomer.partyName} ",
                               style: TextStyle(fontSize: 20),
-                            )),
-                            Center(
-                                child: Text(
+                            ),
+                            Text(
                               "(${TakeOrderScreen.isEditOrder ? widget.orderDate : dateFormat.format(DateTime.now())})",
                               style: TextStyle(fontSize: 15),
-                            )),
+                            ),
                           ],
                         ),
                       ),
+                      TakeOrderScreen.isSaleSpot
+                          ? Container(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 25.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Text(
+                                    isCash ? "Cash" : "Credit",
+                                    style: TextStyle(fontSize: 20),
+                                  ),
+                                  Checkbox(
+                                    value: isCash,
+                                    activeColor: Color(0xff00620b),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        isCash = value!;
+                                        print(isCash);
+                                      });
+                                    },
+                                  ),
+                                ],
+                              ),
+                            )
+                          : Container(),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         child: ListView.builder(
@@ -216,7 +243,9 @@ class _CartScreenState extends State<CartScreen> {
                 elevation: 50,
                 child: Container(
                   decoration: BoxDecoration(
-                      color: Colors.grey.shade100,
+                      color: MyApp.isDark
+                          ? Color(0xff424242)
+                          : Colors.grey.shade100,
                       border: Border(
                         top: BorderSide(color: Color(0xff00620b), width: 4),
                       )),
@@ -248,16 +277,19 @@ class _CartScreenState extends State<CartScreen> {
                                 });
                               },
                               decoration: InputDecoration(
-                                enabledBorder: OutlineInputBorder(
-                                    // borderSide: BorderSide(color: Colors.white),
-                                    ),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(width: 20.0)),
                                 focusedBorder: OutlineInputBorder(
-                                    // borderSide: BorderSide(color: Colors.white),
-                                    ),
-                                // fillColor: Colors.white,
-                                labelStyle: TextStyle(color: Colors.black),
-                                // focusColor: Colors.white,
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide:
+                                      BorderSide(color: Color(0xff00620b)),
+                                ),
+                                disabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: BorderSide(color: Colors.grey),
+                                ),
                                 labelText: 'Description',
+                                // labelStyle: TextStyle(color: Color(0xff00620b)),
                               ),
                             ),
                           ),
@@ -352,77 +384,86 @@ class _CartScreenState extends State<CartScreen> {
                                             ),
                                             (route) => false);
                                       }
-                                    : () async {
-                                        Order order = Order(
-                                          customer: widget.selecedCustomer,
-                                          userID: widget.userID,
-                                          totalQuantity: totalQuantity,
-                                          orderID: 0,
-                                          totalValue: totalAmount,
-                                          date:
-                                              dateFormat.format(DateTime.now()),
-                                          description: description,
-                                        );
-                                        bool isPosted = false;
-                                        int orderId = await SQLHelper.instance
-                                            .createOrder(order, isPosted);
-                                        List<Map<String, dynamic>> orderRes =
-                                            await SQLHelper.instance
-                                                .getTable("Order", "OrderID");
-                                        var maptoListOrder =
-                                            orderRes.whereType<Map>().first;
-                                        var dated = maptoListOrder['Dated'];
-                                        TakeOrderScreen.getdataFromDb();
-                                        print(dated);
-                                        for (var element
-                                            in widget.selectedItems) {
-                                          await SQLHelper.instance
-                                              .createOrderDetail(
-                                                  element,
-                                                  orderId,
-                                                  dated,
-                                                  isPosted,
-                                                  widget.userID);
-                                        }
-                                        setState(() {
-                                          TakeOrderScreen.isSelectedOrder =
-                                              false;
-                                          TakeOrderScreen.isordered = true;
-                                          controller.clear();
-                                          resetCartList();
-                                          Navigator.pushAndRemoveUntil(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    MyNavigationBar(
-                                                  selectedIndex: 1,
-                                                  editRecovery: ViewRecovery(
-                                                      amount: 0,
-                                                      description: "",
-                                                      recoveryID: 0,
-                                                      dated: "",
-                                                      party: Customer(
-                                                          partyId: 0,
-                                                          address: "",
-                                                          discount: 0,
-                                                          partyName: "")),
-                                                  orderList: [],
-                                                  orderDate: "",
-                                                  orderId: 0,
-                                                  orderPartyName:
-                                                      "Search Customer",
-                                                ),
-                                              ),
-                                              (route) => false);
-                                        });
-                                      },
+                                    : TakeOrderScreen.isSaleSpot
+                                        ? () async {}
+                                        : () async {
+                                            Order order = Order(
+                                              customer: widget.selecedCustomer,
+                                              userID: widget.userID,
+                                              totalQuantity: totalQuantity,
+                                              orderID: 0,
+                                              totalValue: totalAmount,
+                                              date: dateFormat
+                                                  .format(DateTime.now()),
+                                              description: description,
+                                            );
+                                            bool isPosted = false;
+                                            int orderId = await SQLHelper
+                                                .instance
+                                                .createOrder(order, isPosted);
+                                            List<Map<String, dynamic>>
+                                                orderRes = await SQLHelper
+                                                    .instance
+                                                    .getTable(
+                                                        "Order", "OrderID");
+                                            var maptoListOrder =
+                                                orderRes.whereType<Map>().first;
+                                            var dated = maptoListOrder['Dated'];
+                                            TakeOrderScreen.getdataFromDb();
+                                            print(dated);
+                                            for (var element
+                                                in widget.selectedItems) {
+                                              await SQLHelper.instance
+                                                  .createOrderDetail(
+                                                      element,
+                                                      orderId,
+                                                      dated,
+                                                      isPosted,
+                                                      widget.userID);
+                                            }
+                                            setState(() {
+                                              TakeOrderScreen.isSelectedOrder =
+                                                  false;
+                                              TakeOrderScreen.isordered = true;
+                                              controller.clear();
+                                              resetCartList();
+                                              Navigator.pushAndRemoveUntil(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        MyNavigationBar(
+                                                      selectedIndex: 1,
+                                                      editRecovery:
+                                                          ViewRecovery(
+                                                              amount: 0,
+                                                              description: "",
+                                                              recoveryID: 0,
+                                                              dated: "",
+                                                              party: Customer(
+                                                                  partyId: 0,
+                                                                  address: "",
+                                                                  discount: 0,
+                                                                  partyName:
+                                                                      "")),
+                                                      orderList: [],
+                                                      orderDate: "",
+                                                      orderId: 0,
+                                                      orderPartyName:
+                                                          "Search Customer",
+                                                    ),
+                                                  ),
+                                                  (route) => false);
+                                            });
+                                          },
                             minWidth: double.infinity,
                             height: 40,
                             color: Color(0xff00620b),
                             child: Text(
                               TakeOrderScreen.isEditOrder
                                   ? "Update Order"
-                                  : "Save Order",
+                                  : TakeOrderScreen.isSaleSpot
+                                      ? "Save"
+                                      : "Save Order",
                               style: TextStyle(color: Colors.white),
                             )),
                       ],

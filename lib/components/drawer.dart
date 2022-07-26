@@ -175,6 +175,35 @@ class _MyDrawerState extends State<MyDrawer> {
                     ),
                   ),
                   MaterialButton(
+                    onPressed: () async {
+                      await TakeOrderScreen.forSaleInVoice();
+                      TakeOrderScreen.isSaleSpot = true;
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MyNavigationBar(
+                                    editRecovery: ViewRecovery(
+                                        amount: 0,
+                                        description: "",
+                                        recoveryID: 0,
+                                        dated: "",
+                                        party: Customer(
+                                            address: "",
+                                            discount: 0,
+                                            partyId: 0,
+                                            partyName: "")),
+                                    selectedIndex: 1,
+                                    orderDate: "",
+                                    orderList: [],
+                                    orderId: 0,
+                                    orderPartyName: "Search Customer",
+                                  )));
+                    },
+                    child: Row(
+                      children: const [Icon(Icons.bookmark), Text("Spot Sale")],
+                    ),
+                  ),
+                  MaterialButton(
                       onPressed: () async {
                         if (ping.isNotEmpty) {
                           var strToList = ping.split(",");

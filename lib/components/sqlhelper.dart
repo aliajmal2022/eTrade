@@ -259,6 +259,40 @@ isPosted BOOLEAN NOT NULL
     return ListOrder;
   }
 
+  static Future<void> createSaleTable(Database database) async {
+    await database.execute('''
+CREATE TABLE Sale(
+SaleID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+PartyID INTEGER NOT NULL,
+UserID INTEGER NOT NULL,
+TotalQuantity INTEGER NOT NULL,
+TotalValue REAL NOT NULL,
+Dated TEXT NOT NULL,
+Description TEXT,
+isCash BOOLEAN NOT NULL,
+isPosted BOOLEAN NOT NULL
+  )
+      ''');
+    print("successfully created Order table");
+  }
+
+  Future<int> createSale(Order order, bool isPost) async {
+    Database db = await instance.database;
+
+    final data = {
+      'PartyID': order.customer.partyId,
+      'Description': order.description,
+      'TotalQuantity': order.totalQuantity,
+      'UserID': order.userID,
+      'TotalValue': order.totalValue,
+      'Dated': order.date,
+      'isPosted': isPost,
+    };
+    final id = await db.insert('Order', data,
+        conflictAlgorithm: ConflictAlgorithm.replace);
+    return id;
+  }
+
   static Future<void> createRecoveryTable(Database database) async {
     await database.execute('''
 CREATE TABLE Recovery(

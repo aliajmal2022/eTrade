@@ -83,14 +83,15 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
             unselectedItemColor: Colors.grey,
             unselectedIconTheme: IconThemeData(color: Colors.grey),
             elevation: 19,
-            items: const <BottomNavigationBarItem>[
+            items: <BottomNavigationBarItem>[
               BottomNavigationBarItem(
                 icon: Icon(Icons.trending_up_outlined),
                 label: 'Home',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.edit_note_outlined),
-                label: 'Take Order',
+                label:
+                    (TakeOrderScreen.isSaleSpot) ? 'Spot Sale' : 'Take Order',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.wysiwyg_outlined),
