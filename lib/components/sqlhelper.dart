@@ -96,6 +96,7 @@ CREATE TABLE User(
     await database.execute('''
   CREATE TABLE Party(
 	PartyID INTEGER PRIMARY KEY NOT NULL,
+	UserID INTEGER NOT NULL,
 	PartyName TEXT NOT NULL,
   Discount REAL,
   isPosted BOOLEAN NOT NULL, 
@@ -113,6 +114,7 @@ CREATE TABLE User(
       'PartyID': customer.partyId,
       'PartyName': customer.partyName,
       'Discount': customer.discount,
+      'UserID': customer.userId,
       'isPosted': isPosted,
       'Address': customer.address,
     };
@@ -267,7 +269,7 @@ isPosted BOOLEAN NOT NULL
   static Future<void> createSaleTable(Database database) async {
     await database.execute('''
 CREATE TABLE Sale(
-SaleID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+InvoiceID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
 PartyID INTEGER NOT NULL,
 UserID INTEGER NOT NULL,
 TotalQuantity INTEGER NOT NULL,
@@ -302,7 +304,7 @@ isPosted BOOLEAN NOT NULL
   static Future<List> getFromToViewSale(var start, var end) async {
     Database db = await instance.database;
     var listOrder = await db.rawQuery(
-        "SELECT s.Dated,s.SaleID,s.TotalQuantity,p.PartyName FROM Sale AS s INNER JOIN Party AS p ON p.PartyID = s.PartyID WHERE s.Dated BETWEEN '$start' AND '$end' and s.isPosted=0 ");
+        "SELECT s.Dated,s.InvoiceID,s.TotalQuantity,p.PartyName FROM Sale AS s INNER JOIN Party AS p ON p.PartyID = s.PartyID WHERE s.Dated BETWEEN '$start' AND '$end' and s.isPosted=0 ");
 
     return listOrder;
   }
@@ -310,7 +312,7 @@ isPosted BOOLEAN NOT NULL
   static Future<List> getSpecificViewSale(var date) async {
     Database db = await instance.database;
     var listOrder = await db.rawQuery(
-        "SELECT s.Dated,s.SaleID,s.TotalQuantity,p.PartyName FROM Sale AS s INNER JOIN Party AS p ON p.PartyID = s.PartyID WHERE s.Dated ='${date}' and s.isPosted=0 ");
+        "SELECT s.Dated,s.InvoiceID,s.TotalQuantity,p.PartyName FROM Sale AS s INNER JOIN Party AS p ON p.PartyID = s.PartyID WHERE s.Dated ='${date}' and s.isPosted=0 ");
 
     return listOrder;
   }
@@ -318,7 +320,7 @@ isPosted BOOLEAN NOT NULL
   static Future<List> getAllViewSale() async {
     Database db = await instance.database;
     var listOrder = await db.rawQuery(
-        "SELECT s.Dated,s.SaleID,s.TotalQuantity,p.PartyName FROM Sale AS s INNER JOIN Party AS p ON s.PartyID = p.PartyID WHERE  s.isPosted=0 ");
+        "SELECT s.Dated,s.InvoiceID,s.TotalQuantity,p.PartyName FROM Sale AS s INNER JOIN Party AS p ON s.PartyID = p.PartyID WHERE  s.isPosted=0 ");
 
     return listOrder;
   }
@@ -328,7 +330,7 @@ isPosted BOOLEAN NOT NULL
     Database db = await instance.database;
     try {
       await db.execute(
-          "UPDATE Sale SET TotalQuantity = 	(SELECT Sum(Quantity) FROM SaleDetail as sd WHERE  sd.SaleID=$id), TotalValue= (SELECT Sum(Amount) FROM SaleDetail as sd WHERE  sd.SaleID=$id),Description='$description',PartyID='$partyID',isCash='$isCash' WHERE Sale.SaleID=$id and Sale.isPosted=0"
+          "UPDATE Sale SET TotalQuantity = 	(SELECT Sum(Quantity) FROM SaleDetail as sd WHERE  sd.InvoiceID=$id), TotalValue= (SELECT Sum(Amount) FROM SaleDetail as sd WHERE  sd.SaleID=$id),Description='$description',PartyID='$partyID',isCash='$isCash' WHERE Sale.InvoiceID=$id and Sale.isPosted=0"
 
           // "UPDATE [Order] SET  PartyID=$partyID,Description='$description',TotalQuantity = (SELECT Sum(Quantity) FROM OrderDetail , [Order] as o WHERE o.OrderID = OrderDetail.OrderID and o.OrderID=$id),TotalValue=(SELECT Sum(Amount) FROM OrderDetail , [Order] as o WHERE o.OrderID = OrderDetail.OrderID and o.OrderID=$id) WHERE [Order].OrderID=$id"
           );
@@ -341,7 +343,7 @@ isPosted BOOLEAN NOT NULL
     await database.execute('''
   CREATE TABLE SaleDetail(
 	ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-  SaleID INTEGER NOT NULL,
+  InvoiceID INTEGER NOT NULL,
 	UserID INTEGER NOT NULL,
 	ItemID TEXT NOT NULL,
   Quantity INTEGER NOT NULL,
@@ -363,7 +365,7 @@ isPosted BOOLEAN NOT NULL
 
     final data = {
       'UserID': userID,
-      'SaleID': saleID,
+      'InvoiceID': saleID,
       'Discount': product.discount,
       'Bonus': product.bonus,
       '[TO]': product.to,
@@ -381,7 +383,7 @@ isPosted BOOLEAN NOT NULL
   static Future<List> getSaleDetail(int id) async {
     Database db = await instance.database;
     var ListOrder = await db.rawQuery(
-        "SELECT i.ItemName,sd.Bonus,sd.Discount,sd.[TO],sd.Quantity,sd.Rate,sd.Amount,i.itemID FROM SaleDetail as sd INNER JOIN Item AS i ON i.ItemID = sd.ItemID WHERE sd.SaleID=$id and sd.isPosted=0");
+        "SELECT i.ItemName,sd.Bonus,sd.Discount,sd.[TO],sd.Quantity,sd.Rate,sd.Amount,i.itemID FROM SaleDetail as sd INNER JOIN Item AS i ON i.ItemID = sd.ItemID WHERE sd.InvoiceID=$id and sd.isPosted=0");
 
     return ListOrder;
   }

@@ -333,6 +333,7 @@ class _BookingTabBarItemState extends State<BookingTabBarItem> {
                                                                   recoveryID: 0,
                                                                   dated: "",
                                                                   party: Customer(
+                                                                      userId: 0,
                                                                       discount:
                                                                           0,
                                                                       address:
@@ -364,7 +365,8 @@ class _BookingTabBarItemState extends State<BookingTabBarItem> {
                                                                   .listOfItems[
                                                                       index]
                                                                   .orderID);
-                                                  TakeOrderScreen.isEditOrder = true;
+                                                  TakeOrderScreen.isEditOrder =
+                                                      true;
                                                   Navigator.push(
                                                       context,
                                                       MaterialPageRoute(
@@ -377,6 +379,7 @@ class _BookingTabBarItemState extends State<BookingTabBarItem> {
                                                                   recoveryID: 0,
                                                                   dated: "",
                                                                   party: Customer(
+                                                                    userId: 0,
                                                                       discount:
                                                                           0,
                                                                       address:

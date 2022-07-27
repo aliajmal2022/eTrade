@@ -67,6 +67,7 @@ class _ListOfOrderState extends State<ListOfOrder> {
                                               recoveryID: 0,
                                               dated: "",
                                               party: Customer(
+                                                userId: 0,
                                                   address: "",
                                                   discount: 0,
                                                   partyId: 0,

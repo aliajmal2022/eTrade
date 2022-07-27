@@ -21,11 +21,19 @@ class RecoveryScreen extends StatefulWidget {
   @override
   State<RecoveryScreen> createState() => _RecoveryScreenState();
   Customer customer = Customer(
-      partyId: 0, address: "", partyName: "Search Customer", discount: 0);
+      userId: 0,
+      partyId: 0,
+      address: "",
+      partyName: "Search Customer",
+      discount: 0);
   static List<Recovery> recoveryList = [];
   static bool addRecoveryOrder = false;
   static Customer tcustomer = Customer(
-      partyId: 0, address: "", partyName: "Search Customer", discount: 0);
+      userId: 0,
+      partyId: 0,
+      address: "",
+      partyName: "Search Customer",
+      discount: 0);
   static bool isEditRecovery = false;
   static List<Customer> partydb = [];
   static void setPartydb(List<Customer> list) {
@@ -112,6 +120,7 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
       } else {
         widget.setParty(Customer(
             partyId: 0,
+            userId: 0,
             address: "",
             discount: 0,
             partyName: "Search Customer"));
@@ -148,10 +157,12 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                       RecoveryScreen.tcustomer = Customer(
                           partyId: 0,
                           address: "",
+                          userId: 0,
                           discount: 0,
                           partyName: "Search Customer");
                       widget.setParty(Customer(
                           partyId: 0,
+                          userId: 0,
                           address: "",
                           discount: 0,
                           partyName: "Search Customer"));
@@ -188,6 +199,7 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                                           dated: "",
                                           party: Customer(
                                               discount: 0,
+                                              userId: 0,
                                               address: "",
                                               partyId: 0,
                                               partyName: "")),
@@ -312,6 +324,7 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                           setState(() {
                             var selectedName = value as String;
                             var selectedParty = Customer(
+                                userId: 0,
                                 discount: 0,
                                 partyId: 0,
                                 address: "",
@@ -443,11 +456,13 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                                   RecoveryScreen.getData = false;
                                   widget.setParty(Customer(
                                       discount: 0,
+                                      userId: 0,
                                       partyId: 0,
                                       address: "",
                                       partyName: "Search Customer"));
                                   RecoveryScreen.tcustomer = Customer(
                                       discount: 0,
+                                      userId: 0,
                                       address: "",
                                       partyId: 0,
                                       partyName: "Search Customer");
@@ -468,6 +483,7 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                                       dated: dateFormat.format(DateTime.now()),
                                       party: Customer(
                                           partyId: widget.getParty().partyId,
+                                          userId: widget.getParty().userId,
                                           discount: widget.getParty().discount,
                                           address: widget.getParty().address,
                                           partyName:
@@ -483,11 +499,13 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                                   RecoveryScreen.descriptioncontroller.clear();
                                   widget.setParty(Customer(
                                       partyId: 0,
+                                      userId: 0,
                                       discount: 0,
                                       address: "",
                                       partyName: "Search Customer"));
                                   RecoveryScreen.tcustomer = Customer(
                                       discount: 0,
+                                      userId: 0,
                                       address: "",
                                       partyId: 0,
                                       partyName: "Search Customer");
@@ -504,13 +522,13 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                                                     party: Customer(
                                                         discount: 0,
                                                         partyId: 0,
+                                                        userId: 0,
                                                         partyName: "",
                                                         address: "")),
                                                 date: "",
                                                 id: 0,
                                                 list: [],
-                                                partyName:
-                                                    "Search Customer",
+                                                partyName: "Search Customer",
                                               )),
                                       (route) => false);
                                   ScaffoldMessenger.of(context)

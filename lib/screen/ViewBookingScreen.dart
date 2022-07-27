@@ -88,6 +88,7 @@ class _ViewBookingScreenState extends State<ViewBookingScreen>
                                       party: Customer(
                                           partyId: 0,
                                           partyName: "",
+                                                                  userId: 0,
                                           address: "",
                                           discount: 0)),
                                   list: [],

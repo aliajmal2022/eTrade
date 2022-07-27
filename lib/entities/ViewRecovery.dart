@@ -25,8 +25,12 @@ class ViewRecovery {
             amount: 0,
             dated: "",
             description: "",
-            party:
-                Customer(partyId: 0, partyName: "", discount: 0, address: ""));
+            party: Customer(
+                partyId: 0,
+                partyName: "",
+                discount: 0,
+                address: "",
+                userId: 0));
         recoveryOrder.party.partyName = element['PartyName'];
         recoveryOrder.party.partyId = element['PartyID'];
         recoveryOrder.amount = element['Amount'];

@@ -68,6 +68,7 @@ class _ViewRecoveryScreenState extends State<ViewRecoveryScreen>
                           dated: "",
                           party: Customer(
                               partyId: 0,
+                              userId: 0,
                               partyName: "",
                               discount: 0,
                               address: "")),

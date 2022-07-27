@@ -37,6 +37,7 @@ class TakeOrderScreen extends StatefulWidget {
   @override
   State<TakeOrderScreen> createState() => _TakeOrderScreenState();
   static Customer customer = new Customer(
+                                                                  userId: 0,
       address: "", discount: 0, partyId: 0, partyName: "Search Customer");
   static List<Customer> partydb = [];
   static List<Product> productdb = [];
@@ -127,6 +128,7 @@ class TakeOrderScreen extends StatefulWidget {
                         dated: "",
                         party: Customer(
                             partyId: 0,
+                                                                  userId: 0,
                             partyName: "",
                             discount: 0,
                             address: "")),
@@ -163,6 +165,7 @@ class _TakeOrderScreenState extends State<TakeOrderScreen> {
       await TakeOrderScreen.getdataFromDb();
     } else if (TakeOrderScreen.isEditOrder || TakeOrderScreen.isEditSale) {
       if (!TakeOrderScreen.isSelected) {
+        TakeOrderScreen.isSelected = true;
         widget.list.forEach((element) {
           Product product = Product(
               Title: element.itemName,
@@ -175,6 +178,7 @@ class _TakeOrderScreenState extends State<TakeOrderScreen> {
           setCartList(product);
         });
         var selectedParty = Customer(
+                                                                  userId: 0,
             discount: 0, partyId: 0, address: "", partyName: widget.partyName);
         selectedParty =
             selectedParty.selectedCustomer(DataBaseDataLoad.ListOCustomer);
@@ -200,7 +204,7 @@ class _TakeOrderScreenState extends State<TakeOrderScreen> {
   void initState() {
     if (TakeOrderScreen.databaseExit ||
         TakeOrderScreen.isEditOrder ||
-        TakeOrderScreen.isEditSale||
+        TakeOrderScreen.isEditSale ||
         TakeOrderScreen.isSelected ||
         TakeOrderScreen.isSync ||
         TakeOrderScreen.isonloading ||
@@ -211,11 +215,12 @@ class _TakeOrderScreenState extends State<TakeOrderScreen> {
         setState(() {
           widget.setParty(TakeOrderScreen.customer);
         });
-      } else if (!TakeOrderScreen.isEditOrder) {
+      } else if (!TakeOrderScreen.isEditOrder || !TakeOrderScreen.isEditSale) {
         setState(() {
           widget.setParty(Customer(
               discount: 0,
               partyId: 0,
+                                                                  userId: 0,
               address: "",
               partyName: "Search Customer"));
         });
@@ -254,6 +259,7 @@ class _TakeOrderScreenState extends State<TakeOrderScreen> {
                       widget.setParty(Customer(
                           partyId: 0,
                           discount: 0,
+                                                                  userId: 0,
                           address: "",
                           partyName: "Search Customer"));
                       resetCartList();
@@ -272,6 +278,7 @@ class _TakeOrderScreenState extends State<TakeOrderScreen> {
                                     party: Customer(
                                         partyId: 0,
                                         partyName: "",
+                                                                  userId: 0,
                                         address: "",
                                         discount: 0)),
                                 list: [],
@@ -290,6 +297,7 @@ class _TakeOrderScreenState extends State<TakeOrderScreen> {
                           widget.setParty(Customer(
                               partyId: 0,
                               discount: 0,
+                                                                  userId: 0,
                               address: "",
                               partyName: "Search Customer"));
                           resetCartList();
@@ -308,6 +316,7 @@ class _TakeOrderScreenState extends State<TakeOrderScreen> {
                                         party: Customer(
                                             partyId: 0,
                                             partyName: "",
+                                                                  userId: 0,
                                             address: "",
                                             discount: 0)),
                                     list: [],
@@ -443,6 +452,7 @@ class _TakeOrderScreenState extends State<TakeOrderScreen> {
                                   var selectedParty = Customer(
                                       discount: 0,
                                       address: "",
+                                                                  userId: 0,
                                       partyId: 0,
                                       partyName: selectedName);
                                   selectedParty =
@@ -486,6 +496,7 @@ class _TakeOrderScreenState extends State<TakeOrderScreen> {
                                               party: Customer(
                                                   discount: 0,
                                                   address: "",
+                                                                  userId: 0,
                                                   partyId: 0,
                                                   partyName: ""),
                                               dated: "",
@@ -556,6 +567,7 @@ class _TakeOrderScreenState extends State<TakeOrderScreen> {
                                   party: Customer(
                                       partyId: 0,
                                       partyName: "",
+                                                                  userId: 0,
                                       discount: 0,
                                       address: "")),
                               date: widget.date,

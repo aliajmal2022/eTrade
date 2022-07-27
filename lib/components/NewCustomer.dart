@@ -189,6 +189,7 @@ class _NewUsrAddLocalDBState extends State<NewUsrAddLocalDB> {
                                 int id = await SQLHelper.getIDForNCustomer();
                                 Customer nCustomer = Customer(
                                     address: address,
+                                    userId: MyNavigationBar.userID,
                                     partyId: id,
                                     partyName: InpName,
                                     discount: discount);
