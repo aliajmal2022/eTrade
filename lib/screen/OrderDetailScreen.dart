@@ -3,7 +3,7 @@ import 'package:eTrade/components/AddItemModelSheet.dart';
 import 'package:eTrade/components/NavigationBar.dart';
 import 'package:eTrade/components/sqlhelper.dart';
 import 'package:eTrade/entities/Customer.dart';
-import 'package:eTrade/entities/EditOrder.dart';
+import 'package:eTrade/entities/Edit.dart';
 import 'package:eTrade/entities/Order.dart';
 import 'package:eTrade/entities/Products.dart';
 import 'package:eTrade/entities/ViewBooking.dart';
@@ -21,7 +21,7 @@ class OrderDetailScreen extends StatefulWidget {
       required this.toDate,
       required this.selectedOrdeDate,
       required this.orderId});
-  List<EditOrder> selectedItems;
+  List<Edit> selectedItems;
   String selecedCustomer;
   String selectedOrdeDate;
   String toDate;

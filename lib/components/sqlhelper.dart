@@ -318,7 +318,7 @@ isPosted BOOLEAN NOT NULL
   static Future<List> getAllViewSale() async {
     Database db = await instance.database;
     var listOrder = await db.rawQuery(
-        "SELECT s.Dated,s.SaleID,s.TotalQuantity,p.PartyName FROM Sale AS s INNER JOIN Party AS p ON s.PartyID = s.PartyID WHERE  s.isPosted=0 ");
+        "SELECT s.Dated,s.SaleID,s.TotalQuantity,p.PartyName FROM Sale AS s INNER JOIN Party AS p ON s.PartyID = p.PartyID WHERE  s.isPosted=0 ");
 
     return listOrder;
   }
@@ -328,7 +328,7 @@ isPosted BOOLEAN NOT NULL
     Database db = await instance.database;
     try {
       await db.execute(
-          "UPDATE Sale SET TotalQuantity = 	(SELECT Sum(Quantity) FROM SaleDetail as sd WHERE  sd.SaleID=$id), TotalValue= (SELECT Sum(Amount) FROM SaleDetail as sd WHERE  sd.SaleID=$id),Description='$description',PartyID=$partyID,isCash=$isCash WHERE Sale.SaleID=$id and Sale.isPosted=0"
+          "UPDATE Sale SET TotalQuantity = 	(SELECT Sum(Quantity) FROM SaleDetail as sd WHERE  sd.SaleID=$id), TotalValue= (SELECT Sum(Amount) FROM SaleDetail as sd WHERE  sd.SaleID=$id),Description='$description',PartyID='$partyID',isCash='$isCash' WHERE Sale.SaleID=$id and Sale.isPosted=0"
 
           // "UPDATE [Order] SET  PartyID=$partyID,Description='$description',TotalQuantity = (SELECT Sum(Quantity) FROM OrderDetail , [Order] as o WHERE o.OrderID = OrderDetail.OrderID and o.OrderID=$id),TotalValue=(SELECT Sum(Amount) FROM OrderDetail , [Order] as o WHERE o.OrderID = OrderDetail.OrderID and o.OrderID=$id) WHERE [Order].OrderID=$id"
           );
@@ -498,13 +498,6 @@ isPosted BOOLEAN NOT NULL
   }
 
   static Future<void> deleteTable(Database database, String tableName) async {
-    // if (tableName == "Order" ||
-    //     tableName == "OrderDetail" ||
-    //     tableName == "Recovery") {
-    //   await database.execute("delete from [$tableName];");
-    //   await database.execute(
-    //       "update sqlite_sequence set seq='0' where name='$tableName'");
-    // } else {
     try {
       await database.execute("""
   DELETE FROM $tableName 

@@ -7,7 +7,7 @@ import 'package:eTrade/components/ViewRecoveryTabBar.dart';
 import 'package:eTrade/components/drawer.dart';
 import 'package:eTrade/components/sqlhelper.dart';
 import 'package:eTrade/entities/Customer.dart';
-import 'package:eTrade/entities/EditOrder.dart';
+import 'package:eTrade/entities/Edit.dart';
 import 'package:eTrade/entities/Recovery.dart';
 import 'package:eTrade/entities/ViewBooking.dart';
 import 'package:eTrade/entities/ViewRecovery.dart';
@@ -56,7 +56,7 @@ class _ViewRecoveryScreenState extends State<ViewRecoveryScreen>
           ),
           leading: IconButton(
             onPressed: () {
-              TakeOrderScreen.isSelectedOrder = true;
+              TakeOrderScreen.isSelected = true;
               Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
@@ -72,10 +72,10 @@ class _ViewRecoveryScreenState extends State<ViewRecoveryScreen>
                               discount: 0,
                               address: "")),
                       selectedIndex: 0,
-                      orderList: [],
-                      orderDate: "",
-                      orderId: 0,
-                      orderPartyName: "Search Customer",
+                      list: [],
+                      date: "",
+                      id: 0,
+                      partyName: "Search Customer",
                     ),
                   ),
                   (route) => false);

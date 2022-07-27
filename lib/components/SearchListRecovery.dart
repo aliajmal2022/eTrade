@@ -59,11 +59,11 @@ class _ListOfRecoveryState extends State<ListOfRecovery> {
                                   MaterialPageRoute(
                                       builder: (context) => MyNavigationBar(
                                             selectedIndex: 3,
-                                            orderDate: "",
+                                            date: "",
                                             editRecovery: dummyOrderList[index],
-                                            orderList: [],
-                                            orderId: 0,
-                                            orderPartyName: "",
+                                            list: [],
+                                            id: 0,
+                                            partyName: "",
                                           )));
                             })),
                             backgroundColor: const Color(0xFF21B7CA),

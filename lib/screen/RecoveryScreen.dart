@@ -192,10 +192,10 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                                               partyId: 0,
                                               partyName: "")),
                                       selectedIndex: 2,
-                                      orderList: [],
-                                      orderDate: "",
-                                      orderId: 0,
-                                      orderPartyName: "Search Customer",
+                                      list: [],
+                                      date: "",
+                                      id: 0,
+                                      partyName: "Search Customer",
                                     )),
                             (e) => false);
 
@@ -506,10 +506,10 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                                                         partyId: 0,
                                                         partyName: "",
                                                         address: "")),
-                                                orderDate: "",
-                                                orderId: 0,
-                                                orderList: [],
-                                                orderPartyName:
+                                                date: "",
+                                                id: 0,
+                                                list: [],
+                                                partyName:
                                                     "Search Customer",
                                               )),
                                       (route) => false);

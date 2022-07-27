@@ -148,11 +148,10 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
                                                         address: "",
                                                         discount: 0,
                                                         partyName: "")),
-                                                orderList: [],
-                                                orderDate: "",
-                                                orderId: 0,
-                                                orderPartyName:
-                                                    "Search Customer",
+                                                list: [],
+                                                date: "",
+                                                id: 0,
+                                                partyName: "Search Customer",
                                               )),
                                       (route) => false);
                                 } else {

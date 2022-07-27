@@ -1,6 +1,6 @@
 import 'package:eTrade/components/drawer.dart';
 import 'package:eTrade/components/sharePreferences.dart';
-import 'package:eTrade/entities/EditOrder.dart';
+import 'package:eTrade/entities/Edit.dart';
 import 'package:eTrade/entities/ViewRecovery.dart';
 import 'package:eTrade/screen/DashboardScreen.dart';
 import 'package:eTrade/screen/TakeOrderScreen.dart';
@@ -12,16 +12,16 @@ import 'package:flutter/material.dart';
 class MyNavigationBar extends StatefulWidget {
   MyNavigationBar(
       {required this.selectedIndex,
-      required this.orderList,
-      required this.orderId,
-      required this.orderDate,
+      required this.list,
+      required this.id,
+      required this.date,
       required this.editRecovery,
-      required this.orderPartyName});
-  int orderId;
+      required this.partyName});
+  int id;
   int selectedIndex;
-  List<EditOrder> orderList;
-  String orderPartyName;
-  String orderDate;
+  List<Edit> list;
+  String partyName;
+  String date;
   ViewRecovery editRecovery;
   static int currentIndex = 0;
   static int userID = 0;
@@ -55,10 +55,10 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
     final List<Widget> _pages = <Widget>[
       DashBoardScreen(),
       TakeOrderScreen(
-        orderList: widget.orderList,
-        orderDate: widget.orderDate,
-        orderPartyName: widget.orderPartyName,
-        orderID: widget.orderId,
+        list: widget.list,
+        date: widget.date,
+        partyName: widget.partyName,
+        iD: widget.id,
       ),
       ViewBookingScreen(),
       RecoveryScreen(
@@ -90,7 +90,13 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.edit_note_outlined),
-                label: (TakeOrderScreen.isSaleSpot) ? 'Invoice' : 'Take Order',
+                label: (TakeOrderScreen.isSaleSpot)
+                    ? 'Invoice'
+                    : (TakeOrderScreen.isEditSale)
+                        ? 'Edit Invoice'
+                        : (TakeOrderScreen.isEditOrder)
+                            ? 'Edit Order'
+                            : 'Take Order',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.wysiwyg_outlined),

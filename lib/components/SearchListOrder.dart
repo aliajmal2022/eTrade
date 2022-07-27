@@ -71,13 +71,11 @@ class _ListOfOrderState extends State<ListOfOrder> {
                                                   discount: 0,
                                                   partyId: 0,
                                                   partyName: "")),
-                                          orderDate:
-                                              dummyOrderList[index].orderDate,
+                                          date: dummyOrderList[index].orderDate,
                                           selectedIndex: 1,
-                                          orderList: orderDetail,
-                                          orderId:
-                                              dummyOrderList[index].orderID,
-                                          orderPartyName:
+                                          list: orderDetail,
+                                          id: dummyOrderList[index].orderID,
+                                          partyName:
                                               dummyOrderList[index].partyName,
                                         )));
                           })),

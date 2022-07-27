@@ -7,13 +7,14 @@ class Sale {
   String description;
   bool isCash;
   int userID;
-  int orderID;
+  int saleID;
+
   String date;
   Sale(
       {required this.customer,
       required this.isCash,
       required this.totalQuantity,
-      required this.orderID,
+      required this.saleID,
       required this.userID,
       required this.totalValue,
       required this.date,

@@ -199,12 +199,12 @@ class _NewUsrAddLocalDBState extends State<NewUsrAddLocalDB> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => MyNavigationBar(
-                                              orderDate: "",
+                                              date: "",
                                               editRecovery: widget.recovery,
                                               selectedIndex: widget.index,
-                                              orderList: [],
-                                              orderPartyName: "Search Customer",
-                                              orderId: 0,
+                                              list: [],
+                                              partyName: "Search Customer",
+                                              id: 0,
                                             )),
                                     (route) => false);
                               } else {

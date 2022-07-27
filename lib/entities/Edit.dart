@@ -1,7 +1,7 @@
 import 'package:eTrade/components/Sql_Connection.dart';
 
-class EditOrder {
-  EditOrder(
+class Edit {
+  Edit(
       {required this.amount,
       required this.itemId,
       required this.itemName,
@@ -18,11 +18,11 @@ class EditOrder {
   double discount;
   int bonus;
   double to;
-  static List<EditOrder> ViewOrderFromDb(var _orderDetail) {
-    List<EditOrder> _listOrderView = [];
+  static List<Edit> ViewOrderFromDb(var _orderDetail) {
+    List<Edit> _listOrderView = [];
     if (_orderDetail.isNotEmpty) {
       _orderDetail.forEach((element) {
-        EditOrder viewOrder = EditOrder(
+        Edit viewOrder = Edit(
             to: 0,
             discount: 0,
             bonus: 0,

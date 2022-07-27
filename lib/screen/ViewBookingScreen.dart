@@ -6,7 +6,7 @@ import 'package:eTrade/components/ViewBookingTabBar.dart';
 import 'package:eTrade/components/drawer.dart';
 import 'package:eTrade/components/sqlhelper.dart';
 import 'package:eTrade/entities/Customer.dart';
-import 'package:eTrade/entities/EditOrder.dart';
+import 'package:eTrade/entities/Edit.dart';
 import 'package:eTrade/entities/ViewBooking.dart';
 import 'package:eTrade/entities/ViewRecovery.dart';
 import 'package:eTrade/screen/TakeOrderScreen.dart';
@@ -71,7 +71,9 @@ class _ViewBookingScreenState extends State<ViewBookingScreen>
                     icon: Icon(Icons.close),
                     onPressed: () async {
                       setState(() {
+                        BookingTabBarItem.listOfItems.clear();
                         ViewBookingScreen.isSaleBooking = false;
+                        // dispose();
                       });
                       Navigator.pushAndRemoveUntil(
                           context,
@@ -88,10 +90,10 @@ class _ViewBookingScreenState extends State<ViewBookingScreen>
                                           partyName: "",
                                           address: "",
                                           discount: 0)),
-                                  orderList: [],
-                                  orderDate: "",
-                                  orderId: 0,
-                                  orderPartyName: "Search Customer")),
+                                  list: [],
+                                  date: "",
+                                  id: 0,
+                                  partyName: "Search Customer")),
                           (route) => false);
                     },
                   )
@@ -111,7 +113,7 @@ class _ViewBookingScreenState extends State<ViewBookingScreen>
                   ),
             title: Text(
               ViewBookingScreen.isSaleBooking
-                  ? 'View Invoice'
+                  ? 'View Invoices'
                   : 'View Bookings',
               style: const TextStyle(color: Colors.white),
             ),

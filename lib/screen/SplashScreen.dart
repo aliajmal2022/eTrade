@@ -29,10 +29,10 @@ class _MySplashScreenState extends State<MySplashScreen> {
                                 partyId: 0,
                                 partyName: "",
                                 discount: 0)),
-                        orderId: 0,
-                        orderList: [],
-                        orderDate: "",
-                        orderPartyName: "Search Customer",
+                        id: 0,
+                        list: [],
+                        date: "",
+                        partyName: "Search Customer",
                       )),
             ));
   }

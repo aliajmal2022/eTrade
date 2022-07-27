@@ -15,7 +15,7 @@ import 'package:eTrade/components/drawer.dart';
 import 'package:eTrade/components/onldt_to_local_db.dart';
 import 'package:eTrade/components/sqlhelper.dart';
 import 'package:eTrade/entities/Customer.dart';
-import 'package:eTrade/entities/EditOrder.dart';
+import 'package:eTrade/entities/Edit.dart';
 import 'package:eTrade/entities/Products.dart';
 import 'package:eTrade/entities/ViewRecovery.dart';
 import 'package:eTrade/screen/CartScreen.dart';
@@ -26,14 +26,14 @@ import "package:flutter/material.dart";
 
 class TakeOrderScreen extends StatefulWidget {
   TakeOrderScreen(
-      {required this.orderID,
-      required this.orderList,
-      required this.orderDate,
-      required this.orderPartyName});
-  List<EditOrder> orderList;
-  int orderID;
-  String orderDate;
-  String orderPartyName;
+      {required this.iD,
+      required this.list,
+      required this.date,
+      required this.partyName});
+  List<Edit> list;
+  int iD;
+  String date;
+  String partyName;
   @override
   State<TakeOrderScreen> createState() => _TakeOrderScreenState();
   static Customer customer = new Customer(
@@ -44,7 +44,11 @@ class TakeOrderScreen extends StatefulWidget {
   static bool isonloading = false;
   static int orderId = 0;
   static String orderDATE = "";
+  static int saleId = 0;
+  static String saleDATE = "";
   static bool isSaleSpot = false;
+  static bool isEditSale = false;
+
   static Future<bool> getdataFromDb() async {
     bool isExist = await DataBaseDataLoad.DataLoading();
     if (isExist) {
@@ -126,17 +130,17 @@ class TakeOrderScreen extends StatefulWidget {
                             partyName: "",
                             discount: 0,
                             address: "")),
-                    selectedIndex: 1,
-                    orderDate: "",
-                    orderList: [],
-                    orderId: 0,
-                    orderPartyName: "Search Customer",
+                    selectedIndex: 0,
+                    date: "",
+                    list: [],
+                    id: 0,
+                    partyName: "Search Customer",
                   )),
           (route) => false);
     });
   }
 
-  static bool isSelectedOrder = false;
+  static bool isSelected = false;
   static Future<void> forSaleInVoice() async {
     customer.partyId = 0;
     customer.partyName = "Search Customer";
@@ -153,11 +157,13 @@ class _TakeOrderScreenState extends State<TakeOrderScreen> {
   bool isConnected = false;
   // static bool ispreloaded = false;
   Future<void> PreLoadDataBase() async {
-    if (!TakeOrderScreen.isonloading && !TakeOrderScreen.isEditOrder) {
+    if (!TakeOrderScreen.isonloading &&
+        !TakeOrderScreen.isEditOrder &&
+        !TakeOrderScreen.isEditSale) {
       await TakeOrderScreen.getdataFromDb();
-    } else if (TakeOrderScreen.isEditOrder) {
-      if (!TakeOrderScreen.isSelectedOrder) {
-        widget.orderList.forEach((element) {
+    } else if (TakeOrderScreen.isEditOrder || TakeOrderScreen.isEditSale) {
+      if (!TakeOrderScreen.isSelected) {
+        widget.list.forEach((element) {
           Product product = Product(
               Title: element.itemName,
               Price: element.rate,
@@ -167,17 +173,19 @@ class _TakeOrderScreenState extends State<TakeOrderScreen> {
               discount: element.discount,
               Quantity: element.quantity);
           setCartList(product);
-          var selectedParty = Customer(
-              discount: 0,
-              partyId: 0,
-              address: "",
-              partyName: widget.orderPartyName);
-          selectedParty =
-              selectedParty.selectedCustomer(DataBaseDataLoad.ListOCustomer);
-          widget.setParty(selectedParty);
-          TakeOrderScreen.orderId = widget.orderID;
-          TakeOrderScreen.orderDATE = widget.orderDate;
         });
+        var selectedParty = Customer(
+            discount: 0, partyId: 0, address: "", partyName: widget.partyName);
+        selectedParty =
+            selectedParty.selectedCustomer(DataBaseDataLoad.ListOCustomer);
+        widget.setParty(selectedParty);
+        if (TakeOrderScreen.isEditOrder) {
+          TakeOrderScreen.orderId = widget.iD;
+          TakeOrderScreen.orderDATE = widget.date;
+        } else {
+          TakeOrderScreen.saleId = widget.iD;
+          TakeOrderScreen.saleDATE = widget.date;
+        }
       } else {
         await TakeOrderScreen.getdataFromDb();
       }
@@ -192,7 +200,8 @@ class _TakeOrderScreenState extends State<TakeOrderScreen> {
   void initState() {
     if (TakeOrderScreen.databaseExit ||
         TakeOrderScreen.isEditOrder ||
-        TakeOrderScreen.isSelectedOrder ||
+        TakeOrderScreen.isEditSale||
+        TakeOrderScreen.isSelected ||
         TakeOrderScreen.isSync ||
         TakeOrderScreen.isonloading ||
         TakeOrderScreen.isSaleSpot ||
@@ -230,13 +239,18 @@ class _TakeOrderScreenState extends State<TakeOrderScreen> {
             ),
           ),
           automaticallyImplyLeading: false,
-          leading: (TakeOrderScreen.isEditOrder)
+          leading: (TakeOrderScreen.isEditOrder || TakeOrderScreen.isEditSale)
               ? IconButton(
                   icon: Icon(Icons.close),
                   onPressed: () async {
                     setState(() {
-                      TakeOrderScreen.isEditOrder = false;
-                      TakeOrderScreen.isSelectedOrder = false;
+                      if (TakeOrderScreen.isEditOrder) {
+                        TakeOrderScreen.isEditOrder = false;
+                        TakeOrderScreen.isSelected = false;
+                      } else {
+                        TakeOrderScreen.isEditSale = false;
+                        TakeOrderScreen.isSelected = false;
+                      }
                       widget.setParty(Customer(
                           partyId: 0,
                           discount: 0,
@@ -260,10 +274,10 @@ class _TakeOrderScreenState extends State<TakeOrderScreen> {
                                         partyName: "",
                                         address: "",
                                         discount: 0)),
-                                orderList: [],
-                                orderDate: widget.orderDate,
-                                orderId: widget.orderID,
-                                orderPartyName: "Search Customer")),
+                                list: [],
+                                date: widget.date,
+                                id: widget.iD,
+                                partyName: "Search Customer")),
                         (route) => false);
                   },
                 )
@@ -296,10 +310,10 @@ class _TakeOrderScreenState extends State<TakeOrderScreen> {
                                             partyName: "",
                                             address: "",
                                             discount: 0)),
-                                    orderList: [],
-                                    orderDate: widget.orderDate,
-                                    orderId: widget.orderID,
-                                    orderPartyName: "Search Customer")),
+                                    list: [],
+                                    date: widget.date,
+                                    id: widget.iD,
+                                    partyName: "Search Customer")),
                             (route) => false);
                       },
                     )
@@ -327,8 +341,10 @@ class _TakeOrderScreenState extends State<TakeOrderScreen> {
                     TakeOrderScreen.isEditOrder
                         ? 'Edit Order'
                         : TakeOrderScreen.isSaleSpot
-                            ? 'Sale in Voice'
-                            : 'Take Order',
+                            ? 'Sale Invoice'
+                            : TakeOrderScreen.isEditSale
+                                ? 'Edit Invoice'
+                                : 'Take Order',
                     style: TextStyle(color: Colors.white),
                   ),
                 ),
@@ -336,26 +352,30 @@ class _TakeOrderScreenState extends State<TakeOrderScreen> {
               Expanded(
                 flex: 1,
                 child: IconButton(
-                    onPressed: (widget.getParty().partyName ==
-                            "Search Customer")
-                        ? null
-                        : () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => CartScreen(
-                                        selectedItems: getCartList(),
-                                        userID: MyNavigationBar.userID,
-                                        selecedCustomer: widget.getParty(),
-                                        orderDate: TakeOrderScreen.isEditOrder
-                                            ? TakeOrderScreen.orderDATE
-                                            : widget.orderDate,
-                                        orderID: TakeOrderScreen.isEditOrder
-                                            ? TakeOrderScreen.orderId
-                                            : widget.orderID,
-                                      )),
-                            );
-                          },
+                    onPressed:
+                        (widget.getParty().partyName == "Search Customer")
+                            ? null
+                            : () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => CartScreen(
+                                            selectedItems: getCartList(),
+                                            userID: MyNavigationBar.userID,
+                                            selecedCustomer: widget.getParty(),
+                                            date: (TakeOrderScreen.isEditOrder)
+                                                ? TakeOrderScreen.orderDATE
+                                                : (TakeOrderScreen.isEditSale)
+                                                    ? TakeOrderScreen.saleDATE
+                                                    : widget.date,
+                                            iD: TakeOrderScreen.isEditOrder
+                                                ? TakeOrderScreen.orderId
+                                                : (TakeOrderScreen.isEditSale)
+                                                    ? TakeOrderScreen.saleId
+                                                    : widget.iD,
+                                          )),
+                                );
+                              },
                     // disabledColor: Color(0xff424242),
                     disabledColor: Colors.grey,
                     color: Colors.white,
@@ -538,10 +558,10 @@ class _TakeOrderScreenState extends State<TakeOrderScreen> {
                                       partyName: "",
                                       discount: 0,
                                       address: "")),
-                              orderDate: widget.orderDate,
-                              orderId: widget.orderID,
-                              orderList: const [],
-                              orderPartyName: "Search Customer",
+                              date: widget.date,
+                              id: widget.iD,
+                              list: const [],
+                              partyName: "Search Customer",
                             ),
                           ),
                         ],
