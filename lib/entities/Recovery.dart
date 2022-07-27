@@ -10,11 +10,13 @@ class Recovery {
       required this.dated,
       required this.userID,
       required this.recoveryID,
+      required this.isCashOrCheck,
       required this.party});
   String dated;
   Customer party;
   int userID;
   double amount;
+  String isCashOrCheck;
   int recoveryID;
   String description;
   bool isPost;
@@ -24,14 +26,19 @@ class Recovery {
     if (_order.isNotEmpty) {
       _order.forEach((element) {
         Recovery recoveryOrder = Recovery(
+            isCashOrCheck: "",
             amount: 0,
             recoveryID: 0,
             userID: 0,
             dated: "",
             description: "",
             isPost: false,
-            party:
-                Customer(partyName: "", partyId: 0, discount: 0, address: "",userId: 0));
+            party: Customer(
+                partyName: "",
+                partyId: 0,
+                discount: 0,
+                address: "",
+                userId: 0));
         recoveryOrder.party.partyId = element['PartyID'];
         recoveryOrder.party.partyName = element['PartyName'];
         recoveryOrder.amount = element['TotalValue'];

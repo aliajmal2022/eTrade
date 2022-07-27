@@ -20,13 +20,13 @@ class SaleDetailScreen extends StatefulWidget {
       required this.fromDate,
       required this.toDate,
       required this.selectedSaleDate,
-      required this.saleId});
+      required this.saleID});
   List<Edit> selectedItems;
   String selecedCustomer;
   String selectedSaleDate;
   String toDate;
   String fromDate;
-  int saleId;
+  int saleID;
 
   static int totalQuantity = 0;
   @override

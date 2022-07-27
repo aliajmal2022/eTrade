@@ -19,7 +19,7 @@ class ViewSaleBooking {
         viewSale.saleDate = element['Dated'];
         viewSale.totalQuantity = element['TotalQuantity'];
         viewSale.partyName = element['PartyName'];
-        viewSale.saleID = element['SaleID'];
+        viewSale.saleID = element['InvoiceID'];
         _listSaleView.add(viewSale);
       });
     }

@@ -389,7 +389,7 @@ class _CartScreenState extends State<CartScreen> {
                                         } else {
                                           await SQLHelper.deleteItem(
                                               "SaleDetail",
-                                              "SaleID",
+                                              "InvoiceID",
                                               widget.iD);
 
                                           widget.selectedItems
@@ -457,12 +457,13 @@ class _CartScreenState extends State<CartScreen> {
                                               description: description,
                                             );
                                             bool isPosted = false;
-                                            int saleId = await SQLHelper
+                                            int saleID = await SQLHelper
                                                 .instance
                                                 .createSale(sale, isPosted);
                                             List<Map<String, dynamic>> saleRes =
                                                 await SQLHelper.instance
-                                                    .getTable("Sale", "SaleID");
+                                                    .getTable(
+                                                        "Sale", "InvoiceID");
                                             var maptoListOrder =
                                                 saleRes.whereType<Map>().first;
                                             var dated = maptoListOrder['Dated'];
@@ -473,7 +474,7 @@ class _CartScreenState extends State<CartScreen> {
                                               await SQLHelper.instance
                                                   .createSaleDetail(
                                                       element,
-                                                      saleId,
+                                                      saleID,
                                                       dated,
                                                       isPosted,
                                                       widget.userID);

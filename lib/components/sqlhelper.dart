@@ -330,7 +330,7 @@ isPosted BOOLEAN NOT NULL
     Database db = await instance.database;
     try {
       await db.execute(
-          "UPDATE Sale SET TotalQuantity = 	(SELECT Sum(Quantity) FROM SaleDetail as sd WHERE  sd.InvoiceID=$id), TotalValue= (SELECT Sum(Amount) FROM SaleDetail as sd WHERE  sd.SaleID=$id),Description='$description',PartyID='$partyID',isCash='$isCash' WHERE Sale.InvoiceID=$id and Sale.isPosted=0"
+          "UPDATE Sale SET TotalQuantity = 	(SELECT Sum(Quantity) FROM SaleDetail as sd WHERE  sd.InvoiceID=$id), TotalValue= (SELECT Sum(Amount) FROM SaleDetail as sd WHERE  sd.InvoiceID=$id),Description='$description',PartyID='$partyID',isCash='$isCash' WHERE Sale.InvoiceID=$id and Sale.isPosted=0"
 
           // "UPDATE [Order] SET  PartyID=$partyID,Description='$description',TotalQuantity = (SELECT Sum(Quantity) FROM OrderDetail , [Order] as o WHERE o.OrderID = OrderDetail.OrderID and o.OrderID=$id),TotalValue=(SELECT Sum(Amount) FROM OrderDetail , [Order] as o WHERE o.OrderID = OrderDetail.OrderID and o.OrderID=$id) WHERE [Order].OrderID=$id"
           );
@@ -359,13 +359,13 @@ isPosted BOOLEAN NOT NULL
     print("successfully created SaleDetail table");
   }
 
-  Future<int> createSaleDetail(
-      Product product, int saleID, String date, bool isPost, int userID) async {
+  Future<int> createSaleDetail(Product product, int InvoiceID, String date,
+      bool isPost, int userID) async {
     Database db = await instance.database;
 
     final data = {
       'UserID': userID,
-      'InvoiceID': saleID,
+      'InvoiceID': InvoiceID,
       'Discount': product.discount,
       'Bonus': product.bonus,
       '[TO]': product.to,
@@ -396,6 +396,7 @@ PartyID INTEGER NOT NULL,
 UserID INTEGER NOT NULL,
 Amount REAL NOT NULL,
 Dated TEXT NOT NULL,
+'Check/Cash' TEXT NOT NULL,
 Description TEXT,
 isPosted BOOLEAN NOT NULL
   )
@@ -409,6 +410,7 @@ isPosted BOOLEAN NOT NULL
     final data = {
       'PartyID': recovery.party.partyId,
       'UserID': recovery.userID,
+      'Check/Cash': recovery.isCashOrCheck,
       'Description': recovery.description,
       'Dated': recovery.dated,
       'Amount': recovery.amount,
@@ -454,12 +456,12 @@ isPosted BOOLEAN NOT NULL
     }
   }
 
-  static Future<void> updateRecoveryTable(
-      int id, int partyID, double amount, String description) async {
+  static Future<void> updateRecoveryTable(int id, int partyID, double amount,
+      String description, String isCashOCheck) async {
     Database db = await instance.database;
     try {
       await db.execute(
-          "UPDATE Recovery SET Amount=$amount, PartyID=$partyID,Description='$description' WHERE Recovery.RecoveryId=$id and Recovery.isPosted=0");
+          "UPDATE Recovery SET Amount=$amount, PartyID=$partyID,Check/Cash='$isCashOCheck',Description='$description' WHERE Recovery.RecoveryId=$id and Recovery.isPosted=0");
     } catch (e) {
       debugPrint('Recovery is not update');
     }

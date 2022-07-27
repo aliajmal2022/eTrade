@@ -447,7 +447,8 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                                       widget.recovery.recoveryID,
                                       RecoveryScreen.tcustomer.partyId,
                                       amount,
-                                      description);
+                                      description,
+                                      _groupValue);
                                   RecoveryScreen.amountcontroller.clear();
                                   RecoveryScreen.descriptioncontroller.clear();
                                   amount = 0;
@@ -479,6 +480,7 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                                   Recovery recovery = Recovery(
                                       amount: amount,
                                       recoveryID: 0,
+                                      isCashOrCheck: _groupValue,
                                       userID: widget.userID,
                                       dated: dateFormat.format(DateTime.now()),
                                       party: Customer(

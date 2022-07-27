@@ -300,416 +300,396 @@ class _BookingTabBarItemState extends State<BookingTabBarItem> {
                     ? ListView.builder(
                         physics: const NeverScrollableScrollPhysics(),
                         itemBuilder: (BuildContext, index) {
-                          return Slidable(
-                            key: const ValueKey(0),
-                            endActionPane: ActionPane(
-                              motion: const ScrollMotion(),
-                              children: [
-                                Flexible(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(5.0),
-                                    child: SlidableAction(
-                                      onPressed:
-                                          ((ViewBookingScreen.isSaleBooking
-                                              ? (context) async {
-                                                  var saleDetail =
-                                                      await BookingTabBarItem
-                                                          .getSaleDetail(
-                                                              BookingTabBarItem
-                                                                  .listOfItems[
-                                                                      index]
-                                                                  .saleID);
-                                                  TakeOrderScreen.isEditSale =
-                                                      true;
-                                                  Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) => MyNavigationBar(
-                                                              selectedIndex: 1,
-                                                              editRecovery: ViewRecovery(
-                                                                  amount: 0,
-                                                                  description:
-                                                                      "",
-                                                                  recoveryID: 0,
-                                                                  dated: "",
-                                                                  party: Customer(
-                                                                      userId: 0,
-                                                                      discount:
-                                                                          0,
-                                                                      address:
-                                                                          "",
-                                                                      partyId:
-                                                                          0,
-                                                                      partyName:
-                                                                          "")),
-                                                              date: BookingTabBarItem
-                                                                  .listOfItems[
-                                                                      index]
-                                                                  .saleDate,
-                                                              list: saleDetail,
-                                                              partyName:
-                                                                  BookingTabBarItem
-                                                                      .listOfItems[
-                                                                          index]
-                                                                      .partyName,
-                                                              id: BookingTabBarItem
-                                                                  .listOfItems[
-                                                                      index]
-                                                                  .saleID)));
-                                                }
-                                              : (context) async {
-                                                  var orderDetail =
-                                                      await BookingTabBarItem
-                                                          .getOrderDetail(
-                                                              BookingTabBarItem
-                                                                  .listOfItems[
-                                                                      index]
-                                                                  .orderID);
-                                                  TakeOrderScreen.isEditOrder =
-                                                      true;
-                                                  Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) => MyNavigationBar(
-                                                              selectedIndex: 1,
-                                                              editRecovery: ViewRecovery(
-                                                                  amount: 0,
-                                                                  description:
-                                                                      "",
-                                                                  recoveryID: 0,
-                                                                  dated: "",
-                                                                  party: Customer(
+                          return Padding(
+                            padding: const EdgeInsets.all(5.0),
+                            child: Slidable(
+                              key: const ValueKey(0),
+                              endActionPane: ActionPane(
+                                motion: const ScrollMotion(),
+                                children: [
+                                  SlidableAction(
+                                    onPressed: ((ViewBookingScreen.isSaleBooking
+                                        ? (context) async {
+                                            var saleDetail =
+                                                await BookingTabBarItem
+                                                    .getSaleDetail(
+                                                        BookingTabBarItem
+                                                            .listOfItems[index]
+                                                            .saleID);
+                                            TakeOrderScreen.isEditSale = true;
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) => MyNavigationBar(
+                                                        selectedIndex: 1,
+                                                        editRecovery:
+                                                            ViewRecovery(
+                                                                amount: 0,
+                                                                description: "",
+                                                                recoveryID: 0,
+                                                                dated: "",
+                                                                party: Customer(
                                                                     userId: 0,
-                                                                      discount:
-                                                                          0,
-                                                                      address:
-                                                                          "",
-                                                                      partyId:
-                                                                          0,
-                                                                      partyName:
-                                                                          "")),
-                                                              date: BookingTabBarItem
-                                                                  .listOfItems[
-                                                                      index]
-                                                                  .orderDate,
-                                                              list: orderDetail,
-                                                              partyName:
-                                                                  BookingTabBarItem
-                                                                      .listOfItems[
-                                                                          index]
-                                                                      .partyName,
-                                                              id: BookingTabBarItem
-                                                                  .listOfItems[
-                                                                      index]
-                                                                  .orderID)));
-                                                })),
-                                      backgroundColor: const Color(0xFF21B7CA),
-                                      foregroundColor: Colors.white,
-                                      icon: Icons.edit,
-                                      label: 'Edit',
-                                    ),
+                                                                    discount: 0,
+                                                                    address: "",
+                                                                    partyId: 0,
+                                                                    partyName:
+                                                                        "")),
+                                                        date: BookingTabBarItem
+                                                            .listOfItems[index]
+                                                            .saleDate,
+                                                        list: saleDetail,
+                                                        partyName:
+                                                            BookingTabBarItem
+                                                                .listOfItems[
+                                                                    index]
+                                                                .partyName,
+                                                        id: BookingTabBarItem
+                                                            .listOfItems[index]
+                                                            .saleID)));
+                                          }
+                                        : (context) async {
+                                            var orderDetail =
+                                                await BookingTabBarItem
+                                                    .getOrderDetail(
+                                                        BookingTabBarItem
+                                                            .listOfItems[index]
+                                                            .orderID);
+                                            TakeOrderScreen.isEditOrder = true;
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) => MyNavigationBar(
+                                                        selectedIndex: 1,
+                                                        editRecovery:
+                                                            ViewRecovery(
+                                                                amount: 0,
+                                                                description: "",
+                                                                recoveryID: 0,
+                                                                dated: "",
+                                                                party: Customer(
+                                                                    userId: 0,
+                                                                    discount: 0,
+                                                                    address: "",
+                                                                    partyId: 0,
+                                                                    partyName:
+                                                                        "")),
+                                                        date: BookingTabBarItem
+                                                            .listOfItems[index]
+                                                            .orderDate,
+                                                        list: orderDetail,
+                                                        partyName:
+                                                            BookingTabBarItem
+                                                                .listOfItems[
+                                                                    index]
+                                                                .partyName,
+                                                        id: BookingTabBarItem
+                                                            .listOfItems[index]
+                                                            .orderID)));
+                                          })),
+                                    backgroundColor: const Color(0xFF21B7CA),
+                                    foregroundColor: Colors.white,
+                                    icon: Icons.edit,
+                                    label: 'Edit',
                                   ),
-                                ),
-                                Flexible(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(5.0),
-                                    child: SlidableAction(
-                                      onPressed: ((ViewBookingScreen
-                                              .isSaleBooking
-                                          ? (context) async {
-                                              await SQLHelper.deleteItem(
-                                                  "Sale",
-                                                  "SaleID",
-                                                  BookingTabBarItem
-                                                      .listOfItems[index]
-                                                      .orderID);
+                                  SlidableAction(
+                                    onPressed: ((ViewBookingScreen.isSaleBooking
+                                        ? (context) async {
+                                            await SQLHelper.deleteItem(
+                                                "Sale",
+                                                "InvoiceID",
+                                                BookingTabBarItem
+                                                    .listOfItems[index]
+                                                    .orderID);
 
-                                              await SQLHelper.deleteItem(
-                                                  "SaleDetail",
-                                                  "SaleID",
-                                                  BookingTabBarItem
-                                                      .listOfItems[index]
-                                                      .orderID);
+                                            await SQLHelper.deleteItem(
+                                                "SaleDetail",
+                                                "InvoiceID",
+                                                BookingTabBarItem
+                                                    .listOfItems[index]
+                                                    .orderID);
 
-                                              if (widget.tabName == "Search") {
-                                                _item = await SQLHelper
-                                                    .getFromToViewSale(
-                                                        BookingTabBarItem
-                                                            .getFromDate(),
-                                                        BookingTabBarItem
-                                                            .getToDate());
-                                              } else if (widget.tabName ==
-                                                  "Today") {
-                                                String todayDate = dateFormat
-                                                    .format(DateTime.now());
-                                                _item = await SQLHelper
-                                                    .getSpecificViewSale(
-                                                        todayDate);
-                                              } else if (widget.tabName ==
-                                                  "Yesterday") {
-                                                String yesterdayDate =
-                                                    dateFormat.format(
-                                                        DateTime.now().subtract(
-                                                            Duration(days: 1)));
-                                                _item = await SQLHelper
-                                                    .getSpecificViewSale(
-                                                        yesterdayDate);
-                                              } else {
-                                                _item = await SQLHelper
-                                                    .getAllViewSale();
-                                              }
-                                              BookingTabBarItem.listOfItems =
-                                                  ViewOrderBooking
-                                                      .ViewOrderFromDb(_item);
-                                              setState(() {
-                                                BookingTabBarItem.listOfItems;
-                                              });
+                                            if (widget.tabName == "Search") {
+                                              _item = await SQLHelper
+                                                  .getFromToViewSale(
+                                                      BookingTabBarItem
+                                                          .getFromDate(),
+                                                      BookingTabBarItem
+                                                          .getToDate());
+                                            } else if (widget.tabName ==
+                                                "Today") {
+                                              String todayDate = dateFormat
+                                                  .format(DateTime.now());
+                                              _item = await SQLHelper
+                                                  .getSpecificViewSale(
+                                                      todayDate);
+                                            } else if (widget.tabName ==
+                                                "Yesterday") {
+                                              String yesterdayDate =
+                                                  dateFormat.format(
+                                                      DateTime.now().subtract(
+                                                          Duration(days: 1)));
+                                              _item = await SQLHelper
+                                                  .getSpecificViewSale(
+                                                      yesterdayDate);
+                                            } else {
+                                              _item = await SQLHelper
+                                                  .getAllViewSale();
                                             }
-                                          : (context) async {
-                                              await SQLHelper.deleteItem(
-                                                  "Order",
-                                                  "OrderID",
-                                                  BookingTabBarItem
-                                                      .listOfItems[index]
-                                                      .orderID);
+                                            BookingTabBarItem.listOfItems =
+                                                ViewOrderBooking
+                                                    .ViewOrderFromDb(_item);
+                                            setState(() {
+                                              BookingTabBarItem.listOfItems;
+                                            });
+                                          }
+                                        : (context) async {
+                                            await SQLHelper.deleteItem(
+                                                "Order",
+                                                "OrderID",
+                                                BookingTabBarItem
+                                                    .listOfItems[index]
+                                                    .orderID);
 
-                                              await SQLHelper.deleteItem(
-                                                  "OrderDetail",
-                                                  "OrderID",
-                                                  BookingTabBarItem
-                                                      .listOfItems[index]
-                                                      .orderID);
+                                            await SQLHelper.deleteItem(
+                                                "OrderDetail",
+                                                "OrderID",
+                                                BookingTabBarItem
+                                                    .listOfItems[index]
+                                                    .orderID);
 
-                                              if (widget.tabName == "Search") {
-                                                _item = await SQLHelper
-                                                    .getFromToViewOrder(
-                                                        BookingTabBarItem
-                                                            .getFromDate(),
-                                                        BookingTabBarItem
-                                                            .getToDate());
-                                              } else if (widget.tabName ==
-                                                  "Today") {
-                                                String todayDate = dateFormat
-                                                    .format(DateTime.now());
-                                                _item = await SQLHelper
-                                                    .getSpecificViewOrder(
-                                                        todayDate);
-                                              } else if (widget.tabName ==
-                                                  "Yesterday") {
-                                                String yesterdayDate =
-                                                    dateFormat.format(
-                                                        DateTime.now().subtract(
-                                                            Duration(days: 1)));
-                                                _item = await SQLHelper
-                                                    .getSpecificViewOrder(
-                                                        yesterdayDate);
-                                              } else {
-                                                _item = await SQLHelper
-                                                    .getAllViewOrder();
-                                              }
-                                              BookingTabBarItem.listOfItems =
-                                                  ViewOrderBooking
-                                                      .ViewOrderFromDb(_item);
-                                              setState(() {
-                                                BookingTabBarItem.listOfItems;
-                                              });
-                                            })),
-                                      backgroundColor: const Color(0xFFFE4A49),
-                                      foregroundColor: Colors.white,
-                                      icon: Icons.delete,
-                                      label: 'Delete',
-                                    ),
+                                            if (widget.tabName == "Search") {
+                                              _item = await SQLHelper
+                                                  .getFromToViewOrder(
+                                                      BookingTabBarItem
+                                                          .getFromDate(),
+                                                      BookingTabBarItem
+                                                          .getToDate());
+                                            } else if (widget.tabName ==
+                                                "Today") {
+                                              String todayDate = dateFormat
+                                                  .format(DateTime.now());
+                                              _item = await SQLHelper
+                                                  .getSpecificViewOrder(
+                                                      todayDate);
+                                            } else if (widget.tabName ==
+                                                "Yesterday") {
+                                              String yesterdayDate =
+                                                  dateFormat.format(
+                                                      DateTime.now().subtract(
+                                                          Duration(days: 1)));
+                                              _item = await SQLHelper
+                                                  .getSpecificViewOrder(
+                                                      yesterdayDate);
+                                            } else {
+                                              _item = await SQLHelper
+                                                  .getAllViewOrder();
+                                            }
+                                            BookingTabBarItem.listOfItems =
+                                                ViewOrderBooking
+                                                    .ViewOrderFromDb(_item);
+                                            setState(() {
+                                              BookingTabBarItem.listOfItems;
+                                            });
+                                          })),
+                                    backgroundColor: const Color(0xFFFE4A49),
+                                    foregroundColor: Colors.white,
+                                    icon: Icons.delete,
+                                    label: 'Delete',
                                   ),
-                                ),
-                              ],
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.all(6.0),
-                              child: Container(
-                                height: 110,
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                    color: (MyApp.isDark)
-                                        ? Color(0xff424242)
-                                        : Colors.white,
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black,
-                                        offset: Offset(0.0, 0.5), //(x,y)
-                                        blurRadius: 3.0,
-                                      ),
-                                    ],
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(5))),
-                                child: Padding(
-                                  padding: EdgeInsets.all(12.0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            ViewBookingScreen.isSaleBooking
-                                                ? "SaleId: #${BookingTabBarItem.listOfItems[index].saleID}"
-                                                : "OrderId: #${BookingTabBarItem.listOfItems[index].orderID}",
-                                            style:
-                                                TextStyle(color: Colors.grey),
-                                          ),
-                                          Text(
-                                            " ${BookingTabBarItem.listOfItems[index].partyName}",
-                                            style: const TextStyle(
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.bold,
-                                              // fontStyle: FontStyle.italic,
+                                ],
+                              ),
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 5.0),
+                                child: Container(
+                                  height: 110,
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                      color: (MyApp.isDark)
+                                          ? Color(0xff424242)
+                                          : Colors.white,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black,
+                                          offset: Offset(0.0, 0.5), //(x,y)
+                                          blurRadius: 3.0,
+                                        ),
+                                      ],
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(5))),
+                                  child: Padding(
+                                    padding: EdgeInsets.all(12.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              ViewBookingScreen.isSaleBooking
+                                                  ? "SaleID: #${BookingTabBarItem.listOfItems[index].saleID}"
+                                                  : "OrderID: #${BookingTabBarItem.listOfItems[index].orderID}",
+                                              style:
+                                                  TextStyle(color: Colors.grey),
                                             ),
-                                          ),
-                                          Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceAround,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
+                                            Text(
+                                              " ${BookingTabBarItem.listOfItems[index].partyName}",
+                                              style: const TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.bold,
+                                                // fontStyle: FontStyle.italic,
+                                              ),
+                                            ),
+                                            Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceAround,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                    ViewBookingScreen
+                                                            .isSaleBooking
+                                                        ? "Sale On"
+                                                        : "Order On",
+                                                    style: TextStyle(
+                                                        fontSize: 15,
+                                                        color: Colors.grey,
+                                                        fontWeight:
+                                                            FontWeight.bold)),
+                                                Text(
                                                   ViewBookingScreen
                                                           .isSaleBooking
-                                                      ? "Sale On"
-                                                      : "Order On",
+                                                      ? "${BookingTabBarItem.listOfItems[index].saleDate}"
+                                                      : "${BookingTabBarItem.listOfItems[index].orderDate}",
                                                   style: TextStyle(
-                                                      fontSize: 15,
                                                       color: Colors.grey,
-                                                      fontWeight:
-                                                          FontWeight.bold)),
-                                              Text(
-                                                ViewBookingScreen.isSaleBooking
-                                                    ? "${BookingTabBarItem.listOfItems[index].saleDate}"
-                                                    : "${BookingTabBarItem.listOfItems[index].orderDate}",
-                                                style: TextStyle(
-                                                    color: Colors.grey,
-                                                    fontSize: 13),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                      Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
-                                        children: [
-                                          Container(
-                                            padding: EdgeInsets.all(4),
-                                            decoration: BoxDecoration(
-                                                color: Color(0xff00620b),
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(5))),
-                                            child: Text(
-                                              "${BookingTabBarItem.listOfItems[index].totalQuantity} items",
-                                              style: TextStyle(
-                                                  fontStyle: FontStyle.italic,
-                                                  color: Colors.white),
+                                                      fontSize: 13),
+                                                ),
+                                              ],
                                             ),
-                                          ),
-                                          MaterialButton(
-                                            onPressed:
-                                                ViewBookingScreen.isSaleBooking
-                                                    ? () async {
-                                                        var saleDetail =
-                                                            await BookingTabBarItem
-                                                                .getSaleDetail(
-                                                                    BookingTabBarItem
-                                                                        .listOfItems[
-                                                                            index]
-                                                                        .saleID);
-                                                        Navigator.push(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                                builder: (context) => SaleDetailScreen(
-                                                                    selectedSaleDate: BookingTabBarItem
-                                                                        .listOfItems[
-                                                                            index]
-                                                                        .saleDate,
-                                                                    selectedItems:
-                                                                        saleDetail,
-                                                                    selecedCustomer: BookingTabBarItem
-                                                                        .listOfItems[
-                                                                            index]
-                                                                        .partyName,
-                                                                    fromDate:
-                                                                        BookingTabBarItem
-                                                                            .getFromDate(),
-                                                                    toDate: BookingTabBarItem
-                                                                        .getToDate(),
-                                                                    saleId: BookingTabBarItem
-                                                                        .listOfItems[
-                                                                            index]
-                                                                        .saleID)));
-                                                      }
-                                                    : () async {
-                                                        var orderDetail =
-                                                            await BookingTabBarItem
-                                                                .getOrderDetail(
-                                                                    BookingTabBarItem
-                                                                        .listOfItems[
-                                                                            index]
-                                                                        .orderID);
-                                                        Navigator.push(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                                builder: (context) => OrderDetailScreen(
-                                                                    selectedOrdeDate: BookingTabBarItem
-                                                                        .listOfItems[
-                                                                            index]
-                                                                        .orderDate,
-                                                                    selectedItems:
-                                                                        orderDetail,
-                                                                    selecedCustomer: BookingTabBarItem
-                                                                        .listOfItems[
-                                                                            index]
-                                                                        .partyName,
-                                                                    fromDate:
-                                                                        BookingTabBarItem
-                                                                            .getFromDate(),
-                                                                    toDate: BookingTabBarItem
-                                                                        .getToDate(),
-                                                                    orderId: BookingTabBarItem
-                                                                        .listOfItems[
-                                                                            index]
-                                                                        .orderID)));
-                                                      },
-                                            padding: EdgeInsets.zero,
-                                            child: Container(
-                                              padding: EdgeInsets.all(8),
+                                          ],
+                                        ),
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                          children: [
+                                            Container(
+                                              padding: EdgeInsets.all(4),
                                               decoration: BoxDecoration(
-                                                  color: (MyApp.isDark)
-                                                      ? Colors.grey
-                                                      : Colors.grey.shade300,
-                                                  // border: Border.all(
-                                                  //     color:
-                                                  //         Color(0xff00620b),
-                                                  //     width: 1),
+                                                  color: Color(0xff00620b),
                                                   borderRadius:
                                                       BorderRadius.all(
                                                           Radius.circular(5))),
                                               child: Text(
-                                                ViewBookingScreen.isSaleBooking
-                                                    ? "Sale Detail"
-                                                    : "Order Detail",
+                                                "${BookingTabBarItem.listOfItems[index].totalQuantity} items",
                                                 style: TextStyle(
-                                                    color: Color(0xff00620b),
-                                                    // fontStyle: FontStyle.italic,
-                                                    fontSize: 15),
+                                                    fontStyle: FontStyle.italic,
+                                                    color: Colors.white),
                                               ),
                                             ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
+                                            MaterialButton(
+                                              onPressed:
+                                                  ViewBookingScreen
+                                                          .isSaleBooking
+                                                      ? () async {
+                                                          var saleDetail = await BookingTabBarItem
+                                                              .getSaleDetail(
+                                                                  BookingTabBarItem
+                                                                      .listOfItems[
+                                                                          index]
+                                                                      .saleID);
+                                                          Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                  builder: (context) => SaleDetailScreen(
+                                                                      selectedSaleDate: BookingTabBarItem
+                                                                          .listOfItems[
+                                                                              index]
+                                                                          .saleDate,
+                                                                      selectedItems:
+                                                                          saleDetail,
+                                                                      selecedCustomer: BookingTabBarItem
+                                                                          .listOfItems[
+                                                                              index]
+                                                                          .partyName,
+                                                                      fromDate:
+                                                                          BookingTabBarItem
+                                                                              .getFromDate(),
+                                                                      toDate: BookingTabBarItem
+                                                                          .getToDate(),
+                                                                      saleID: BookingTabBarItem
+                                                                          .listOfItems[
+                                                                              index]
+                                                                          .saleID)));
+                                                        }
+                                                      : () async {
+                                                          var orderDetail = await BookingTabBarItem
+                                                              .getOrderDetail(
+                                                                  BookingTabBarItem
+                                                                      .listOfItems[
+                                                                          index]
+                                                                      .orderID);
+                                                          Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                  builder: (context) => OrderDetailScreen(
+                                                                      selectedOrdeDate: BookingTabBarItem
+                                                                          .listOfItems[
+                                                                              index]
+                                                                          .orderDate,
+                                                                      selectedItems:
+                                                                          orderDetail,
+                                                                      selecedCustomer: BookingTabBarItem
+                                                                          .listOfItems[
+                                                                              index]
+                                                                          .partyName,
+                                                                      fromDate:
+                                                                          BookingTabBarItem
+                                                                              .getFromDate(),
+                                                                      toDate: BookingTabBarItem
+                                                                          .getToDate(),
+                                                                      orderId: BookingTabBarItem
+                                                                          .listOfItems[
+                                                                              index]
+                                                                          .orderID)));
+                                                        },
+                                              padding: EdgeInsets.zero,
+                                              child: Container(
+                                                padding: EdgeInsets.all(8),
+                                                decoration: BoxDecoration(
+                                                    color: (MyApp.isDark)
+                                                        ? Colors.grey
+                                                        : Colors.grey.shade300,
+                                                    // border: Border.all(
+                                                    //     color:
+                                                    //         Color(0xff00620b),
+                                                    //     width: 1),
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                5))),
+                                                child: Text(
+                                                  ViewBookingScreen
+                                                          .isSaleBooking
+                                                      ? "Sale Detail"
+                                                      : "Order Detail",
+                                                  style: TextStyle(
+                                                      color: Color(0xff00620b),
+                                                      // fontStyle: FontStyle.italic,
+                                                      fontSize: 15),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),

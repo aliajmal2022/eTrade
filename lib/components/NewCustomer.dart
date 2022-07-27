@@ -161,8 +161,8 @@ class _NewUsrAddLocalDBState extends State<NewUsrAddLocalDB> {
                   height: 10,
                 ),
                 MaterialButton(
-                    disabledElevation: 10.0,
-                    disabledColor: Color(0x0ff1e1e1),
+                    // disabledElevation: 10.0,
+                    disabledColor: Colors.grey,
                     onPressed: InpName == ""
                         ? null
                         : () async {
@@ -220,17 +220,15 @@ class _NewUsrAddLocalDBState extends State<NewUsrAddLocalDB> {
                               }
                             });
                           },
-                    elevation: 20.0,
+                    // elevation: 20.0,
                     color: Color(0xff00620b),
-                    shape: const RoundedRectangleBorder(
+                    shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(25.0))),
                     minWidth: double.infinity,
                     height: 50,
                     child: Text(
                       "Add Customer",
-                      style: TextStyle(
-                          color: (InpName == "") ? null : Colors.white,
-                          fontSize: 20),
+                      style: TextStyle(color: Colors.white, fontSize: 20),
                     ))
               ]))),
     )));
