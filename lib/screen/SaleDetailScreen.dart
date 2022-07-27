@@ -13,27 +13,27 @@ import "package:flutter/material.dart";
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
-class ViewOrderScreen extends StatefulWidget {
-  ViewOrderScreen(
+class SaleDetailScreen extends StatefulWidget {
+  SaleDetailScreen(
       {required this.selectedItems,
       required this.selecedCustomer,
       required this.fromDate,
       required this.toDate,
-      required this.selectedOrdeDate,
-      required this.orderId});
+      required this.selectedSaleDate,
+      required this.saleId});
   List<EditOrder> selectedItems;
   String selecedCustomer;
-  String selectedOrdeDate;
+  String selectedSaleDate;
   String toDate;
   String fromDate;
-  int orderId;
+  int saleId;
 
   static int totalQuantity = 0;
   @override
-  State<ViewOrderScreen> createState() => _ViewOrderScreenState();
+  State<SaleDetailScreen> createState() => _SaleDetailScreenState();
 }
 
-class _ViewOrderScreenState extends State<ViewOrderScreen> {
+class _SaleDetailScreenState extends State<SaleDetailScreen> {
   ScrollController _controller = ScrollController();
   TextEditingController controller = TextEditingController();
   String description = '';
@@ -84,7 +84,7 @@ class _ViewOrderScreenState extends State<ViewOrderScreen> {
           backgroundColor: Color(0xFF00620b),
           toolbarHeight: 80,
           title: Text(
-            'Order Detail',
+            'Sale Detail',
             style: TextStyle(color: Colors.white),
           ),
         ),
@@ -127,14 +127,14 @@ class _ViewOrderScreenState extends State<ViewOrderScreen> {
                             children: [
                               Expanded(
                                 child: Text(
-                                  "Order Date: ",
+                                  "Sale Date: ",
                                   style: TextStyle(
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold),
                                 ),
                               ),
                               Text(
-                                "${widget.selectedOrdeDate}",
+                                "${widget.selectedSaleDate}",
                                 style: TextStyle(
                                     fontSize: 15, fontWeight: FontWeight.bold),
                               ),

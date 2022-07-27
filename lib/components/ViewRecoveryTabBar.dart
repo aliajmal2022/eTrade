@@ -13,8 +13,8 @@ import 'package:eTrade/entities/ViewRecovery.dart';
 import 'package:eTrade/main.dart';
 import 'package:eTrade/screen/TakeOrderScreen.dart';
 import 'package:eTrade/screen/RecoveryScreen.dart';
-import 'package:eTrade/screen/ViewOrderScreen.dart';
-import 'package:eTrade/screen/ViewRecoveryDetailScreen.dart';
+import 'package:eTrade/screen/OrderDetailScreen.dart';
+import 'package:eTrade/screen/RecoveryDetailScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -445,7 +445,7 @@ class _RecoveryTabBarItemState extends State<RecoveryTabBarItem> {
                                                   context,
                                                   MaterialPageRoute(
                                                       builder: (context) =>
-                                                          ViewRecoveryDetailScreen(
+                                                          RecoveryDetailScreen(
                                                             selectedRecovery:
                                                                 RecoveryTabBarItem
                                                                         .listOfRecovery[

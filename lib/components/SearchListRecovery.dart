@@ -6,8 +6,8 @@ import 'package:eTrade/entities/ViewRecovery.dart';
 import 'package:eTrade/main.dart';
 import 'package:eTrade/screen/TakeOrderScreen.dart';
 import 'package:eTrade/screen/RecoveryScreen.dart';
-import 'package:eTrade/screen/ViewRecoveryDetailScreen.dart';
-import 'package:eTrade/screen/ViewOrderScreen.dart';
+import 'package:eTrade/screen/RecoveryDetailScreen.dart';
+import 'package:eTrade/screen/OrderDetailScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
@@ -204,7 +204,7 @@ class _ListOfRecoveryState extends State<ListOfRecovery> {
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    ViewRecoveryDetailScreen(
+                                                    RecoveryDetailScreen(
                                                       selectedRecovery:
                                                           RecoveryTabBarItem
                                                                   .listOfRecovery[

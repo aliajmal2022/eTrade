@@ -12,18 +12,17 @@ import "package:flutter/material.dart";
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
-class ViewRecoveryDetailScreen extends StatefulWidget {
-  ViewRecoveryDetailScreen({
+class RecoveryDetailScreen extends StatefulWidget {
+  RecoveryDetailScreen({
     required this.selectedRecovery,
   });
   ViewRecovery selectedRecovery;
 
   @override
-  State<ViewRecoveryDetailScreen> createState() =>
-      _ViewRecoveryDetailScreenState();
+  State<RecoveryDetailScreen> createState() => _RecoveryDetailScreenState();
 }
 
-class _ViewRecoveryDetailScreenState extends State<ViewRecoveryDetailScreen> {
+class _RecoveryDetailScreenState extends State<RecoveryDetailScreen> {
   ScrollController _controller = ScrollController();
   TextEditingController controller = TextEditingController();
   @override

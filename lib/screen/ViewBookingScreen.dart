@@ -10,7 +10,7 @@ import 'package:eTrade/entities/EditOrder.dart';
 import 'package:eTrade/entities/ViewBooking.dart';
 import 'package:eTrade/entities/ViewRecovery.dart';
 import 'package:eTrade/screen/TakeOrderScreen.dart';
-import 'package:eTrade/screen/ViewOrderScreen.dart';
+import 'package:eTrade/screen/OrderDetailScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +24,7 @@ import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 class ViewBookingScreen extends StatefulWidget {
   @override
   State<ViewBookingScreen> createState() => _ViewBookingScreenState();
+  static bool isSaleBooking = false;
 }
 
 class _ViewBookingScreenState extends State<ViewBookingScreen>
@@ -54,11 +55,6 @@ class _ViewBookingScreenState extends State<ViewBookingScreen>
           appBar: AppBar(
             backgroundColor: Color(0xFF00620b),
             toolbarHeight: 80,
-            // shape: const RoundedRectangleBorder(
-            //   borderRadius: const BorderRadius.vertical(
-            //     bottom: Radius.circular(30),
-            //   ),
-            // ),
             automaticallyImplyLeading: false,
             bottom: TabBar(
               indicatorColor: Colors.white,
@@ -70,22 +66,53 @@ class _ViewBookingScreenState extends State<ViewBookingScreen>
               ],
               controller: _tcontroller,
             ),
-            leading: Builder(
-              builder: (BuildContext context) {
-                return IconButton(
-                  icon: const Icon(
-                    Icons.menu,
+            leading: ViewBookingScreen.isSaleBooking
+                ? IconButton(
+                    icon: Icon(Icons.close),
+                    onPressed: () async {
+                      setState(() {
+                        ViewBookingScreen.isSaleBooking = false;
+                      });
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MyNavigationBar(
+                                  selectedIndex: 2,
+                                  editRecovery: ViewRecovery(
+                                      amount: 0,
+                                      description: "",
+                                      recoveryID: 0,
+                                      dated: "",
+                                      party: Customer(
+                                          partyId: 0,
+                                          partyName: "",
+                                          address: "",
+                                          discount: 0)),
+                                  orderList: [],
+                                  orderDate: "",
+                                  orderId: 0,
+                                  orderPartyName: "Search Customer")),
+                          (route) => false);
+                    },
+                  )
+                : Builder(
+                    builder: (BuildContext context) {
+                      return IconButton(
+                        icon: const Icon(
+                          Icons.menu,
+                        ),
+                        onPressed: () {
+                          Scaffold.of(context).openDrawer();
+                        },
+                        tooltip: MaterialLocalizations.of(context)
+                            .openAppDrawerTooltip,
+                      );
+                    },
                   ),
-                  onPressed: () {
-                    Scaffold.of(context).openDrawer();
-                  },
-                  tooltip:
-                      MaterialLocalizations.of(context).openAppDrawerTooltip,
-                );
-              },
-            ),
-            title: const Text(
-              'View Bookings',
+            title: Text(
+              ViewBookingScreen.isSaleBooking
+                  ? 'View Invoice'
+                  : 'View Bookings',
               style: const TextStyle(color: Colors.white),
             ),
           ),

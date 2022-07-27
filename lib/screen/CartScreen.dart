@@ -5,6 +5,7 @@ import 'package:eTrade/components/sqlhelper.dart';
 import 'package:eTrade/entities/Customer.dart';
 import 'package:eTrade/entities/Order.dart';
 import 'package:eTrade/entities/Products.dart';
+import 'package:eTrade/entities/Sale.dart';
 import 'package:eTrade/entities/ViewRecovery.dart';
 import 'package:eTrade/main.dart';
 import 'package:eTrade/screen/TakeOrderScreen.dart';
@@ -385,7 +386,76 @@ class _CartScreenState extends State<CartScreen> {
                                             (route) => false);
                                       }
                                     : TakeOrderScreen.isSaleSpot
-                                        ? () async {}
+                                        ? () async {
+                                            Sale sale = Sale(
+                                              customer: widget.selecedCustomer,
+                                              userID: widget.userID,
+                                              isCash: isCash,
+                                              totalQuantity: totalQuantity,
+                                              orderID: 0,
+                                              totalValue: totalAmount,
+                                              date: dateFormat
+                                                  .format(DateTime.now()),
+                                              description: description,
+                                            );
+                                            bool isPosted = false;
+                                            int saleId = await SQLHelper
+                                                .instance
+                                                .createSale(sale, isPosted);
+                                            List<Map<String, dynamic>> saleRes =
+                                                await SQLHelper.instance
+                                                    .getTable("Sale", "SaleID");
+                                            var maptoListOrder =
+                                                saleRes.whereType<Map>().first;
+                                            var dated = maptoListOrder['Dated'];
+                                            TakeOrderScreen.getdataFromDb();
+                                            print(dated);
+                                            for (var element
+                                                in widget.selectedItems) {
+                                              await SQLHelper.instance
+                                                  .createSaleDetail(
+                                                      element,
+                                                      saleId,
+                                                      dated,
+                                                      isPosted,
+                                                      widget.userID);
+                                            }
+                                            setState(() {
+                                              TakeOrderScreen.isordered = true;
+                                              TakeOrderScreen.isSelectedOrder =
+                                                  false;
+                                              TakeOrderScreen.isSaleSpot =
+                                                  false;
+                                              controller.clear();
+                                              resetCartList();
+                                              Navigator.pushAndRemoveUntil(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        MyNavigationBar(
+                                                      selectedIndex: 1,
+                                                      editRecovery:
+                                                          ViewRecovery(
+                                                              amount: 0,
+                                                              description: "",
+                                                              recoveryID: 0,
+                                                              dated: "",
+                                                              party: Customer(
+                                                                  partyId: 0,
+                                                                  address: "",
+                                                                  discount: 0,
+                                                                  partyName:
+                                                                      "")),
+                                                      orderList: [],
+                                                      orderDate: "",
+                                                      orderId: 0,
+                                                      orderPartyName:
+                                                          "Search Customer",
+                                                    ),
+                                                  ),
+                                                  (route) => false);
+                                            });
+                                          }
                                         : () async {
                                             Order order = Order(
                                               customer: widget.selecedCustomer,

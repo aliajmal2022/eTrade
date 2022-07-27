@@ -2,6 +2,7 @@ import 'package:eTrade/entities/Customer.dart';
 import 'package:eTrade/entities/Order.dart';
 import 'package:eTrade/entities/Products.dart';
 import 'package:eTrade/entities/Recovery.dart';
+import 'package:eTrade/entities/Sale.dart';
 import 'package:eTrade/entities/User.dart';
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
@@ -46,6 +47,8 @@ class SQLHelper {
       await deleteTable(_database, "User");
       await deleteTable(_database, "Order");
       await deleteTable(_database, "OrderDetail");
+      await deleteTable(_database, "Sale");
+      await deleteTable(_database, "SaleDetail");
       await deleteTable(_database, "Recovery");
     }
   }
@@ -62,6 +65,8 @@ class SQLHelper {
       await createUserTable(database);
       await createOrderTable(database);
       await createOrderDetailTable(database);
+      await createSaleTable(database);
+      await createSaleDetailTable(database);
       await createRecoveryTable(database);
     });
   }
@@ -273,24 +278,112 @@ isCash BOOLEAN NOT NULL,
 isPosted BOOLEAN NOT NULL
   )
       ''');
-    print("successfully created Order table");
+    print("successfully created Sale table");
   }
 
-  Future<int> createSale(Order order, bool isPost) async {
+  Future<int> createSale(Sale sale, bool isPost) async {
     Database db = await instance.database;
 
     final data = {
-      'PartyID': order.customer.partyId,
-      'Description': order.description,
-      'TotalQuantity': order.totalQuantity,
-      'UserID': order.userID,
-      'TotalValue': order.totalValue,
-      'Dated': order.date,
+      'PartyID': sale.customer.partyId,
+      'Description': sale.description,
+      'TotalQuantity': sale.totalQuantity,
+      'UserID': sale.userID,
+      'isCash': sale.isCash,
+      'TotalValue': sale.totalValue,
+      'Dated': sale.date,
       'isPosted': isPost,
     };
-    final id = await db.insert('Order', data,
+    final id = await db.insert('Sale', data,
         conflictAlgorithm: ConflictAlgorithm.replace);
     return id;
+  }
+
+  static Future<List> getFromToViewSale(var start, var end) async {
+    Database db = await instance.database;
+    var listOrder = await db.rawQuery(
+        "SELECT s.Dated,s.SaleID,s.TotalQuantity,p.PartyName FROM Sale AS s INNER JOIN Party AS p ON p.PartyID = s.PartyID WHERE s.Dated BETWEEN '$start' AND '$end' and s.isPosted=0 ");
+
+    return listOrder;
+  }
+
+  static Future<List> getSpecificViewSale(var date) async {
+    Database db = await instance.database;
+    var listOrder = await db.rawQuery(
+        "SELECT s.Dated,s.SaleID,s.TotalQuantity,p.PartyName FROM Sale AS s INNER JOIN Party AS p ON p.PartyID = s.PartyID WHERE s.Dated ='${date}' and s.isPosted=0 ");
+
+    return listOrder;
+  }
+
+  static Future<List> getAllViewSale() async {
+    Database db = await instance.database;
+    var listOrder = await db.rawQuery(
+        "SELECT s.Dated,s.SaleID,s.TotalQuantity,p.PartyName FROM Sale AS s INNER JOIN Party AS p ON s.PartyID = s.PartyID WHERE  s.isPosted=0 ");
+
+    return listOrder;
+  }
+
+  static Future<void> updateSaleTable(
+      int id, int partyID, String description, bool isCash) async {
+    Database db = await instance.database;
+    try {
+      await db.execute(
+          "UPDATE Sale SET TotalQuantity = 	(SELECT Sum(Quantity) FROM SaleDetail as sd WHERE  sd.SaleID=$id), TotalValue= (SELECT Sum(Amount) FROM SaleDetail as sd WHERE  sd.SaleID=$id),Description='$description',PartyID=$partyID,isCash=$isCash WHERE Sale.SaleID=$id and Sale.isPosted=0"
+
+          // "UPDATE [Order] SET  PartyID=$partyID,Description='$description',TotalQuantity = (SELECT Sum(Quantity) FROM OrderDetail , [Order] as o WHERE o.OrderID = OrderDetail.OrderID and o.OrderID=$id),TotalValue=(SELECT Sum(Amount) FROM OrderDetail , [Order] as o WHERE o.OrderID = OrderDetail.OrderID and o.OrderID=$id) WHERE [Order].OrderID=$id"
+          );
+    } catch (e) {
+      debugPrint('Order is not update');
+    }
+  }
+
+  static Future<void> createSaleDetailTable(Database database) async {
+    await database.execute('''
+  CREATE TABLE SaleDetail(
+	ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+  SaleID INTEGER NOT NULL,
+	UserID INTEGER NOT NULL,
+	ItemID TEXT NOT NULL,
+  Quantity INTEGER NOT NULL,
+  RATE REAL NOT NULL,
+  Discount REAL,
+  Bonus INTEGER,
+  [TO] Real,
+  Amount REAL NOT NULL,
+	Dated TEXT NOT NULL,
+  isPosted BOOLEAN NOT NULL
+ )
+      ''');
+    print("successfully created SaleDetail table");
+  }
+
+  Future<int> createSaleDetail(
+      Product product, int saleID, String date, bool isPost, int userID) async {
+    Database db = await instance.database;
+
+    final data = {
+      'UserID': userID,
+      'SaleID': saleID,
+      'Discount': product.discount,
+      'Bonus': product.bonus,
+      '[TO]': product.to,
+      'ItemID': product.ID,
+      'Quantity': product.Quantity,
+      'Rate': product.Price,
+      'Amount': product.Quantity * product.Price,
+      'Dated': date,
+      'isPosted': isPost,
+    };
+    return await db.insert('SaleDetail', data,
+        conflictAlgorithm: ConflictAlgorithm.replace);
+  }
+
+  static Future<List> getSaleDetail(int id) async {
+    Database db = await instance.database;
+    var ListOrder = await db.rawQuery(
+        "SELECT i.ItemName,sd.Bonus,sd.Discount,sd.[TO],sd.Quantity,sd.Rate,sd.Amount,i.itemID FROM SaleDetail as sd INNER JOIN Item AS i ON i.ItemID = sd.ItemID WHERE sd.SaleID=$id and sd.isPosted=0");
+
+    return ListOrder;
   }
 
   static Future<void> createRecoveryTable(Database database) async {

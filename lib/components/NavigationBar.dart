@@ -90,12 +90,13 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.edit_note_outlined),
-                label:
-                    (TakeOrderScreen.isSaleSpot) ? 'Spot Sale' : 'Take Order',
+                label: (TakeOrderScreen.isSaleSpot) ? 'Invoice' : 'Take Order',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.wysiwyg_outlined),
-                label: 'View Booking',
+                label: (ViewBookingScreen.isSaleBooking)
+                    ? "View Invoice"
+                    : 'View Booking',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.grading_outlined),

@@ -6,7 +6,7 @@ import 'package:eTrade/entities/ViewBooking.dart';
 import 'package:eTrade/entities/ViewRecovery.dart';
 import 'package:eTrade/main.dart';
 import 'package:eTrade/screen/TakeOrderScreen.dart';
-import 'package:eTrade/screen/ViewOrderScreen.dart';
+import 'package:eTrade/screen/OrderDetailScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
@@ -37,7 +37,7 @@ class _ListOfOrderState extends State<ListOfOrder> {
   @override
   Widget build(BuildContext context) {
     ScrollController _controller = ScrollController();
-    CheckList(BookingTabBarItem.listOfOrdered);
+    CheckList(BookingTabBarItem.listOfItems);
     return dummyOrderList.isNotEmpty
         ? ListView.builder(
             controller: _controller,
@@ -119,10 +119,10 @@ class _ListOfOrderState extends State<ListOfOrder> {
                               _order = await SQLHelper.getAllViewOrder();
                             }
                             setState(() {
-                              BookingTabBarItem.listOfOrdered =
+                              BookingTabBarItem.listOfItems =
                                   ViewOrderBooking.ViewOrderFromDb(_order);
-                              if (BookingTabBarItem.listOfOrdered.isNotEmpty) {
-                                CheckList(BookingTabBarItem.listOfOrdered);
+                              if (BookingTabBarItem.listOfItems.isNotEmpty) {
+                                CheckList(BookingTabBarItem.listOfItems);
                               }
                             });
                           })),
@@ -213,25 +213,26 @@ class _ListOfOrderState extends State<ListOfOrder> {
                                   var orderDetail =
                                       await BookingTabBarItem.getOrderDetail(
                                           BookingTabBarItem
-                                              .listOfOrdered[index].orderID);
+                                              .listOfItems[index].orderID);
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => ViewOrderScreen(
-                                              selectedOrdeDate:
-                                                  dummyOrderList[index]
-                                                      .orderDate,
-                                              selectedItems: orderDetail,
-                                              selecedCustomer:
-                                                  dummyOrderList[index]
-                                                      .partyName,
-                                              fromDate: BookingTabBarItem
-                                                  .getFromDate(),
-                                              toDate:
-                                                  BookingTabBarItem.getToDate(),
-                                              orderId: BookingTabBarItem
-                                                  .listOfOrdered[index]
-                                                  .orderID)));
+                                          builder: (context) =>
+                                              OrderDetailScreen(
+                                                  selectedOrdeDate:
+                                                      dummyOrderList[index]
+                                                          .orderDate,
+                                                  selectedItems: orderDetail,
+                                                  selecedCustomer:
+                                                      dummyOrderList[index]
+                                                          .partyName,
+                                                  fromDate: BookingTabBarItem
+                                                      .getFromDate(),
+                                                  toDate: BookingTabBarItem
+                                                      .getToDate(),
+                                                  orderId: BookingTabBarItem
+                                                      .listOfItems[index]
+                                                      .orderID)));
                                 },
                                 padding: EdgeInsets.zero,
                                 child: Container(

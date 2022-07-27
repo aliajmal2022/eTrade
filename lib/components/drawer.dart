@@ -11,6 +11,7 @@ import 'package:eTrade/screen/TakeOrderScreen.dart';
 import 'package:eTrade/screen/LoginScreen.dart';
 import 'package:eTrade/screen/RecoveryScreen.dart';
 import 'package:eTrade/screen/SplashScreen.dart';
+import 'package:eTrade/screen/ViewBookingScreen.dart';
 import 'package:eTrade/screen/ViewRecoveryScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -136,6 +137,10 @@ class _MyDrawerState extends State<MyDrawer> {
               style: TextStyle(fontSize: 40),
             ),
           )),
+          Divider(
+            thickness: 2,
+            color: Color(0xff00620b),
+          ),
           Padding(
               padding: const EdgeInsets.all(20),
               child: Column(
@@ -201,6 +206,38 @@ class _MyDrawerState extends State<MyDrawer> {
                     },
                     child: Row(
                       children: const [Icon(Icons.bookmark), Text("Spot Sale")],
+                    ),
+                  ),
+                  MaterialButton(
+                    onPressed: () async {
+                      await TakeOrderScreen.forSaleInVoice();
+                      ViewBookingScreen.isSaleBooking = true;
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MyNavigationBar(
+                                    editRecovery: ViewRecovery(
+                                        amount: 0,
+                                        description: "",
+                                        recoveryID: 0,
+                                        dated: "",
+                                        party: Customer(
+                                            address: "",
+                                            discount: 0,
+                                            partyId: 0,
+                                            partyName: "")),
+                                    selectedIndex: 2,
+                                    orderDate: "",
+                                    orderList: [],
+                                    orderId: 0,
+                                    orderPartyName: "Search Customer",
+                                  )));
+                    },
+                    child: Row(
+                      children: const [
+                        Icon(Icons.bookmark),
+                        Text("View Sale Booking")
+                      ],
                     ),
                   ),
                   MaterialButton(
