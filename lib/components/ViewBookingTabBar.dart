@@ -399,15 +399,13 @@ class _BookingTabBarItemState extends State<BookingTabBarItem> {
                                                 "Sale",
                                                 "InvoiceID",
                                                 BookingTabBarItem
-                                                    .listOfItems[index]
-                                                    .orderID);
+                                                    .listOfItems[index].saleID);
 
                                             await SQLHelper.deleteItem(
                                                 "SaleDetail",
                                                 "InvoiceID",
                                                 BookingTabBarItem
-                                                    .listOfItems[index]
-                                                    .orderID);
+                                                    .listOfItems[index].saleID);
 
                                             if (widget.tabName == "Search") {
                                               _item = await SQLHelper
@@ -437,8 +435,8 @@ class _BookingTabBarItemState extends State<BookingTabBarItem> {
                                                   .getAllViewSale();
                                             }
                                             BookingTabBarItem.listOfItems =
-                                                ViewOrderBooking
-                                                    .ViewOrderFromDb(_item);
+                                                ViewSaleBooking.ViewSaleFromDb(
+                                                    _item);
                                             setState(() {
                                               BookingTabBarItem.listOfItems;
                                             });
