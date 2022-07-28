@@ -85,6 +85,7 @@ class _CartScreenState extends State<CartScreen> {
                         editRecovery: ViewRecovery(
                             amount: 0,
                             description: "",
+                            checkOrCash: "",
                             recoveryID: 0,
                             dated: "",
                             party: Customer(
@@ -371,6 +372,7 @@ class _CartScreenState extends State<CartScreen> {
                                                   editRecovery: ViewRecovery(
                                                       amount: 0,
                                                       description: "",
+                                                      checkOrCash: "",
                                                       recoveryID: 0,
                                                       dated: "",
                                                       party: Customer(
@@ -427,6 +429,7 @@ class _CartScreenState extends State<CartScreen> {
                                                       amount: 0,
                                                       description: "",
                                                       recoveryID: 0,
+                                                      checkOrCash: "",
                                                       dated: "",
                                                       party: Customer(
                                                           userId: 0,
@@ -497,6 +500,7 @@ class _CartScreenState extends State<CartScreen> {
                                                           ViewRecovery(
                                                               amount: 0,
                                                               description: "",
+                                                              checkOrCash: "",
                                                               recoveryID: 0,
                                                               dated: "",
                                                               party: Customer(
@@ -568,6 +572,7 @@ class _CartScreenState extends State<CartScreen> {
                                                               amount: 0,
                                                               description: "",
                                                               recoveryID: 0,
+                                                              checkOrCash: "",
                                                               dated: "",
                                                               party: Customer(
                                                                   partyId: 0,

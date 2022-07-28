@@ -276,7 +276,7 @@ TotalQuantity INTEGER NOT NULL,
 TotalValue REAL NOT NULL,
 Dated TEXT NOT NULL,
 Description TEXT,
-isCash BOOLEAN NOT NULL,
+isCash BOOLEAN,
 isPosted BOOLEAN NOT NULL
   )
       ''');
@@ -396,7 +396,7 @@ PartyID INTEGER NOT NULL,
 UserID INTEGER NOT NULL,
 Amount REAL NOT NULL,
 Dated TEXT NOT NULL,
-'Check/Cash' TEXT NOT NULL,
+[CheckOrCash] TEXT NOT NULL,
 Description TEXT,
 isPosted BOOLEAN NOT NULL
   )
@@ -410,7 +410,7 @@ isPosted BOOLEAN NOT NULL
     final data = {
       'PartyID': recovery.party.partyId,
       'UserID': recovery.userID,
-      'Check/Cash': recovery.isCashOrCheck,
+      'CheckOrCash': recovery.isCashOrCheck,
       'Description': recovery.description,
       'Dated': recovery.dated,
       'Amount': recovery.amount,
@@ -424,7 +424,7 @@ isPosted BOOLEAN NOT NULL
   static Future<List> getFromToRecovery(var start, var end) async {
     Database db = await instance.database;
     var listRecovery = await db.rawQuery(
-        "SELECT r.Dated,r.Description,r.RecoveryID,r.Amount,p.PartyName,p.PartyID FROM Recovery AS r INNER JOIN Party AS p ON p.PartyID = r.PartyID WHERE r.Dated BETWEEN '$start' AND '$end' and r.isPosted=0");
+        "SELECT r.Dated,r.CheckOrCash,r.Description,r.RecoveryID,r.Amount,p.PartyName,p.PartyID FROM Recovery AS r INNER JOIN Party AS p ON p.PartyID = r.PartyID WHERE r.Dated BETWEEN '$start' AND '$end' and r.isPosted=0");
 
     return listRecovery;
   }
@@ -432,7 +432,7 @@ isPosted BOOLEAN NOT NULL
   static Future<List> getSpecificRecovery(var date) async {
     Database db = await instance.database;
     var listRecovery = await db.rawQuery(
-        "SELECT r.Dated,r.Description,r.RecoveryID,r.Amount,p.PartyName,p.PartyID FROM Recovery AS r INNER JOIN Party AS p ON p.PartyID = r.PartyID WHERE r.Dated = '$date' and r.isPosted=0");
+        "SELECT r.Dated,r.CheckOrCash,r.Description,r.RecoveryID,r.Amount,p.PartyName,p.PartyID FROM Recovery AS r INNER JOIN Party AS p ON p.PartyID = r.PartyID WHERE r.Dated = '$date' and r.isPosted=0");
 
     return listRecovery;
   }
@@ -440,7 +440,7 @@ isPosted BOOLEAN NOT NULL
   static Future<List> getAllRecovery() async {
     Database db = await instance.database;
     var listRecovery = await db.rawQuery(
-        "SELECT r.Dated,r.Description,r.RecoveryID,r.Amount,p.PartyName,p.PartyID FROM Recovery AS r INNER JOIN Party AS p ON p.PartyID = r.PartyID WHERE r.isPosted=0");
+        "SELECT r.Dated,r.CheckOrCash,r.Description,r.RecoveryID,r.Amount,p.PartyName,p.PartyID FROM Recovery AS r INNER JOIN Party AS p ON p.PartyID = r.PartyID WHERE r.isPosted=0");
 
     return listRecovery;
   }
@@ -449,8 +449,8 @@ isPosted BOOLEAN NOT NULL
     Database db = await instance.database;
     try {
       await db.execute("DELETE FROM Recovery;");
-      await db
-          .execute("update sqlite_sequence set seq='0' where name=RecoveryID");
+      // await db
+      //     .execute("update sqlite_sequence set seq='0' where name=RecoveryID");
     } catch (e) {
       debugPrint('item is not delete');
     }
@@ -461,7 +461,7 @@ isPosted BOOLEAN NOT NULL
     Database db = await instance.database;
     try {
       await db.execute(
-          "UPDATE Recovery SET Amount=$amount, PartyID=$partyID,Check/Cash='$isCashOCheck',Description='$description' WHERE Recovery.RecoveryId=$id and Recovery.isPosted=0");
+          "UPDATE Recovery SET Amount=$amount, PartyID=$partyID,[CheckOrCash]='$isCashOCheck',Description='$description' WHERE Recovery.RecoveryId=$id and Recovery.isPosted=0");
     } catch (e) {
       debugPrint('Recovery is not update');
     }

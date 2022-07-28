@@ -65,6 +65,7 @@ class _MyDrawerState extends State<MyDrawer> {
                           editRecovery: ViewRecovery(
                               amount: 0,
                               description: "",
+                              checkOrCash: "",
                               recoveryID: 0,
                               dated: "",
                               party: Customer(
@@ -92,6 +93,7 @@ class _MyDrawerState extends State<MyDrawer> {
                 builder: (context) => MyNavigationBar(
                       editRecovery: ViewRecovery(
                           amount: 0,
+                          checkOrCash: "",
                           description: "",
                           recoveryID: 0,
                           dated: "",
@@ -193,6 +195,7 @@ class _MyDrawerState extends State<MyDrawer> {
                                         amount: 0,
                                         description: "",
                                         recoveryID: 0,
+                                        checkOrCash: "",
                                         dated: "",
                                         party: Customer(
                                             userId: 0,
@@ -224,6 +227,7 @@ class _MyDrawerState extends State<MyDrawer> {
                                         description: "",
                                         recoveryID: 0,
                                         dated: "",
+                                        checkOrCash: "",
                                         party: Customer(
                                             address: "",
                                             userId: 0,
@@ -266,6 +270,7 @@ class _MyDrawerState extends State<MyDrawer> {
                                   builder: (context) => MyNavigationBar(
                                         editRecovery: ViewRecovery(
                                             amount: 0,
+                                            checkOrCash: "",
                                             description: "",
                                             recoveryID: 0,
                                             dated: "",
@@ -324,6 +329,7 @@ class _MyDrawerState extends State<MyDrawer> {
                                         amount: 0,
                                         description: "",
                                         recoveryID: 0,
+                                        checkOrCash: "",
                                         dated: "",
                                         party: Customer(
                                             address: "",
@@ -411,6 +417,7 @@ class _MyDrawerState extends State<MyDrawer> {
                                             amount: 0,
                                             description: "",
                                             recoveryID: 0,
+                                            checkOrCash: "",
                                             dated: "",
                                             party: Customer(
                                                 address: "",
@@ -442,6 +449,7 @@ class _MyDrawerState extends State<MyDrawer> {
                                       editRecovery: ViewRecovery(
                                           amount: 0,
                                           description: "",
+                                          checkOrCash: "",
                                           recoveryID: 0,
                                           dated: "",
                                           party: Customer(

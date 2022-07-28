@@ -88,6 +88,8 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
     }
   }
 
+  String _groupValue = "Cash";
+
   @override
   void initState() {
     PreLoadDataBase();
@@ -101,6 +103,7 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                 widget.recovery.description;
             amount = double.parse(RecoveryScreen.amountcontroller.text);
             description = RecoveryScreen.descriptioncontroller.text;
+            _groupValue = widget.recovery.checkOrCash;
             widget.setParty(widget.recovery.party);
             RecoveryScreen.tcustomer = widget.recovery.party;
             RecoveryScreen.getData = true;
@@ -132,12 +135,11 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
     super.initState();
   }
 
-  String _groupValue = "Cash";
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           backgroundColor: Color(0xFF00620b),
           toolbarHeight: 80,
@@ -195,6 +197,7 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                                       editRecovery: ViewRecovery(
                                           amount: 0,
                                           description: "",
+                                          checkOrCash: "",
                                           recoveryID: 0,
                                           dated: "",
                                           party: Customer(
@@ -227,329 +230,342 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
         body: SingleChildScrollView(
           child: Padding(
               padding: const EdgeInsets.all(15.0),
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                    width: double.infinity,
-                    height: 90,
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              child: Text(
-                                "Date: ",
+              child: Padding(
+                padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).viewInsets.bottom),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      width: double.infinity,
+                      height: 90,
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  "Date: ",
+                                  style: TextStyle(
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                              Text(
+                                "${RecoveryScreen.isEditRecovery ? widget.recovery.dated : dateFormat.format(DateTime.now())}",
                                 style: TextStyle(
                                     fontSize: 30, fontWeight: FontWeight.bold),
                               ),
-                            ),
-                            Text(
-                              "${RecoveryScreen.isEditRecovery ? widget.recovery.dated : dateFormat.format(DateTime.now())}",
-                              style: TextStyle(
-                                  fontSize: 30, fontWeight: FontWeight.bold),
-                            ),
-                          ]),
+                            ]),
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Check Your Payment Method.",
+                            style: TextStyle(fontSize: 18),
+                          ),
+                          RadioListTile(
+                            value: "Cash",
+                            contentPadding: EdgeInsets.all(0),
+                            groupValue: _groupValue,
+                            title: Text("Cash"),
+                            onChanged: (newValue) => setState(
+                                () => _groupValue = newValue.toString()),
+                            activeColor: Color(0xff00620b),
+                            selected: false,
+                          ),
+                          RadioListTile(
+                            contentPadding: EdgeInsets.all(0),
+                            value: "Check",
+                            groupValue: _groupValue,
+                            title: Text("Check"),
+                            onChanged: (newValue) => setState(
+                                () => _groupValue = newValue.toString()),
+                            activeColor: Color(0xff00620b),
+                            selected: false,
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Row(
                       children: [
-                        Text(
-                          "Check Your Payment Method.",
-                          style: TextStyle(fontSize: 18),
+                        Flexible(
+                          child: DropdownSearch<String>(
+                            searchFieldProps: const TextFieldProps(
+                              autofocus: true,
+                            ),
+
+                            dropdownSearchDecoration: InputDecoration(
+                              contentPadding: const EdgeInsets.symmetric(
+                                  vertical: 13, horizontal: 20),
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(20),
+                                      bottomLeft: Radius.circular(20))),
+                              focusedBorder: const OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Color(0xff00620b)),
+                              ),
+                            ),
+                            mode: Mode.MENU,
+                            showSearchBox: true,
+                            showSelectedItems: true,
+
+                            //list of dropdown items
+                            items: DataBaseDataLoad.PartiesName ??
+                                ["  Not found data from database"],
+                            onChanged: (value) {
+                              setState(() {
+                                var selectedName = value as String;
+                                var selectedParty = Customer(
+                                    userId: 0,
+                                    discount: 0,
+                                    partyId: 0,
+                                    address: "",
+                                    partyName: selectedName);
+                                selectedParty = selectedParty.selectedCustomer(
+                                    DataBaseDataLoad.ListOCustomer);
+                                widget.setParty(selectedParty);
+                                RecoveryScreen.tcustomer = selectedParty;
+                              });
+                            },
+                            selectedItem: widget.getParty().partyName,
+                          ),
                         ),
-                        RadioListTile(
-                          value: "Cash",
-                          contentPadding: EdgeInsets.all(0),
-                          groupValue: _groupValue,
-                          title: Text("Cash"),
-                          onChanged: (newValue) =>
-                              setState(() => _groupValue = newValue.toString()),
-                          activeColor: Color(0xff00620b),
-                          selected: false,
+                        const SizedBox(
+                          width: 5,
                         ),
-                        RadioListTile(
-                          contentPadding: EdgeInsets.all(0),
-                          value: "Check",
-                          groupValue: _groupValue,
-                          title: Text("Check"),
-                          onChanged: (newValue) =>
-                              setState(() => _groupValue = newValue.toString()),
-                          activeColor: Color(0xff00620b),
-                          selected: false,
+                        Material(
+                          child: Container(
+                              height: 48,
+                              width: 58,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.only(
+                                    topRight: Radius.circular(20),
+                                    bottomRight: Radius.circular(20)),
+                                // color: Colors.white,
+                                color: Color(0xff00620b),
+                                // color: Color(0xff424242),
+                              ),
+                              child: MaterialButton(
+                                onPressed: () {
+                                  showModalBottomSheet(
+                                    context: context,
+                                    elevation: 20.0,
+                                    shape: const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.vertical(
+                                            top: Radius.circular(25.0))),
+                                    isScrollControlled: true,
+                                    builder: (context) => NewUsrAddLocalDB(
+                                      index: 2,
+                                      recovery: widget.recovery,
+                                    ),
+                                  );
+                                },
+                                child: const Icon(
+                                  Icons.add,
+                                  color: Colors.white,
+                                  // color: Color(0xff424242),
+                                  size: 20,
+                                ),
+                              )),
                         ),
                       ],
                     ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    children: [
-                      Flexible(
-                          child: DropdownSearch<String>(
-                        searchFieldProps: const TextFieldProps(
-                          autofocus: true,
-                        ),
-
-                        dropdownSearchDecoration: InputDecoration(
-                          contentPadding: const EdgeInsets.symmetric(
-                              vertical: 13, horizontal: 20),
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(20),
-                                  bottomLeft: Radius.circular(20))),
-                          focusedBorder: const OutlineInputBorder(
-                            borderSide: BorderSide(color: Color(0xff00620b)),
-                          ),
-                        ),
-                        mode: Mode.MENU,
-                        showSearchBox: true,
-                        showSelectedItems: true,
-
-                        //list of dropdown items
-                        items: DataBaseDataLoad.PartiesName ??
-                            ["  Not found data from database"],
-                        onChanged: (value) {
-                          setState(() {
-                            var selectedName = value as String;
-                            var selectedParty = Customer(
-                                userId: 0,
-                                discount: 0,
-                                partyId: 0,
-                                address: "",
-                                partyName: selectedName);
-                            selectedParty = selectedParty.selectedCustomer(
-                                DataBaseDataLoad.ListOCustomer);
-                            widget.setParty(selectedParty);
-                            RecoveryScreen.tcustomer = selectedParty;
-                          });
-                        },
-                        selectedItem: widget.getParty().partyName,
-                      )),
-                      const SizedBox(
-                        width: 5,
-                      ),
-                      Material(
-                        child: Container(
-                            height: 48,
-                            width: 58,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(
-                                  topRight: Radius.circular(20),
-                                  bottomRight: Radius.circular(20)),
-                              // color: Colors.white,
-                              color: Color(0xff00620b),
-                              // color: Color(0xff424242),
-                            ),
-                            child: MaterialButton(
-                              onPressed: () {
-                                showModalBottomSheet(
-                                  context: context,
-                                  elevation: 20.0,
-                                  shape: const RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.vertical(
-                                          top: Radius.circular(25.0))),
-                                  isScrollControlled: true,
-                                  builder: (context) => NewUsrAddLocalDB(
-                                    index: 2,
-                                    recovery: widget.recovery,
-                                  ),
-                                );
-                              },
-                              child: const Icon(
-                                Icons.add,
-                                color: Colors.white,
-                                // color: Color(0xff424242),
-                                size: 20,
-                              ),
-                            )),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  TextFormField(
-                    keyboardType: TextInputType.number,
-                    controller: RecoveryScreen.amountcontroller,
-                    onChanged: (value) {
-                      setState(() {
-                        amount =
-                            double.parse(RecoveryScreen.amountcontroller.text);
-                      });
-                    },
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                          borderSide: BorderSide(width: 30.0)),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(20)),
-                        borderSide: BorderSide(color: Colors.blue),
-                      ),
-                      contentPadding: const EdgeInsets.symmetric(
-                          vertical: 13, horizontal: 20),
-                      labelText: 'Enter Amount',
+                    SizedBox(
+                      height: 20,
                     ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  TextFormField(
-                    minLines: 3,
-                    maxLines: 4,
-                    maxLength: 270,
-                    keyboardType: TextInputType.text,
-                    controller: RecoveryScreen.descriptioncontroller,
-                    onChanged: (value) {
-                      setState(() {
-                        description = value;
-                      });
-                    },
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
+                    TextFormField(
+                      keyboardType: TextInputType.number,
+                      controller: RecoveryScreen.amountcontroller,
+                      onChanged: (value) {
+                        setState(() {
+                          amount = double.parse(
+                              RecoveryScreen.amountcontroller.text);
+                        });
+                      },
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                            borderSide: BorderSide(width: 30.0)),
+                        focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(20)),
-                          borderSide: BorderSide(width: 30.0)),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(20)),
-                        borderSide: BorderSide(color: Colors.blue),
+                          borderSide: BorderSide(color: Colors.blue),
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(
+                            vertical: 13, horizontal: 20),
+                        labelText: 'Enter Amount',
                       ),
-                      contentPadding: const EdgeInsets.symmetric(
-                          vertical: 13, horizontal: 20),
-                      labelText: 'Description',
                     ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  MaterialButton(
-                      onPressed: (widget.getParty().partyName ==
-                                  "Search Customer" ||
-                              amount == 0 ||
-                              description == "")
-                          ? null
-                          : RecoveryScreen.isEditRecovery
-                              ? () async {
-                                  final snackBar = const SnackBar(
-                                    content: Text("Recovery is update."),
-                                  );
-                                  await SQLHelper.updateRecoveryTable(
-                                      widget.recovery.recoveryID,
-                                      RecoveryScreen.tcustomer.partyId,
-                                      amount,
-                                      description,
-                                      _groupValue);
-                                  RecoveryScreen.amountcontroller.clear();
-                                  RecoveryScreen.descriptioncontroller.clear();
-                                  amount = 0;
-                                  description = "";
-                                  RecoveryScreen.isEditRecovery = false;
-                                  RecoveryScreen.getData = false;
-                                  widget.setParty(Customer(
-                                      discount: 0,
-                                      userId: 0,
-                                      partyId: 0,
-                                      address: "",
-                                      partyName: "Search Customer"));
-                                  RecoveryScreen.tcustomer = Customer(
-                                      discount: 0,
-                                      userId: 0,
-                                      address: "",
-                                      partyId: 0,
-                                      partyName: "Search Customer");
-                                  Navigator.pushAndRemoveUntil(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              ViewRecoveryScreen()),
-                                      (route) => false);
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(snackBar);
-                                }
-                              : () {
-                                  Recovery recovery = Recovery(
-                                      amount: amount,
-                                      recoveryID: 0,
-                                      isCashOrCheck: _groupValue,
-                                      userID: widget.userID,
-                                      dated: dateFormat.format(DateTime.now()),
-                                      party: Customer(
-                                          partyId: widget.getParty().partyId,
-                                          userId: widget.getParty().userId,
-                                          discount: widget.getParty().discount,
-                                          address: widget.getParty().address,
-                                          partyName:
-                                              widget.getParty().partyName),
-                                      description: description,
-                                      isPost: false);
-                                  SQLHelper.instance
-                                      .createRecoveryitem(recovery, false);
-                                  final snackBar = const SnackBar(
-                                    content: Text("Recovery is Saved."),
-                                  );
-                                  RecoveryScreen.amountcontroller.clear();
-                                  RecoveryScreen.descriptioncontroller.clear();
-                                  widget.setParty(Customer(
-                                      partyId: 0,
-                                      userId: 0,
-                                      discount: 0,
-                                      address: "",
-                                      partyName: "Search Customer"));
-                                  RecoveryScreen.tcustomer = Customer(
-                                      discount: 0,
-                                      userId: 0,
-                                      address: "",
-                                      partyId: 0,
-                                      partyName: "Search Customer");
-                                  Navigator.pushAndRemoveUntil(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => MyNavigationBar(
-                                                selectedIndex: 0,
-                                                editRecovery: ViewRecovery(
-                                                    amount: 0,
-                                                    description: "",
-                                                    recoveryID: 0,
-                                                    dated: "",
-                                                    party: Customer(
-                                                        discount: 0,
-                                                        partyId: 0,
-                                                        userId: 0,
-                                                        partyName: "",
-                                                        address: "")),
-                                                date: "",
-                                                id: 0,
-                                                list: [],
-                                                partyName: "Search Customer",
-                                              )),
-                                      (route) => false);
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(snackBar);
-                                },
-                      elevation: 20.0,
-                      disabledColor: Color(0x0ff1e1e1),
-                      disabledElevation: 1,
-                      color: Color(0xff00620b),
-                      shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(25.0))),
-                      minWidth: double.infinity,
-                      height: 50,
-                      child: Text(
-                        RecoveryScreen.isEditRecovery ? "Update" : "Save",
-                        style: TextStyle(fontSize: 20, color: Colors.white),
-                      )),
-                ],
+                    SizedBox(
+                      height: 20,
+                    ),
+                    TextFormField(
+                      minLines: 3,
+                      maxLines: 4,
+                      maxLength: 270,
+                      keyboardType: TextInputType.text,
+                      controller: RecoveryScreen.descriptioncontroller,
+                      onChanged: (value) {
+                        setState(() {
+                          description = value;
+                        });
+                      },
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                            borderSide: BorderSide(width: 30.0)),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                          borderSide: BorderSide(color: Colors.blue),
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(
+                            vertical: 13, horizontal: 20),
+                        labelText: 'Description',
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    MaterialButton(
+                        onPressed: (widget.getParty().partyName ==
+                                    "Search Customer" ||
+                                amount == 0 ||
+                                description == "")
+                            ? null
+                            : RecoveryScreen.isEditRecovery
+                                ? () async {
+                                    final snackBar = const SnackBar(
+                                      content: Text("Recovery is update."),
+                                    );
+                                    await SQLHelper.updateRecoveryTable(
+                                        widget.recovery.recoveryID,
+                                        RecoveryScreen.tcustomer.partyId,
+                                        amount,
+                                        description,
+                                        _groupValue);
+                                    RecoveryScreen.amountcontroller.clear();
+                                    RecoveryScreen.descriptioncontroller
+                                        .clear();
+                                    amount = 0;
+                                    description = "";
+                                    RecoveryScreen.isEditRecovery = false;
+                                    RecoveryScreen.getData = false;
+                                    widget.setParty(Customer(
+                                        discount: 0,
+                                        userId: 0,
+                                        partyId: 0,
+                                        address: "",
+                                        partyName: "Search Customer"));
+                                    RecoveryScreen.tcustomer = Customer(
+                                        discount: 0,
+                                        userId: 0,
+                                        address: "",
+                                        partyId: 0,
+                                        partyName: "Search Customer");
+                                    Navigator.pushAndRemoveUntil(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                ViewRecoveryScreen()),
+                                        (route) => false);
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(snackBar);
+                                  }
+                                : () {
+                                    Recovery recovery = Recovery(
+                                        amount: amount,
+                                        recoveryID: 0,
+                                        isCashOrCheck: _groupValue,
+                                        userID: widget.userID,
+                                        dated:
+                                            dateFormat.format(DateTime.now()),
+                                        party: Customer(
+                                            partyId: widget.getParty().partyId,
+                                            userId: widget.getParty().userId,
+                                            discount:
+                                                widget.getParty().discount,
+                                            address: widget.getParty().address,
+                                            partyName:
+                                                widget.getParty().partyName),
+                                        description: description,
+                                        isPost: false);
+                                    SQLHelper.instance
+                                        .createRecoveryitem(recovery, false);
+                                    final snackBar = const SnackBar(
+                                      content: Text("Recovery is Saved."),
+                                    );
+                                    RecoveryScreen.amountcontroller.clear();
+                                    RecoveryScreen.descriptioncontroller
+                                        .clear();
+                                    widget.setParty(Customer(
+                                        partyId: 0,
+                                        userId: 0,
+                                        discount: 0,
+                                        address: "",
+                                        partyName: "Search Customer"));
+                                    RecoveryScreen.tcustomer = Customer(
+                                        discount: 0,
+                                        userId: 0,
+                                        address: "",
+                                        partyId: 0,
+                                        partyName: "Search Customer");
+                                    Navigator.pushAndRemoveUntil(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                MyNavigationBar(
+                                                  selectedIndex: 0,
+                                                  editRecovery: ViewRecovery(
+                                                      amount: 0,
+                                                      description: "",
+                                                      checkOrCash: "",
+                                                      recoveryID: 0,
+                                                      dated: "",
+                                                      party: Customer(
+                                                          discount: 0,
+                                                          partyId: 0,
+                                                          userId: 0,
+                                                          partyName: "",
+                                                          address: "")),
+                                                  date: "",
+                                                  id: 0,
+                                                  list: [],
+                                                  partyName: "Search Customer",
+                                                )),
+                                        (route) => false);
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(snackBar);
+                                  },
+                        elevation: 20.0,
+                        disabledColor: Color(0x0ff1e1e1),
+                        disabledElevation: 1,
+                        color: Color(0xff00620b),
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(25.0))),
+                        minWidth: double.infinity,
+                        height: 50,
+                        child: Text(
+                          RecoveryScreen.isEditRecovery ? "Update" : "Save",
+                          style: TextStyle(fontSize: 20, color: Colors.white),
+                        )),
+                  ],
+                ),
               )),
         ),
       ),

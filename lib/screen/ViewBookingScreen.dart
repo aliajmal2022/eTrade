@@ -84,11 +84,12 @@ class _ViewBookingScreenState extends State<ViewBookingScreen>
                                       amount: 0,
                                       description: "",
                                       recoveryID: 0,
+                                      checkOrCash: "",
                                       dated: "",
                                       party: Customer(
                                           partyId: 0,
                                           partyName: "",
-                                                                  userId: 0,
+                                          userId: 0,
                                           address: "",
                                           discount: 0)),
                                   list: [],

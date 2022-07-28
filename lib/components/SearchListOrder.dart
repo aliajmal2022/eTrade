@@ -51,133 +51,140 @@ class _ListOfOrderState extends State<ListOfOrder> {
                 padding: const EdgeInsets.all(5.0),
                 child: Slidable(
                   key: const ValueKey(0),
-                  // endActionPane:
-                  //     ActionPane(motion: const ScrollMotion(), children: [
-                  //   SlidableAction(
-                  //     onPressed: ((ViewBookingScreen.isSaleBooking
-                  //         ? (context) async {
-                  //             var saleDetail =
-                  //                 await BookingTabBarItem.getSaleDetail(
-                  //                     dummyOrderList[index].saleID);
-                  //             TakeOrderScreen.isEditSale = true;
-                  //             Navigator.push(
-                  //                 context,
-                  //                 MaterialPageRoute(
-                  //                     builder: (context) => MyNavigationBar(
-                  //                         selectedIndex: 1,
-                  //                         editRecovery: ViewRecovery(
-                  //                             amount: 0,
-                  //                             description: "",
-                  //                             recoveryID: 0,
-                  //                             dated: "",
-                  //                             party: Customer(
-                  //                                 userId: 0,
-                  //                                 discount: 0,
-                  //                                 address: "",
-                  //                                 partyId: 0,
-                  //                                 partyName: "")),
-                  //                         date: dummyOrderList[index].saleDate,
-                  //                         list: saleDetail,
-                  //                         partyName:
-                  //                             dummyOrderList[index].partyName,
-                  //                         id: dummyOrderList[index].saleID)));
-                  //           }
-                  //         : (context) async {
-                  //             var orderDetail =
-                  //                 await BookingTabBarItem.getOrderDetail(
-                  //                     dummyOrderList[index].orderID);
+                  endActionPane:
+                      ActionPane(motion: const ScrollMotion(), children: [
+                    SlidableAction(
+                      onPressed: ((ViewBookingScreen.isSaleBooking
+                          ? (context) async {
+                              var saleDetail =
+                                  await BookingTabBarItem.getSaleDetail(
+                                      dummyOrderList[index].saleID);
+                              TakeOrderScreen.isEditSale = true;
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => MyNavigationBar(
+                                          selectedIndex: 1,
+                                          editRecovery: ViewRecovery(
+                                              amount: 0,
+                                              description: "",
+                                        checkOrCash: "",
+                                              recoveryID: 0,
+                                              dated: "",
+                                              party: Customer(
+                                                  userId: 0,
+                                                  discount: 0,
+                                                  address: "",
+                                                  partyId: 0,
+                                                  partyName: "")),
+                                          date: dummyOrderList[index].saleDate,
+                                          list: saleDetail,
+                                          partyName:
+                                              dummyOrderList[index].partyName,
+                                          id: dummyOrderList[index].saleID)));
+                            }
+                          : (context) async {
+                              var orderDetail =
+                                  await BookingTabBarItem.getOrderDetail(
+                                      dummyOrderList[index].orderID);
 
-                  //             TakeOrderScreen.isEditOrder = true;
-                  //             Navigator.push(
-                  //                 context,
-                  //                 MaterialPageRoute(
-                  //                     builder: (context) => MyNavigationBar(
-                  //                           editRecovery: ViewRecovery(
-                  //                               amount: 0,
-                  //                               description: "",
-                  //                               recoveryID: 0,
-                  //                               dated: "",
-                  //                               party: Customer(
-                  //                                   userId: 0,
-                  //                                   address: "",
-                  //                                   discount: 0,
-                  //                                   partyId: 0,
-                  //                                   partyName: "")),
-                  //                           date: dummyOrderList[index].orderDate,
-                  //                           selectedIndex: 1,
-                  //                           list: orderDetail,
-                  //                           id: dummyOrderList[index].orderID,
-                  //                           partyName:
-                  //                               dummyOrderList[index].partyName,
-                  //                         )));
-                  //           })),
-                  //     backgroundColor: const Color(0xFF21B7CA),
-                  //     foregroundColor: Colors.white,
-                  //     icon: Icons.edit,
-                  //     label: 'Edit',
-                  //   ),
-                  //   SlidableAction(
-                  //     onPressed: ((ViewBookingScreen.isSaleBooking
-                  //         ? (context) async {
-                  //             await SQLHelper.deleteItem("Sale", "saleID",
-                  //                 dummyOrderList[index].orderID);
+                              TakeOrderScreen.isEditOrder = true;
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => MyNavigationBar(
+                                            editRecovery: ViewRecovery(
+                                                amount: 0,
+                                                description: "",
+                                                recoveryID: 0,
+                                        checkOrCash: "",
+                                                dated: "",
+                                                party: Customer(
+                                                    userId: 0,
+                                                    address: "",
+                                                    discount: 0,
+                                                    partyId: 0,
+                                                    partyName: "")),
+                                            date:
+                                                dummyOrderList[index].orderDate,
+                                            selectedIndex: 1,
+                                            list: orderDetail,
+                                            id: dummyOrderList[index].orderID,
+                                            partyName:
+                                                dummyOrderList[index].partyName,
+                                          )));
+                            })),
+                      backgroundColor: Color(0xFF21B7CA),
+                      foregroundColor: Colors.white,
+                      icon: Icons.edit,
+                      label: 'Edit',
+                    ),
+                    SlidableAction(
+                      backgroundColor: const Color(0xFFFE4A49),
+                      foregroundColor: Colors.white,
+                      icon: Icons.delete,
+                      label: 'delete',
+                      onPressed: ((ViewBookingScreen.isSaleBooking
+                          ? (context) async {
+                              await SQLHelper.deleteItem("Sale", "saleID",
+                                  dummyOrderList[index].orderID);
 
-                  //             await SQLHelper.deleteItem("SaleDetail", "saleID",
-                  //                 dummyOrderList[index].orderID);
+                              await SQLHelper.deleteItem("SaleDetail", "saleID",
+                                  dummyOrderList[index].orderID);
 
-                  //             if (widget.tabName == "Search") {
-                  //               _item = await SQLHelper.getFromToViewSale(
-                  //                   BookingTabBarItem.getFromDate(),
-                  //                   BookingTabBarItem.getToDate());
-                  //             } else if (widget.tabName == "Today") {
-                  //               String todayDate =
-                  //                   dateFormat.format(DateTime.now());
-                  //               _item = await SQLHelper.getSpecificViewSale(
-                  //                   todayDate);
-                  //             } else if (widget.tabName == "Yesterday") {
-                  //               String yesterdayDate = dateFormat.format(
-                  //                   DateTime.now().subtract(Duration(days: 1)));
-                  //               _item = await SQLHelper.getSpecificViewSale(
-                  //                   yesterdayDate);
-                  //             } else {
-                  //               _item = await SQLHelper.getAllViewSale();
-                  //             }
-                  //             setState(() {
-                  //               dummyOrderList =
-                  //                   ViewOrderBooking.ViewOrderFromDb(_item);
-                  //             });
-                  //           }
-                  //         : (context) async {
-                  //             await SQLHelper.deleteItem("Order", "OrderID",
-                  //                 dummyOrderList[index].orderID);
+                              if (widget.tabName == "Search") {
+                                _item = await SQLHelper.getFromToViewSale(
+                                    BookingTabBarItem.getFromDate(),
+                                    BookingTabBarItem.getToDate());
+                              } else if (widget.tabName == "Today") {
+                                String todayDate =
+                                    dateFormat.format(DateTime.now());
+                                _item = await SQLHelper.getSpecificViewSale(
+                                    todayDate);
+                              } else if (widget.tabName == "Yesterday") {
+                                String yesterdayDate = dateFormat.format(
+                                    DateTime.now().subtract(Duration(days: 1)));
+                                _item = await SQLHelper.getSpecificViewSale(
+                                    yesterdayDate);
+                              } else {
+                                _item = await SQLHelper.getAllViewSale();
+                              }
+                              setState(() {
+                                dummyOrderList =
+                                    ViewOrderBooking.ViewOrderFromDb(_item);
+                              });
+                            }
+                          : (context) async {
+                              await SQLHelper.deleteItem("Order", "OrderID",
+                                  dummyOrderList[index].orderID);
 
-                  //             await SQLHelper.deleteItem("OrderDetail", "OrderID",
-                  //                 dummyOrderList[index].orderID);
+                              await SQLHelper.deleteItem("OrderDetail",
+                                  "OrderID", dummyOrderList[index].orderID);
 
-                  //             if (widget.tabName == "Search") {
-                  //               _item = await SQLHelper.getFromToViewOrder(
-                  //                   BookingTabBarItem.getFromDate(),
-                  //                   BookingTabBarItem.getToDate());
-                  //             } else if (widget.tabName == "Today") {
-                  //               String todayDate =
-                  //                   dateFormat.format(DateTime.now());
-                  //               _item = await SQLHelper.getSpecificViewOrder(
-                  //                   todayDate);
-                  //             } else if (widget.tabName == "Yesterday") {
-                  //               String yesterdayDate = dateFormat.format(
-                  //                   DateTime.now().subtract(Duration(days: 1)));
-                  //               _item = await SQLHelper.getSpecificViewOrder(
-                  //                   yesterdayDate);
-                  //             } else {
-                  //               _item = await SQLHelper.getAllViewOrder();
-                  //             }
-                  //             setState(() {
-                  //               dummyOrderList =
-                  //                   ViewOrderBooking.ViewOrderFromDb(_item);
-                  //             });
-                  //           })),
-                  //   ),
-                  // ]),
+                              if (widget.tabName == "Search") {
+                                _item = await SQLHelper.getFromToViewOrder(
+                                    BookingTabBarItem.getFromDate(),
+                                    BookingTabBarItem.getToDate());
+                              } else if (widget.tabName == "Today") {
+                                String todayDate =
+                                    dateFormat.format(DateTime.now());
+                                _item = await SQLHelper.getSpecificViewOrder(
+                                    todayDate);
+                              } else if (widget.tabName == "Yesterday") {
+                                String yesterdayDate = dateFormat.format(
+                                    DateTime.now().subtract(Duration(days: 1)));
+                                _item = await SQLHelper.getSpecificViewOrder(
+                                    yesterdayDate);
+                              } else {
+                                _item = await SQLHelper.getAllViewOrder();
+                              }
+                              setState(() {
+                                dummyOrderList =
+                                    ViewOrderBooking.ViewOrderFromDb(_item);
+                              });
+                            })),
+                    ),
+                  ]),
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 5.0),
                     child: Container(

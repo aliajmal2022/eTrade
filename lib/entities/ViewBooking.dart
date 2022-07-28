@@ -26,6 +26,7 @@ class ViewOrderBooking {
         viewOrder.totalQuantity = element['TotalQuantity'];
         viewOrder.partyName = element['PartyName'];
         viewOrder.orderID = element['OrderID'];
+        viewOrder.orderID = element['OrderID'];
         _listOrderView.add(viewOrder);
       });
     }
