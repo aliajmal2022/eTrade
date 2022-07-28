@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 Future<dynamic> AddItemIntoCart(
+  double discount,
   int quantity,
   BuildContext context,
   Product product,
@@ -16,6 +17,7 @@ Future<dynamic> AddItemIntoCart(
         borderRadius: BorderRadius.vertical(top: Radius.circular(25.0))),
     isScrollControlled: true,
     builder: (context) => AddItemModelSheet(
+      discount: discount,
       selectedItem: product,
       screen: route,
       quantity: quantity,
@@ -27,8 +29,10 @@ class AddItemModelSheet extends StatefulWidget {
   AddItemModelSheet(
       {required this.quantity,
       required this.selectedItem,
+      required this.discount,
       required this.screen});
   final Product selectedItem;
+  final double discount;
   final Widget screen;
   int quantity;
 
@@ -110,14 +114,16 @@ class _AddItemModelSheetState extends State<AddItemModelSheet> {
   @override
   void initState() {
     checkQuantity();
-    _ratecontroller.text = (widget.selectedItem.Price).toString();
-    rate = widget.selectedItem.Price;
-    _discountcontroller.text = (widget.selectedItem.discount).toString();
-    discount = widget.selectedItem.discount;
-    _bonuscontroller.text = (widget.selectedItem.discount).toString();
-    bonus = widget.selectedItem.bonus;
-    _discountcontroller.text = (widget.selectedItem.discount).toString();
-    discount = widget.selectedItem.discount;
+    setState(() {
+      _ratecontroller.text = (widget.selectedItem.Price).toString();
+      rate = widget.selectedItem.Price;
+      _discountcontroller.text = (widget.discount).toString();
+      discount = widget.discount;
+      _bonuscontroller.text = (widget.selectedItem.discount).toString();
+      bonus = widget.selectedItem.bonus;
+      _tocontroller.text = (widget.selectedItem.to).toString();
+      tO = widget.selectedItem.to;
+    });
     super.initState();
   }
 
@@ -235,11 +241,7 @@ class _AddItemModelSheetState extends State<AddItemModelSheet> {
                             controller: _discountcontroller,
                             onChanged: (value) {
                               setState(() {
-                                if (value.isNotEmpty) {
-                                  discount = double.parse(value);
-                                } else {
-                                  discount = 0;
-                                }
+                                discount = double.parse(value);
                               });
                             },
                             decoration: InputDecoration(
@@ -350,17 +352,12 @@ class _AddItemModelSheetState extends State<AddItemModelSheet> {
                             : () {
                                 // double totalRate = 0;
                                 // totalRate = quantity * rate;
-                                if (discount != 0) {
-                                  discountRate = rate - (rate * discount / 100);
-                                } else {
-                                  discountRate = rate;
-                                }
                                 setState(() {
                                   Product selectedItem = Product(
                                       to: tO,
                                       bonus: bonus,
                                       discount: discount,
-                                      Price: discountRate,
+                                      Price: widget.selectedItem.Price,
                                       Title: widget.selectedItem.Title,
                                       ID: widget.selectedItem.ID,
                                       Quantity: getQuantity());

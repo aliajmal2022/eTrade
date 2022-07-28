@@ -43,8 +43,12 @@ class _ListItemsState extends State<ListItems> {
                 child: MaterialButton(
                   onPressed: () {
                     setState(() {
-                      AddItemIntoCart(widget.productItems[index].Quantity,
-                          context, widget.productItems[index], widget.route);
+                      AddItemIntoCart(
+                          widget.editDiscount,
+                          widget.productItems[index].Quantity,
+                          context,
+                          widget.productItems[index],
+                          widget.route);
                     });
                   },
                   child: ListTile(
@@ -72,6 +76,6 @@ class _ListItemsState extends State<ListItems> {
             scrollDirection: Axis.vertical,
           )
         : SearchListProduct(context, widget.productItems, widget.searchedInput,
-            quantity, widget.route);
+            quantity, widget.route, widget.editDiscount);
   }
 }

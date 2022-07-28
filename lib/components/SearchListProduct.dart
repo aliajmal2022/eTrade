@@ -3,7 +3,7 @@ import 'package:eTrade/entities/Products.dart';
 import 'package:flutter/material.dart';
 
 SearchListProduct(BuildContext context, List<Product> product, String matchItem,
-    int quantity, Widget route) {
+    int quantity, Widget route, double discount) {
   ScrollController _controller = ScrollController();
   List<Product> dummyProductList = [];
   dummyProductList.clear();
@@ -20,8 +20,8 @@ SearchListProduct(BuildContext context, List<Product> product, String matchItem,
             return Card(
               child: MaterialButton(
                 onPressed: () {
-                  AddItemIntoCart(
-                      quantity, context, dummyProductList[index], route);
+                  AddItemIntoCart(discount, quantity, context,
+                      dummyProductList[index], route);
                 },
                 child: ListTile(
                   leading: dummyProductList[index].Quantity == 0

@@ -26,17 +26,10 @@ class CartScreen extends StatefulWidget {
   int userID;
   String date;
 
-  @override
-  State<CartScreen> createState() => _CartScreenState();
-}
-
-class _CartScreenState extends State<CartScreen> {
-  ScrollController _controller = ScrollController();
-
   int getTotalQuantity() {
     int temp = 0;
-    if (widget.selectedItems.isNotEmpty) {
-      widget.selectedItems.forEach((element) {
+    if (selectedItems.isNotEmpty) {
+      selectedItems.forEach((element) {
         temp += element.Quantity;
       });
     }
@@ -45,24 +38,48 @@ class _CartScreenState extends State<CartScreen> {
 
   double getTotalAmount() {
     double temp = 0;
-    if (widget.selectedItems.isNotEmpty) {
-      widget.selectedItems.forEach((element) {
+    if (selectedItems.isNotEmpty) {
+      selectedItems.forEach((element) {
         temp += (element.Price * element.Quantity);
       });
     }
     return temp;
   }
 
+  @override
+  State<CartScreen> createState() => _CartScreenState();
+}
+
+class _CartScreenState extends State<CartScreen> {
+  ScrollController _controller = ScrollController();
+
   DateFormat dateFormat = DateFormat('dd/MM/yyyy');
   TextEditingController controller = TextEditingController();
   String description = '';
   bool isCash = TakeOrderScreen.isSaleSpot ? true : false;
+  double totalDiscount = 0;
+  double discount = 0;
+  double totalAmount = 0;
+
+  int totalQuantity = 0;
+  @override
+  void initState() {
+    totalAmount = widget.getTotalAmount();
+    totalQuantity = widget.getTotalQuantity();
+    discount = widget.selecedCustomer.discount;
+    if (discount != 0) {
+      totalDiscount = totalAmount - (totalAmount * discount / 100);
+    } else {
+      totalDiscount = totalAmount;
+    }
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final isLandscape =
         MediaQuery.of(context).orientation == Orientation.landscape;
-    double totalAmount = getTotalAmount();
-    int totalQuantity = getTotalQuantity();
+
     return SafeArea(
       child: WillPopScope(
         onWillPop: () async => false,
@@ -175,6 +192,7 @@ class _CartScreenState extends State<CartScreen> {
                               onPressed: () {
                                 setState(() {
                                   AddItemIntoCart(
+                                      widget.selecedCustomer.discount,
                                       widget.selectedItems[index].Quantity,
                                       context,
                                       widget.selectedItems[index],
@@ -299,25 +317,53 @@ class _CartScreenState extends State<CartScreen> {
                         ),
                         Padding(
                           padding: EdgeInsets.all(20),
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Total Qty: $totalQuantity",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    // color: Colors.white
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Total Qty: $totalQuantity",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        // color: Colors.white
+                                      ),
+                                    ),
+                                    Text(
+                                      "Total Value: $totalAmount",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        // color: Colors.white
+                                      ),
+                                    ),
+                                  ]),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Discount: ${(discount).toInt()}",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      // color: Colors.white
+                                    ),
                                   ),
-                                ),
-                                Text(
-                                  "Total Value: $totalAmount",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    // color: Colors.white
+                                  Text(
+                                    "Total Discount: $totalDiscount",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      // color: Colors.white
+                                    ),
                                   ),
-                                ),
-                              ]),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                         MaterialButton(
                             shape: const RoundedRectangleBorder(
