@@ -2,11 +2,13 @@ import 'package:eTrade/components/NavigationBar.dart';
 import 'package:date_format/date_format.dart';
 import 'package:eTrade/helper/Sql_Connection.dart';
 import 'package:eTrade/components/sharePreferences.dart';
+import 'package:eTrade/helper/onldt_to_local_db.dart';
 import 'package:eTrade/helper/sqlhelper.dart';
 import 'package:eTrade/entities/Customer.dart';
 import 'package:eTrade/entities/ViewRecovery.dart';
 import 'package:eTrade/main.dart';
 import 'package:eTrade/screen/Connection/ConnectionScreen.dart';
+import 'package:eTrade/screen/NavigationScreen/Booking/AddItemModelSheet.dart';
 import 'package:eTrade/screen/NavigationScreen/Take%20Order/TakeOrderScreen.dart';
 import 'package:eTrade/screen/LoginScreen/LoginScreen.dart';
 import 'package:eTrade/screen/NavigationScreen/RecoveryBooking/RecoveryScreen.dart';
@@ -126,6 +128,163 @@ class _MyDrawerState extends State<MyDrawer> {
         return alert;
       },
     );
+  }
+
+  Future<void> onPostingLoading(
+    BuildContext context,
+  ) async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return const Center(child: CircularProgressIndicator());
+      },
+    );
+
+    Future.delayed(const Duration(seconds: 3), () async {
+      var strToList = ping.split(",");
+      var ip = strToList[0];
+      var port = strToList[1];
+      bool isconnected = await Sql_Connection.connect(context, ip, port);
+      if (isconnected) {
+        final snackBar = const SnackBar(
+          content: Text("Posting is Completed."),
+        );
+        var _order = await SQLHelper.instance.getTable("Order", "OrderID");
+        var _orderDetail =
+            await SQLHelper.instance.getTable("OrderDetail", "OrderID");
+        var _recovery =
+            await SQLHelper.instance.getTable("Recovery", "RecoveryID");
+        var _party = await SQLHelper.instance.getTable("Party", "PartyID");
+        var _sale = await SQLHelper.instance.getTable("Sale", "InvoiceID");
+        var _saleDetail =
+            await SQLHelper.instance.getTable("SaleDetail", "InvoiceID");
+        try {
+          _order.forEach((element) {
+            String dated = element['Dated'];
+            var rawDate = dated.split("/");
+            DateTime date = DateTime.parse(rawDate.reversed.join(""));
+
+            Sql_Connection().write(
+                "INSERT INTO dbo_m.[Order](OrderID,UserId,PartyID,TotalQuantity,TotalValue,Dated,[Description])VALUES( ${element['OrderID']} , ${element['UserID']} , ${element['PartyID']},${element['TotalQuantity']} ,${element['TotalValue']} , '${formatDate(date, [
+                  yyyy,
+                  mm,
+                  dd
+                ])}',	'${element['Description']}')");
+          });
+          _orderDetail.forEach((element) {
+            String dated = element['Dated'];
+            var rawDate = dated.split("/");
+            DateTime date = DateTime.parse(rawDate.reversed.join(""));
+            Sql_Connection().write(
+                "INSERT INTO dbo_m.[OrderDetail]( UserId ,OrderID, ItemID, Quantity, RATE, Amount, Dated) VALUES ( ${element['UserID']}, ${element['OrderID']} , '${element['ItemID']}', ${element['Quantity']},${element['RATE']} ,${element['Amount']} , '${formatDate(date, [
+                  yyyy,
+                  mm,
+                  dd
+                ])}') ");
+          });
+          _recovery.forEach((element) {
+            String dated = element['Dated'];
+            var rawDate = dated.split("/");
+            DateTime date = DateTime.parse(rawDate.reversed.join(""));
+            Sql_Connection().write(
+                " INSERT INTO dbo_m.[Recovery]( RecoveryID, UserId, PartyID, Amount, Dated, [Description]) VALUES ( ${element['RecoveryID']},${element['UserID']},${element['PartyID']},${element['Amount']},'${formatDate(date, [
+                  yyyy,
+                  mm,
+                  dd
+                ])}','${element['Description']}') ");
+          });
+          _sale.forEach((element) {
+            String dated = element['Dated'];
+            var rawDate = dated.split("/");
+            DateTime date = DateTime.parse(rawDate.reversed.join(""));
+
+            Sql_Connection().write(
+                "INSERT INTO dbo_m.[Sale](InvoiceID,UserId,PartyID,isCashInvoice,TotalQuantity,TotalValue,Dated,[Description])VALUES( ${element['InvoiceID']} , ${element['UserID']} , ${element['PartyID']},${element['isCash']},${element['TotalQuantity']} ,${element['TotalValue']} , '${formatDate(date, [
+                  yyyy,
+                  mm,
+                  dd
+                ])}',	'${element['Description']}')");
+          });
+          _saleDetail.forEach((element) {
+            String dated = element['Dated'];
+            var rawDate = dated.split("/");
+            DateTime date = DateTime.parse(rawDate.reversed.join(""));
+            Sql_Connection().write(
+                "INSERT INTO dbo_m.[SaleDetail]( InvoiceID,UserId , ItemID, Quantity, RATE, Amount, Dated) VALUES ( ${element['InvoiceID']}, ${element['UserID']} , '${element['ItemID']}', ${element['Quantity']},${element['RATE']} ,${element['Amount']} , '${formatDate(date, [
+                  yyyy,
+                  mm,
+                  dd
+                ])}') ");
+          });
+          _party.forEach((element) {
+            String dated = DateFormat('dd/mm/yyyy').format(DateTime.now());
+            var rawDate = dated.split("/");
+            DateTime date = DateTime.parse(rawDate.reversed.join(""));
+
+            Sql_Connection().write(
+                "INSERT INTO dbo_m.[Party](PartyID,UserId,PartyName,Discount,Address)VALUES( ${element['PartyID']} , ${element['UserID']} , '${element['PartyName']}',${element['Discount']} ,'${element['Address']}')");
+          });
+          await SQLHelper.tablePosted();
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => MyNavigationBar(
+                        editRecovery: ViewRecovery(
+                            amount: 0,
+                            description: "",
+                            recoveryID: 0,
+                            checkOrCash: "",
+                            dated: "",
+                            party: Customer(
+                                partyId: 0,
+                                userId: 0,
+                                partyName: "",
+                                discount: 0,
+                                address: "")),
+                        selectedIndex: 0,
+                        date: "",
+                        list: [],
+                        id: 0,
+                        partyName: "Search Customer",
+                      )),
+              (route) => false);
+          print("here we go");
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        } catch (e) {
+          debugPrint("Ops");
+        }
+      } else {
+        // await SQLHelper.tableNotPosted();
+        final snackBar = const SnackBar(
+          content: Text("Host unaccessible. Keep your device near to router."),
+        );
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+                builder: (context) => MyNavigationBar(
+                      editRecovery: ViewRecovery(
+                          amount: 0,
+                          description: "",
+                          checkOrCash: "",
+                          recoveryID: 0,
+                          dated: "",
+                          party: Customer(
+                              userId: 0,
+                              discount: 0,
+                              address: "",
+                              partyId: 0,
+                              partyName: "")),
+                      selectedIndex: 0,
+                      date: "",
+                      list: [],
+                      id: 0,
+                      partyName: "Search Customer",
+                    )),
+            (route) => false);
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
+    });
   }
 
   bool isSwitched = MyApp.isDark;
@@ -353,120 +512,7 @@ class _MyDrawerState extends State<MyDrawer> {
                   ),
                   MaterialButton(
                     onPressed: () async {
-                      var strToList = ping.split(",");
-                      var ip = strToList[0];
-                      var port = strToList[1];
-
-                      bool isconnected =
-                          await Sql_Connection.connect(context, ip, port);
-                      if (isconnected) {
-                        final snackBar = const SnackBar(
-                          content: Text("Posting is Completed."),
-                        );
-                        var _order = await SQLHelper.instance
-                            .getTable("Order", "OrderID");
-                        var _orderDetail = await SQLHelper.instance
-                            .getTable("OrderDetail", "OrderID");
-                        var _recovery = await SQLHelper.instance
-                            .getTable("Recovery", "RecoveryID");
-                        try {
-                          _order.forEach((element) {
-                            String dated = element['Dated'];
-                            var rawDate = dated.split("/");
-                            DateTime date =
-                                DateTime.parse(rawDate.reversed.join(""));
-
-                            Sql_Connection().write(
-                                "INSERT INTO dbo_m.[Order](OrderID,UserId,PartyID,TotalQuantity,TotalValue,Dated,[Description])VALUES( ${element['OrderID']} , ${element['UserID']} , ${element['PartyID']},${element['TotalQuantity']} ,${element['TotalValue']} , '${formatDate(date, [
-                                  yyyy,
-                                  mm,
-                                  dd
-                                ])}',	'${element['Description']}')");
-                          });
-                          _orderDetail.forEach((element) {
-                            String dated = element['Dated'];
-                            var rawDate = dated.split("/");
-                            DateTime date =
-                                DateTime.parse(rawDate.reversed.join(""));
-                            Sql_Connection().write(
-                                "INSERT INTO dbo_m.[OrderDetail]( UserId ,OrderID, ItemID, Quantity, RATE, Amount, Dated) VALUES ( ${element['UserID']}, ${element['OrderID']} , '${element['ItemID']}', ${element['Quantity']},${element['RATE']} ,${element['Amount']} , '${formatDate(date, [
-                                  yyyy,
-                                  mm,
-                                  dd
-                                ])}') ");
-                          });
-                          _recovery.forEach((element) {
-                            String dated = element['Dated'];
-                            var rawDate = dated.split("/");
-                            DateTime date =
-                                DateTime.parse(rawDate.reversed.join(""));
-                            Sql_Connection().write(
-                                " INSERT INTO dbo_m.[Recovery]( RecoveryID, UserId, PartyID, Amount, Dated, [Description]) VALUES ( ${element['RecoveryID']},${element['UserID']},${element['PartyID']},${element['Amount']},'${formatDate(date, [
-                                  yyyy,
-                                  mm,
-                                  dd
-                                ])}','${element['Description']}') ");
-                          });
-                          await SQLHelper.tablePosted();
-                          print("here we go");
-                          Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => MyNavigationBar(
-                                        editRecovery: ViewRecovery(
-                                            amount: 0,
-                                            description: "",
-                                            recoveryID: 0,
-                                            checkOrCash: "",
-                                            dated: "",
-                                            party: Customer(
-                                                address: "",
-                                                userId: 0,
-                                                discount: 0,
-                                                partyId: 0,
-                                                partyName: "")),
-                                        selectedIndex: 0,
-                                        date: "",
-                                        list: [],
-                                        id: 0,
-                                        partyName: "Search Customer",
-                                      )),
-                              (route) => false);
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                        } catch (e) {
-                          debugPrint("Ops");
-                        }
-                      } else {
-                        // await SQLHelper.tableNotPosted();
-                        final snackBar = const SnackBar(
-                          content: Text(
-                              "Host unaccessible. Keep your device near to router."),
-                        );
-                        Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => MyNavigationBar(
-                                      editRecovery: ViewRecovery(
-                                          amount: 0,
-                                          description: "",
-                                          checkOrCash: "",
-                                          recoveryID: 0,
-                                          dated: "",
-                                          party: Customer(
-                                              userId: 0,
-                                              discount: 0,
-                                              address: "",
-                                              partyId: 0,
-                                              partyName: "")),
-                                      selectedIndex: 0,
-                                      date: "",
-                                      list: [],
-                                      id: 0,
-                                      partyName: "Search Customer",
-                                    )),
-                            (route) => false);
-                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                      }
+                      onPostingLoading(context);
                     },
                     child: Row(
                       children: const [
@@ -491,7 +537,9 @@ class _MyDrawerState extends State<MyDrawer> {
                     ),
                   ),
                   MaterialButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      SQLHelper.tablenotPosted();
+                    },
                     child: Row(
                       children: const [Icon(Icons.exit_to_app), Text("Logout")],
                     ),

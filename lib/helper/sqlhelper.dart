@@ -504,12 +504,26 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
   static Future<void> deleteTable(Database database, String tableName) async {
     try {
       await database.execute("""
-  DELETE FROM $tableName 
+  DELETE FROM [$tableName] 
       """);
       // }
 
     } catch (e) {
       debugPrint("successfully deleted values from $tableName table");
+    }
+  }
+
+  static Future<void> tablenotPosted() async {
+    try {
+      Database db = await instance.database;
+      await db.execute("UPDATE [Order] SET isPosted=0");
+      await db.execute("UPDATE [OrderDetail] SET isPosted=0");
+      await db.execute("UPDATE [Recovery] SET isPosted=0");
+      await db.execute("UPDATE [Party] SET isPosted=0");
+      await db.execute("UPDATE [Sale] SET isPosted=0");
+      await db.execute("UPDATE [SaleDetail] SET isPosted=0");
+    } catch (e) {
+      debugPrint("Error During posting update");
     }
   }
 
@@ -519,7 +533,9 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
       await db.execute("UPDATE [Order] SET isPosted=1");
       await db.execute("UPDATE [OrderDetail] SET isPosted=1");
       await db.execute("UPDATE [Recovery] SET isPosted=1");
-      await db.execute("UPDATE [Customer] SET isPosted=1");
+      await db.execute("UPDATE [Party] SET isPosted=1");
+      await db.execute("UPDATE [Sale] SET isPosted=1");
+      await db.execute("UPDATE [SaleDetail] SET isPosted=1");
     } catch (e) {
       debugPrint("Error During posting update");
     }

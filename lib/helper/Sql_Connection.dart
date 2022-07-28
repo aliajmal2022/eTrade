@@ -6,7 +6,7 @@ import 'package:eTrade/helper/sqlhelper.dart';
 import 'package:eTrade/entities/Customer.dart';
 import 'package:eTrade/entities/Products.dart';
 import 'package:eTrade/entities/User.dart';
-import 'package:eTrade/screen/NavigationScreen/Take%20Order/TakeOrderScreen.dart';
+import 'package:eTrade/screen/NavigationScreen/Take Order/TakeOrderScreen.dart';
 import 'package:eTrade/screen/NavigationScreen/RecoveryBooking/RecoveryScreen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
