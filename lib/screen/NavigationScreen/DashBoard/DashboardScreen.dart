@@ -1,8 +1,10 @@
 import 'package:eTrade/components/drawer.dart';
+import 'package:eTrade/helper/sqlhelper.dart';
 import 'package:eTrade/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class DashBoardScreen extends StatefulWidget {
@@ -31,25 +33,43 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
     Items(name: "Mardan Surf", ordered: 50),
   ];
   TooltipBehavior _tooltipBehavior = TooltipBehavior(enable: true);
-  var dashBoard = [
-    DashBoard(
-        compareOrder: 4, compareTime: "Yesterday", order: 5, time: "Today"),
-    DashBoard(
-        compareOrder: 24,
-        compareTime: "Previous Week",
-        order: 23,
-        time: "This Week"),
-    DashBoard(
-        compareOrder: 200,
-        compareTime: "Previous Month",
-        order: 160,
-        time: "This Month"),
-    DashBoard(
-        compareOrder: 600,
-        compareTime: "Previous Year",
-        order: 700,
-        time: "This Year"),
-  ];
+  var dashBoard;
+  DateFormat dateFormat = DateFormat("yyyy-MM-dd");
+  @override
+  void initState() {
+    // int today =
+    //     await SQLHelper.getOrderCount(dateFormat.format(DateTime.now()));
+    // int yesterday =
+    //     await SQLHelper.getOrderCount(dateFormat.format(DateTime.now()));
+    // int week = await SQLHelper.getOrderCount(dateFormat.format(DateTime.now()));
+    // int lastWeek =
+    //     await SQLHelper.getOrderCount(dateFormat.format(DateTime.now()));
+    // int month =
+    //     await SQLHelper.getOrderCount(dateFormat.format(DateTime.now()));
+    // int lastMonth =
+    //     await SQLHelper.getOrderCount(dateFormat.format(DateTime.now()));
+    // int year = await SQLHelper.getOrderCount(dateFormat.format(DateTime.now()));
+    // int lastYear =
+    //     await SQLHelper.getOrderCount(dateFormat.format(DateTime.now()));
+    dashBoard = [
+      DashBoard(
+          compareOrder: 4, compareTime: "Yesterday", order: 5, time: "Today"),
+      DashBoard(
+          compareOrder: 24, compareTime: "Last Week", order: 23, time: "Week"),
+      DashBoard(
+          compareOrder: 200,
+          compareTime: "Last Month",
+          order: 160,
+          time: "Month"),
+      DashBoard(
+          compareOrder: 600,
+          compareTime: "Last Year",
+          order: 700,
+          time: "Year"),
+    ];
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -84,6 +104,13 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
         body: SingleChildScrollView(
           child: Column(
             children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  "Order History",
+                  style: TextStyle(fontSize: 30),
+                ),
+              ),
               GridView.count(
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
@@ -158,13 +185,34 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                                       MainAxisAlignment.spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                        "No. of Bills:  ${dashBoard[index].order}"),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10.0),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text("Orders:"),
+                                          Text("${dashBoard[index].order}"),
+                                        ],
+                                      ),
+                                    ),
                                     SizedBox(
                                       height: 20,
                                     ),
-                                    Text(
-                                      "Difference: ${dashBoard[index].order - dashBoard[index].compareOrder}",
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10.0),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                              "${dashBoard[index].compareTime}:"),
+                                          Text(
+                                              "${dashBoard[index].compareOrder}"),
+                                        ],
+                                      ),
                                     ),
                                   ],
                                 ),

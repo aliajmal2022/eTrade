@@ -53,7 +53,7 @@ class CartScreen extends StatefulWidget {
 class _CartScreenState extends State<CartScreen> {
   ScrollController _controller = ScrollController();
 
-  DateFormat dateFormat = DateFormat('dd/MM/yyyy');
+  DateFormat dateFormat = DateFormat('yyyy-MM-dd');
   TextEditingController controller = TextEditingController();
   String description = '';
   bool isCash = TakeOrderScreen.isSaleSpot ? true : false;

@@ -91,7 +91,7 @@ class _BookingTabBarItemState extends State<BookingTabBarItem> {
     super.initState();
   }
 
-  DateFormat dateFormat = DateFormat('dd/MM/yyyy');
+  DateFormat dateFormat = DateFormat('yyyy-MM-dd');
   checkListDateAvialable(String tabName) async {
     if (widget.tabName == "Search") {
       _item = ViewBookingScreen.isSaleBooking
@@ -129,8 +129,8 @@ class _BookingTabBarItemState extends State<BookingTabBarItem> {
   void _onSelectionChanged(DateRangePickerSelectionChangedArgs args) {
     // setState(() {
     if (args.value is PickerDateRange) {
-      range = '${DateFormat('dd/MM/yyyy').format(args.value.startDate)}-'
-          '${DateFormat('dd/MM/yyyy').format(args.value.endDate ?? args.value.startDate)}';
+      range = '${DateFormat('yyyy-MM-dd').format(args.value.startDate)}-'
+          '${DateFormat('yyyy-MM-dd').format(args.value.endDate ?? args.value.startDate)}';
     }
   }
 

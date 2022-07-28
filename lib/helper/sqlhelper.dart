@@ -122,6 +122,11 @@ CREATE TABLE User(
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
+  static Future<List> getNotPostedParty() async {
+    Database db = await instance.database;
+    return await db.rawQuery("SELECT * FROM Party WHERE isPosted=0");
+  }
+
   static Future<void> createItemTable(Database database) async {
     await database.execute('''
   CREATE TABLE Item(
@@ -154,7 +159,7 @@ PartyID INTEGER NOT NULL,
 UserID INTEGER NOT NULL,
 TotalQuantity INTEGER NOT NULL,
 TotalValue REAL NOT NULL,
-Dated TEXT NOT NULL,
+Dated DATE NOT NULL,
 Description TEXT,
 isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1)) 
   )
@@ -177,6 +182,11 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
     final id = await db.insert('Order', data,
         conflictAlgorithm: ConflictAlgorithm.replace);
     return id;
+  }
+
+  static Future<List> getNotPostedOrder() async {
+    Database db = await instance.database;
+    return await db.rawQuery("SELECT * FROM [Order] WHERE isPosted=0");
   }
 
   static Future<List> getFromToViewOrder(var start, var end) async {
@@ -230,7 +240,7 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
   Bonus INTEGER,
   [TO] Real,
   Amount REAL NOT NULL,
-	Dated TEXT NOT NULL,
+	Dated DATE NOT NULL,
 isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1)) 
  )
       ''');
@@ -258,6 +268,11 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
+  static Future<List> getNotPostedOrderDetail() async {
+    Database db = await instance.database;
+    return await db.rawQuery("SELECT * FROM OrderDetail WHERE isPosted=0");
+  }
+
   static Future<List> getOrderDetail(int id) async {
     Database db = await instance.database;
     var ListOrder = await db.rawQuery(
@@ -274,7 +289,7 @@ PartyID INTEGER NOT NULL,
 UserID INTEGER NOT NULL,
 TotalQuantity INTEGER NOT NULL,
 TotalValue REAL NOT NULL,
-Dated TEXT NOT NULL,
+Dated DATE NOT NULL,
 Description TEXT,
 isCash BOOLEAN NOT NULL CHECK (isCash IN (0, 1)) ,
 isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1)) 
@@ -299,6 +314,11 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
     final id = await db.insert('Sale', data,
         conflictAlgorithm: ConflictAlgorithm.replace);
     return id;
+  }
+
+  static Future<List> getNotPostedSale() async {
+    Database db = await instance.database;
+    return await db.rawQuery("SELECT * FROM Sale WHERE isPosted=0");
   }
 
   static Future<List> getFromToViewSale(var start, var end) async {
@@ -352,7 +372,7 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
   Bonus INTEGER,
   [TO] Real,
   Amount REAL NOT NULL,
-	Dated TEXT NOT NULL,
+	Dated DATE NOT NULL,
 isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1)) 
  )
       ''');
@@ -380,6 +400,11 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
+  static Future<List> getNotPostedSaleDetail() async {
+    Database db = await instance.database;
+    return await db.rawQuery("SELECT * FROM SaleDetail WHERE isPosted=0");
+  }
+
   static Future<List> getSaleDetail(int id) async {
     Database db = await instance.database;
     var ListOrder = await db.rawQuery(
@@ -395,7 +420,7 @@ RecoveryID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
 PartyID INTEGER NOT NULL,
 UserID INTEGER NOT NULL,
 Amount REAL NOT NULL,
-Dated TEXT NOT NULL,
+Dated DATE NOT NULL,
 [CheckOrCash] TEXT NOT NULL,
 Description TEXT,
 isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1)) 
@@ -419,6 +444,11 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
     final id = await db.insert('Recovery', data,
         conflictAlgorithm: ConflictAlgorithm.replace);
     return id;
+  }
+
+  static Future<List> getNotPostedRecovery() async {
+    Database db = await instance.database;
+    return await db.rawQuery("SELECT * FROM Recovery WHERE isPosted=0");
   }
 
   static Future<List> getFromToRecovery(var start, var end) async {
@@ -475,6 +505,28 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
     } catch (e) {
       debugPrint('Row is not delete');
     }
+  }
+
+  static Future<int> getOrderCount(String date) async {
+    int count = 0;
+    Database db = await instance.database;
+    List order = await db.rawQuery(
+        "SELECT count(o.OrderID) FROM [Order] as o WHERE o.Dated='$date'");
+    var iterable = order.whereType<Map>().first;
+
+    count = iterable['count(o.OrderID)'];
+    return count;
+  }
+
+  static Future<int> getOrderRangeCount(String date) async {
+    int count = 0;
+    Database db = await instance.database;
+    List order = await db.rawQuery(
+        "SELECT count(o.OrderID) FROM [Order] as o WHERE o.Dated='$date'");
+    var iterable = order.whereType<Map>().first;
+
+    count = iterable['count(o.OrderID)'];
+    return count;
   }
 
   static Future<int> getIDForNCustomer() async {

@@ -77,7 +77,7 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
   String nameInp = "";
   double amount = 0;
   String description = "";
-  DateFormat dateFormat = DateFormat('dd/MM/yyyy');
+  DateFormat dateFormat = DateFormat('yyyy-MM-dd');
   bool partyListAvialable = false;
   Future<void> PreLoadDataBase() async {
     partyListAvialable = await RecoveryScreen.getdataFromDb();
