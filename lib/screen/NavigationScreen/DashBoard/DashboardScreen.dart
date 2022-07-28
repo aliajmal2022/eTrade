@@ -37,37 +37,52 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
   DateFormat dateFormat = DateFormat("yyyy-MM-dd");
   @override
   void initState() {
-    // int today =
-    //     await SQLHelper.getOrderCount(dateFormat.format(DateTime.now()));
-    // int yesterday =
-    //     await SQLHelper.getOrderCount(dateFormat.format(DateTime.now()));
-    // int week = await SQLHelper.getOrderCount(dateFormat.format(DateTime.now()));
-    // int lastWeek =
-    //     await SQLHelper.getOrderCount(dateFormat.format(DateTime.now()));
-    // int month =
-    //     await SQLHelper.getOrderCount(dateFormat.format(DateTime.now()));
-    // int lastMonth =
-    //     await SQLHelper.getOrderCount(dateFormat.format(DateTime.now()));
-    // int year = await SQLHelper.getOrderCount(dateFormat.format(DateTime.now()));
-    // int lastYear =
-    //     await SQLHelper.getOrderCount(dateFormat.format(DateTime.now()));
+    getOrderHistory();
+    super.initState();
+  }
+
+  getOrderHistory() async {
+    String exactDate = dateFormat.format(DateTime.now());
+    String yesterdayDate =
+        dateFormat.format(DateTime.now().subtract(Duration(days: 1)));
+    int today = 0;
+    int yesterday = 0;
+    int week = 0;
+    int lastWeek = 0;
+    int month = 0;
+    int lastMonth = 0;
+    int year = 0;
+    int lastYear = 0;
+    today = await SQLHelper.getOrderCount("Today", exactDate);
+    // yesterday = await SQLHelper.getOrderCount("Yesterday", yesterdayDate);
+    // week = await SQLHelper.getOrderCount("Week", exactDate);
+    // lastWeek = await SQLHelper.getOrderCount("PWeek", exactDate);
+    // month = await SQLHelper.getOrderCount("Month", exactDate);
+    // lastMonth = await SQLHelper.getOrderCount("PMonth", exactDate);
+    // year = await SQLHelper.getOrderCount("Year", exactDate);
+    // lastYear = await SQLHelper.getOrderCount("PYear", exactDate);
     dashBoard = [
       DashBoard(
-          compareOrder: 4, compareTime: "Yesterday", order: 5, time: "Today"),
+          compareOrder: yesterday,
+          compareTime: "Yesterday",
+          order: today,
+          time: "Today"),
       DashBoard(
-          compareOrder: 24, compareTime: "Last Week", order: 23, time: "Week"),
+          compareOrder: lastWeek,
+          compareTime: "Last Week",
+          order: week,
+          time: "Week"),
       DashBoard(
-          compareOrder: 200,
+          compareOrder: lastMonth,
           compareTime: "Last Month",
-          order: 160,
+          order: month,
           time: "Month"),
       DashBoard(
-          compareOrder: 600,
+          compareOrder: lastYear,
           compareTime: "Last Year",
-          order: 700,
+          order: year,
           time: "Year"),
     ];
-    super.initState();
   }
 
   @override

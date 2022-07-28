@@ -507,25 +507,40 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
     }
   }
 
-  static Future<int> getOrderCount(String date) async {
+  static Future<int> getOrderCount(String name, String date) async {
     int count = 0;
-    Database db = await instance.database;
-    List order = await db.rawQuery(
-        "SELECT count(o.OrderID) FROM [Order] as o WHERE o.Dated='$date'");
-    var iterable = order.whereType<Map>().first;
+    var order;
+    try {
+      Database db = await instance.database;
+      if (name == "Week") {
+        order = await db.rawQuery(
+            "SELECT count(o.OrderID) FROM [Order] as o WHERE o.Dated BETWEEN  DATETIME('$date','-6 day') and DATETIME('$date','localtime')");
+      } else if (name == "PWeek") {
+        order = await db.rawQuery(
+            "SELECT count(o.OrderID) FROM [Order] as o WHERE o.Dated BETWEEN  DATETIME('$date','-12 day') and DATETIME('$date','-6 day')");
+      } else if (name == "Month") {
+        order = await db.rawQuery(
+            "SELECT count(o.OrderID) FROM [Order] as o WHERE o.Dated BETWEEN  DATETIME('$date','-1 month') and DATETIME('$date','localtime')");
+      } else if (name == "PMonth") {
+        order = await db.rawQuery(
+            "SELECT count(o.OrderID) FROM [Order] as o WHERE o.Dated BETWEEN  DATETIME('$date','-2 month') and DATETIME('$date','-1 month')");
+      } else if (name == "Year") {
+        order = await db.rawQuery(
+            "SELECT count(o.OrderID) FROM [Order] as o WHERE o.Dated BETWEEN  DATETIME('$date','-1 year') and DATETIME('$date','localtime')");
+      } else if (name == "PYear") {
+        order = await db.rawQuery(
+            "SELECT count(o.OrderID) FROM [Order] as o WHERE o.Dated BETWEEN  DATETIME('$date','-2 year') and DATETIME('$date','-1 year')");
+      } else {
+        order = await db.rawQuery(
+            "SELECT count(o.OrderID) FROM [Order] as o WHERE o.Dated='$date'");
+      }
+      var iterable = order.whereType<Map>().first;
 
-    count = iterable['count(o.OrderID)'];
-    return count;
-  }
+      count = iterable['count(o.OrderID)'];
+    } catch (e) {
+      debugPrint("$e");
+    }
 
-  static Future<int> getOrderRangeCount(String date) async {
-    int count = 0;
-    Database db = await instance.database;
-    List order = await db.rawQuery(
-        "SELECT count(o.OrderID) FROM [Order] as o WHERE o.Dated='$date'");
-    var iterable = order.whereType<Map>().first;
-
-    count = iterable['count(o.OrderID)'];
     return count;
   }
 
