@@ -1,4 +1,4 @@
-import 'package:eTrade/components/Sql_Connection.dart';
+import 'package:eTrade/helper/Sql_Connection.dart';
 import 'package:eTrade/entities/Customer.dart';
 import 'package:flutter/animation.dart';
 

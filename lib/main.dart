@@ -1,8 +1,8 @@
 import 'package:eTrade/components/NavigationBar.dart';
 import 'package:eTrade/components/sharePreferences.dart';
-import 'package:eTrade/screen/ConnectionScreen.dart';
-import 'package:eTrade/screen/TakeOrderScreen.dart';
-import 'package:eTrade/screen/SplashScreen.dart';
+import 'package:eTrade/screen/Connection/ConnectionScreen.dart';
+import 'package:eTrade/screen/NavigationScreen/Take%20Order/TakeOrderScreen.dart';
+import 'package:eTrade/screen/SplashScreen/SplashScreen.dart';
 import 'package:flutter/material.dart';
 import 'dart:core';
 

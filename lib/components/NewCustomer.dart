@@ -1,10 +1,10 @@
 import 'package:eTrade/components/NavigationBar.dart';
-import 'package:eTrade/components/onldt_to_local_db.dart';
-import 'package:eTrade/components/sqlhelper.dart';
+import 'package:eTrade/helper/onldt_to_local_db.dart';
+import 'package:eTrade/helper/sqlhelper.dart';
 import 'package:eTrade/entities/Customer.dart';
 import 'package:eTrade/entities/Recovery.dart';
 import 'package:eTrade/entities/ViewRecovery.dart';
-import 'package:eTrade/screen/TakeOrderScreen.dart';
+import 'package:eTrade/screen/NavigationScreen/Take%20Order/TakeOrderScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

@@ -1,5 +1,5 @@
-import 'package:eTrade/components/Sql_Connection.dart';
-import 'package:eTrade/components/sqlhelper.dart';
+import 'package:eTrade/helper/Sql_Connection.dart';
+import 'package:eTrade/helper/sqlhelper.dart';
 
 class Customer {
   Customer({

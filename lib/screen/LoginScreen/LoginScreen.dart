@@ -1,11 +1,11 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:eTrade/components/onldt_to_local_db.dart';
+import 'package:eTrade/helper/onldt_to_local_db.dart';
 import 'package:eTrade/components/sharePreferences.dart';
-import 'package:eTrade/components/sqlhelper.dart';
+import 'package:eTrade/helper/sqlhelper.dart';
 import 'package:eTrade/entities/User.dart';
-import 'package:eTrade/screen/TakeOrderScreen.dart';
+import 'package:eTrade/screen/NavigationScreen/Take%20Order/TakeOrderScreen.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {

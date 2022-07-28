@@ -2,11 +2,11 @@
 
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:eTrade/components/NavigationBar.dart';
-import 'package:eTrade/components/Sql_Connection.dart';
+import 'package:eTrade/helper/Sql_Connection.dart';
 import 'package:eTrade/components/sharePreferences.dart';
 import 'package:eTrade/entities/Customer.dart';
 import 'package:eTrade/entities/ViewRecovery.dart';
-import 'package:eTrade/screen/LoginScreen.dart';
+import 'package:eTrade/screen/LoginScreen/LoginScreen.dart';
 import 'package:flutter/material.dart';
 
 class ConnectionScreen extends StatefulWidget {

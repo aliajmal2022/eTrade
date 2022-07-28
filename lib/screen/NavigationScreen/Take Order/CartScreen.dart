@@ -1,14 +1,14 @@
-import 'package:eTrade/components/AddItemModelSheet.dart';
+import 'package:eTrade/screen/NavigationScreen/Take%20Order/components/AddItemModelSheet.dart';
 
 import 'package:eTrade/components/NavigationBar.dart';
-import 'package:eTrade/components/sqlhelper.dart';
+import 'package:eTrade/helper/sqlhelper.dart';
 import 'package:eTrade/entities/Customer.dart';
 import 'package:eTrade/entities/Order.dart';
 import 'package:eTrade/entities/Products.dart';
 import 'package:eTrade/entities/Sale.dart';
 import 'package:eTrade/entities/ViewRecovery.dart';
 import 'package:eTrade/main.dart';
-import 'package:eTrade/screen/TakeOrderScreen.dart';
+import 'package:eTrade/screen/NavigationScreen/Take%20Order/TakeOrderScreen.dart';
 import "package:flutter/material.dart";
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';

@@ -99,7 +99,7 @@ CREATE TABLE User(
 	UserID INTEGER NOT NULL,
 	PartyName TEXT NOT NULL,
   Discount REAL,
-  isPosted BOOLEAN NOT NULL, 
+  isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1)), 
   Address TEXT
  )
       ''');
@@ -156,7 +156,7 @@ TotalQuantity INTEGER NOT NULL,
 TotalValue REAL NOT NULL,
 Dated TEXT NOT NULL,
 Description TEXT,
-isPosted BOOLEAN NOT NULL
+isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1)) 
   )
       ''');
     print("successfully created Order table");
@@ -231,7 +231,7 @@ isPosted BOOLEAN NOT NULL
   [TO] Real,
   Amount REAL NOT NULL,
 	Dated TEXT NOT NULL,
-  isPosted BOOLEAN NOT NULL
+isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1)) 
  )
       ''');
     print("successfully created OrderDetail table");
@@ -276,8 +276,8 @@ TotalQuantity INTEGER NOT NULL,
 TotalValue REAL NOT NULL,
 Dated TEXT NOT NULL,
 Description TEXT,
-isCash BOOLEAN,
-isPosted BOOLEAN NOT NULL
+isCash BOOLEAN NOT NULL CHECK (isCash IN (0, 1)) ,
+isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1)) 
   )
       ''');
     print("successfully created Sale table");
@@ -353,7 +353,7 @@ isPosted BOOLEAN NOT NULL
   [TO] Real,
   Amount REAL NOT NULL,
 	Dated TEXT NOT NULL,
-  isPosted BOOLEAN NOT NULL
+isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1)) 
  )
       ''');
     print("successfully created SaleDetail table");
@@ -398,7 +398,7 @@ Amount REAL NOT NULL,
 Dated TEXT NOT NULL,
 [CheckOrCash] TEXT NOT NULL,
 Description TEXT,
-isPosted BOOLEAN NOT NULL
+isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1)) 
   )
       ''');
     print("successfully created Recovery table");

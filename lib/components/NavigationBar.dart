@@ -2,10 +2,10 @@ import 'package:eTrade/components/drawer.dart';
 import 'package:eTrade/components/sharePreferences.dart';
 import 'package:eTrade/entities/Edit.dart';
 import 'package:eTrade/entities/ViewRecovery.dart';
-import 'package:eTrade/screen/DashboardScreen.dart';
-import 'package:eTrade/screen/TakeOrderScreen.dart';
-import 'package:eTrade/screen/RecoveryScreen.dart';
-import 'package:eTrade/screen/ViewBookingScreen.dart';
+import 'package:eTrade/screen/NavigationScreen/DashBoard/DashboardScreen.dart';
+import 'package:eTrade/screen/NavigationScreen/Take%20Order/TakeOrderScreen.dart';
+import 'package:eTrade/screen/NavigationScreen/RecoveryBooking/RecoveryScreen.dart';
+import 'package:eTrade/screen/NavigationScreen/Booking/ViewBookingScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

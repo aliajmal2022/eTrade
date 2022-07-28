@@ -1,4 +1,4 @@
-import 'package:eTrade/components/AddItemModelSheet.dart';
+import 'package:eTrade/screen/NavigationScreen/Take%20Order/components/AddItemModelSheet.dart';
 import 'package:eTrade/entities/Products.dart';
 import 'package:flutter/material.dart';
 

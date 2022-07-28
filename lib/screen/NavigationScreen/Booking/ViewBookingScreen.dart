@@ -1,16 +1,16 @@
 import 'dart:math';
 
 import 'package:eTrade/components/NavigationBar.dart';
-import 'package:eTrade/components/SearchListOrder.dart';
-import 'package:eTrade/components/ViewBookingTabBar.dart';
+import 'package:eTrade/screen/NavigationScreen/Booking/components/SearchListOrder.dart';
+import 'package:eTrade/screen/NavigationScreen/Booking/components/ViewBookingTabBar.dart';
 import 'package:eTrade/components/drawer.dart';
-import 'package:eTrade/components/sqlhelper.dart';
+import 'package:eTrade/helper/sqlhelper.dart';
 import 'package:eTrade/entities/Customer.dart';
 import 'package:eTrade/entities/Edit.dart';
 import 'package:eTrade/entities/ViewBooking.dart';
 import 'package:eTrade/entities/ViewRecovery.dart';
-import 'package:eTrade/screen/TakeOrderScreen.dart';
-import 'package:eTrade/screen/OrderDetailScreen.dart';
+import 'package:eTrade/screen/NavigationScreen/Take%20Order/TakeOrderScreen.dart';
+import 'package:eTrade/screen/NavigationScreen/Booking/OrderDetailScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';

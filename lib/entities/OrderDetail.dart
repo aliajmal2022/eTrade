@@ -1,8 +1,8 @@
-import 'package:eTrade/components/Sql_Connection.dart';
-import 'package:eTrade/components/sqlhelper.dart';
+import 'package:eTrade/helper/Sql_Connection.dart';
+import 'package:eTrade/helper/sqlhelper.dart';
 import 'package:eTrade/entities/Customer.dart';
 import 'package:eTrade/entities/Products.dart';
-import 'package:eTrade/screen/ViewBookingScreen.dart';
+import 'package:eTrade/screen/NavigationScreen/Booking/ViewBookingScreen.dart';
 
 class OrderDetail {
   int id;

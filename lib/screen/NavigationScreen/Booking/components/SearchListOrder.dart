@@ -1,14 +1,14 @@
 import 'package:eTrade/components/NavigationBar.dart';
-import 'package:eTrade/components/ViewBookingTabBar.dart';
-import 'package:eTrade/components/sqlhelper.dart';
+import 'package:eTrade/screen/NavigationScreen/Booking/components/ViewBookingTabBar.dart';
+import 'package:eTrade/helper/sqlhelper.dart';
 import 'package:eTrade/entities/Customer.dart';
 import 'package:eTrade/entities/ViewBooking.dart';
 import 'package:eTrade/entities/ViewRecovery.dart';
 import 'package:eTrade/main.dart';
-import 'package:eTrade/screen/SaleDetailScreen.dart';
-import 'package:eTrade/screen/TakeOrderScreen.dart';
-import 'package:eTrade/screen/OrderDetailScreen.dart';
-import 'package:eTrade/screen/ViewBookingScreen.dart';
+import 'package:eTrade/screen/NavigationScreen/Booking/SaleDetailScreen.dart';
+import 'package:eTrade/screen/NavigationScreen/Take%20Order/TakeOrderScreen.dart';
+import 'package:eTrade/screen/NavigationScreen/Booking/OrderDetailScreen.dart';
+import 'package:eTrade/screen/NavigationScreen/Booking/ViewBookingScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
@@ -68,7 +68,7 @@ class _ListOfOrderState extends State<ListOfOrder> {
                                           editRecovery: ViewRecovery(
                                               amount: 0,
                                               description: "",
-                                        checkOrCash: "",
+                                              checkOrCash: "",
                                               recoveryID: 0,
                                               dated: "",
                                               party: Customer(
@@ -97,7 +97,7 @@ class _ListOfOrderState extends State<ListOfOrder> {
                                                 amount: 0,
                                                 description: "",
                                                 recoveryID: 0,
-                                        checkOrCash: "",
+                                                checkOrCash: "",
                                                 dated: "",
                                                 party: Customer(
                                                     userId: 0,
