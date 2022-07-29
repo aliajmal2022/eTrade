@@ -18,8 +18,10 @@ class Edit {
   double discount;
   int bonus;
   double to;
+  static String description = "";
   static List<Edit> ViewOrderFromDb(var _orderDetail) {
     List<Edit> _listOrderView = [];
+    int count = 0;
     if (_orderDetail.isNotEmpty) {
       _orderDetail.forEach((element) {
         Edit viewOrder = Edit(
@@ -31,6 +33,10 @@ class Edit {
             itemName: "",
             rate: 0,
             itemId: "");
+        if (count == 0) {
+          description = element['Description'];
+          count++;
+        }
         viewOrder.itemName = element['ItemName'];
         viewOrder.quantity = element['Quantity'];
         viewOrder.rate = element['RATE'];
@@ -43,5 +49,9 @@ class Edit {
       });
     }
     return _listOrderView;
+  }
+
+  static String getDescription() {
+    return description;
   }
 }

@@ -238,6 +238,39 @@ class _TakeOrderScreenState extends State<TakeOrderScreen> {
     super.initState();
   }
 
+  Widget _customDropDownExample(BuildContext context, Customer? item) {
+    if (item == null) {
+      return Container();
+    }
+
+    return Container(
+      height: 20,
+      child: Text(
+        item.partyName,
+        style: TextStyle(fontSize: 16),
+      ),
+    );
+  }
+
+  Widget _customPopupItemBuilderExample2(
+      BuildContext context, Customer? item, bool isSelected) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 8),
+      decoration: !isSelected
+          ? null
+          : BoxDecoration(
+              border: Border.all(color: Theme.of(context).primaryColor),
+              borderRadius: BorderRadius.circular(5),
+              color: Colors.white,
+            ),
+      child: ListTile(
+        selected: isSelected,
+        title: Text(item?.partyName ?? ''),
+        subtitle: Text(item?.address.toString() ?? ''),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -419,7 +452,7 @@ class _TakeOrderScreenState extends State<TakeOrderScreen> {
                         child: Row(
                           children: [
                             Flexible(
-                                child: DropdownSearch<String>(
+                                child: DropdownSearch<Customer>(
                               searchFieldProps: const TextFieldProps(
                                   autofocus: true,
                                   cursorColor: Color(0xff00620b),
@@ -448,29 +481,34 @@ class _TakeOrderScreenState extends State<TakeOrderScreen> {
                                 ),
                               ),
 
-                              mode: Mode.MENU,
-                              showSearchBox: true,
                               showSelectedItems: true,
+                              dropdownBuilder: _customDropDownExample,
+                              popupItemBuilder: _customPopupItemBuilderExample2,
+                              showSearchBox: true,
+                              compareFn: (i, s) =>
+                                  (i!.partyName == s!.partyName) ? true : false,
+                              // label: "Person with favorite option",
+                              // onFind: (filter) => getData(filter),
+                              mode: Mode.MENU,
 
-                              //list of dropdown items
-                              items: DataBaseDataLoad.PartiesName ??
-                                  ["  Not found data from database"],
+                              // //list of dropdown items
+                              items: DataBaseDataLoad.ListOCustomer,
                               onChanged: (value) {
                                 setState(() {
-                                  var selectedName = value as String;
+                                  var selectedCustomer = value;
                                   var selectedParty = Customer(
                                       discount: 0,
                                       address: "",
                                       userId: 0,
                                       partyId: 0,
-                                      partyName: selectedName);
+                                      partyName: selectedCustomer!.partyName);
                                   selectedParty =
                                       selectedParty.selectedCustomer(
                                           DataBaseDataLoad.ListOCustomer);
                                   widget.setParty(selectedParty);
                                 });
                               },
-                              selectedItem: TakeOrderScreen.customer.partyName,
+                              selectedItem: TakeOrderScreen.customer,
                             )),
                             const SizedBox(
                               width: 5,
@@ -562,7 +600,29 @@ class _TakeOrderScreenState extends State<TakeOrderScreen> {
                               ),
                             ),
                           ),
-                          SizedBox(height: 10),
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: Align(
+                              alignment: Alignment.bottomRight,
+                              child: TextButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      resetCartList();
+                                      TakeOrderScreen.getdataFromDb();
+                                    });
+                                  },
+                                  child: Text(
+                                    "Clear List",
+                                    style: TextStyle(color: Color(0xff00620b)),
+                                  )),
+                            ),
+                          ),
+                          Divider(
+                            color: Color(0xff00620b),
+                            thickness: 2,
+                            height: 10,
+                          ),
                           ListItems(
                             productItems: DataBaseDataLoad.ListOProduct,
                             editDiscount: TakeOrderScreen.customer.discount,

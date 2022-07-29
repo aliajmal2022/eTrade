@@ -110,7 +110,7 @@ class _RecoveryTabBarItemState extends State<RecoveryTabBarItem> {
   void _onSelectionChanged(DateRangePickerSelectionChangedArgs args) {
     // setState(() {
     if (args.value is PickerDateRange) {
-      range = '${DateFormat('yyyy-MM-dd').format(args.value.startDate)}-'
+      range = '${DateFormat('yyyy-MM-dd').format(args.value.startDate)}/'
           '${DateFormat('yyyy-MM-dd').format(args.value.endDate ?? args.value.startDate)}';
     }
   }
@@ -128,7 +128,7 @@ class _RecoveryTabBarItemState extends State<RecoveryTabBarItem> {
         onPressed: (() {
           setState(() {
             prerange = range;
-            var splitDate = prerange.split('-');
+            var splitDate = prerange.split('/');
             RecoveryTabBarItem.setFromDate(splitDate[0]);
             RecoveryTabBarItem.setToDate(splitDate[1]);
           });

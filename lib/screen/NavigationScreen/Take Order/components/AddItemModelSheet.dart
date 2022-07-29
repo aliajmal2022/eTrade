@@ -84,6 +84,7 @@ class _AddItemModelSheetState extends State<AddItemModelSheet> {
   double discount = 0;
   double discountRate = 0;
   final TextEditingController _discountcontroller = TextEditingController();
+  final TextEditingController _quantitycontroller = TextEditingController();
   double rate = 0;
   final TextEditingController _ratecontroller = TextEditingController();
   int bonus = 0;
@@ -115,13 +116,15 @@ class _AddItemModelSheetState extends State<AddItemModelSheet> {
   void initState() {
     checkQuantity();
     setState(() {
-      _ratecontroller.text = (widget.selectedItem.Price).toString();
+      _ratecontroller.text = ((widget.selectedItem.Price).toInt()).toString();
       rate = widget.selectedItem.Price;
-      _discountcontroller.text = (widget.discount).toString();
+      if (getQuantity() != 0)
+        _quantitycontroller.text = getQuantity().toString();
+      _discountcontroller.text = ((widget.discount).toInt()).toString();
       discount = widget.discount;
-      _bonuscontroller.text = (widget.selectedItem.discount).toString();
+      _bonuscontroller.text = ((widget.selectedItem.bonus).toInt()).toString();
       bonus = widget.selectedItem.bonus;
-      _tocontroller.text = (widget.selectedItem.to).toString();
+      _tocontroller.text = ((widget.selectedItem.to).toInt()).toString();
       tO = widget.selectedItem.to;
     });
     super.initState();
@@ -168,6 +171,7 @@ class _AddItemModelSheetState extends State<AddItemModelSheet> {
                             child: TextField(
                               autofocus: true,
                               keyboardType: TextInputType.number,
+                              controller: _quantitycontroller,
                               inputFormatters: <TextInputFormatter>[
                                 FilteringTextInputFormatter.digitsOnly,
                               ],
@@ -357,7 +361,7 @@ class _AddItemModelSheetState extends State<AddItemModelSheet> {
                                       to: tO,
                                       bonus: bonus,
                                       discount: discount,
-                                      Price: widget.selectedItem.Price,
+                                      Price: rate,
                                       Title: widget.selectedItem.Title,
                                       ID: widget.selectedItem.ID,
                                       Quantity: getQuantity());

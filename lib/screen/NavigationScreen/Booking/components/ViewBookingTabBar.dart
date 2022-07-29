@@ -12,6 +12,7 @@ import 'package:eTrade/screen/NavigationScreen/Booking/SaleDetailScreen.dart';
 import 'package:eTrade/screen/NavigationScreen/Take%20Order/TakeOrderScreen.dart';
 import 'package:eTrade/screen/NavigationScreen/Booking/ViewBookingScreen.dart';
 import 'package:eTrade/screen/NavigationScreen/Booking/OrderDetailScreen.dart';
+import 'package:eTrade/screen/NavigationScreen/Take%20Order/components/AddItemModelSheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/container.dart';
@@ -129,7 +130,7 @@ class _BookingTabBarItemState extends State<BookingTabBarItem> {
   void _onSelectionChanged(DateRangePickerSelectionChangedArgs args) {
     // setState(() {
     if (args.value is PickerDateRange) {
-      range = '${DateFormat('yyyy-MM-dd').format(args.value.startDate)}-'
+      range = '${DateFormat('yyyy-MM-dd').format(args.value.startDate)}/'
           '${DateFormat('yyyy-MM-dd').format(args.value.endDate ?? args.value.startDate)}';
     }
   }
@@ -147,7 +148,7 @@ class _BookingTabBarItemState extends State<BookingTabBarItem> {
         onPressed: (() {
           setState(() {
             prerange = range;
-            var splitDate = prerange.split('-');
+            var splitDate = prerange.split('/');
             BookingTabBarItem.setFromDate(splitDate[0]);
             BookingTabBarItem.setToDate(splitDate[1]);
           });
@@ -310,6 +311,10 @@ class _BookingTabBarItemState extends State<BookingTabBarItem> {
                                   SlidableAction(
                                     onPressed: ((ViewBookingScreen.isSaleBooking
                                         ? (context) async {
+                                            TakeOrderScreen.isEditOrder = false;
+                                            TakeOrderScreen.isSaleSpot = false;
+                                            TakeOrderScreen.isSelected = false;
+                                            resetCartList();
                                             var saleDetail =
                                                 await BookingTabBarItem
                                                     .getSaleDetail(

@@ -1,3 +1,4 @@
+import 'package:eTrade/entities/Edit.dart';
 import 'package:eTrade/screen/NavigationScreen/Take%20Order/components/AddItemModelSheet.dart';
 
 import 'package:eTrade/components/NavigationBar.dart';
@@ -58,7 +59,6 @@ class _CartScreenState extends State<CartScreen> {
   String description = '';
   bool isCash = TakeOrderScreen.isSaleSpot ? true : false;
   double totalDiscount = 0;
-  double discount = 0;
   double totalAmount = 0;
 
   int totalQuantity = 0;
@@ -66,11 +66,9 @@ class _CartScreenState extends State<CartScreen> {
   void initState() {
     totalAmount = widget.getTotalAmount();
     totalQuantity = widget.getTotalQuantity();
-    discount = widget.selecedCustomer.discount;
-    if (discount != 0) {
-      totalDiscount = totalAmount - (totalAmount * discount / 100);
-    } else {
-      totalDiscount = totalAmount;
+    if (TakeOrderScreen.isEditOrder || TakeOrderScreen.isEditSale) {
+      controller.text = Edit.getDescription();
+      description = controller.text;
     }
     super.initState();
   }
@@ -236,6 +234,8 @@ class _CartScreenState extends State<CartScreen> {
                                   onPressed: () {
                                     setState(() {
                                       getCartList().removeAt(index);
+                                      totalQuantity = widget.getTotalQuantity();
+                                      totalAmount = widget.getTotalAmount();
                                     });
                                   },
                                   icon: Icon(Icons.remove_circle_outline),
@@ -318,60 +318,38 @@ class _CartScreenState extends State<CartScreen> {
                         Padding(
                           padding: EdgeInsets.all(20),
                           child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Total Qty: $totalQuantity",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        // color: Colors.white
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Total Qty: $totalQuantity",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          // color: Colors.white
+                                        ),
                                       ),
-                                    ),
-                                    Text(
-                                      "Total Value: $totalAmount",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        // color: Colors.white
+                                      Text(
+                                        "Total Value: $totalAmount",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          // color: Colors.white
+                                        ),
                                       ),
-                                    ),
-                                  ]),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Discount: ${(discount).toInt()}",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      // color: Colors.white
-                                    ),
-                                  ),
-                                  Text(
-                                    "Total Discount: $totalDiscount",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      // color: Colors.white
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
+                                    ]),
+                              ]),
                         ),
                         MaterialButton(
                             shape: const RoundedRectangleBorder(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(25.0))),
-                            disabledElevation: 10.0,
-                            disabledColor: Color(0x0ff1e1e1),
-                            disabledTextColor: Colors.white30,
+                            disabledColor: Colors.grey,
+                            disabledTextColor: Colors.white,
                             onPressed: widget.selectedItems.isEmpty
                                 ? null
                                 : TakeOrderScreen.isEditOrder ||

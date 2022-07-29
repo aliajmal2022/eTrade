@@ -305,6 +305,8 @@ class _MyDrawerState extends State<MyDrawer> {
                     onPressed: () async {
                       await TakeOrderScreen.forSaleInVoice();
                       TakeOrderScreen.isSaleSpot = true;
+                      TakeOrderScreen.isEditOrder = false;
+                      TakeOrderScreen.isSelected = false;
                       Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -362,7 +364,7 @@ class _MyDrawerState extends State<MyDrawer> {
                     child: Row(
                       children: const [
                         Icon(Icons.bookmark),
-                        Text("View Sale Booking")
+                        Text("View Sales")
                       ],
                     ),
                   ),

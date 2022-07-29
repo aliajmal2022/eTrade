@@ -147,6 +147,28 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                   thickness: 2,
                   color: Color(0xff00620b),
                 ),
+                Container(
+                  padding: EdgeInsets.only(
+                      left: 20.0, right: 20.0, top: 20.0, bottom: 5.0),
+                  width: double.infinity,
+                  height: 50,
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            "Description: ",
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        Text(
+                          "${Edit.getDescription()}",
+                          style: TextStyle(
+                              fontSize: 15, fontWeight: FontWeight.bold),
+                        ),
+                      ]),
+                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   child: ListView.builder(

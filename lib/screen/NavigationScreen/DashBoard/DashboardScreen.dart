@@ -53,7 +53,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
     int lastMonth = 0;
     int year = 0;
     int lastYear = 0;
-    today = await SQLHelper.getOrderCount("Today", exactDate);
+    // today = await SQLHelper.getOrderCount("Today", exactDate);
     // yesterday = await SQLHelper.getOrderCount("Yesterday", yesterdayDate);
     // week = await SQLHelper.getOrderCount("Week", exactDate);
     // lastWeek = await SQLHelper.getOrderCount("PWeek", exactDate);

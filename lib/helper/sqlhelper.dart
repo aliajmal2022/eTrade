@@ -276,7 +276,7 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
   static Future<List> getOrderDetail(int id) async {
     Database db = await instance.database;
     var ListOrder = await db.rawQuery(
-        "SELECT i.ItemName, od.Bonus,od.Discount,od.[TO],od.Quantity,od.Rate,od.Amount,i.itemID FROM OrderDetail as od INNER JOIN Item AS i ON i.ItemID = od.ItemID WHERE od.OrderID=$id and od.isPosted=0");
+        "SELECT i.ItemName, od.Bonus,od.Discount,od.[TO],od.Quantity,od.Rate,od.Amount,i.itemID,o.Description FROM OrderDetail as od LEFT JOIN Item AS i ON i.ItemID = od.ItemID LEFT JOIN [Order] AS o ON o.OrderID=od.OrderID WHERE od.OrderID=$id and od.isPosted=0");
 
     return ListOrder;
   }
@@ -408,7 +408,7 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
   static Future<List> getSaleDetail(int id) async {
     Database db = await instance.database;
     var ListOrder = await db.rawQuery(
-        "SELECT i.ItemName,sd.Bonus,sd.Discount,sd.[TO],sd.Quantity,sd.Rate,sd.Amount,i.itemID FROM SaleDetail as sd INNER JOIN Item AS i ON i.ItemID = sd.ItemID WHERE sd.InvoiceID=$id and sd.isPosted=0");
+        "SELECT i.ItemName,sd.Bonus,sd.Discount,sd.[TO],sd.Quantity,sd.Rate,sd.Amount,i.itemID,s.Description FROM SaleDetail as sd LEFT JOIN Item AS i ON i.ItemID = sd.ItemID LEFT JOIN Sale AS s ON sd.InvoiceID=s.InvoiceID WHERE sd.InvoiceID=$id and sd.isPosted=0");
 
     return ListOrder;
   }
@@ -508,10 +508,10 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
   }
 
   static Future<int> getOrderCount(String name, String date) async {
+    Database db = await instance.database;
     int count = 0;
     var order;
     try {
-      Database db = await instance.database;
       if (name == "Week") {
         order = await db.rawQuery(
             "SELECT count(o.OrderID) FROM [Order] as o WHERE o.Dated BETWEEN  DATETIME('$date','-6 day') and DATETIME('$date','localtime')");
@@ -534,9 +534,11 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
         order = await db.rawQuery(
             "SELECT count(o.OrderID) FROM [Order] as o WHERE o.Dated='$date'");
       }
-      var iterable = order.whereType<Map>().first;
+      if (order.isNotEmpty) {
+        var iterable = order.whereType<Map>().first;
 
-      count = iterable['count(o.OrderID)'];
+        count = iterable['count(o.OrderID)'];
+      }
     } catch (e) {
       debugPrint("$e");
     }
