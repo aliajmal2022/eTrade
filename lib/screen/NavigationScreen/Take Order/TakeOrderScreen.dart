@@ -5,7 +5,7 @@ import 'dart:ffi';
 import 'dart:io';
 
 // import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:eTrade/screen/NavigationScreen/DashBoard/DashboardScreen.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:eTrade/screen/NavigationScreen/Take%20Order/components/AddItemModelSheet.dart';
 import 'package:eTrade/screen/NavigationScreen/Take%20Order/components/ListProduct.dart';
 import 'package:eTrade/components/NavigationBar.dart';
@@ -21,7 +21,6 @@ import 'package:eTrade/entities/ViewRecovery.dart';
 import 'package:eTrade/screen/NavigationScreen/Take%20Order/CartScreen.dart';
 import 'package:eTrade/screen/LoginScreen/LoginScreen.dart';
 import 'package:eTrade/screen/NavigationScreen/Booking/ViewBookingScreen.dart';
-import 'package:eTrade/screen/NavigationScreen/Take%20Order/components/SearchableDropDown.dart';
 import 'package:flutter/foundation.dart';
 import "package:flutter/material.dart";
 
@@ -121,7 +120,6 @@ class TakeOrderScreen extends StatefulWidget {
       TakeOrderScreen.setPartydb(DataBaseDataLoad.ListOCustomer);
       TakeOrderScreen.setProductdb(DataBaseDataLoad.ListOProduct);
 
-      DashBoardScreen.dashBoard = await DashBoardScreen.getOrderHistory();
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
@@ -239,58 +237,6 @@ class _TakeOrderScreenState extends State<TakeOrderScreen> {
     }
     super.initState();
   }
-
-  String? _selectedItem;
-
-  // Widget _customDropDownExample(BuildContext context, Customer? item) {
-  //   if (item == null) {
-  //     return Container();
-  //   }
-
-  //   return Container(
-  //     height: 20,
-  //     child: Text(
-  //       item.partyName,
-  //       style: TextStyle(fontSize: 16),
-  //     ),
-  //   );
-  // }
-
-  // List<Customer> getData(search) {
-  //   List<Customer> dummyCustomerList = [];
-  //   for (var element in DataBaseDataLoad.ListOCustomer) {
-  //     if (element.partyName.toUpperCase().contains(search) ||
-  //         element.address.toUpperCase().contains(search)) {
-  //       dummyCustomerList.add(element);
-  //     }
-  //   }
-  //   if (dummyCustomerList.isNotEmpty) {
-  //     return dummyCustomerList;
-  //   } else {
-  //     return [];
-  //   }
-  // }
-
-  // Widget _customPopupItemBuilderExample2(
-  //     BuildContext context, Customer? item, bool isSelected) {
-  //   return Container(
-  //     width: double.infinity,
-  //     height: 48,
-  //     margin: EdgeInsets.symmetric(horizontal: 3),
-  //     decoration: !isSelected
-  //         ? null
-  //         : BoxDecoration(
-  //             border: Border.all(color: Theme.of(context).primaryColor),
-  //             borderRadius: BorderRadius.circular(5),
-  //             color: Colors.white,
-  //           ),
-  //     child: ListTile(
-  //       selected: isSelected,
-  //       title: Text(item?.partyName ?? ''),
-  //       subtitle: Text(item?.address.toString() ?? ''),
-  //     ),
-  //   );
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -472,66 +418,57 @@ class _TakeOrderScreenState extends State<TakeOrderScreen> {
                         padding: const EdgeInsets.all(15.0),
                         child: Row(
                           children: [
-                            Flexible(child: AwesomeDropdown()
-
-//                                  DropdownSearch<Customer>( searchFieldProps: const TextFieldProps(
-//                                   autofocus: true,
-//                                   cursorColor: Color(0xff00620b),
-//                                   decoration: InputDecoration(
-//                                     enabledBorder: OutlineInputBorder(
-//                                       borderSide:
-//                                           BorderSide(color: Color(0xff00620b)),
-//                                      ),
-//                                     focusedBorder: OutlineInputBorder(
-//                                       // borderRadius: BorderRadius.circular(20),
-//                                       borderSide:
-//                                           BorderSide(color: Color(0xff00620b)),
-//                                      ),
-//                                   )),
-
-//                                dropdownSearchDecoration: InputDecoration(
-//                                 contentPadding: const EdgeInsets.symmetric(
-//                                     vertical: 13, horizontal: 20),
-//                                 enabledBorder: OutlineInputBorder(
-//                                   borderSide:
-//                                       BorderSide(color: Color(0xff00620b)),
-//                                 ),
-//                                  focusedBorder: const OutlineInputBorder(
-//                                   borderSide:
-//                                       BorderSide(color: Color(0xff00620b)),
-//                                 ),
-//                               ),
-
-//                               showSelectedItems: true,
-//                               dropdownBuilder: _customDropDownExample,
-//                               showSearchBox: true,
-//                               compareFn: (i, s) =>
-//                                   (i!.partyName.contains(s!.partyName) ||
-//                                       i.address.contains(s.address)),
-//                               // label: "Person with favorite option",
-//                             //   onFind: (filter) async => getData(filter),
-//                               mode: Mode.MENU,
-// // //
-//                               // //list of dropdown items
-//                               items: DataBaseDataLoad.ListOCustomer,
-//                               onChanged: (value) {
-//                                 setState(() {
-//                                   var selectedCustomer = value;
-//                                   var selectedParty = Customer(
-//                                       discount: 0,
-//                                       address: "",
-//                                       userId: 0,
-//                                       partyId: 0,
-//                                       partyName: selectedCustomer!.partyName);
-//                                   selectedParty =
-//                                       selectedParty.selectedCustomer(
-//                                           DataBaseDataLoad.ListOCustomer);
-//                                   widget.setParty(selectedParty);
-//                                 });
-//                               },
-//                               selectedItem: TakeOrderScreen.customer,
-                                // )
+                            Flexible(
+                              child: DropdownSearch<String>(
+                                searchFieldProps: const TextFieldProps(
+                                  autofocus: true,
                                 ),
+
+                                dropdownSearchDecoration: InputDecoration(
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      vertical: 13, horizontal: 20),
+                                  border: OutlineInputBorder(
+                                      // borderRadius: BorderRadius.all(
+
+                                      // topLeft: Radius.circular(20),
+                                      // bottomLeft: Radius.circular(20)
+                                      // )
+                                      ),
+                                  focusedBorder: const OutlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: Color(0xff00620b)),
+                                  ),
+                                ),
+                                mode: Mode.MENU,
+                                showSearchBox: true,
+                                showSelectedItems: true,
+
+                                //list of dropdown items
+                                items: DataBaseDataLoad.PartiesName ??
+                                    ["  Not found data from database"],
+                                onChanged: (value) {
+                                  setState(() {
+                                    var selectedName = value as String;
+                                    var selectedParty = Customer(
+                                        userId: 0,
+                                        discount: 0,
+                                        partyId: 0,
+                                        address: "",
+                                        partyName: selectedName);
+                                    selectedParty =
+                                        selectedParty.selectedCustomer(
+                                            DataBaseDataLoad.ListOCustomer);
+                                    widget.setParty(selectedParty);
+                                    TakeOrderScreen.customer = selectedParty;
+                                  });
+                                },
+
+                                selectedItem:
+                                    TakeOrderScreen.customer.partyName,
+                              ),
+                            ),
+
+                            // )),
                             const SizedBox(
                               width: 5,
                             ),
