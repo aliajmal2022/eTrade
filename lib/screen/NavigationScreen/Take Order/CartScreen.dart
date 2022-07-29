@@ -1,4 +1,5 @@
 import 'package:eTrade/entities/Edit.dart';
+import 'package:eTrade/screen/NavigationScreen/DashBoard/DashboardScreen.dart';
 import 'package:eTrade/screen/NavigationScreen/Take%20Order/components/AddItemModelSheet.dart';
 
 import 'package:eTrade/components/NavigationBar.dart';
@@ -585,35 +586,36 @@ class _CartScreenState extends State<CartScreen> {
                                               TakeOrderScreen.isordered = true;
                                               controller.clear();
                                               resetCartList();
-                                              Navigator.pushAndRemoveUntil(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        MyNavigationBar(
-                                                      selectedIndex: 1,
-                                                      editRecovery:
-                                                          ViewRecovery(
-                                                              amount: 0,
-                                                              description: "",
-                                                              recoveryID: 0,
-                                                              checkOrCash: "",
-                                                              dated: "",
-                                                              party: Customer(
-                                                                  partyId: 0,
-                                                                  userId: 0,
-                                                                  address: "",
-                                                                  discount: 0,
-                                                                  partyName:
-                                                                      "")),
-                                                      list: [],
-                                                      date: "",
-                                                      id: 0,
-                                                      partyName:
-                                                          "Search Customer",
-                                                    ),
-                                                  ),
-                                                  (route) => false);
                                             });
+                                            DashBoardScreen.dashBoard =
+                                                await DashBoardScreen
+                                                    .getOrderHistory();
+                                            Navigator.pushAndRemoveUntil(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      MyNavigationBar(
+                                                    selectedIndex: 1,
+                                                    editRecovery: ViewRecovery(
+                                                        amount: 0,
+                                                        description: "",
+                                                        recoveryID: 0,
+                                                        checkOrCash: "",
+                                                        dated: "",
+                                                        party: Customer(
+                                                            partyId: 0,
+                                                            userId: 0,
+                                                            address: "",
+                                                            discount: 0,
+                                                            partyName: "")),
+                                                    list: [],
+                                                    date: "",
+                                                    id: 0,
+                                                    partyName:
+                                                        "Search Customer",
+                                                  ),
+                                                ),
+                                                (route) => false);
                                           },
                             minWidth: double.infinity,
                             height: 40,

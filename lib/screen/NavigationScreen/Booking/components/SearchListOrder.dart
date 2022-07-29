@@ -6,6 +6,7 @@ import 'package:eTrade/entities/ViewBooking.dart';
 import 'package:eTrade/entities/ViewRecovery.dart';
 import 'package:eTrade/main.dart';
 import 'package:eTrade/screen/NavigationScreen/Booking/SaleDetailScreen.dart';
+import 'package:eTrade/screen/NavigationScreen/DashBoard/DashboardScreen.dart';
 import 'package:eTrade/screen/NavigationScreen/Take%20Order/TakeOrderScreen.dart';
 import 'package:eTrade/screen/NavigationScreen/Booking/OrderDetailScreen.dart';
 import 'package:eTrade/screen/NavigationScreen/Booking/ViewBookingScreen.dart';
@@ -182,6 +183,9 @@ class _ListOfOrderState extends State<ListOfOrder> {
                                 dummyOrderList =
                                     ViewOrderBooking.ViewOrderFromDb(_item);
                               });
+
+                              DashBoardScreen.dashBoard =
+                                  await DashBoardScreen.getOrderHistory();
                             })),
                     ),
                   ]),

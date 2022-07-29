@@ -8,11 +8,77 @@ import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class DashBoardScreen extends StatefulWidget {
+  static List<DashBoard> dashBoard = [];
+  static Future<List<DashBoard>> getOrderHistory() async {
+    DateFormat dateFormat = DateFormat("yyyy-MM-dd");
+    String exactDate = dateFormat.format(DateTime.now());
+    String yesterdayDate =
+        dateFormat.format(DateTime.now().subtract(Duration(days: 1)));
+    int yesterday = 0;
+    int week = 0;
+    int lastWeek = 0;
+    int month = 0;
+    int lastMonth = 0;
+    int year = 0;
+    int lastYear = 0;
+    int today = 0;
+    try {
+      today = await SQLHelper.getOrderCount("Today", exactDate);
+      yesterday = await SQLHelper.getOrderCount("Yesterday", yesterdayDate);
+      week = await SQLHelper.getOrderCount("Week", exactDate);
+      lastWeek = await SQLHelper.getOrderCount("PWeek", exactDate);
+      month = await SQLHelper.getOrderCount("Month", exactDate);
+      lastMonth = await SQLHelper.getOrderCount("PMonth", exactDate);
+      year = await SQLHelper.getOrderCount("Year", exactDate);
+      lastYear = await SQLHelper.getOrderCount("PYear", exactDate);
+      dashBoard = [
+        DashBoard(
+            compareOrder: yesterday,
+            compareTime: "Yesterday",
+            order: today,
+            time: "Today"),
+        DashBoard(
+            compareOrder: lastWeek,
+            compareTime: "Last Week",
+            order: week,
+            time: "Week"),
+        DashBoard(
+            compareOrder: lastMonth,
+            compareTime: "Last Month",
+            order: month,
+            time: "Month"),
+        DashBoard(
+            compareOrder: lastYear,
+            compareTime: "Last Year",
+            order: year,
+            time: "Year"),
+      ];
+    } catch (e) {
+      debugPrint("$e");
+    }
+    return dashBoard;
+  }
+
   @override
   State<DashBoardScreen> createState() => _DashBoardScreenState();
 }
 
 class _DashBoardScreenState extends State<DashBoardScreen> {
+  // List<SalesData> saledata = [
+  //   SalesData(months: "Jan", sales: 35),
+  //   SalesData(months: "Feb", sales: 28),
+  //   SalesData(months: "Mar", sales: 34),
+  //   SalesData(months: "Apr", sales: 32),
+  //   SalesData(months: "May", sales: 40),
+  //   SalesData(months: "May", sales: 40),
+  //   SalesData(months: "Jun", sales: 40),
+  //   SalesData(months: "Jul", sales: 40),
+  //   SalesData(months: "Aug", sales: 40),
+  //   SalesData(months: "Sep", sales: 40),
+  //   SalesData(months: "Oct", sales: 40),
+  //   SalesData(months: "Nov", sales: 40),
+  //   SalesData(months: "Dec", sales: 40),
+  // ];
   List<SalesData> saledata = [
     SalesData(months: 1, sales: 35),
     SalesData(months: 2, sales: 28),
@@ -33,56 +99,10 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
     Items(name: "Mardan Surf", ordered: 50),
   ];
   TooltipBehavior _tooltipBehavior = TooltipBehavior(enable: true);
-  var dashBoard;
-  DateFormat dateFormat = DateFormat("yyyy-MM-dd");
   @override
   void initState() {
-    getOrderHistory();
+    // getOrderHistory();
     super.initState();
-  }
-
-  getOrderHistory() async {
-    String exactDate = dateFormat.format(DateTime.now());
-    String yesterdayDate =
-        dateFormat.format(DateTime.now().subtract(Duration(days: 1)));
-    int today = 0;
-    int yesterday = 0;
-    int week = 0;
-    int lastWeek = 0;
-    int month = 0;
-    int lastMonth = 0;
-    int year = 0;
-    int lastYear = 0;
-    // today = await SQLHelper.getOrderCount("Today", exactDate);
-    // yesterday = await SQLHelper.getOrderCount("Yesterday", yesterdayDate);
-    // week = await SQLHelper.getOrderCount("Week", exactDate);
-    // lastWeek = await SQLHelper.getOrderCount("PWeek", exactDate);
-    // month = await SQLHelper.getOrderCount("Month", exactDate);
-    // lastMonth = await SQLHelper.getOrderCount("PMonth", exactDate);
-    // year = await SQLHelper.getOrderCount("Year", exactDate);
-    // lastYear = await SQLHelper.getOrderCount("PYear", exactDate);
-    dashBoard = [
-      DashBoard(
-          compareOrder: yesterday,
-          compareTime: "Yesterday",
-          order: today,
-          time: "Today"),
-      DashBoard(
-          compareOrder: lastWeek,
-          compareTime: "Last Week",
-          order: week,
-          time: "Week"),
-      DashBoard(
-          compareOrder: lastMonth,
-          compareTime: "Last Month",
-          order: month,
-          time: "Month"),
-      DashBoard(
-          compareOrder: lastYear,
-          compareTime: "Last Year",
-          order: year,
-          time: "Year"),
-    ];
   }
 
   @override
@@ -132,7 +152,8 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                 crossAxisCount: 2,
                 crossAxisSpacing: 2.0,
                 mainAxisSpacing: 2.0,
-                children: List.generate(dashBoard.length, (index) {
+                children:
+                    List.generate(DashBoardScreen.dashBoard.length, (index) {
                   return Padding(
                     padding: const EdgeInsets.all(12.0),
                     child: Container(
@@ -156,7 +177,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                         children: [
                           Center(
                               child: Text(
-                            dashBoard[index].time,
+                            DashBoardScreen.dashBoard[index].time,
                             style: TextStyle(
                                 color: (MyApp.isDark)
                                     ? Colors.white
@@ -179,20 +200,48 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Flexible(
-                                flex: 1,
-                                child: Icon(
-                                  (dashBoard[index].order >
-                                          dashBoard[index].compareOrder)
-                                      ? Icons.arrow_upward
-                                      : Icons.arrow_downward,
-                                  size: 50,
-                                  color: (dashBoard[index].order >
-                                          dashBoard[index].compareOrder)
-                                      ? Colors.green
-                                      : Colors.red,
-                                ),
-                              ),
+                              (DashBoardScreen.dashBoard[index].order !=
+                                      DashBoardScreen
+                                          .dashBoard[index].compareOrder)
+                                  ? Flexible(
+                                      flex: 1,
+                                      child: Icon(
+                                        (DashBoardScreen
+                                                    .dashBoard[index].order >
+                                                DashBoardScreen.dashBoard[index]
+                                                    .compareOrder)
+                                            ? Icons.arrow_upward
+                                            : Icons.arrow_downward,
+                                        size: 50,
+                                        color: (DashBoardScreen
+                                                    .dashBoard[index].order >
+                                                DashBoardScreen.dashBoard[index]
+                                                    .compareOrder)
+                                            ? Colors.green
+                                            : (DashBoardScreen.dashBoard[index]
+                                                        .order ==
+                                                    DashBoardScreen
+                                                        .dashBoard[index]
+                                                        .compareOrder)
+                                                ? Color(0xff00620b)
+                                                : Colors.red,
+                                      ))
+                                  : Flexible(
+                                      flex: 1,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          Icon(
+                                            Icons.arrow_upward,
+                                            size: 25,
+                                          ),
+                                          Icon(
+                                            Icons.arrow_downward,
+                                            size: 25,
+                                          ),
+                                        ],
+                                      )),
                               Flexible(
                                 flex: 3,
                                 child: Column(
@@ -208,7 +257,8 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text("Orders:"),
-                                          Text("${dashBoard[index].order}"),
+                                          Text(
+                                              "${DashBoardScreen.dashBoard[index].order}"),
                                         ],
                                       ),
                                     ),
@@ -223,9 +273,9 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
-                                              "${dashBoard[index].compareTime}:"),
+                                              "${DashBoardScreen.dashBoard[index].compareTime}:"),
                                           Text(
-                                              "${dashBoard[index].compareOrder}"),
+                                              "${DashBoardScreen.dashBoard[index].compareOrder}"),
                                         ],
                                       ),
                                     ),

@@ -54,7 +54,8 @@ class SQLHelper {
   }
 
   Future<dynamic> get database async {
-    return await CheckDBExit();
+    var db = await CheckDBExit();
+    return db;
   }
 
   static _initiateDatabase() async {
@@ -508,7 +509,7 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
   }
 
   static Future<int> getOrderCount(String name, String date) async {
-    Database db = await instance.database;
+    var db = await instance.database;
     int count = 0;
     var order;
     try {
@@ -517,7 +518,7 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
             "SELECT count(o.OrderID) FROM [Order] as o WHERE o.Dated BETWEEN  DATETIME('$date','-6 day') and DATETIME('$date','localtime')");
       } else if (name == "PWeek") {
         order = await db.rawQuery(
-            "SELECT count(o.OrderID) FROM [Order] as o WHERE o.Dated BETWEEN  DATETIME('$date','-12 day') and DATETIME('$date','-6 day')");
+            "SELECT count(o.OrderID) FROM [Order] as o WHERE o.Dated BETWEEN  DATETIME('$date','-13 day') and DATETIME('$date','-6 day')");
       } else if (name == "Month") {
         order = await db.rawQuery(
             "SELECT count(o.OrderID) FROM [Order] as o WHERE o.Dated BETWEEN  DATETIME('$date','-1 month') and DATETIME('$date','localtime')");

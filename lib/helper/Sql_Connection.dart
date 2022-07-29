@@ -48,6 +48,7 @@ class Sql_Connection {
     try {
       var res = await SqlConn.readData(query);
       jsonres = json.decode(res);
+
       return jsonres;
     } catch (e) {
       print(Exception());

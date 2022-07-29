@@ -137,7 +137,7 @@ class _NewUsrAddLocalDBState extends State<NewUsrAddLocalDB> {
                             controller: _addresscontroller,
                             onChanged: (value) {
                               setState(() {
-                                address = value.toLowerCase();
+                                address = value.toUpperCase();
                               });
                             },
                             decoration: InputDecoration(

@@ -1,6 +1,7 @@
 import 'package:eTrade/components/NavigationBar.dart';
 import 'package:eTrade/entities/Customer.dart';
 import 'package:eTrade/entities/ViewRecovery.dart';
+import 'package:eTrade/screen/NavigationScreen/DashBoard/DashboardScreen.dart';
 import 'package:flutter/material.dart';
 
 class MySplashScreen extends StatefulWidget {
@@ -12,31 +13,31 @@ class _MySplashScreenState extends State<MySplashScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(
-        const Duration(milliseconds: 3000),
-        () => Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => MyNavigationBar(
-                        selectedIndex: 0,
-                        editRecovery: ViewRecovery(
-                            amount: 0,
-                            description: "",
-                            checkOrCash: "",
-                            recoveryID: 0,
-                            dated: "",
-                            party: Customer(
-                                address: "",
-                                partyId: 0,
-                                userId: 0,
-                                partyName: "",
-                                discount: 0)),
-                        id: 0,
-                        list: [],
-                        date: "",
-                        partyName: "Search Customer",
-                      )),
-            ));
+    Future.delayed(const Duration(milliseconds: 3000), () async {
+      DashBoardScreen.dashBoard = await DashBoardScreen.getOrderHistory();
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => MyNavigationBar(
+                    selectedIndex: 0,
+                    editRecovery: ViewRecovery(
+                        amount: 0,
+                        description: "",
+                        checkOrCash: "",
+                        recoveryID: 0,
+                        dated: "",
+                        party: Customer(
+                            address: "",
+                            partyId: 0,
+                            userId: 0,
+                            partyName: "",
+                            discount: 0)),
+                    id: 0,
+                    list: [],
+                    date: "",
+                    partyName: "Search Customer",
+                  )));
+    });
   }
 
   @override

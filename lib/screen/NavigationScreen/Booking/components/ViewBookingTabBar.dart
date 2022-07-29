@@ -9,6 +9,7 @@ import 'package:eTrade/entities/ViewRecovery.dart';
 import 'package:eTrade/entities/ViewSale.dart';
 import 'package:eTrade/main.dart';
 import 'package:eTrade/screen/NavigationScreen/Booking/SaleDetailScreen.dart';
+import 'package:eTrade/screen/NavigationScreen/DashBoard/DashboardScreen.dart';
 import 'package:eTrade/screen/NavigationScreen/Take%20Order/TakeOrderScreen.dart';
 import 'package:eTrade/screen/NavigationScreen/Booking/ViewBookingScreen.dart';
 import 'package:eTrade/screen/NavigationScreen/Booking/OrderDetailScreen.dart';
@@ -496,6 +497,9 @@ class _BookingTabBarItemState extends State<BookingTabBarItem> {
                                             setState(() {
                                               BookingTabBarItem.listOfItems;
                                             });
+                                            DashBoardScreen.dashBoard =
+                                                await DashBoardScreen
+                                                    .getOrderHistory();
                                           })),
                                     backgroundColor: const Color(0xFFFE4A49),
                                     foregroundColor: Colors.white,
