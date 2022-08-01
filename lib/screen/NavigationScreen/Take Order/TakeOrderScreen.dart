@@ -23,7 +23,6 @@ import 'package:eTrade/entities/ViewRecovery.dart';
 import 'package:eTrade/screen/NavigationScreen/Take%20Order/CartScreen.dart';
 import 'package:eTrade/screen/LoginScreen/LoginScreen.dart';
 import 'package:eTrade/screen/NavigationScreen/Booking/ViewBookingScreen.dart';
-import 'package:eTrade/screen/NavigationScreen/Take%20Order/components/SearchableDropDown.dart';
 import 'package:find_dropdown/find_dropdown.dart';
 import 'package:flutter/foundation.dart';
 import "package:flutter/material.dart";
