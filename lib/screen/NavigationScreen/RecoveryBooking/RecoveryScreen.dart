@@ -7,7 +7,9 @@ import 'package:eTrade/helper/sqlhelper.dart';
 import 'package:eTrade/entities/Customer.dart';
 import 'package:eTrade/entities/Recovery.dart';
 import 'package:eTrade/entities/ViewRecovery.dart';
+import 'package:eTrade/main.dart';
 import 'package:eTrade/screen/NavigationScreen/RecoveryBooking/ViewRecoveryScreen.dart';
+import 'package:find_dropdown/find_dropdown.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
@@ -74,6 +76,12 @@ class RecoveryScreen extends StatefulWidget {
 }
 
 class _RecoveryScreenState extends State<RecoveryScreen> {
+  Future<List<Customer>> getData(String filter) async {
+    return DataBaseDataLoad.ListOCustomer.where((element) =>
+            element.partyName.toLowerCase().contains(filter.toLowerCase()))
+        .toList();
+  }
+
   String nameInp = "";
   double amount = 0;
   String description = "";
@@ -239,32 +247,29 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                       height: 10,
                     ),
                     Container(
-                      width: double.infinity,
-                      height: 90,
-                      child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  "Date: ",
-                                  style: TextStyle(
-                                      fontSize: 30,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                              Text(
-                                "${RecoveryScreen.isEditRecovery ? widget.recovery.dated : dateFormat.format(DateTime.now())}",
+                      // width: double.infinity,
+                      // height: 50,
+                      padding: EdgeInsets.all(12.0),
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                "Date: ",
                                 style: TextStyle(
-                                    fontSize: 30, fontWeight: FontWeight.bold),
+                                    fontSize: 20, fontWeight: FontWeight.bold),
                               ),
-                            ]),
-                      ),
+                            ),
+                            Text(
+                              "${RecoveryScreen.isEditRecovery ? widget.recovery.dated : dateFormat.format(DateTime.now())}",
+                              style: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.bold),
+                            ),
+                          ]),
                     ),
-                    SizedBox(
-                      height: 10,
-                    ),
+                    // SizedBox(
+                    //   height: 10,
+                    // ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Column(
@@ -275,25 +280,33 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                             "Check Your Payment Method.",
                             style: TextStyle(fontSize: 18),
                           ),
-                          RadioListTile(
-                            value: "Cash",
-                            contentPadding: EdgeInsets.all(0),
-                            groupValue: _groupValue,
-                            title: Text("Cash"),
-                            onChanged: (newValue) => setState(
-                                () => _groupValue = newValue.toString()),
-                            activeColor: Color(0xff00620b),
-                            selected: false,
-                          ),
-                          RadioListTile(
-                            contentPadding: EdgeInsets.all(0),
-                            value: "Check",
-                            groupValue: _groupValue,
-                            title: Text("Check"),
-                            onChanged: (newValue) => setState(
-                                () => _groupValue = newValue.toString()),
-                            activeColor: Color(0xff00620b),
-                            selected: false,
+                          Row(
+                            children: [
+                              Flexible(
+                                child: RadioListTile(
+                                  value: "Cash",
+                                  contentPadding: EdgeInsets.all(0),
+                                  groupValue: _groupValue,
+                                  title: Text("Cash"),
+                                  onChanged: (newValue) => setState(
+                                      () => _groupValue = newValue.toString()),
+                                  activeColor: Color(0xff00620b),
+                                  selected: false,
+                                ),
+                              ),
+                              Flexible(
+                                child: RadioListTile(
+                                  contentPadding: EdgeInsets.all(0),
+                                  value: "Check",
+                                  groupValue: _groupValue,
+                                  title: Text("Check"),
+                                  onChanged: (newValue) => setState(
+                                      () => _groupValue = newValue.toString()),
+                                  activeColor: Color(0xff00620b),
+                                  selected: false,
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
@@ -304,46 +317,70 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                     Row(
                       children: [
                         Flexible(
-                          child: DropdownSearch<String>(
-                            searchFieldProps: const TextFieldProps(
-                              autofocus: true,
-                            ),
-
-                            dropdownSearchDecoration: InputDecoration(
-                              contentPadding: const EdgeInsets.symmetric(
-                                  vertical: 13, horizontal: 20),
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(20),
-                                      bottomLeft: Radius.circular(20))),
-                              focusedBorder: const OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Color(0xff00620b)),
-                              ),
-                            ),
-                            mode: Mode.MENU,
-                            showSearchBox: true,
-                            showSelectedItems: true,
-
-                            //list of dropdown items
-                            items: DataBaseDataLoad.PartiesName ??
-                                ["  Not found data from database"],
-                            onChanged: (value) {
+                          child: FindDropdown<Customer>(
+                            autofocus: true,
+                            onFind: (String filter) => getData(filter),
+                            onChanged: (Customer? value) {
                               setState(() {
-                                var selectedName = value as String;
-                                var selectedParty = Customer(
-                                    userId: 0,
-                                    discount: 0,
-                                    partyId: 0,
-                                    address: "",
-                                    partyName: selectedName);
-                                selectedParty = selectedParty.selectedCustomer(
-                                    DataBaseDataLoad.ListOCustomer);
-                                widget.setParty(selectedParty);
-                                RecoveryScreen.tcustomer = selectedParty;
+                                widget.setParty(value!);
+                                RecoveryScreen.tcustomer = value;
                               });
                             },
-                            selectedItem: widget.getParty().partyName,
+                            items: DataBaseDataLoad.ListOCustomer,
+                            dropdownBuilder:
+                                (BuildContext context, Customer? item) {
+                              return Container(
+                                height: 49,
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: Theme.of(context).disabledColor),
+                                    borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(
+                                            20.0), // Set rounded corner radius
+                                        bottomLeft: Radius.circular(20.0)), //
+                                    color: MyApp.isDark
+                                        ? Color(0xff303030)
+                                        : Color(0xfffafafa)),
+                                child: (item?.partyName == null)
+                                    ? ListTile(leading: Text("Search Customer"))
+                                    : ListTile(
+                                        leading: Text(item!.partyName),
+                                      ),
+                              );
+                            },
+                            selectedItem: widget.customer,
+                            dropdownItemBuilder: (BuildContext context,
+                                Customer item, bool isSelected) {
+                              return Container(
+                                decoration: !isSelected
+                                    ? null
+                                    : BoxDecoration(
+                                        border: Border.all(color: Colors.blue),
+                                        borderRadius: BorderRadius.circular(5),
+                                        color: MyApp.isDark
+                                            ? Color(0xff424242)
+                                            : Colors.white,
+                                      ),
+                                child: ListTile(
+                                    selected: isSelected,
+                                    title: Text(
+                                      item.partyName,
+                                      style: TextStyle(
+                                          color: !isSelected && !MyApp.isDark
+                                              ? Colors.black54
+                                              : MyApp.isDark
+                                                  ? Colors.white
+                                                  : Colors.black),
+                                    ),
+                                    subtitle: Text(item.address.toString(),
+                                        style: TextStyle(
+                                            color: !isSelected && !MyApp.isDark
+                                                ? Colors.grey
+                                                : MyApp.isDark
+                                                    ? Colors.white
+                                                    : Colors.black54))),
+                              );
+                            },
                           ),
                         ),
                         const SizedBox(

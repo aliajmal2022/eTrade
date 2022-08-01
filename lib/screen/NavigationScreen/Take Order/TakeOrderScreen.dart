@@ -5,7 +5,9 @@ import 'dart:ffi';
 import 'dart:io';
 
 // import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:dropdown_plus/dropdown_plus.dart';
 import 'package:dropdown_search/dropdown_search.dart';
+import 'package:eTrade/main.dart';
 import 'package:eTrade/screen/NavigationScreen/Take%20Order/components/AddItemModelSheet.dart';
 import 'package:eTrade/screen/NavigationScreen/Take%20Order/components/ListProduct.dart';
 import 'package:eTrade/components/NavigationBar.dart';
@@ -21,6 +23,8 @@ import 'package:eTrade/entities/ViewRecovery.dart';
 import 'package:eTrade/screen/NavigationScreen/Take%20Order/CartScreen.dart';
 import 'package:eTrade/screen/LoginScreen/LoginScreen.dart';
 import 'package:eTrade/screen/NavigationScreen/Booking/ViewBookingScreen.dart';
+import 'package:eTrade/screen/NavigationScreen/Take%20Order/components/SearchableDropDown.dart';
+import 'package:find_dropdown/find_dropdown.dart';
 import 'package:flutter/foundation.dart';
 import "package:flutter/material.dart";
 
@@ -101,11 +105,39 @@ class TakeOrderScreen extends StatefulWidget {
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) {
-          return const Center(child: CircularProgressIndicator());
+          return Column(
+            children: [
+              Expanded(
+                flex: 2,
+                child: Image.asset("images/syncing.gif",
+                    gaplessPlayback: true, fit: BoxFit.fill),
+              ),
+              Expanded(
+                flex: 1,
+                child: Container(
+                  width: double.infinity,
+                  color: Colors.white,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Text(
+                        "Syncing",
+                        style: TextStyle(fontSize: 25),
+                      ),
+                      Text(
+                          "Total Customers Sync : ${DataBaseDataLoad.ListOCustomer.length}"),
+                      Text(
+                          "Total Products Sync : ${DataBaseDataLoad.ListOProduct.length}"),
+                    ],
+                  ),
+                ),
+              )
+            ],
+          );
         },
       );
     }
-    Future.delayed(const Duration(seconds: 3), () async {
+    Future.delayed(const Duration(seconds: 5), () async {
       isonloading = true;
       if (resetsync) {
         await SQLHelper.resetData("Sync");
@@ -161,6 +193,7 @@ class _TakeOrderScreenState extends State<TakeOrderScreen> {
   var controller;
   int quantity = 0;
   bool isConnected = false;
+
   // static bool ispreloaded = false;
   Future<void> PreLoadDataBase() async {
     if (!TakeOrderScreen.isonloading &&
@@ -236,6 +269,12 @@ class _TakeOrderScreenState extends State<TakeOrderScreen> {
       TakeOrderScreen.isordered = false;
     }
     super.initState();
+  }
+
+  Future<List<Customer>> getData(String filter) async {
+    return DataBaseDataLoad.ListOCustomer.where((element) =>
+            element.partyName.toLowerCase().contains(filter.toLowerCase()))
+        .toList();
   }
 
   @override
@@ -419,52 +458,79 @@ class _TakeOrderScreenState extends State<TakeOrderScreen> {
                         child: Row(
                           children: [
                             Flexible(
-                              child: DropdownSearch<String>(
-                                searchFieldProps: const TextFieldProps(
-                                  autofocus: true,
-                                ),
-
-                                dropdownSearchDecoration: InputDecoration(
-                                  contentPadding: const EdgeInsets.symmetric(
-                                      vertical: 13, horizontal: 20),
-                                  border: OutlineInputBorder(
-                                      // borderRadius: BorderRadius.all(
-
-                                      // topLeft: Radius.circular(20),
-                                      // bottomLeft: Radius.circular(20)
-                                      // )
-                                      ),
-                                  focusedBorder: const OutlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: Color(0xff00620b)),
-                                  ),
-                                ),
-                                mode: Mode.MENU,
-                                showSearchBox: true,
-                                showSelectedItems: true,
-
-                                //list of dropdown items
-                                items: DataBaseDataLoad.PartiesName ??
-                                    ["  Not found data from database"],
-                                onChanged: (value) {
+                              child: FindDropdown<Customer>(
+                                autofocus: true,
+                                onFind: (String filter) => getData(filter),
+                                onChanged: (Customer? value) {
                                   setState(() {
-                                    var selectedName = value as String;
-                                    var selectedParty = Customer(
-                                        userId: 0,
-                                        discount: 0,
-                                        partyId: 0,
-                                        address: "",
-                                        partyName: selectedName);
-                                    selectedParty =
-                                        selectedParty.selectedCustomer(
-                                            DataBaseDataLoad.ListOCustomer);
-                                    widget.setParty(selectedParty);
-                                    TakeOrderScreen.customer = selectedParty;
+                                    widget.setParty(value!);
+                                    TakeOrderScreen.customer = value;
                                   });
                                 },
-
-                                selectedItem:
-                                    TakeOrderScreen.customer.partyName,
+                                items: DataBaseDataLoad.ListOCustomer,
+                                dropdownBuilder:
+                                    (BuildContext context, Customer? item) {
+                                  return Container(
+                                    height: 49,
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: Theme.of(context)
+                                                .disabledColor),
+                                        borderRadius: BorderRadius.circular(5),
+                                        color: MyApp.isDark
+                                            ? Color(0xff303030)
+                                            : Color(0xfffafafa)),
+                                    child: (item?.partyName == null)
+                                        ? ListTile(
+                                            leading: Text(
+                                            "Search Customer",
+                                            style: TextStyle(fontSize: 16),
+                                          ))
+                                        : ListTile(
+                                            leading: Text(
+                                              item!.partyName,
+                                              style: TextStyle(fontSize: 16),
+                                            ),
+                                          ),
+                                  );
+                                },
+                                selectedItem: TakeOrderScreen.customer,
+                                dropdownItemBuilder: (BuildContext context,
+                                    Customer item, bool isSelected) {
+                                  return Container(
+                                    decoration: !isSelected
+                                        ? null
+                                        : BoxDecoration(
+                                            border:
+                                                Border.all(color: Colors.blue),
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                            color: MyApp.isDark
+                                                ? Color(0xff424242)
+                                                : Colors.white,
+                                          ),
+                                    child: ListTile(
+                                        selected: isSelected,
+                                        title: Text(
+                                          item.partyName,
+                                          style: TextStyle(
+                                              color:
+                                                  !isSelected && !MyApp.isDark
+                                                      ? Colors.black54
+                                                      : MyApp.isDark
+                                                          ? Colors.white
+                                                          : Colors.black),
+                                        ),
+                                        subtitle: Text(item.address.toString(),
+                                            style: TextStyle(
+                                                color:
+                                                    !isSelected && !MyApp.isDark
+                                                        ? Colors.grey
+                                                        : MyApp.isDark
+                                                            ? Colors.white
+                                                            : Colors.black54))),
+                                  );
+                                },
                               ),
                             ),
 
