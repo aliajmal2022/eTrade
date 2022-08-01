@@ -205,7 +205,7 @@ class _PostingDataState extends State<PostingData> {
             ? Row(children: [
                 Expanded(
                   flex: 1,
-                  child: Image.asset("images/syncing.gif",
+                  child: Image.asset("images/posting.gif",
                       gaplessPlayback: true, fit: BoxFit.fill),
                 ),
                 Expanded(
@@ -252,7 +252,9 @@ class _PostingDataState extends State<PostingData> {
                                     (PostingData.cCount == 0 ||
                                                 _party.length == 0) &&
                                             !notData
-                                        ? CircularProgressIndicator()
+                                        ? CircularProgressIndicator(
+                                            strokeWidth: 2,
+                                          )
                                         : Text("${PostingData.cCount}"),
                                   ],
                                 ),
@@ -297,7 +299,10 @@ class _PostingDataState extends State<PostingData> {
                                     (PostingData.sCount == 0 ||
                                                 _sale.length == 0) &&
                                             !notData
-                                        ? CircularProgressIndicator()
+                                        ? SizedBox(
+                                            width: 12,
+                                            height: 12,
+                                            child: CircularProgressIndicator())
                                         : Text("${PostingData.sCount}"),
                                   ],
                                 ),
@@ -312,7 +317,10 @@ class _PostingDataState extends State<PostingData> {
                                     (PostingData.sdCount == 0 ||
                                                 _saleDetail.length == 0) &&
                                             !notData
-                                        ? CircularProgressIndicator()
+                                        ? SizedBox(
+                                            width: 12,
+                                            height: 12,
+                                            child: CircularProgressIndicator())
                                         : Text("${PostingData.sdCount}"),
                                   ],
                                 ),
@@ -327,7 +335,10 @@ class _PostingDataState extends State<PostingData> {
                                     (PostingData.rCount == 0 &&
                                                 _recovery.length == 0) &&
                                             !notData
-                                        ? CircularProgressIndicator()
+                                        ? SizedBox(
+                                            width: 12,
+                                            height: 12,
+                                            child: CircularProgressIndicator())
                                         : Text("${PostingData.rCount}"),
                                   ],
                                 ),
@@ -437,7 +448,11 @@ class _PostingDataState extends State<PostingData> {
                                       (PostingData.cCount == 0 ||
                                                   _party.length == 0) &&
                                               !notData
-                                          ? CircularProgressIndicator()
+                                          ? SizedBox(
+                                              width: 12,
+                                              height: 12,
+                                              child:
+                                                  CircularProgressIndicator())
                                           : Text("${PostingData.cCount}"),
                                     ],
                                   ),
@@ -452,7 +467,11 @@ class _PostingDataState extends State<PostingData> {
                                       (PostingData.oCount == 0 ||
                                                   _order.length == 0) &&
                                               !notData
-                                          ? CircularProgressIndicator()
+                                          ? SizedBox(
+                                              width: 12,
+                                              height: 12,
+                                              child:
+                                                  CircularProgressIndicator())
                                           : Text("${PostingData.oCount}"),
                                     ],
                                   ),
@@ -467,7 +486,11 @@ class _PostingDataState extends State<PostingData> {
                                       (PostingData.odCount == 0 ||
                                                   _orderDetail.length == 0) &&
                                               !notData
-                                          ? CircularProgressIndicator()
+                                          ? SizedBox(
+                                              width: 12,
+                                              height: 12,
+                                              child:
+                                                  CircularProgressIndicator())
                                           : Text("${PostingData.odCount}"),
                                     ],
                                   ),
@@ -482,7 +505,11 @@ class _PostingDataState extends State<PostingData> {
                                       (PostingData.sCount == 0 ||
                                                   _sale.length == 0) &&
                                               !notData
-                                          ? CircularProgressIndicator()
+                                          ? SizedBox(
+                                              width: 12,
+                                              height: 12,
+                                              child:
+                                                  CircularProgressIndicator())
                                           : Text("${PostingData.sCount}"),
                                     ],
                                   ),
@@ -497,7 +524,11 @@ class _PostingDataState extends State<PostingData> {
                                       (PostingData.sdCount == 0 ||
                                                   _saleDetail.length == 0) &&
                                               !notData
-                                          ? CircularProgressIndicator()
+                                          ? SizedBox(
+                                              width: 12,
+                                              height: 12,
+                                              child:
+                                                  CircularProgressIndicator())
                                           : Text("${PostingData.sdCount}"),
                                     ],
                                   ),
@@ -512,7 +543,11 @@ class _PostingDataState extends State<PostingData> {
                                       (PostingData.rCount == 0 &&
                                                   _recovery.length == 0) &&
                                               !notData
-                                          ? CircularProgressIndicator()
+                                          ? SizedBox(
+                                              width: 12,
+                                              height: 12,
+                                              child:
+                                                  CircularProgressIndicator())
                                           : Text("${PostingData.rCount}"),
                                     ],
                                   ),

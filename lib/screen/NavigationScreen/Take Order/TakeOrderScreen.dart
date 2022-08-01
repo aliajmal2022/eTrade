@@ -8,6 +8,7 @@ import 'dart:io';
 import 'package:dropdown_plus/dropdown_plus.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:eTrade/main.dart';
+import 'package:eTrade/screen/NavigationScreen/DashBoard/DashboardScreen.dart';
 import 'package:eTrade/screen/NavigationScreen/Take%20Order/components/AddItemModelSheet.dart';
 import 'package:eTrade/screen/NavigationScreen/Take%20Order/components/ListProduct.dart';
 import 'package:eTrade/components/NavigationBar.dart';
@@ -99,44 +100,18 @@ class TakeOrderScreen extends StatefulWidget {
   static bool isSync = false;
   static bool isordered = false;
   static Future<void> onLoading(BuildContext context, bool resetsync) async {
-    if (resetsync) {
-      showDialog(
+    showDialog(
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) {
-          return Column(
-            children: [
-              Expanded(
-                flex: 2,
-                child: Image.asset("images/syncing.gif",
-                    gaplessPlayback: true, fit: BoxFit.fill),
-              ),
-              Expanded(
-                flex: 1,
-                child: Container(
-                  width: double.infinity,
-                  color: Colors.white,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Text(
-                        "Syncing",
-                        style: TextStyle(fontSize: 25),
-                      ),
-                      Text(
-                          "Total Customers Sync : ${DataBaseDataLoad.ListOCustomer.length}"),
-                      Text(
-                          "Total Products Sync : ${DataBaseDataLoad.ListOProduct.length}"),
-                    ],
-                  ),
-                ),
-              )
-            ],
-          );
-        },
-      );
-    }
-    Future.delayed(const Duration(seconds: 5), () async {
+          if (resetsync) {
+            return Image.asset("images/syncing.gif",
+                gaplessPlayback: true, fit: BoxFit.fill);
+          }
+          return Container();
+        });
+
+    Future.delayed(const Duration(seconds: 3), () async {
       isonloading = true;
       if (resetsync) {
         await SQLHelper.resetData("Sync");
@@ -144,13 +119,12 @@ class TakeOrderScreen extends StatefulWidget {
       } else {
         await Sql_Connection.PreLoadData(false);
       }
-
       resetCartList();
       await DataBaseDataLoad.DataLoading();
-
       TakeOrderScreen.setPartydb(DataBaseDataLoad.ListOCustomer);
       TakeOrderScreen.setProductdb(DataBaseDataLoad.ListOProduct);
 
+      DashBoardScreen.dashBoard = await DashBoardScreen.getOrderHistory();
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(

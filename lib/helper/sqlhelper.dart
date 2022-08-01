@@ -125,7 +125,8 @@ CREATE TABLE User(
 
   static Future<List> getNotPostedParty() async {
     Database db = await instance.database;
-    return await db.rawQuery("SELECT * FROM Party WHERE isPosted=0");
+    return await db.rawQuery(
+        "SELECT * FROM Party WHERE PartyID BETWEEN 2201 and 2999 and isPosted=0");
   }
 
   static Future<void> createItemTable(Database database) async {
