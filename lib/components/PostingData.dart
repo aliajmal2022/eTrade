@@ -401,7 +401,7 @@ class _PostingDataState extends State<PostingData> {
                 children: [
                   Expanded(
                     flex: 2,
-                    child: Image.asset("images/syncing.gif",
+                    child: Image.asset("images/posting.gif",
                         gaplessPlayback: true, fit: BoxFit.fill),
                   ),
                   Expanded(

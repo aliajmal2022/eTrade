@@ -299,7 +299,10 @@ class _MyDrawerState extends State<MyDrawer> {
                         }
                       },
                       child: Row(
-                        children: const [Icon(Icons.sync), Text("Sync Data")],
+                        children: const [
+                          Icon(Icons.arrow_downward),
+                          Text("Get Data")
+                        ],
                       )),
                   MaterialButton(
                       child: Row(
@@ -369,8 +372,8 @@ class _MyDrawerState extends State<MyDrawer> {
                     },
                     child: Row(
                       children: const [
-                        Icon(Icons.bookmark_add),
-                        Text("Post Bookings")
+                        Icon(Icons.arrow_upward),
+                        Text("Post Data")
                       ],
                     ),
                   ),
