@@ -84,7 +84,7 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
   String nameInp = "";
   double amount = 0;
   String description = "";
-  DateFormat dateFormat = DateFormat('yyyy-MM-dd');
+  DateFormat dateFormat = DateFormat('dd-MM-yyyy');
   bool partyListAvialable = false;
   Future<void> PreLoadDataBase() async {
     partyListAvialable = await RecoveryScreen.getdataFromDb();
@@ -96,7 +96,7 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
   }
 
   String _groupValue = "Cash";
-
+  static bool isCash = true;
   @override
   void initState() {
     PreLoadDataBase();
@@ -111,6 +111,7 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
             amount = double.parse(RecoveryScreen.amountcontroller.text);
             description = RecoveryScreen.descriptioncontroller.text;
             _groupValue = widget.recovery.checkOrCash;
+            isCash = _groupValue == "Cash" ? false : true;
             widget.setParty(widget.recovery.party);
             RecoveryScreen.tcustomer = widget.recovery.party;
             RecoveryScreen.getData = true;
@@ -266,50 +267,86 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                             ),
                           ]),
                     ),
-                    // SizedBox(
-                    //   height: 10,
-                    // ),
+                    SizedBox(
+                      height: 10,
+                    ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 10.0, vertical: 0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "Check Your Payment Method.",
-                            style: TextStyle(fontSize: 18),
+                            "Cash",
+                            style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: !isCash
+                                    ? FontWeight.bold
+                                    : FontWeight.normal),
                           ),
-                          Row(
-                            children: [
-                              Flexible(
-                                child: RadioListTile(
-                                  value: "Cash",
-                                  contentPadding: EdgeInsets.all(0),
-                                  groupValue: _groupValue,
-                                  title: Text("Cash"),
-                                  onChanged: (newValue) => setState(
-                                      () => _groupValue = newValue.toString()),
-                                  activeColor: Color(0xff00620b),
-                                  selected: false,
-                                ),
-                              ),
-                              Flexible(
-                                child: RadioListTile(
-                                  contentPadding: EdgeInsets.all(0),
-                                  value: "Check",
-                                  groupValue: _groupValue,
-                                  title: Text("Check"),
-                                  onChanged: (newValue) => setState(
-                                      () => _groupValue = newValue.toString()),
-                                  activeColor: Color(0xff00620b),
-                                  selected: false,
-                                ),
-                              ),
-                            ],
+                          Switch(
+                            value: isCash,
+                            activeColor: Color(0xff00620b),
+                            onChanged: (value) async {
+                              setState(() {
+                                isCash = value;
+                                _groupValue = !isCash ? "Cash" : "Check";
+                                print(_groupValue);
+                              });
+                            },
+                          ),
+                          Text(
+                            "Check",
+                            style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: isCash
+                                    ? FontWeight.bold
+                                    : FontWeight.normal),
                           ),
                         ],
                       ),
                     ),
+                    // Padding(
+                    //   padding: const EdgeInsets.all(8.0),
+                    //   child: Column(
+                    //     mainAxisAlignment: MainAxisAlignment.start,
+                    //     crossAxisAlignment: CrossAxisAlignment.start,
+                    //     children: [
+                    //       Text(
+                    //         "Check Your Payment Method.",
+                    //         style: TextStyle(fontSize: 18),
+                    //       ),
+                    //       Row(
+                    //         children: [
+                    //           Flexible(
+                    //             child: RadioListTile(
+                    //               value: "Cash",
+                    //               contentPadding: EdgeInsets.all(0),
+                    //               groupValue: _groupValue,
+                    //               title: Text("Cash"),
+                    //               onChanged: (newValue) => setState(
+                    //                   () => _groupValue = newValue.toString()),
+                    //               activeColor: Color(0xff00620b),
+                    //               selected: false,
+                    //             ),
+                    //           ),
+                    //           Flexible(
+                    //             child: RadioListTile(
+                    //               contentPadding: EdgeInsets.all(0),
+                    //               value: "Check",
+                    //               groupValue: _groupValue,
+                    //               title: Text("Check"),
+                    //               onChanged: (newValue) => setState(
+                    //                   () => _groupValue = newValue.toString()),
+                    //               activeColor: Color(0xff00620b),
+                    //               selected: false,
+                    //             ),
+                    //           ),
+                    //         ],
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
                     SizedBox(
                       height: 20,
                     ),

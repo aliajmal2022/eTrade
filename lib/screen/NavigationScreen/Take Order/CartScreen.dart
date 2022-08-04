@@ -160,18 +160,30 @@ class _CartScreenState extends State<CartScreen> {
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
                                   Text(
-                                    isCash ? "Cash" : "Credit",
-                                    style: TextStyle(fontSize: 20),
+                                    "Credit",
+                                    style: TextStyle(
+                                        fontSize: 17,
+                                        fontWeight: !isCash
+                                            ? FontWeight.bold
+                                            : FontWeight.normal),
                                   ),
-                                  Checkbox(
+                                  Switch(
                                     value: isCash,
                                     activeColor: Color(0xff00620b),
-                                    onChanged: (value) {
+                                    onChanged: (value) async {
                                       setState(() {
-                                        isCash = value!;
+                                        isCash = value;
                                         print(isCash);
                                       });
                                     },
+                                  ),
+                                  Text(
+                                    "Cash",
+                                    style: TextStyle(
+                                        fontSize: 17,
+                                        fontWeight: isCash
+                                            ? FontWeight.bold
+                                            : FontWeight.normal),
                                   ),
                                 ],
                               ),

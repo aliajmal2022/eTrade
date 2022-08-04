@@ -27,7 +27,7 @@ class _ListOfOrderState extends State<ListOfOrder> {
   var dummyOrderList = [];
 
   var _item;
-  DateFormat dateFormat = DateFormat('yyyy-MM-dd');
+  DateFormat dateFormat = DateFormat('dd-MM-yyyy');
   CheckList(List list) {
     dummyOrderList.clear();
 

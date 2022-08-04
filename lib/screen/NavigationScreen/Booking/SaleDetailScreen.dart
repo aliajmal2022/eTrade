@@ -123,7 +123,7 @@ class _SaleDetailScreenState extends State<SaleDetailScreen> {
                         width: double.infinity,
                         height: 50,
                         child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                            // mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Expanded(
                                 child: Text(
@@ -140,30 +140,29 @@ class _SaleDetailScreenState extends State<SaleDetailScreen> {
                               ),
                             ]),
                       ),
+                      Container(
+                        width: double.infinity,
+                        height: 50,
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  "Description: ",
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                              Text(
+                                "${Edit.getDescription()}",
+                                style: TextStyle(
+                                    fontSize: 15, fontWeight: FontWeight.bold),
+                              ),
+                            ]),
+                      ),
                     ],
                   ),
-                ),
-                Container(
-                  padding: EdgeInsets.only(
-                      left: 20.0, right: 20.0, top: 20.0, bottom: 5.0),
-                  width: double.infinity,
-                  height: 50,
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          child: Text(
-                            "Description: ",
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        Text(
-                          "${Edit.getDescription()}",
-                          style: TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.bold),
-                        ),
-                      ]),
                 ),
                 Divider(
                   thickness: 2,

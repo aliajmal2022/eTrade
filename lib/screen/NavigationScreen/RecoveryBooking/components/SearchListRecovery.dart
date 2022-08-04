@@ -76,7 +76,7 @@ class _ListOfRecoveryState extends State<ListOfRecovery> {
                                 dummyOrderList[index].recoveryID);
 
                             var _recovery;
-                            DateFormat dateFormat = DateFormat('yyyy-MM-dd');
+                            DateFormat dateFormat = DateFormat('dd-MM-yyyy');
                             if (widget.tabName == "Search") {
                               _recovery = await SQLHelper.getFromToRecovery(
                                   RecoveryTabBarItem.getFromDate(),

@@ -478,9 +478,9 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                 legend: Legend(
                     // isResponsive: true,
                     legendItemBuilder:
-                        ((legendText, itemdata, point, seriesIndex) {
+                        ((legendText, series, point, seriesIndex) {
                       return Text(
-                        "$legendText  ${itemdata[seriesIndex].Title}",
+                        "$legendText  (${itemdata[seriesIndex].product.Price})",
                       );
                     }),
                     isVisible: true,

@@ -1,0 +1,83 @@
+
+spot sale item in navigation bar 
+take order screen in 
+sale in voice 
+
+quantity 
+sale(isCash bool)  saledetail same as order orderdetail
+
+
+
+
+
+select * from dbo_m.[Party]
+select * from dbo_m.[Order]
+select * from dbo_m.[OrderDetail]
+select * from dbo_m.[Sale]
+select * from dbo_m.[SaleDetail]
+select * from dbo_m.[Recovery]
+delete  from dbo_m.[Party]
+delete  from dbo_m.[Order]
+delete  from dbo_m.[OrderDetail]
+delete  from dbo_m.[Recovery]
+delete  from dbo_m.[Sale]
+delete  from dbo_m.[SaleDetail]
+
+
+
+addquantity may discount set 
+search in viewbooking and viewselling 
+
+
+
+
+SELECT work.name FROM work WHERE work.dated BETWEEN  DATETIME('now','-6 day') and DATETIME('now','localtime');
+
+SELECT work.name FROM work WHERE work.dated BETWEEN  DATETIME('now','-12 day') and DATETIME('now','-6 day');
+
+
+
+SELECT work.name FROM work WHERE work.dated BETWEEN  DATETIME('now','-1 month') and DATETIME('now','localtime');
+
+SELECT work.name FROM work WHERE work.dated BETWEEN  DATETIME('now','-2 month') and DATETIME('now','-1 month');
+
+
+SELECT work.name FROM work WHERE work.dated BETWEEN  DATETIME('now','-1 year') and DATETIME('now','localtime');
+
+SELECT work.name FROM work WHERE work.dated BETWEEN  DATETIME('now','-2 year') and DATETIME('now','-1 year')
+
+
+
+SELECT 
+IFNULL(SUM(CASE WHEN strftime('%m', dated) = '01' THEN s.Amount END),0) AS jan,
+IFNULL(SUM(CASE WHEN strftime('%m', dated) = '02' THEN s.Amount END),0) as feb,
+IFNULL(SUM(CASE WHEN strftime('%m', dated) = '03' THEN s.Amount END),0) as mar,
+IFNULL(SUM(CASE WHEN strftime('%m', dated) = '04' THEN s.Amount END),0) as apr,
+IFNULL(SUM(CASE WHEN strftime('%m', dated) = '05' THEN s.Amount END),0) as may,
+IFNULL(SUM(CASE WHEN strftime('%m', dated) = '06' THEN s.Amount END),0) as jun,
+IFNULL(SUM(CASE WHEN strftime('%m', dated) = '07' THEN s.Amount END),0) as july,
+IFNULL(SUM(CASE WHEN strftime('%m', dated) = '08' THEN s.Amount END),0) as aug,
+IFNULL(SUM(CASE WHEN strftime('%m', dated) = '09' THEN s.Amount END),0) as sep,
+IFNULL(SUM(CASE WHEN strftime('%m', dated) = '10' THEN s.Amount END),0) as oct,
+IFNULL(SUM(CASE WHEN strftime('%m', dated) = '11' THEN s.Amount END),0) as nov,
+IFNULL(SUM(CASE WHEN strftime('%m', dated) = '12' THEN s.Amount END),0) as [dec]
+FROM OrderDetail s
+where strftime('%Y',Dated) = strftime('%Y',Date())
+
+
+
+pie chart
+
+SELECT od.ItemID,i.ItemName,sum(od.Quantity) as Quantity , sum(od.Amount) as Amount FROM  
+OrderDetail as od 
+INNER JOIN Item as i on od.ItemID=i.ItemID
+group by od.ItemID,i.ItemName
+order by sum(od.Quantity) DESC 
+LIMIT    10
+
+SELECT od.ItemID,i.ItemName,sum(od.Quantity) as Quantity , sum(od.Amount) as Amount FROM  
+OrderDetail as od 
+INNER JOIN Item as i on od.ItemID=i.ItemID
+group by od.ItemID,i.ItemName
+order by sum(od.Amount) DESC 
+LIMIT    10
