@@ -1,4 +1,5 @@
 import 'package:eTrade/components/drawer.dart';
+import 'package:eTrade/entities/Products.dart';
 import 'package:eTrade/helper/sqlhelper.dart';
 import 'package:eTrade/main.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +7,7 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:charts_flutter/flutter.dart' as charts;
 
 class DashBoardScreen extends StatefulWidget {
   static List<DashBoard> dashBoard = [];
@@ -64,39 +66,129 @@ class DashBoardScreen extends StatefulWidget {
 }
 
 class _DashBoardScreenState extends State<DashBoardScreen> {
-  // List<SalesData> saledata = [
-  //   SalesData(months: "Jan", sales: 35),
-  //   SalesData(months: "Feb", sales: 28),
-  //   SalesData(months: "Mar", sales: 34),
-  //   SalesData(months: "Apr", sales: 32),
-  //   SalesData(months: "May", sales: 40),
-  //   SalesData(months: "May", sales: 40),
-  //   SalesData(months: "Jun", sales: 40),
-  //   SalesData(months: "Jul", sales: 40),
-  //   SalesData(months: "Aug", sales: 40),
-  //   SalesData(months: "Sep", sales: 40),
-  //   SalesData(months: "Oct", sales: 40),
-  //   SalesData(months: "Nov", sales: 40),
-  //   SalesData(months: "Dec", sales: 40),
-  // ];
   List<SalesData> saledata = [
-    SalesData(months: 1, sales: 35),
-    SalesData(months: 2, sales: 28),
-    SalesData(months: 3, sales: 34),
-    SalesData(months: 4, sales: 32),
-    SalesData(months: 5, sales: 40)
+    SalesData(months: "Jan", sales: 35),
+    SalesData(months: "Feb", sales: 28),
+    SalesData(months: "Mar", sales: 34),
+    SalesData(months: "Apr", sales: 32),
+    SalesData(months: "May", sales: 40),
+    SalesData(months: "May", sales: 40),
+    SalesData(months: "Jun", sales: 40),
+    SalesData(months: "Jul", sales: 40),
+    SalesData(months: "Aug", sales: 40),
+    SalesData(months: "Sep", sales: 40),
+    SalesData(months: "Oct", sales: 40),
+    SalesData(months: "Nov", sales: 40),
+    SalesData(months: "Dec", sales: 40),
   ];
+  // List<SalesData> saledata = [
+  //   SalesData(months: 1, sales: 35),
+  //   SalesData(months: 2, sales: 28),
+  //   SalesData(months: 3, sales: 34),
+  //   SalesData(months: 4, sales: 32),
+  //   SalesData(months: 5, sales: 40)
+  // ];
   List<Items> itemdata = [
-    Items(name: "Hoor Oil", ordered: 40),
-    Items(name: "Surf Excel", ordered: 35),
-    Items(name: "Dalda Ghee", ordered: 64),
-    Items(name: "Lemon Max Bar", ordered: 85),
-    Items(name: "Soap Palmolive", ordered: 12),
-    Items(name: "Lux", ordered: 23),
-    Items(name: "Dove", ordered: 78),
-    Items(name: "SunSlik", ordered: 55),
-    Items(name: "Clear Shampoo", ordered: 42),
-    Items(name: "Mardan Surf", ordered: 50),
+    Items(
+        product: Product(
+            Title: "Hoor Oil",
+            ID: "",
+            Price: 0,
+            Quantity: 0,
+            discount: 0,
+            bonus: 0,
+            to: 0),
+        ordered: 40),
+    Items(
+        product: Product(
+            Title: "Surf Excel",
+            ID: "",
+            Price: 0,
+            Quantity: 0,
+            discount: 0,
+            bonus: 0,
+            to: 0),
+        ordered: 35),
+    Items(
+        product: Product(
+            Title: "Dalda Ghee",
+            ID: "",
+            Price: 0,
+            Quantity: 0,
+            discount: 0,
+            bonus: 0,
+            to: 0),
+        ordered: 64),
+    Items(
+        product: Product(
+            Title: "Lemon Max Bar",
+            ID: "",
+            Price: 0,
+            Quantity: 0,
+            discount: 0,
+            bonus: 0,
+            to: 0),
+        ordered: 85),
+    Items(
+        product: Product(
+            Title: "Soap Palmolive",
+            ID: "",
+            Price: 0,
+            Quantity: 0,
+            discount: 0,
+            bonus: 0,
+            to: 0),
+        ordered: 12),
+    Items(
+        product: Product(
+            Title: "Lux",
+            ID: "",
+            Price: 0,
+            Quantity: 0,
+            discount: 0,
+            bonus: 0,
+            to: 0),
+        ordered: 23),
+    Items(
+        product: Product(
+            Title: "Dove",
+            ID: "",
+            Price: 0,
+            Quantity: 0,
+            discount: 0,
+            bonus: 0,
+            to: 0),
+        ordered: 78),
+    Items(
+        product: Product(
+            Title: "SunSlik",
+            ID: "",
+            Price: 0,
+            Quantity: 0,
+            discount: 0,
+            bonus: 0,
+            to: 0),
+        ordered: 55),
+    Items(
+        product: Product(
+            Title: "Clear Shampoo",
+            ID: "",
+            Price: 0,
+            Quantity: 0,
+            discount: 0,
+            bonus: 0,
+            to: 0),
+        ordered: 42),
+    Items(
+        product: Product(
+            Title: "Mardan Surf",
+            ID: "",
+            Price: 0,
+            Quantity: 0,
+            discount: 0,
+            bonus: 0,
+            to: 0),
+        ordered: 50),
   ];
   TooltipBehavior _tooltipBehavior = TooltipBehavior(enable: true);
   @override
@@ -107,6 +199,17 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
 
   @override
   Widget build(BuildContext context) {
+    List<charts.Series<SalesData, String>> series = [
+      charts.Series(
+        id: "Subscribers",
+        data: saledata,
+        domainFn: (SalesData series, _) => series.months,
+        measureFn: (SalesData series, _) => series.sales,
+        colorFn: (_, __) => MyApp.isDark
+            ? charts.MaterialPalette.gray.shade800
+            : charts.MaterialPalette.green.shadeDefault,
+      )
+    ];
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Color(0xFF00620b),
@@ -306,16 +409,43 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                 ),
               ),
               Container(
-                padding: EdgeInsets.all(10.0),
-                child: SfCartesianChart(series: <ChartSeries<SalesData, int>>[
-                  // Renders column chart
-                  ColumnSeries<SalesData, int>(
-                      dataSource: saledata,
-                      width: 0.3,
-                      color: Color(0xff00620b),
-                      xValueMapper: (SalesData data, _) => data.months,
-                      yValueMapper: (SalesData data, _) => data.sales)
-                ]),
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                  height: 300,
+                  width: double.infinity,
+                  padding: EdgeInsets.all(10),
+                  // child: Column(
+                  // children: <Widget>[
+                  // Expanded(
+                  // child:
+                  child: charts.BarChart(series, animate: true),
+                  // )
+                  // ],
+                  // ),
+                  // child: SfCartesianChart(
+                  //     series: <ChartSeries<SalesData, String>>[
+                  //       // Renders column chart
+                  //       ColumnSeries<SalesData, String>(
+                  //           dataSource: saledata,
+                  //           width: 0.3,
+                  //           color: Color(0xff00620b),
+                  //           xValueMapper: (SalesData data, _) => data.months,
+                  //           yValueMapper: (SalesData data, _) => data.sales)
+                  //     ]
+                  //     // SfCartesianChart(series: <ChartSeries<SalesData, int>>[
+                  //     //   // Renders column chart
+                  //     //   ColumnSeries<SalesData, int>(
+                  //     //       dataSource: saledata,
+                  //     //       width: 0.3,
+                  //     //       color: Color(0xff00620b),
+                  //     //       xValueMapper: (SalesData data, _) => data.months,
+                  //     //       yValueMapper: (SalesData data, _) => data.sales)
+                  //     // ]
+                  //     ),
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -339,15 +469,22 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
 
                   PieSeries<Items, String>(
                       explode: true,
+                      strokeWidth: 500,
                       dataSource: itemdata,
                       dataLabelSettings: DataLabelSettings(isVisible: true),
-                      xValueMapper: (Items data, _) => data.name,
+                      xValueMapper: (Items data, _) => data.product.Title,
                       yValueMapper: (Items data, _) => data.ordered)
                 ],
                 legend: Legend(
                     // isResponsive: true,
+                    legendItemBuilder:
+                        ((legendText, itemdata, point, seriesIndex) {
+                      return Text(
+                        "$legendText  ${itemdata[seriesIndex].Title}",
+                      );
+                    }),
                     isVisible: true,
-                    overflowMode: LegendItemOverflowMode.wrap),
+                    overflowMode: LegendItemOverflowMode.scroll),
               ),
             ],
           ),
@@ -356,17 +493,17 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
 }
 
 class Items {
-  Items({required this.name, required this.ordered});
+  Items({required this.product, required this.ordered});
 
-  String name;
+  Product product;
   int ordered;
 }
 
 class SalesData {
   SalesData({required this.months, required this.sales});
 
-  int months;
-  double sales;
+  final String months;
+  final int sales;
 }
 
 class DashBoard {
