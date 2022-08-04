@@ -14,7 +14,6 @@ class _MySplashScreenState extends State<MySplashScreen> {
   void initState() {
     super.initState();
     Future.delayed(const Duration(milliseconds: 3000), () async {
-      DashBoardScreen.dashBoard = await DashBoardScreen.getOrderHistory();
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(

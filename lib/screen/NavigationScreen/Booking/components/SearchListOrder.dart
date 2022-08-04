@@ -191,8 +191,7 @@ class _ListOfOrderState extends State<ListOfOrder> {
                                     ViewOrderBooking.ViewOrderFromDb(_item);
                               });
 
-                              DashBoardScreen.dashBoard =
-                                  await DashBoardScreen.getOrderHistory();
+                           
                             })),
                     ),
                   ]),

@@ -12,6 +12,7 @@ import 'package:charts_flutter/flutter.dart' as charts;
 class DashBoardScreen extends StatefulWidget {
   static List<DashBoard> dashBoard = [];
   static Future<List<DashBoard>> getOrderHistory() async {
+    List<DashBoard> list = [];
     DateFormat dateFormat = DateFormat("yyyy-MM-dd");
     String exactDate = dateFormat.format(DateTime.now());
     String yesterdayDate =
@@ -33,7 +34,7 @@ class DashBoardScreen extends StatefulWidget {
       lastMonth = await SQLHelper.getOrderCount("PMonth", exactDate);
       year = await SQLHelper.getOrderCount("Year", exactDate);
       lastYear = await SQLHelper.getOrderCount("PYear", exactDate);
-      dashBoard = [
+      list = [
         DashBoard(
             compareOrder: yesterday,
             compareTime: "Yesterday",
@@ -58,7 +59,60 @@ class DashBoardScreen extends StatefulWidget {
     } catch (e) {
       debugPrint("$e");
     }
-    return dashBoard;
+    return list;
+  }
+
+  static List<charts.Series<MonthOrderHistory, String>> series = [];
+  static List<MonthOrderHistory> monthlyOrderList = [];
+  static List<Items> itemdata = [];
+  static List<String> monthName = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec"
+  ];
+  static List<MonthOrderHistory> staticMonths = [];
+  static Future<List<MonthOrderHistory>> getMonthlyRecorderDB() async {
+    List<MonthOrderHistory> list = [];
+    var months = await SQLHelper.getMonthOrderHistory();
+    for (var element in monthName) {
+      MonthOrderHistory orderData = MonthOrderHistory(month: "", amount: 0);
+      MonthOrderHistory orderStatic = MonthOrderHistory(month: "", amount: 0);
+      double number = 1000000;
+      orderData.month = element;
+      orderData.amount = months[0][element].toDouble();
+      list.add(orderData);
+      orderStatic.amount = number;
+      orderStatic.month = element;
+      staticMonths.add(orderStatic);
+    }
+    return list;
+  }
+
+  static Future<List<Items>> getTopProduct() async {
+    List<Items> list = [];
+    var products = await SQLHelper.getTopTenProductByAmount();
+    if (products.isNotEmpty) {
+      for (var element in products) {
+        Items item = Items(productName: "", amount: 0, ordered: 40);
+        item.productName = element['ItemName'];
+        item.amount = element['Amount'];
+        item.ordered = element['Quantity'];
+        list.add(item);
+      }
+    } else {
+      list.add(Items(productName: "Nothing Order", amount: 0, ordered: 1));
+    }
+    return list;
   }
 
   @override
@@ -66,150 +120,50 @@ class DashBoardScreen extends StatefulWidget {
 }
 
 class _DashBoardScreenState extends State<DashBoardScreen> {
-  List<SalesData> saledata = [
-    SalesData(months: "Jan", sales: 35),
-    SalesData(months: "Feb", sales: 28),
-    SalesData(months: "Mar", sales: 34),
-    SalesData(months: "Apr", sales: 32),
-    SalesData(months: "May", sales: 40),
-    SalesData(months: "May", sales: 40),
-    SalesData(months: "Jun", sales: 40),
-    SalesData(months: "Jul", sales: 40),
-    SalesData(months: "Aug", sales: 40),
-    SalesData(months: "Sep", sales: 40),
-    SalesData(months: "Oct", sales: 40),
-    SalesData(months: "Nov", sales: 40),
-    SalesData(months: "Dec", sales: 40),
-  ];
-  // List<SalesData> saledata = [
-  //   SalesData(months: 1, sales: 35),
-  //   SalesData(months: 2, sales: 28),
-  //   SalesData(months: 3, sales: 34),
-  //   SalesData(months: 4, sales: 32),
-  //   SalesData(months: 5, sales: 40)
-  // ];
-  List<Items> itemdata = [
-    Items(
-        product: Product(
-            Title: "Hoor Oil",
-            ID: "",
-            Price: 0,
-            Quantity: 0,
-            discount: 0,
-            bonus: 0,
-            to: 0),
-        ordered: 40),
-    Items(
-        product: Product(
-            Title: "Surf Excel",
-            ID: "",
-            Price: 0,
-            Quantity: 0,
-            discount: 0,
-            bonus: 0,
-            to: 0),
-        ordered: 35),
-    Items(
-        product: Product(
-            Title: "Dalda Ghee",
-            ID: "",
-            Price: 0,
-            Quantity: 0,
-            discount: 0,
-            bonus: 0,
-            to: 0),
-        ordered: 64),
-    Items(
-        product: Product(
-            Title: "Lemon Max Bar",
-            ID: "",
-            Price: 0,
-            Quantity: 0,
-            discount: 0,
-            bonus: 0,
-            to: 0),
-        ordered: 85),
-    Items(
-        product: Product(
-            Title: "Soap Palmolive",
-            ID: "",
-            Price: 0,
-            Quantity: 0,
-            discount: 0,
-            bonus: 0,
-            to: 0),
-        ordered: 12),
-    Items(
-        product: Product(
-            Title: "Lux",
-            ID: "",
-            Price: 0,
-            Quantity: 0,
-            discount: 0,
-            bonus: 0,
-            to: 0),
-        ordered: 23),
-    Items(
-        product: Product(
-            Title: "Dove",
-            ID: "",
-            Price: 0,
-            Quantity: 0,
-            discount: 0,
-            bonus: 0,
-            to: 0),
-        ordered: 78),
-    Items(
-        product: Product(
-            Title: "SunSlik",
-            ID: "",
-            Price: 0,
-            Quantity: 0,
-            discount: 0,
-            bonus: 0,
-            to: 0),
-        ordered: 55),
-    Items(
-        product: Product(
-            Title: "Clear Shampoo",
-            ID: "",
-            Price: 0,
-            Quantity: 0,
-            discount: 0,
-            bonus: 0,
-            to: 0),
-        ordered: 42),
-    Items(
-        product: Product(
-            Title: "Mardan Surf",
-            ID: "",
-            Price: 0,
-            Quantity: 0,
-            discount: 0,
-            bonus: 0,
-            to: 0),
-        ordered: 50),
-  ];
-  TooltipBehavior _tooltipBehavior = TooltipBehavior(enable: true);
-  @override
-  void initState() {
-    // getOrderHistory();
-    super.initState();
+  updateData() async {
+    DashBoardScreen.dashBoard = await DashBoardScreen.getOrderHistory();
+    DashBoardScreen.itemdata = await DashBoardScreen.getTopProduct();
+    DashBoardScreen.monthlyOrderList =
+        await DashBoardScreen.getMonthlyRecorderDB();
+    setState(() {
+      DashBoardScreen.itemdata;
+      DashBoardScreen.dashBoard;
+      DashBoardScreen.monthlyOrderList;
+      DashBoardScreen.series = [
+        charts.Series(
+          id: "set",
+          data: DashBoardScreen.staticMonths,
+          domainFn: (MonthOrderHistory series, _) => series.month,
+          measureFn: (MonthOrderHistory series, _) => series.amount,
+          colorFn: (_, __) => MyApp.isDark
+              ? charts.MaterialPalette.gray.shade800
+              : charts.MaterialPalette.red.shadeDefault,
+        ),
+        charts.Series(
+          id: "Query",
+          data: DashBoardScreen.monthlyOrderList,
+          domainFn: (MonthOrderHistory series, _) => series.month,
+          measureFn: (MonthOrderHistory series, _) => series.amount,
+          colorFn: (_, __) => MyApp.isDark
+              ? charts.MaterialPalette.gray.shade800
+              : charts.MaterialPalette.green.shadeDefault,
+        ),
+      ];
+    });
   }
 
   @override
+  void initState() {
+    setState(() {
+      updateData();
+    });
+    super.initState();
+  }
+
+  TooltipBehavior _tooltipBehavior = TooltipBehavior(enable: true);
+
+  @override
   Widget build(BuildContext context) {
-    List<charts.Series<SalesData, String>> series = [
-      charts.Series(
-        id: "Subscribers",
-        data: saledata,
-        domainFn: (SalesData series, _) => series.months,
-        measureFn: (SalesData series, _) => series.sales,
-        colorFn: (_, __) => MyApp.isDark
-            ? charts.MaterialPalette.gray.shade800
-            : charts.MaterialPalette.green.shadeDefault,
-      )
-    ];
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Color(0xFF00620b),
@@ -404,7 +358,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  "Salesman History",
+                  "Sales History",
                   style: TextStyle(fontSize: 30),
                 ),
               ),
@@ -417,34 +371,18 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                   height: 300,
                   width: double.infinity,
                   padding: EdgeInsets.all(10),
-                  // child: Column(
-                  // children: <Widget>[
-                  // Expanded(
-                  // child:
-                  child: charts.BarChart(series, animate: true),
-                  // )
-                  // ],
-                  // ),
-                  // child: SfCartesianChart(
-                  //     series: <ChartSeries<SalesData, String>>[
-                  //       // Renders column chart
-                  //       ColumnSeries<SalesData, String>(
-                  //           dataSource: saledata,
-                  //           width: 0.3,
-                  //           color: Color(0xff00620b),
-                  //           xValueMapper: (SalesData data, _) => data.months,
-                  //           yValueMapper: (SalesData data, _) => data.sales)
-                  //     ]
-                  //     // SfCartesianChart(series: <ChartSeries<SalesData, int>>[
-                  //     //   // Renders column chart
-                  //     //   ColumnSeries<SalesData, int>(
-                  //     //       dataSource: saledata,
-                  //     //       width: 0.3,
-                  //     //       color: Color(0xff00620b),
-                  //     //       xValueMapper: (SalesData data, _) => data.months,
-                  //     //       yValueMapper: (SalesData data, _) => data.sales)
-                  //     // ]
-                  //     ),
+                  child: charts.BarChart(
+                    DashBoardScreen.series,
+                    barGroupingType: charts.BarGroupingType.grouped,
+                    animate: true,
+                    // vertical: false,
+                    defaultRenderer: new charts.BarRendererConfig(
+                        // By default, bar renderer will draw rounded bars with a constant
+                        // radius of 100.
+                        // To not have any rounded corners, use [NoCornerStrategy]
+                        // To change the radius of the bars, use [ConstCornerStrategy]
+                        cornerStrategy: const charts.ConstCornerStrategy(30)),
+                  ),
                 ),
               ),
               Padding(
@@ -462,29 +400,37 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                   style: TextStyle(fontSize: 30),
                 ),
               ),
-              SfCircularChart(
-                tooltipBehavior: _tooltipBehavior,
-                series: [
-                  // Renders column chart
+              Container(
+                height: 300,
+                width: double.infinity,
+                child: SfCircularChart(
+                  tooltipBehavior: _tooltipBehavior,
+                  series: [
+                    // Renders column chart
 
-                  PieSeries<Items, String>(
-                      explode: true,
-                      strokeWidth: 500,
-                      dataSource: itemdata,
-                      dataLabelSettings: DataLabelSettings(isVisible: true),
-                      xValueMapper: (Items data, _) => data.product.Title,
-                      yValueMapper: (Items data, _) => data.ordered)
-                ],
-                legend: Legend(
-                    // isResponsive: true,
-                    legendItemBuilder:
-                        ((legendText, series, point, seriesIndex) {
-                      return Text(
-                        "$legendText  (${itemdata[seriesIndex].product.Price})",
-                      );
-                    }),
-                    isVisible: true,
-                    overflowMode: LegendItemOverflowMode.scroll),
+                    PieSeries<Items, String>(
+                        explode: true,
+                        strokeWidth: 500,
+                        dataSource: DashBoardScreen.itemdata,
+                        dataLabelSettings: DataLabelSettings(isVisible: true),
+                        xValueMapper: (Items data, _) => data.productName,
+                        yValueMapper: (Items data, _) => data.ordered)
+                  ],
+                  legend: Legend(
+                      // isResponsive: true,
+                      legendItemBuilder:
+                          ((legendText, series, point, seriesIndex) {
+                        return Padding(
+                          padding: const EdgeInsets.all(3.0),
+                          child: Text(
+                            "${DashBoardScreen.itemdata[seriesIndex].ordered} - $legendText  (${DashBoardScreen.itemdata[seriesIndex].amount.toInt()})",
+                          ),
+                        );
+                      }),
+                      isVisible: true,
+                      position: LegendPosition.bottom,
+                      overflowMode: LegendItemOverflowMode.wrap),
+                ),
               ),
             ],
           ),
@@ -493,17 +439,20 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
 }
 
 class Items {
-  Items({required this.product, required this.ordered});
+  Items(
+      {required this.productName, required this.amount, required this.ordered});
 
-  Product product;
+  String productName;
+
+  double amount;
   int ordered;
 }
 
-class SalesData {
-  SalesData({required this.months, required this.sales});
+class MonthOrderHistory {
+  MonthOrderHistory({required this.month, required this.amount});
 
-  final String months;
-  final int sales;
+  String month;
+  double amount;
 }
 
 class DashBoard {

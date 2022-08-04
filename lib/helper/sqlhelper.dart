@@ -215,6 +215,27 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
     return listOrder;
   }
 
+  static Future<List> getMonthOrderHistory() async {
+    Database db = await instance.database;
+    var listOrder = await db.rawQuery(
+        "SELECT IFNULL(SUM(CASE WHEN strftime('%m', dated) = '01' THEN o.Amount END),0) AS Jan,IFNULL(SUM(CASE WHEN strftime('%m', dated) = '02' THEN o.Amount END),0) as Feb,IFNULL(SUM(CASE WHEN strftime('%m', dated) = '03' THEN o.Amount END),0) as Mar,IFNULL(SUM(CASE WHEN strftime('%m', dated) = '04' THEN o.Amount END),0) as Apr,IFNULL(SUM(CASE WHEN strftime('%m', dated) = '05' THEN o.Amount END),0) as May,IFNULL(SUM(CASE WHEN strftime('%m', dated) = '06' THEN o.Amount END),0) as Jun,IFNULL(SUM(CASE WHEN strftime('%m', dated) = '07' THEN o.Amount END),0) as Jul,IFNULL(SUM(CASE WHEN strftime('%m', dated) = '08' THEN o.Amount END),0) as Aug,IFNULL(SUM(CASE WHEN strftime('%m', dated) = '09' THEN o.Amount END),0) as Sep,IFNULL(SUM(CASE WHEN strftime('%m', dated) = '10' THEN o.Amount END),0) as Oct,IFNULL(SUM(CASE WHEN strftime('%m', dated) = '11' THEN o.Amount END),0) as Nov,IFNULL(SUM(CASE WHEN strftime('%m', dated) = '12' THEN o.Amount END),0) as [Dec] FROM OrderDetail o where strftime('%Y',Dated) = strftime('%Y',Date())");
+    return listOrder;
+  }
+
+  static Future<List> getTopTenProductByQuantity() async {
+    Database db = await instance.database;
+    var listOrder = await db.rawQuery(
+        "SELECT od.ItemID,i.ItemName,sum(od.Quantity) as Quantity , sum(od.Amount) as Amount FROM  OrderDetail as od INNER JOIN Item as i on od.ItemID=i.ItemID group by od.ItemID,i.ItemName order by sum(od.Quantity) DESC LIMIT   10");
+    return listOrder;
+  }
+
+  static Future<List> getTopTenProductByAmount() async {
+    Database db = await instance.database;
+    var listOrder = await db.rawQuery(
+        "SELECT od.ItemID,i.ItemName,sum(od.Quantity) as Quantity , sum(od.Amount) as Amount FROM  OrderDetail as od INNER JOIN Item as i on od.ItemID=i.ItemID group by od.ItemID,i.ItemName order by sum(od.Amount) DESC LIMIT   10");
+    return listOrder;
+  }
+
   static Future<void> updateOrderTable(
       int id, int partyID, String description) async {
     Database db = await instance.database;
