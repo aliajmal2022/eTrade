@@ -10,6 +10,7 @@ import 'package:eTrade/screen/NavigationScreen/DashBoard/DashboardScreen.dart';
 import 'package:eTrade/screen/NavigationScreen/Take%20Order/TakeOrderScreen.dart';
 import 'package:eTrade/screen/NavigationScreen/Booking/OrderDetailScreen.dart';
 import 'package:eTrade/screen/NavigationScreen/Booking/ViewBookingScreen.dart';
+import 'package:eTrade/screen/NavigationScreen/Take%20Order/components/AddItemModelSheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
@@ -60,6 +61,9 @@ class _ListOfOrderState extends State<ListOfOrder> {
                               var saleDetail =
                                   await BookingTabBarItem.getSaleDetail(
                                       dummyOrderList[index].saleID);
+                              TakeOrderScreen.isSaleSpot = false;
+                              TakeOrderScreen.isEditOrder = false;
+                              TakeOrderScreen.isSelected = false;
                               TakeOrderScreen.isEditSale = true;
                               Navigator.push(
                                   context,
@@ -88,7 +92,10 @@ class _ListOfOrderState extends State<ListOfOrder> {
                               var orderDetail =
                                   await BookingTabBarItem.getOrderDetail(
                                       dummyOrderList[index].orderID);
-
+                              TakeOrderScreen.isSaleSpot = false;
+                              TakeOrderScreen.isEditSale = true;
+                              TakeOrderScreen.isSelected = false;
+                              resetCartList();
                               TakeOrderScreen.isEditOrder = true;
                               Navigator.push(
                                   context,

@@ -115,15 +115,49 @@ class _RecoveryDetailScreenState extends State<RecoveryDetailScreen> {
                               ),
                             ]),
                       ),
+                      Container(
+                        width: double.infinity,
+                        height: 50,
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  "Check Or Cash: ",
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                              Text(
+                                "${widget.selectedRecovery.checkOrCash}",
+                                style: TextStyle(
+                                    fontSize: 15, fontWeight: FontWeight.bold),
+                              ),
+                            ]),
+                      ),
+                      Divider(
+                        thickness: 2,
+                        color: Color(0xff00620b),
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Description : ",
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                          Center(
+                            child: Text(widget.selectedRecovery.description,
+                                style: TextStyle(
+                                  fontSize: 14,
+                                )),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
-                ),
-                Divider(
-                  thickness: 2,
-                  color: Color(0xff00620b),
-                ),
-                Center(
-                  child: Text(widget.selectedRecovery.description),
                 ),
               ],
             ),

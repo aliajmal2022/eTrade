@@ -143,10 +143,6 @@ class _SaleDetailScreenState extends State<SaleDetailScreen> {
                     ],
                   ),
                 ),
-                Divider(
-                  thickness: 2,
-                  color: Color(0xff00620b),
-                ),
                 Container(
                   padding: EdgeInsets.only(
                       left: 20.0, right: 20.0, top: 20.0, bottom: 5.0),
@@ -168,6 +164,10 @@ class _SaleDetailScreenState extends State<SaleDetailScreen> {
                               fontSize: 15, fontWeight: FontWeight.bold),
                         ),
                       ]),
+                ),
+                Divider(
+                  thickness: 2,
+                  color: Color(0xff00620b),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),

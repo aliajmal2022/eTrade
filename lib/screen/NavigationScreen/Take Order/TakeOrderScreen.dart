@@ -5,8 +5,6 @@ import 'dart:ffi';
 import 'dart:io';
 
 // import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:dropdown_plus/dropdown_plus.dart';
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:eTrade/main.dart';
 import 'package:eTrade/screen/NavigationScreen/DashBoard/DashboardScreen.dart';
 import 'package:eTrade/screen/NavigationScreen/Take%20Order/components/AddItemModelSheet.dart';

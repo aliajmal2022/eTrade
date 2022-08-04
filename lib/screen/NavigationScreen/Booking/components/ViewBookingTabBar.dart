@@ -362,7 +362,11 @@ class _BookingTabBarItemState extends State<BookingTabBarItem> {
                                                         BookingTabBarItem
                                                             .listOfItems[index]
                                                             .orderID);
+                                            TakeOrderScreen.isEditSale = false;
                                             TakeOrderScreen.isEditOrder = true;
+                                            TakeOrderScreen.isSaleSpot = false;
+                                            TakeOrderScreen.isSelected = false;
+                                            resetCartList();
                                             Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
@@ -598,7 +602,7 @@ class _BookingTabBarItemState extends State<BookingTabBarItem> {
                                               child: Text(
                                                 "${BookingTabBarItem.listOfItems[index].totalQuantity} items",
                                                 style: TextStyle(
-                                                    fontStyle: FontStyle.italic,
+                                                    // fontStyle: FontStyle.italic,
                                                     color: Colors.white),
                                               ),
                                             ),
@@ -673,7 +677,9 @@ class _BookingTabBarItemState extends State<BookingTabBarItem> {
                                                 padding: EdgeInsets.all(8),
                                                 decoration: BoxDecoration(
                                                     color: (MyApp.isDark)
-                                                        ? Colors.grey
+                                                        ? Colors.white
+                                                        // ? Color.fromARGB(
+                                                        //     255, 133, 132, 132)
                                                         : Colors.grey.shade300,
                                                     // border: Border.all(
                                                     //     color:

@@ -1,4 +1,3 @@
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:eTrade/components/NavigationBar.dart';
 import 'package:eTrade/components/NewCustomer.dart';
 import 'package:eTrade/components/drawer.dart';

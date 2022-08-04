@@ -32,7 +32,6 @@ class ViewRecoveryScreen extends StatefulWidget {
 class _ViewRecoveryScreenState extends State<ViewRecoveryScreen>
     with TickerProviderStateMixin {
   @override
-  @override
   Widget build(BuildContext context) {
     final _tcontroller = TabController(length: 4, vsync: this);
     final isLandscape =

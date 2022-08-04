@@ -332,6 +332,10 @@ class _MyDrawerState extends State<MyDrawer> {
                   ),
                   MaterialButton(
                     onPressed: () {
+                      TakeOrderScreen.isEditOrder = false;
+                      TakeOrderScreen.isEditSale = false;
+                      TakeOrderScreen.isSaleSpot = false;
+                      TakeOrderScreen.isSelected = false;
                       Navigator.push(
                           context,
                           MaterialPageRoute(
