@@ -6,7 +6,6 @@ import 'package:eTrade/entities/Customer.dart';
 import 'package:eTrade/entities/Edit.dart';
 import 'package:eTrade/entities/ViewBooking.dart';
 import 'package:eTrade/entities/ViewRecovery.dart';
-import 'package:eTrade/entities/ViewSale.dart';
 import 'package:eTrade/main.dart';
 import 'package:eTrade/screen/NavigationScreen/Booking/SaleDetailScreen.dart';
 import 'package:eTrade/screen/NavigationScreen/DashBoard/DashboardScreen.dart';
