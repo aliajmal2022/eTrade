@@ -159,7 +159,9 @@ class TakeOrderScreen extends StatefulWidget {
   }
 }
 
-class _TakeOrderScreenState extends State<TakeOrderScreen> {
+class _TakeOrderScreenState extends State<TakeOrderScreen>
+    with SingleTickerProviderStateMixin {
+  var _animationController;
   String searchString = "";
   var controller;
   int quantity = 0;
@@ -213,6 +215,9 @@ class _TakeOrderScreenState extends State<TakeOrderScreen> {
 
   @override
   void initState() {
+    _animationController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 900));
+    _animationController.forward();
     if (TakeOrderScreen.databaseExit ||
         TakeOrderScreen.isEditOrder ||
         TakeOrderScreen.isEditSale ||
@@ -424,194 +429,230 @@ class _TakeOrderScreenState extends State<TakeOrderScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: Row(
-                          children: [
-                            Flexible(
-                              child: FindDropdown<Customer>(
-                                autofocus: true,
-                                onFind: (String filter) => getData(filter),
-                                onChanged: (Customer? value) {
-                                  setState(() {
-                                    widget.setParty(value!);
-                                    TakeOrderScreen.customer = value;
-                                  });
-                                },
-                                items: DataBaseDataLoad.ListOCustomer,
-                                dropdownBuilder:
-                                    (BuildContext context, Customer? item) {
-                                  return Container(
-                                    height: 49,
-                                    decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color: Theme.of(context)
-                                                .disabledColor),
-                                        borderRadius: BorderRadius.circular(5),
-                                        color: MyApp.isDark
-                                            ? Color(0xff303030)
-                                            : Color(0xfffafafa)),
-                                    child: (item?.partyName == null)
-                                        ? ListTile(
-                                            leading: Text(
-                                            "Search Customer",
-                                            style: TextStyle(fontSize: 16),
-                                          ))
-                                        : ListTile(
-                                            leading: Text(
-                                              item!.partyName,
-                                              style: TextStyle(fontSize: 16),
-                                            ),
-                                          ),
-                                  );
-                                },
-                                selectedItem: TakeOrderScreen.customer,
-                                dropdownItemBuilder: (BuildContext context,
-                                    Customer item, bool isSelected) {
-                                  return Container(
-                                    decoration: !isSelected
-                                        ? null
-                                        : BoxDecoration(
-                                            border:
-                                                Border.all(color: Colors.blue),
-                                            borderRadius:
-                                                BorderRadius.circular(5),
-                                            color: MyApp.isDark
-                                                ? Color(0xff424242)
-                                                : Colors.white,
-                                          ),
-                                    child: ListTile(
-                                        selected: isSelected,
-                                        title: Text(
-                                          item.partyName,
-                                          style: TextStyle(
-                                              color:
-                                                  !isSelected && !MyApp.isDark
-                                                      ? Colors.black54
-                                                      : MyApp.isDark
-                                                          ? Colors.white
-                                                          : Colors.black),
-                                        ),
-                                        subtitle: Text(item.address.toString(),
-                                            style: TextStyle(
-                                                color:
-                                                    !isSelected && !MyApp.isDark
-                                                        ? Colors.grey
+                      SlideTransition(
+                          position: Tween<Offset>(
+                                  begin: Offset(1, 0), end: Offset(0, 0))
+                              .animate(_animationController),
+                          child: FadeTransition(
+                            opacity: _animationController,
+                            child: Padding(
+                              padding: const EdgeInsets.all(15.0),
+                              child: Row(
+                                children: [
+                                  Flexible(
+                                    child: FindDropdown<Customer>(
+                                      autofocus: true,
+                                      onFind: (String filter) =>
+                                          getData(filter),
+                                      onChanged: (Customer? value) {
+                                        setState(() {
+                                          widget.setParty(value!);
+                                          TakeOrderScreen.customer = value;
+                                        });
+                                      },
+                                      items: DataBaseDataLoad.ListOCustomer,
+                                      dropdownBuilder: (BuildContext context,
+                                          Customer? item) {
+                                        return Container(
+                                          height: 49,
+                                          decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  color: Theme.of(context)
+                                                      .disabledColor),
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
+                                              color: MyApp.isDark
+                                                  ? Color(0xff303030)
+                                                  : Color(0xfffafafa)),
+                                          child: (item?.partyName == null)
+                                              ? ListTile(
+                                                  leading: Text(
+                                                  "Search Customer",
+                                                  style:
+                                                      TextStyle(fontSize: 16),
+                                                ))
+                                              : ListTile(
+                                                  leading: Text(
+                                                    item!.partyName,
+                                                    style:
+                                                        TextStyle(fontSize: 16),
+                                                  ),
+                                                ),
+                                        );
+                                      },
+                                      selectedItem: TakeOrderScreen.customer,
+                                      dropdownItemBuilder:
+                                          (BuildContext context, Customer item,
+                                              bool isSelected) {
+                                        return Container(
+                                          decoration: !isSelected
+                                              ? null
+                                              : BoxDecoration(
+                                                  border: Border.all(
+                                                      color: Colors.blue),
+                                                  borderRadius:
+                                                      BorderRadius.circular(5),
+                                                  color: MyApp.isDark
+                                                      ? Color(0xff424242)
+                                                      : Colors.white,
+                                                ),
+                                          child: ListTile(
+                                              selected: isSelected,
+                                              title: Text(
+                                                item.partyName,
+                                                style: TextStyle(
+                                                    color: !isSelected &&
+                                                            !MyApp.isDark
+                                                        ? Colors.black54
                                                         : MyApp.isDark
                                                             ? Colors.white
-                                                            : Colors.black54))),
-                                  );
-                                },
+                                                            : Colors.black),
+                                              ),
+                                              subtitle: Text(
+                                                  item.address.toString(),
+                                                  style: TextStyle(
+                                                      color: !isSelected &&
+                                                              !MyApp.isDark
+                                                          ? Colors.grey
+                                                          : MyApp.isDark
+                                                              ? Colors.white
+                                                              : Colors
+                                                                  .black54))),
+                                        );
+                                      },
+                                    ),
+                                  ),
+
+                                  // )),
+                                  const SizedBox(
+                                    width: 5,
+                                  ),
+                                  Material(
+                                    elevation: 4,
+                                    child: Container(
+                                        height: 48,
+                                        width: 58,
+                                        decoration: const BoxDecoration(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(2)),
+                                          // color: Colors.white,
+                                          color: Color(0xff00620b),
+                                          // color: Color(0xff424242),
+                                        ),
+                                        child: MaterialButton(
+                                          elevation: 5,
+                                          onPressed: () {
+                                            showModalBottomSheet(
+                                              context: context,
+                                              elevation: 20.0,
+                                              shape:
+                                                  const RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.vertical(
+                                                              top: Radius
+                                                                  .circular(
+                                                                      25.0))),
+                                              isScrollControlled: true,
+                                              builder: (context) =>
+                                                  NewUsrAddLocalDB(
+                                                index: 1,
+                                                recovery: ViewRecovery(
+                                                    amount: 0,
+                                                    recoveryID: 0,
+                                                    checkOrCash: "",
+                                                    party: Customer(
+                                                        discount: 0,
+                                                        address: "",
+                                                        userId: 0,
+                                                        partyId: 0,
+                                                        partyName: ""),
+                                                    dated: "",
+                                                    description: ""),
+                                              ),
+                                            );
+                                          },
+                                          child: const Icon(
+                                            Icons.add,
+                                            color: Colors.white,
+                                            // color: Color(0xff424242),
+                                            size: 20,
+                                          ),
+                                        )),
+                                  ),
+                                ],
                               ),
                             ),
-
-                            // )),
-                            const SizedBox(
-                              width: 5,
-                            ),
-                            Material(
-                              elevation: 4,
-                              child: Container(
-                                  height: 48,
-                                  width: 58,
-                                  decoration: const BoxDecoration(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(2)),
-                                    // color: Colors.white,
-                                    color: Color(0xff00620b),
-                                    // color: Color(0xff424242),
-                                  ),
-                                  child: MaterialButton(
-                                    elevation: 5,
-                                    onPressed: () {
-                                      showModalBottomSheet(
-                                        context: context,
-                                        elevation: 20.0,
-                                        shape: const RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.vertical(
-                                                top: Radius.circular(25.0))),
-                                        isScrollControlled: true,
-                                        builder: (context) => NewUsrAddLocalDB(
-                                          index: 1,
-                                          recovery: ViewRecovery(
-                                              amount: 0,
-                                              recoveryID: 0,
-                                              checkOrCash: "",
-                                              party: Customer(
-                                                  discount: 0,
-                                                  address: "",
-                                                  userId: 0,
-                                                  partyId: 0,
-                                                  partyName: ""),
-                                              dated: "",
-                                              description: ""),
-                                        ),
-                                      );
-                                    },
-                                    child: const Icon(
-                                      Icons.add,
-                                      color: Colors.white,
-                                      // color: Color(0xff424242),
-                                      size: 20,
-                                    ),
-                                  )),
-                            ),
-                          ],
-                        ),
-                      ),
+                          )),
                       Column(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SizedBox(height: 10),
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 15.0),
-                            child: TextField(
-                              controller: controller,
-                              onChanged: (value) {
-                                setState(() {
-                                  searchString = value.toLowerCase();
-                                });
-                              },
-                              decoration: const InputDecoration(
-                                contentPadding: EdgeInsets.symmetric(
-                                    vertical: 13, horizontal: 20),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: Color(0xff00620b)),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  // borderRadius: BorderRadius.circular(20),
-                                  borderSide:
-                                      BorderSide(color: Color(0xff00620b)),
-                                ),
-                                labelText: 'Search Product',
-                                // labelStyle: TextStyle(color: Color(0xff00620b)),
-                                suffixIcon: Icon(
-                                  Icons.search,
-                                  color: Color(0xff00620b),
+                          SlideTransition(
+                            position: Tween<Offset>(
+                                    begin: Offset(1, 0), end: Offset(0, 0))
+                                .animate(_animationController),
+                            child: FadeTransition(
+                              opacity: _animationController,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 15.0),
+                                child: TextField(
+                                  controller: controller,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      searchString = value.toLowerCase();
+                                    });
+                                  },
+                                  decoration: const InputDecoration(
+                                    contentPadding: EdgeInsets.symmetric(
+                                        vertical: 13, horizontal: 20),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Color(0xff00620b)),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      // borderRadius: BorderRadius.circular(20),
+                                      borderSide:
+                                          BorderSide(color: Color(0xff00620b)),
+                                    ),
+                                    labelText: 'Search Product',
+                                    // labelStyle: TextStyle(color: Color(0xff00620b)),
+                                    suffixIcon: Icon(
+                                      Icons.search,
+                                      color: Color(0xff00620b),
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 8.0),
-                            child: Align(
-                              alignment: Alignment.bottomRight,
-                              child: TextButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      resetCartList();
-                                      TakeOrderScreen.getdataFromDb();
-                                    });
-                                  },
-                                  child: Text(
-                                    "Clear List",
-                                    style: TextStyle(color: Color(0xff00620b)),
-                                  )),
+                          SlideTransition(
+                            position: Tween<Offset>(
+                                    begin: Offset(1, 0), end: Offset(0, 0))
+                                .animate(_animationController),
+                            child: FadeTransition(
+                              opacity: _animationController,
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: Align(
+                                  alignment: Alignment.bottomRight,
+                                  child: TextButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          resetCartList();
+                                          TakeOrderScreen.getdataFromDb();
+                                        });
+                                      },
+                                      child: Text(
+                                        "Clear List",
+                                        style:
+                                            TextStyle(color: Color(0xff00620b)),
+                                      )),
+                                ),
+                              ),
                             ),
                           ),
                           Divider(
@@ -620,6 +661,7 @@ class _TakeOrderScreenState extends State<TakeOrderScreen> {
                             height: 10,
                           ),
                           ListItems(
+                            controller: _animationController,
                             productItems: DataBaseDataLoad.ListOProduct,
                             editDiscount: TakeOrderScreen.customer.discount,
                             searchedInput: searchString,

@@ -1,5 +1,7 @@
-import 'dart:async';
+import 'dart:io';
 
+import 'package:flutter_share/flutter_share.dart';
+import 'package:path/path.dart';
 import 'package:eTrade/components/NavigationBar.dart';
 import 'package:date_format/date_format.dart';
 import 'package:eTrade/components/PostingData.dart';
@@ -393,6 +395,24 @@ class _MyDrawerState extends State<MyDrawer> {
                       children: const [
                         Icon(Icons.price_change_outlined),
                         Text("View Recovery")
+                      ],
+                    ),
+                  ),
+                  MaterialButton(
+                    onPressed: null,
+                    // () async {
+                    //   await FlutterShare.shareFile(
+                    //       title: "Etrade", filePath: SQLHelper.path);
+                    //   // if (files == null) {
+                    //   //   return;
+                    //   // } else {
+                    //   //   await Share.shareFiles(files);
+                    //   // }
+                    // },
+                    child: Row(
+                      children: const [
+                        Icon(Icons.share),
+                        Text("Share DataBase")
                       ],
                     ),
                   ),

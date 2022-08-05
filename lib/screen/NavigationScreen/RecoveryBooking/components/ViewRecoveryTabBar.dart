@@ -50,13 +50,18 @@ class RecoveryTabBarItem extends StatefulWidget {
   State<RecoveryTabBarItem> createState() => _RecoveryTabBarItemState();
 }
 
-class _RecoveryTabBarItemState extends State<RecoveryTabBarItem> {
+class _RecoveryTabBarItemState extends State<RecoveryTabBarItem>
+    with SingleTickerProviderStateMixin {
+  var _animationController;
   String range = 'Select Date';
   String searchString = "";
   TextEditingController controller = TextEditingController();
   String prerange = 'Select Date';
   var _recovery;
   void initState() {
+    _animationController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 500));
+    _animationController.forward();
     RecoveryTabBarItem.listOfRecovery = [];
     if (widget.tabName == "Search") {
       range = RecoveryTabBarItem.getFromDate() +
@@ -173,56 +178,63 @@ class _RecoveryTabBarItemState extends State<RecoveryTabBarItem> {
       (widget.tabName == "Search")
           ? Column(
               children: [
-                Container(
-                  padding: const EdgeInsets.all(20.0),
-                  width: double.infinity,
-                  child: Row(
-                    children: [
-                      Flexible(
-                        child: OutlinedButton(
-                            style: OutlinedButton.styleFrom(
-                                side: BorderSide(color: Colors.grey, width: 1)),
-                            onPressed: (() {
-                              datePickerBox();
-                            }),
-                            child: Text(
-                              "${prerange}",
-                              style: TextStyle(
-                                  fontSize: 19,
-                                  color: (MyApp.isDark)
-                                      ? Colors.white
-                                      : Colors.black,
-                                  fontWeight: FontWeight.normal),
-                            )),
+                SlideTransition(
+                    position:
+                        Tween<Offset>(begin: Offset(1, 0), end: Offset(0, 0))
+                            .animate(_animationController),
+                    child: Container(
+                      padding: const EdgeInsets.all(20.0),
+                      width: double.infinity,
+                      child: Row(
+                        children: [
+                          Flexible(
+                            child: OutlinedButton(
+                                style: OutlinedButton.styleFrom(
+                                    side: BorderSide(
+                                        color: Colors.grey, width: 1)),
+                                onPressed: (() {
+                                  datePickerBox();
+                                }),
+                                child: Text(
+                                  "${prerange}",
+                                  style: TextStyle(
+                                      fontSize: 19,
+                                      color: (MyApp.isDark)
+                                          ? Colors.white
+                                          : Colors.black,
+                                      fontWeight: FontWeight.normal),
+                                )),
+                          ),
+                          const SizedBox(
+                            width: 5,
+                          ),
+                          ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  primary: Color(0xff00620b)),
+                              onPressed: prerange == "Select Date"
+                                  ? null
+                                  : () async {
+                                      _recovery =
+                                          await SQLHelper.getFromToRecovery(
+                                              RecoveryTabBarItem.getFromDate(),
+                                              RecoveryTabBarItem.getToDate());
+                                      RecoveryTabBarItem.listOfRecovery =
+                                          ViewRecovery.ViewRecoveryFromDb(
+                                              _recovery);
+                                      setState(() {
+                                        if (RecoveryTabBarItem
+                                            .listOfRecovery.isNotEmpty) {
+                                          RecoveryTabBarItem.listOfRecovery;
+                                        } else {
+                                          RecoveryTabBarItem.listOfRecovery =
+                                              [];
+                                        }
+                                      });
+                                    },
+                              child: const Text('Get Date'))
+                        ],
                       ),
-                      const SizedBox(
-                        width: 5,
-                      ),
-                      ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              primary: Color(0xff00620b)),
-                          onPressed: prerange == "Select Date"
-                              ? null
-                              : () async {
-                                  _recovery = await SQLHelper.getFromToRecovery(
-                                      RecoveryTabBarItem.getFromDate(),
-                                      RecoveryTabBarItem.getToDate());
-                                  RecoveryTabBarItem.listOfRecovery =
-                                      ViewRecovery.ViewRecoveryFromDb(
-                                          _recovery);
-                                  setState(() {
-                                    if (RecoveryTabBarItem
-                                        .listOfRecovery.isNotEmpty) {
-                                      RecoveryTabBarItem.listOfRecovery;
-                                    } else {
-                                      RecoveryTabBarItem.listOfRecovery = [];
-                                    }
-                                  });
-                                },
-                          child: const Text('Get Date'))
-                    ],
-                  ),
-                ),
+                    )),
                 const Divider(
                   color: Color(0xff00620b),
                   thickness: 2,
@@ -274,204 +286,222 @@ class _RecoveryTabBarItemState extends State<RecoveryTabBarItem> {
               ? ListView.builder(
                   physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (BuildContext, index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: Slidable(
-                          key: const ValueKey(0),
-                          endActionPane: ActionPane(
-                            motion: const ScrollMotion(),
-                            children: [
-                              SlidableAction(
-                                onPressed: (((context) async {
-                                  RecoveryScreen.isEditRecovery = true;
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => MyNavigationBar(
-                                              selectedIndex: 3,
-                                              date: "",
-                                              editRecovery: RecoveryTabBarItem
-                                                  .listOfRecovery[index],
-                                              list: [],
-                                              partyName: "",
-                                              id: 0)));
-                                })),
-                                backgroundColor: const Color(0xFF21B7CA),
-                                foregroundColor: Colors.white,
-                                icon: Icons.edit,
-                                label: 'Edit',
+                    return SlideTransition(
+                        position: Tween<Offset>(
+                                begin: Offset(1, 0), end: Offset(0, 0))
+                            .animate(_animationController),
+                        child: Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: Slidable(
+                              key: const ValueKey(0),
+                              endActionPane: ActionPane(
+                                motion: const ScrollMotion(),
+                                children: [
+                                  SlidableAction(
+                                    onPressed: (((context) async {
+                                      RecoveryScreen.isEditRecovery = true;
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  MyNavigationBar(
+                                                      selectedIndex: 3,
+                                                      date: "",
+                                                      editRecovery:
+                                                          RecoveryTabBarItem
+                                                                  .listOfRecovery[
+                                                              index],
+                                                      list: [],
+                                                      partyName: "",
+                                                      id: 0)));
+                                    })),
+                                    backgroundColor: const Color(0xFF21B7CA),
+                                    foregroundColor: Colors.white,
+                                    icon: Icons.edit,
+                                    label: 'Edit',
+                                  ),
+                                  SlidableAction(
+                                    onPressed: (((context) async {
+                                      await SQLHelper.deleteItem(
+                                          "Recovery",
+                                          "RecoveryID",
+                                          RecoveryTabBarItem
+                                              .listOfRecovery[index]
+                                              .recoveryID);
+                                      if (widget.tabName == "Search") {
+                                        _recovery =
+                                            await SQLHelper.getFromToRecovery(
+                                                RecoveryTabBarItem
+                                                    .getFromDate(),
+                                                RecoveryTabBarItem.getToDate());
+                                      } else if (widget.tabName == "Today") {
+                                        String todayDate =
+                                            dateFormat.format(DateTime.now());
+                                        _recovery =
+                                            await SQLHelper.getSpecificRecovery(
+                                                todayDate);
+                                      } else if (widget.tabName ==
+                                          "Yesterday") {
+                                        String yesterdayDate =
+                                            dateFormat.format(DateTime.now()
+                                                .subtract(Duration(days: 1)));
+                                        _recovery =
+                                            await SQLHelper.getSpecificRecovery(
+                                                yesterdayDate);
+                                      } else {
+                                        _recovery =
+                                            await SQLHelper.getAllRecovery();
+                                      }
+                                      RecoveryTabBarItem.listOfRecovery =
+                                          ViewRecovery.ViewRecoveryFromDb(
+                                              _recovery);
+                                      setState(() {
+                                        RecoveryTabBarItem.listOfRecovery;
+                                      });
+                                    })),
+                                    backgroundColor: const Color(0xFFFE4A49),
+                                    foregroundColor: Colors.white,
+                                    icon: Icons.delete,
+                                    label: 'Delete',
+                                  ),
+                                ],
                               ),
-                              SlidableAction(
-                                onPressed: (((context) async {
-                                  await SQLHelper.deleteItem(
-                                      "Recovery",
-                                      "RecoveryID",
-                                      RecoveryTabBarItem
-                                          .listOfRecovery[index].recoveryID);
-                                  if (widget.tabName == "Search") {
-                                    _recovery =
-                                        await SQLHelper.getFromToRecovery(
-                                            RecoveryTabBarItem.getFromDate(),
-                                            RecoveryTabBarItem.getToDate());
-                                  } else if (widget.tabName == "Today") {
-                                    String todayDate =
-                                        dateFormat.format(DateTime.now());
-                                    _recovery =
-                                        await SQLHelper.getSpecificRecovery(
-                                            todayDate);
-                                  } else if (widget.tabName == "Yesterday") {
-                                    String yesterdayDate = dateFormat.format(
-                                        DateTime.now()
-                                            .subtract(Duration(days: 1)));
-                                    _recovery =
-                                        await SQLHelper.getSpecificRecovery(
-                                            yesterdayDate);
-                                  } else {
-                                    _recovery =
-                                        await SQLHelper.getAllRecovery();
-                                  }
-                                  RecoveryTabBarItem.listOfRecovery =
-                                      ViewRecovery.ViewRecoveryFromDb(
-                                          _recovery);
-                                  setState(() {
-                                    RecoveryTabBarItem.listOfRecovery;
-                                  });
-                                })),
-                                backgroundColor: const Color(0xFFFE4A49),
-                                foregroundColor: Colors.white,
-                                icon: Icons.delete,
-                                label: 'Delete',
-                              ),
-                            ],
-                          ),
-                          child: Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 5.0),
-                              child: Container(
-                                  height: 110,
-                                  width: double.infinity,
-                                  decoration: BoxDecoration(
-                                      color: (MyApp.isDark)
-                                          ? Color(0xff424242)
-                                          : Colors.white,
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.black,
-                                          offset: Offset(0.0, 0.5), //(x,y)
-                                          blurRadius: 3.0,
-                                        ),
-                                      ],
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(5))),
-                                  child: Padding(
-                                    padding: EdgeInsets.all(12.0),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Column(
+                              child: Padding(
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 5.0),
+                                  child: Container(
+                                      height: 110,
+                                      width: double.infinity,
+                                      decoration: BoxDecoration(
+                                          color: (MyApp.isDark)
+                                              ? Color(0xff424242)
+                                              : Colors.white,
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Colors.black,
+                                              offset: Offset(0.0, 0.5), //(x,y)
+                                              blurRadius: 3.0,
+                                            ),
+                                          ],
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(5))),
+                                      child: Padding(
+                                        padding: EdgeInsets.all(12.0),
+                                        child: Row(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Text(
-                                              "RecoveryID: #${RecoveryTabBarItem.listOfRecovery[index].recoveryID}",
-                                              style:
-                                                  TextStyle(color: Colors.grey),
-                                            ),
-                                            Text(
-                                              " ${RecoveryTabBarItem.listOfRecovery[index].party.partyName}",
-                                              style: const TextStyle(
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.bold,
-                                                // fontStyle: FontStyle.italic,
-                                              ),
-                                            ),
                                             Column(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.spaceAround,
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                Text("Recovery On",
-                                                    style: TextStyle(
-                                                        fontSize: 15,
-                                                        color: Colors.grey,
-                                                        fontWeight:
-                                                            FontWeight.bold)),
                                                 Text(
-                                                  "${RecoveryTabBarItem.listOfRecovery[index].dated}",
+                                                  "RecoveryID: #${RecoveryTabBarItem.listOfRecovery[index].recoveryID}",
                                                   style: TextStyle(
-                                                      color: Colors.grey,
-                                                      fontSize: 13),
+                                                      color: Colors.grey),
+                                                ),
+                                                Text(
+                                                  " ${RecoveryTabBarItem.listOfRecovery[index].party.partyName}",
+                                                  style: const TextStyle(
+                                                    fontSize: 15,
+                                                    fontWeight: FontWeight.bold,
+                                                    // fontStyle: FontStyle.italic,
+                                                  ),
+                                                ),
+                                                Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceAround,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text("Recovery On",
+                                                        style: TextStyle(
+                                                            fontSize: 15,
+                                                            color: Colors.grey,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold)),
+                                                    Text(
+                                                      "${RecoveryTabBarItem.listOfRecovery[index].dated}",
+                                                      style: TextStyle(
+                                                          color: Colors.grey,
+                                                          fontSize: 13),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                            Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.end,
+                                              children: [
+                                                Container(
+                                                  padding: EdgeInsets.all(4),
+                                                  decoration: BoxDecoration(
+                                                      color: Color(0xff00620b),
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                              Radius.circular(
+                                                                  5))),
+                                                  child: Text(
+                                                    "Rs ${RecoveryTabBarItem.listOfRecovery[index].amount}",
+                                                    style: TextStyle(
+                                                        fontStyle:
+                                                            FontStyle.italic,
+                                                        color: Colors.white),
+                                                  ),
+                                                ),
+                                                MaterialButton(
+                                                  onPressed: () async {
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                RecoveryDetailScreen(
+                                                                  selectedRecovery:
+                                                                      RecoveryTabBarItem
+                                                                              .listOfRecovery[
+                                                                          index],
+                                                                )));
+                                                  },
+                                                  padding: EdgeInsets.zero,
+                                                  child: Container(
+                                                    padding: EdgeInsets.all(8),
+                                                    decoration: BoxDecoration(
+                                                        color: (MyApp.isDark)
+                                                            ? Colors.grey
+                                                            : Colors
+                                                                .grey.shade300,
+                                                        // border: Border.all(
+                                                        //     color:
+                                                        //         Color(0xff00620b),
+                                                        //     width: 1),
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                                Radius.circular(
+                                                                    5))),
+                                                    child: Text(
+                                                      "Recovery Detail",
+                                                      style: TextStyle(
+                                                          color:
+                                                              Color(0xff00620b),
+                                                          // fontStyle: FontStyle.italic,
+                                                          fontSize: 15),
+                                                    ),
+                                                  ),
                                                 ),
                                               ],
                                             ),
                                           ],
                                         ),
-                                        Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.end,
-                                          children: [
-                                            Container(
-                                              padding: EdgeInsets.all(4),
-                                              decoration: BoxDecoration(
-                                                  color: Color(0xff00620b),
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(5))),
-                                              child: Text(
-                                                "Rs ${RecoveryTabBarItem.listOfRecovery[index].amount}",
-                                                style: TextStyle(
-                                                    fontStyle: FontStyle.italic,
-                                                    color: Colors.white),
-                                              ),
-                                            ),
-                                            MaterialButton(
-                                              onPressed: () async {
-                                                Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            RecoveryDetailScreen(
-                                                              selectedRecovery:
-                                                                  RecoveryTabBarItem
-                                                                          .listOfRecovery[
-                                                                      index],
-                                                            )));
-                                              },
-                                              padding: EdgeInsets.zero,
-                                              child: Container(
-                                                padding: EdgeInsets.all(8),
-                                                decoration: BoxDecoration(
-                                                    color: (MyApp.isDark)
-                                                        ? Colors.grey
-                                                        : Colors.grey.shade300,
-                                                    // border: Border.all(
-                                                    //     color:
-                                                    //         Color(0xff00620b),
-                                                    //     width: 1),
-                                                    borderRadius:
-                                                        BorderRadius.all(
-                                                            Radius.circular(
-                                                                5))),
-                                                child: Text(
-                                                  "Recovery Detail",
-                                                  style: TextStyle(
-                                                      color: Color(0xff00620b),
-                                                      // fontStyle: FontStyle.italic,
-                                                      fontSize: 15),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  )))),
-                    );
+                                      )))),
+                        ));
                   },
                   itemCount: RecoveryTabBarItem.listOfRecovery.length,
                   shrinkWrap: true,

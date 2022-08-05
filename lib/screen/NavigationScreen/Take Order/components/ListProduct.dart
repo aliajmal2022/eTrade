@@ -10,9 +10,11 @@ class ListItems extends StatefulWidget {
       {required this.route,
       required this.editDiscount,
       required this.productItems,
+      required this.controller,
       required this.searchedInput});
   final List<Product> productItems;
   final String searchedInput;
+  final AnimationController controller;
   Widget route;
   double editDiscount;
 
@@ -39,36 +41,40 @@ class _ListItemsState extends State<ListItems> {
                 }
               }
 
-              return Card(
-                child: MaterialButton(
-                  onPressed: () {
-                    setState(() {
-                      AddItemIntoCart(
-                          widget.editDiscount,
-                          widget.productItems[index].Quantity,
-                          context,
-                          widget.productItems[index],
-                          widget.route);
-                    });
-                  },
-                  child: ListTile(
-                    leading: widget.productItems[index].Quantity == 0
-                        ? null
-                        : CircleAvatar(
-                            backgroundColor: Color(0xff00620b),
-                            // radius: 100,
-                            minRadius: 10,
-                            maxRadius: 30,
-                            child:
-                                Text("${widget.productItems[index].Quantity}"),
-                            foregroundColor: Colors.white,
-                          ),
-                    title: Text(widget.productItems[index].Title),
-                    subtitle: Text("${widget.productItems[index].Price}"),
-                    trailing: Icon(Icons.add),
-                  ),
-                ),
-              );
+              return SlideTransition(
+                  position:
+                      Tween<Offset>(begin: Offset(0, 1), end: Offset(0, 0))
+                          .animate(widget.controller),
+                  child: Card(
+                    child: MaterialButton(
+                      onPressed: () {
+                        setState(() {
+                          AddItemIntoCart(
+                              widget.editDiscount,
+                              widget.productItems[index].Quantity,
+                              context,
+                              widget.productItems[index],
+                              widget.route);
+                        });
+                      },
+                      child: ListTile(
+                        leading: widget.productItems[index].Quantity == 0
+                            ? null
+                            : CircleAvatar(
+                                backgroundColor: Color(0xff00620b),
+                                // radius: 100,
+                                minRadius: 10,
+                                maxRadius: 30,
+                                child: Text(
+                                    "${widget.productItems[index].Quantity}"),
+                                foregroundColor: Colors.white,
+                              ),
+                        title: Text(widget.productItems[index].Title),
+                        subtitle: Text("${widget.productItems[index].Price}"),
+                        trailing: Icon(Icons.add),
+                      ),
+                    ),
+                  ));
             },
             itemCount: widget.productItems.length,
             shrinkWrap: true,
