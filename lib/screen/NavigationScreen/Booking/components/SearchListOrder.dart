@@ -60,7 +60,7 @@ class _ListOfOrderState extends State<ListOfOrder> {
                           ? (context) async {
                               var saleDetail =
                                   await BookingTabBarItem.getSaleDetail(
-                                      dummyOrderList[index].saleID);
+                                      dummyOrderList[index].iD);
                               TakeOrderScreen.isSaleSpot = false;
                               TakeOrderScreen.isEditOrder = false;
                               TakeOrderScreen.isSelected = false;
@@ -82,16 +82,16 @@ class _ListOfOrderState extends State<ListOfOrder> {
                                                   address: "",
                                                   partyId: 0,
                                                   partyName: "")),
-                                          date: dummyOrderList[index].saleDate,
+                                          date: dummyOrderList[index].date,
                                           list: saleDetail,
                                           partyName:
                                               dummyOrderList[index].partyName,
-                                          id: dummyOrderList[index].saleID)));
+                                          id: dummyOrderList[index].iD)));
                             }
                           : (context) async {
                               var orderDetail =
                                   await BookingTabBarItem.getOrderDetail(
-                                      dummyOrderList[index].orderID);
+                                      dummyOrderList[index].iD);
                               TakeOrderScreen.isSaleSpot = false;
                               TakeOrderScreen.isEditSale = true;
                               TakeOrderScreen.isSelected = false;
@@ -113,11 +113,10 @@ class _ListOfOrderState extends State<ListOfOrder> {
                                                     discount: 0,
                                                     partyId: 0,
                                                     partyName: "")),
-                                            date:
-                                                dummyOrderList[index].orderDate,
+                                            date: dummyOrderList[index].date,
                                             selectedIndex: 1,
                                             list: orderDetail,
-                                            id: dummyOrderList[index].orderID,
+                                            id: dummyOrderList[index].iD,
                                             partyName:
                                                 dummyOrderList[index].partyName,
                                           )));
@@ -134,11 +133,11 @@ class _ListOfOrderState extends State<ListOfOrder> {
                       label: 'delete',
                       onPressed: ((ViewBookingScreen.isSaleBooking
                           ? (context) async {
-                              await SQLHelper.deleteItem("Sale", "saleID",
-                                  dummyOrderList[index].orderID);
+                              await SQLHelper.deleteItem(
+                                  "Sale", "iD", dummyOrderList[index].iD);
 
-                              await SQLHelper.deleteItem("SaleDetail", "saleID",
-                                  dummyOrderList[index].orderID);
+                              await SQLHelper.deleteItem(
+                                  "SaleDetail", "iD", dummyOrderList[index].iD);
 
                               if (widget.tabName == "Search") {
                                 _item = await SQLHelper.getFromToViewSale(
@@ -159,15 +158,15 @@ class _ListOfOrderState extends State<ListOfOrder> {
                               }
                               setState(() {
                                 dummyOrderList =
-                                    ViewOrderBooking.ViewOrderFromDb(_item);
+                                    ViewBooking.ViewOrderFromDb(_item);
                               });
                             }
                           : (context) async {
-                              await SQLHelper.deleteItem("Order", "OrderID",
-                                  dummyOrderList[index].orderID);
+                              await SQLHelper.deleteItem(
+                                  "Order", "OrderID", dummyOrderList[index].iD);
 
                               await SQLHelper.deleteItem("OrderDetail",
-                                  "OrderID", dummyOrderList[index].orderID);
+                                  "OrderID", dummyOrderList[index].iD);
 
                               if (widget.tabName == "Search") {
                                 _item = await SQLHelper.getFromToViewOrder(
@@ -188,10 +187,8 @@ class _ListOfOrderState extends State<ListOfOrder> {
                               }
                               setState(() {
                                 dummyOrderList =
-                                    ViewOrderBooking.ViewOrderFromDb(_item);
+                                    ViewBooking.ViewOrderFromDb(_item);
                               });
-
-                           
                             })),
                     ),
                   ]),
@@ -222,8 +219,8 @@ class _ListOfOrderState extends State<ListOfOrder> {
                               children: [
                                 Text(
                                   ViewBookingScreen.isSaleBooking
-                                      ? "SaleID: #${dummyOrderList[index].saleID}"
-                                      : "OrderID: #${dummyOrderList[index].orderID}",
+                                      ? "SaleID: #${dummyOrderList[index].iD}"
+                                      : "OrderID: #${dummyOrderList[index].iD}",
                                   style: TextStyle(color: Colors.grey),
                                 ),
                                 Text(
@@ -249,8 +246,8 @@ class _ListOfOrderState extends State<ListOfOrder> {
                                             fontWeight: FontWeight.bold)),
                                     Text(
                                       ViewBookingScreen.isSaleBooking
-                                          ? "${dummyOrderList[index].saleDate}"
-                                          : "${dummyOrderList[index].orderDate}",
+                                          ? "${dummyOrderList[index].date}"
+                                          : "${dummyOrderList[index].date}",
                                       style: TextStyle(
                                           color: Colors.grey, fontSize: 13),
                                     ),
@@ -281,8 +278,7 @@ class _ListOfOrderState extends State<ListOfOrder> {
                                           var saleDetail =
                                               await BookingTabBarItem
                                                   .getSaleDetail(
-                                                      dummyOrderList[index]
-                                                          .saleID);
+                                                      dummyOrderList[index].iD);
                                           Navigator.push(
                                               context,
                                               MaterialPageRoute(
@@ -291,7 +287,7 @@ class _ListOfOrderState extends State<ListOfOrder> {
                                                           selectedSaleDate:
                                                               dummyOrderList[
                                                                       index]
-                                                                  .saleDate,
+                                                                  .date,
                                                           selectedItems:
                                                               saleDetail,
                                                           selecedCustomer:
@@ -307,14 +303,13 @@ class _ListOfOrderState extends State<ListOfOrder> {
                                                           saleID:
                                                               dummyOrderList[
                                                                       index]
-                                                                  .saleID)));
+                                                                  .iD)));
                                         }
                                       : () async {
                                           var orderDetail =
                                               await BookingTabBarItem
                                                   .getOrderDetail(
-                                                      dummyOrderList[index]
-                                                          .orderID);
+                                                      dummyOrderList[index].iD);
                                           Navigator.push(
                                               context,
                                               MaterialPageRoute(
@@ -323,7 +318,7 @@ class _ListOfOrderState extends State<ListOfOrder> {
                                                           selectedOrdeDate:
                                                               dummyOrderList[
                                                                       index]
-                                                                  .orderDate,
+                                                                  .date,
                                                           selectedItems:
                                                               orderDetail,
                                                           selecedCustomer:
@@ -339,7 +334,7 @@ class _ListOfOrderState extends State<ListOfOrder> {
                                                           orderId:
                                                               dummyOrderList[
                                                                       index]
-                                                                  .orderID)));
+                                                                  .iD)));
                                         },
                                   padding: EdgeInsets.zero,
                                   child: Container(

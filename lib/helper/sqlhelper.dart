@@ -100,7 +100,7 @@ CREATE TABLE User(
 	UserID INTEGER NOT NULL,
 	PartyName TEXT NOT NULL,
   Discount REAL,
-  isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1)), 
+  isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1)),
   Address TEXT
  )
       ''');
@@ -163,7 +163,7 @@ TotalQuantity INTEGER NOT NULL,
 TotalValue REAL NOT NULL,
 Dated DATE NOT NULL,
 Description TEXT,
-isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1)) 
+isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
   )
       ''');
     print("successfully created Order table");
@@ -191,18 +191,24 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
     return await db.rawQuery("SELECT * FROM [Order] WHERE isPosted=0");
   }
 
-  static Future<List> getFromToViewOrder(var start, var end) async {
+  static Future<List> getFromToViewOrder(String start, String end) async {
     Database db = await instance.database;
+    var splitDate = start.split('-');
+    start = '${splitDate[2]}-${splitDate[1]}-${splitDate[0]}';
+    splitDate = end.split('-');
+    end = '${splitDate[2]}-${splitDate[1]}-${splitDate[0]}';
     var listOrder = await db.rawQuery(
-        "SELECT o.Dated,o.OrderID,o.TotalQuantity,p.PartyName FROM [Order] AS o INNER JOIN Party AS p ON p.PartyID = o.PartyID WHERE o.Dated BETWEEN '$start' AND '$end' and o.isPosted=0 ");
+        "SELECT strftime('%d-%m-%Y', o.Dated)  as Dated,o.OrderID,o.TotalQuantity,p.PartyName FROM [Order] AS o INNER JOIN Party AS p ON p.PartyID = o.PartyID WHERE o.Dated BETWEEN '$start' AND '$end' and o.isPosted=0 ");
 
     return listOrder;
   }
 
   static Future<List> getSpecificViewOrder(var date) async {
     Database db = await instance.database;
+    var splitDate = date.split('-');
+    date = '${splitDate[2]}-${splitDate[1]}-${splitDate[0]}';
     var listOrder = await db.rawQuery(
-        "SELECT o.Dated,o.OrderID,o.TotalQuantity,p.PartyName FROM [Order] AS o INNER JOIN Party AS p ON p.PartyID = o.PartyID WHERE o.Dated ='${date}' and o.isPosted=0 ");
+        "SELECT strftime('%d-%m-%Y', o.Dated)  as Dated,o.OrderID,o.TotalQuantity,p.PartyName FROM [Order] AS o INNER JOIN Party AS p ON p.PartyID = o.PartyID WHERE o.Dated ='${date}' and o.isPosted=0 ");
 
     return listOrder;
   }
@@ -210,7 +216,7 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
   static Future<List> getAllViewOrder() async {
     Database db = await instance.database;
     var listOrder = await db.rawQuery(
-        "SELECT o.Dated,o.OrderID,o.TotalQuantity,p.PartyName FROM [Order] AS o INNER JOIN Party AS p ON p.PartyID = o.PartyID WHERE  o.isPosted=0 ");
+        "SELECT strftime('%d-%m-%Y', o.Dated)  as Dated,o.OrderID,o.TotalQuantity,p.PartyName FROM [Order] AS o INNER JOIN Party AS p ON p.PartyID = o.PartyID WHERE  o.isPosted=0 ");
 
     return listOrder;
   }
@@ -264,7 +270,7 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
   [TO] Real,
   Amount REAL NOT NULL,
 	Dated DATE NOT NULL,
-isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1)) 
+isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
  )
       ''');
     print("successfully created OrderDetail table");
@@ -315,7 +321,7 @@ TotalValue REAL NOT NULL,
 Dated DATE NOT NULL,
 Description TEXT,
 isCash BOOLEAN NOT NULL CHECK (isCash IN (0, 1)) ,
-isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1)) 
+isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
   )
       ''');
     print("successfully created Sale table");
@@ -346,16 +352,22 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
 
   static Future<List> getFromToViewSale(var start, var end) async {
     Database db = await instance.database;
+    var splitDate = start.split('-');
+    start = '${splitDate[2]}-${splitDate[1]}-${splitDate[0]}';
+    splitDate = end.split('-');
+    end = '${splitDate[2]}-${splitDate[1]}-${splitDate[0]}';
     var listOrder = await db.rawQuery(
-        "SELECT s.Dated,s.InvoiceID,s.TotalQuantity,p.PartyName FROM Sale AS s INNER JOIN Party AS p ON p.PartyID = s.PartyID WHERE s.Dated BETWEEN '$start' AND '$end' and s.isPosted=0 ");
+        "SELECT strftime('%d-%m-%Y', s.Dated)  as Dated,s.InvoiceID,s.TotalQuantity,p.PartyName FROM Sale AS s INNER JOIN Party AS p ON p.PartyID = s.PartyID WHERE s.Dated BETWEEN '$start' AND '$end' and s.isPosted=0 ");
 
     return listOrder;
   }
 
   static Future<List> getSpecificViewSale(var date) async {
     Database db = await instance.database;
+    var splitDate = date.split('-');
+    date = '${splitDate[2]}-${splitDate[1]}-${splitDate[0]}';
     var listOrder = await db.rawQuery(
-        "SELECT s.Dated,s.InvoiceID,s.TotalQuantity,p.PartyName FROM Sale AS s INNER JOIN Party AS p ON p.PartyID = s.PartyID WHERE s.Dated ='${date}' and s.isPosted=0 ");
+        "SELECT strftime('%d-%m-%Y', s.Dated)  as Dated,s.InvoiceID,s.TotalQuantity,p.PartyName FROM Sale AS s INNER JOIN Party AS p ON p.PartyID = s.PartyID WHERE s.Dated ='${date}' and s.isPosted=0 ");
 
     return listOrder;
   }
@@ -363,7 +375,7 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
   static Future<List> getAllViewSale() async {
     Database db = await instance.database;
     var listOrder = await db.rawQuery(
-        "SELECT s.Dated,s.InvoiceID,s.TotalQuantity,p.PartyName FROM Sale AS s INNER JOIN Party AS p ON s.PartyID = p.PartyID WHERE  s.isPosted=0 ");
+        "SELECT strftime('%d-%m-%Y', s.Dated)  as Dated,s.InvoiceID,s.TotalQuantity,p.PartyName FROM Sale AS s INNER JOIN Party AS p ON s.PartyID = p.PartyID WHERE  s.isPosted=0 ");
 
     return listOrder;
   }
@@ -396,7 +408,7 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
   [TO] Real,
   Amount REAL NOT NULL,
 	Dated DATE NOT NULL,
-isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1)) 
+isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
  )
       ''');
     print("successfully created SaleDetail table");
@@ -446,7 +458,7 @@ Amount REAL NOT NULL,
 Dated DATE NOT NULL,
 [CheckOrCash] TEXT NOT NULL,
 Description TEXT,
-isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1)) 
+isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
   )
       ''');
     print("successfully created Recovery table");
@@ -475,17 +487,23 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
   }
 
   static Future<List> getFromToRecovery(var start, var end) async {
+    var splitDate = start.split('-');
+    start = '${splitDate[2]}-${splitDate[1]}-${splitDate[0]}';
+    splitDate = end.split('-');
+    end = '${splitDate[2]}-${splitDate[1]}-${splitDate[0]}';
     Database db = await instance.database;
     var listRecovery = await db.rawQuery(
-        "SELECT r.Dated,r.CheckOrCash,r.Description,r.RecoveryID,r.Amount,p.PartyName,p.PartyID FROM Recovery AS r INNER JOIN Party AS p ON p.PartyID = r.PartyID WHERE r.Dated BETWEEN '$start' AND '$end' and r.isPosted=0");
+        "SELECT strftime('%d-%m-%Y', r.Dated)  as Dated,r.CheckOrCash,r.Description,r.RecoveryID,r.Amount,p.PartyName,p.PartyID FROM Recovery AS r INNER JOIN Party AS p ON p.PartyID = r.PartyID WHERE r.Dated BETWEEN '$start' AND '$end' and r.isPosted=0");
 
     return listRecovery;
   }
 
   static Future<List> getSpecificRecovery(var date) async {
     Database db = await instance.database;
+    var splitDate = date.split('-');
+    date = '${splitDate[2]}-${splitDate[1]}-${splitDate[0]}';
     var listRecovery = await db.rawQuery(
-        "SELECT r.Dated,r.CheckOrCash,r.Description,r.RecoveryID,r.Amount,p.PartyName,p.PartyID FROM Recovery AS r INNER JOIN Party AS p ON p.PartyID = r.PartyID WHERE r.Dated = '$date' and r.isPosted=0");
+        "SELECT strftime('%d-%m-%Y', r.Dated)  as Dated,r.CheckOrCash,r.Description,r.RecoveryID,r.Amount,p.PartyName,p.PartyID FROM Recovery AS r INNER JOIN Party AS p ON p.PartyID = r.PartyID WHERE r.Dated = '$date' and r.isPosted=0");
 
     return listRecovery;
   }
@@ -493,20 +511,9 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
   static Future<List> getAllRecovery() async {
     Database db = await instance.database;
     var listRecovery = await db.rawQuery(
-        "SELECT r.Dated,r.CheckOrCash,r.Description,r.RecoveryID,r.Amount,p.PartyName,p.PartyID FROM Recovery AS r INNER JOIN Party AS p ON p.PartyID = r.PartyID WHERE r.isPosted=0");
+        "SELECT strftime('%d-%m-%Y', r.Dated)  as Dated,r.CheckOrCash,r.Description,r.RecoveryID,r.Amount,p.PartyName,p.PartyID FROM Recovery AS r INNER JOIN Party AS p ON p.PartyID = r.PartyID WHERE r.isPosted=0");
 
     return listRecovery;
-  }
-
-  static Future<void> deleteRecovery() async {
-    Database db = await instance.database;
-    try {
-      await db.execute("DELETE FROM Recovery;");
-      // await db
-      //     .execute("update sqlite_sequence set seq='0' where name=RecoveryID");
-    } catch (e) {
-      debugPrint('item is not delete');
-    }
   }
 
   static Future<void> updateRecoveryTable(int id, int partyID, double amount,
@@ -533,6 +540,9 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
   static Future<int> getOrderCount(String name, String date) async {
     var db = await instance.database;
     int count = 0;
+
+    var splitDate = date.split('-');
+    date = '${splitDate[2]}-${splitDate[1]}-${splitDate[0]}';
     var order;
     try {
       if (name == "Week") {
@@ -586,6 +596,8 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
     Database db = await instance.database;
     if (tableName == "Order" ||
         tableName == "OrderDetail" ||
+        tableName == "Sale" ||
+        tableName == "SaleDetail" ||
         tableName == "Recovery") {
       return db.query(tableName, orderBy: id, where: "isPosted=0");
     } else {
@@ -596,7 +608,7 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
   static Future<void> deleteTable(Database database, String tableName) async {
     try {
       await database.execute("""
-  DELETE FROM [$tableName] 
+  DELETE FROM [$tableName]
       """);
       // }
 

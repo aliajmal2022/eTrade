@@ -4,29 +4,44 @@ import 'package:eTrade/helper/Sql_Connection.dart';
 import 'package:eTrade/helper/sqlhelper.dart';
 import 'package:intl/intl.dart';
 
-class ViewOrderBooking {
-  ViewOrderBooking(
-      {required this.orderID,
-      required this.orderDate,
+class ViewBooking {
+  ViewBooking(
+      {required this.iD,
+      required this.date,
       required this.partyName,
       required this.totalQuantity});
 
-  int orderID;
-  String orderDate;
+  int iD;
+  String date;
   int totalQuantity;
   String partyName;
 
-  static List<ViewOrderBooking> ViewOrderFromDb(List _order) {
-    List<ViewOrderBooking> _listOrderView = [];
-    if (_order.isNotEmpty) {
-      _order.forEach((element) {
-        ViewOrderBooking viewOrder = ViewOrderBooking(
-            orderID: 0, orderDate: "", partyName: "", totalQuantity: 0);
-        viewOrder.orderDate = element['Dated'];
+  static List<ViewBooking> ViewSaleFromDb(List _sale) {
+    List<ViewBooking> _listOrderView = [];
+    if (_sale.isNotEmpty) {
+      _sale.forEach((element) {
+        ViewBooking viewOrder =
+            ViewBooking(iD: 0, date: "", partyName: "", totalQuantity: 0);
+        viewOrder.date = element['Dated'];
         viewOrder.totalQuantity = element['TotalQuantity'];
         viewOrder.partyName = element['PartyName'];
-        viewOrder.orderID = element['OrderID'];
-        viewOrder.orderID = element['OrderID'];
+        viewOrder.iD = element['InvoiceID'];
+        _listOrderView.add(viewOrder);
+      });
+    }
+    return _listOrderView;
+  }
+
+  static List<ViewBooking> ViewOrderFromDb(List _order) {
+    List<ViewBooking> _listOrderView = [];
+    if (_order.isNotEmpty) {
+      _order.forEach((element) {
+        ViewBooking viewOrder =
+            ViewBooking(iD: 0, date: "", partyName: "", totalQuantity: 0);
+        viewOrder.date = element['Dated'];
+        viewOrder.totalQuantity = element['TotalQuantity'];
+        viewOrder.partyName = element['PartyName'];
+        viewOrder.iD = element['OrderID'];
         _listOrderView.add(viewOrder);
       });
     }

@@ -13,7 +13,7 @@ class DashBoardScreen extends StatefulWidget {
   static List<DashBoard> dashBoard = [];
   static Future<List<DashBoard>> getOrderHistory() async {
     List<DashBoard> list = [];
-    DateFormat dateFormat = DateFormat("yyyy-MM-dd");
+    DateFormat dateFormat = DateFormat("dd-MM-yyyy");
     String exactDate = dateFormat.format(DateTime.now());
     String yesterdayDate =
         dateFormat.format(DateTime.now().subtract(Duration(days: 1)));
@@ -83,16 +83,20 @@ class DashBoardScreen extends StatefulWidget {
   static List<MonthOrderHistory> staticMonths = [];
   static Future<List<MonthOrderHistory>> getMonthlyRecorderDB() async {
     List<MonthOrderHistory> list = [];
+    staticMonths = [];
     var months = await SQLHelper.getMonthOrderHistory();
-    for (var element in monthName) {
+    int count = 1;
+    for (count = 1; count <= monthName.length - 1; count++) {
       MonthOrderHistory orderData = MonthOrderHistory(month: "", amount: 0);
       MonthOrderHistory orderStatic = MonthOrderHistory(month: "", amount: 0);
-      double number = 1000000;
-      orderData.month = element;
-      orderData.amount = months[0][element].toDouble();
+      double number = 100000;
+      // orderData.month = element;
+      orderData.amount = months[0][monthName[count]].toDouble();
+      orderData.month = count.toString();
       list.add(orderData);
       orderStatic.amount = number;
-      orderStatic.month = element;
+      orderStatic.month = count.toString();
+      // orderStatic.month = element;
       staticMonths.add(orderStatic);
     }
     return list;
@@ -135,18 +139,22 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
           data: DashBoardScreen.staticMonths,
           domainFn: (MonthOrderHistory series, _) => series.month,
           measureFn: (MonthOrderHistory series, _) => series.amount,
-          colorFn: (_, __) => MyApp.isDark
-              ? charts.MaterialPalette.gray.shade800
-              : charts.MaterialPalette.red.shadeDefault,
+          colorFn: (_, __) =>
+              // MyApp.isDark
+              //     ? charts.MaterialPalette.red.shadDe
+              // :
+              charts.MaterialPalette.red.shadeDefault,
         ),
         charts.Series(
           id: "Query",
           data: DashBoardScreen.monthlyOrderList,
           domainFn: (MonthOrderHistory series, _) => series.month,
           measureFn: (MonthOrderHistory series, _) => series.amount,
-          colorFn: (_, __) => MyApp.isDark
-              ? charts.MaterialPalette.gray.shade800
-              : charts.MaterialPalette.green.shadeDefault,
+          colorFn: (_, __) =>
+              // MyApp.isDark
+              //     ? charts.MaterialPalette.gray.shade800
+              //     :
+              charts.MaterialPalette.green.shadeDefault,
         ),
       ];
     });

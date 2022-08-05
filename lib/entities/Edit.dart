@@ -19,11 +19,11 @@ class Edit {
   int bonus;
   double to;
   static String description = "";
-  static List<Edit> ViewOrderFromDb(var _orderDetail) {
+  static List<Edit> ViewFromDb(var _detail) {
     List<Edit> _listOrderView = [];
     int count = 0;
-    if (_orderDetail.isNotEmpty) {
-      _orderDetail.forEach((element) {
+    if (_detail.isNotEmpty) {
+      _detail.forEach((element) {
         Edit viewOrder = Edit(
             to: 0,
             discount: 0,
@@ -40,6 +40,7 @@ class Edit {
         viewOrder.itemName = element['ItemName'];
         viewOrder.quantity = element['Quantity'];
         viewOrder.rate = element['RATE'];
+
         viewOrder.amount = element['Amount'];
         viewOrder.itemId = element['ItemID'];
         viewOrder.to = element['TO'];

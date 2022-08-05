@@ -55,7 +55,8 @@ class CartScreen extends StatefulWidget {
 class _CartScreenState extends State<CartScreen> {
   ScrollController _controller = ScrollController();
 
-  DateFormat dateFormat = DateFormat('yyyy-MM-dd');
+  DateFormat showDateFormat = DateFormat('dd-MM-yyyy');
+  DateFormat storedateFormat = DateFormat('yyyy-MM-dd');
   TextEditingController controller = TextEditingController();
   String description = '';
   bool isCash = TakeOrderScreen.isSaleSpot ? true : false;
@@ -145,7 +146,7 @@ class _CartScreenState extends State<CartScreen> {
                               style: TextStyle(fontSize: 20),
                             ),
                             Text(
-                              "(${TakeOrderScreen.isEditOrder ? widget.date : dateFormat.format(DateTime.now())})",
+                              "(${TakeOrderScreen.isEditOrder ? widget.date : showDateFormat.format(DateTime.now())})",
                               style: TextStyle(fontSize: 15),
                             ),
                           ],
@@ -380,7 +381,7 @@ class _CartScreenState extends State<CartScreen> {
                                                 .createOrderDetail(
                                                     element,
                                                     widget.iD,
-                                                    dateFormat
+                                                    storedateFormat
                                                         .format(DateTime.now()),
                                                     false,
                                                     widget.userID);
@@ -437,7 +438,7 @@ class _CartScreenState extends State<CartScreen> {
                                                 .createSaleDetail(
                                                     element,
                                                     widget.iD,
-                                                    dateFormat
+                                                    storedateFormat
                                                         .format(DateTime.now()),
                                                     false,
                                                     widget.userID);
@@ -492,7 +493,7 @@ class _CartScreenState extends State<CartScreen> {
                                               totalQuantity: totalQuantity,
                                               saleID: 0,
                                               totalValue: totalAmount,
-                                              date: dateFormat
+                                              date: storedateFormat
                                                   .format(DateTime.now()),
                                               description: description,
                                             );
@@ -564,7 +565,7 @@ class _CartScreenState extends State<CartScreen> {
                                               totalQuantity: totalQuantity,
                                               orderID: 0,
                                               totalValue: totalAmount,
-                                              date: dateFormat
+                                              date: storedateFormat
                                                   .format(DateTime.now()),
                                               description: description,
                                             );

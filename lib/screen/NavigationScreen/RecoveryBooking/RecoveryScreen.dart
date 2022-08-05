@@ -84,7 +84,8 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
   String nameInp = "";
   double amount = 0;
   String description = "";
-  DateFormat dateFormat = DateFormat('dd-MM-yyyy');
+  DateFormat showdateFormat = DateFormat('dd-MM-yyyy');
+  DateFormat storedateFormat = DateFormat('yyyy-MM-dd');
   bool partyListAvialable = false;
   Future<void> PreLoadDataBase() async {
     partyListAvialable = await RecoveryScreen.getdataFromDb();
@@ -261,7 +262,7 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                               ),
                             ),
                             Text(
-                              "${RecoveryScreen.isEditRecovery ? widget.recovery.dated : dateFormat.format(DateTime.now())}",
+                              "${RecoveryScreen.isEditRecovery ? widget.recovery.dated : showdateFormat.format(DateTime.now())}",
                               style: TextStyle(
                                   fontSize: 20, fontWeight: FontWeight.bold),
                             ),
@@ -306,47 +307,6 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                         ],
                       ),
                     ),
-                    // Padding(
-                    //   padding: const EdgeInsets.all(8.0),
-                    //   child: Column(
-                    //     mainAxisAlignment: MainAxisAlignment.start,
-                    //     crossAxisAlignment: CrossAxisAlignment.start,
-                    //     children: [
-                    //       Text(
-                    //         "Check Your Payment Method.",
-                    //         style: TextStyle(fontSize: 18),
-                    //       ),
-                    //       Row(
-                    //         children: [
-                    //           Flexible(
-                    //             child: RadioListTile(
-                    //               value: "Cash",
-                    //               contentPadding: EdgeInsets.all(0),
-                    //               groupValue: _groupValue,
-                    //               title: Text("Cash"),
-                    //               onChanged: (newValue) => setState(
-                    //                   () => _groupValue = newValue.toString()),
-                    //               activeColor: Color(0xff00620b),
-                    //               selected: false,
-                    //             ),
-                    //           ),
-                    //           Flexible(
-                    //             child: RadioListTile(
-                    //               contentPadding: EdgeInsets.all(0),
-                    //               value: "Check",
-                    //               groupValue: _groupValue,
-                    //               title: Text("Check"),
-                    //               onChanged: (newValue) => setState(
-                    //                   () => _groupValue = newValue.toString()),
-                    //               activeColor: Color(0xff00620b),
-                    //               selected: false,
-                    //             ),
-                    //           ),
-                    //         ],
-                    //       ),
-                    //     ],
-                    //   ),
-                    // ),
                     SizedBox(
                       height: 20,
                     ),
@@ -565,8 +525,8 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                                         recoveryID: 0,
                                         isCashOrCheck: _groupValue,
                                         userID: widget.userID,
-                                        dated:
-                                            dateFormat.format(DateTime.now()),
+                                        dated: storedateFormat
+                                            .format(DateTime.now()),
                                         party: Customer(
                                             partyId: widget.getParty().partyId,
                                             userId: widget.getParty().userId,
