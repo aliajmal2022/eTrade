@@ -91,7 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 flex: 4,
                 child: Padding(
                     padding: EdgeInsets.all(10),
-                    child: Column(
+                    child: ListView(
                       children: [
                         SizedBox(
                           height: 20,

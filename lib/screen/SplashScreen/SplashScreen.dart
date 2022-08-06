@@ -47,7 +47,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
           body: SizedBox(
               height: double.infinity,
               width: double.infinity,
-              child: Image.asset("images/logo.gif",
+              child: Image.asset("images/splash.gif",
                   gaplessPlayback: true, fit: BoxFit.fill))),
     );
   }

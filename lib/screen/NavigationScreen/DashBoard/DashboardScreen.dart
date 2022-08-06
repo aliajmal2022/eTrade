@@ -1,5 +1,6 @@
 import 'package:eTrade/components/drawer.dart';
 import 'package:eTrade/entities/Products.dart';
+import 'package:eTrade/entities/Sale.dart';
 import 'package:eTrade/helper/sqlhelper.dart';
 import 'package:eTrade/main.dart';
 import 'package:flutter/material.dart';
@@ -89,7 +90,7 @@ class DashBoardScreen extends StatefulWidget {
     for (count = 1; count <= monthName.length - 1; count++) {
       MonthOrderHistory orderData = MonthOrderHistory(month: "", amount: 0);
       MonthOrderHistory orderStatic = MonthOrderHistory(month: "", amount: 0);
-      double number = 100000;
+      double number = 10000;
       // orderData.month = element;
       orderData.amount = months[0][monthName[count]].toDouble();
       orderData.month = count.toString();
@@ -207,6 +208,71 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
+                  "Order",
+                  style: TextStyle(fontSize: 30),
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                  height: 300,
+                  width: double.infinity,
+                  padding: EdgeInsets.all(10),
+                  child: SfCartesianChart(
+                    // Initialize category axis
+                    primaryXAxis: CategoryAxis(),
+                    series: <ColumnSeries<MonthOrderHistory, String>>[
+                      ColumnSeries<MonthOrderHistory, String>(
+                          // Bind data source
+                          dataSource: DashBoardScreen.staticMonths,
+                          name: "Target Profite",
+                          xValueMapper: (MonthOrderHistory sales, _) =>
+                              sales.month,
+                          yValueMapper: (MonthOrderHistory sales, _) =>
+                              sales.amount),
+                      ColumnSeries<MonthOrderHistory, String>(
+                          // Bind data source
+                          dataSource: DashBoardScreen.monthlyOrderList,
+                          name: "Profit",
+                          xValueMapper: (MonthOrderHistory sales, _) =>
+                              sales.month,
+                          yValueMapper: (MonthOrderHistory sales, _) =>
+                              sales.amount),
+                    ],
+
+                    legend: Legend(
+                      // xAxisName: "Months",
+                      // yAxisName: "Rupees",
+                      // isResponsive: true,
+                      // legendItemBuilder:
+                      //     ((legendText, series, point, seriesIndex) {
+                      //   return Padding(
+                      //     padding: const EdgeInsets.all(3.0),
+                      //     child: Text(
+                      //       "${DashBoardScreen.itemdata[seriesIndex].ordered} - $legendText  (${DashBoardScreen.itemdata[seriesIndex].amount.toInt()})",
+                      //     ),
+                      //   );
+                      // }),
+                      isVisible: true,
+                      position: LegendPosition.bottom,
+                      // overflowMode: LegendItemOverflowMode.wrap
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Divider(
+                  color: Color(0xff00620b),
+                  thickness: 2,
+                  height: 50,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
                   "Order History",
                   style: TextStyle(fontSize: 30),
                 ),
@@ -225,8 +291,17 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                       height: 200,
                       width: 200,
                       decoration: BoxDecoration(
-                          color:
-                              (MyApp.isDark) ? Color(0xff424242) : Colors.white,
+                          color: (MyApp.isDark)
+                              ? Color(0xff424242)
+                              : (DashBoardScreen.dashBoard[index].order >
+                                      DashBoardScreen
+                                          .dashBoard[index].compareOrder)
+                                  ? Color(0xff00620b)
+                                  : (DashBoardScreen.dashBoard[index].order !=
+                                          DashBoardScreen
+                                              .dashBoard[index].compareOrder)
+                                      ? Colors.red
+                                      : Colors.white,
                           boxShadow: [
                             BoxShadow(
                               color: Colors.black,
@@ -354,44 +429,6 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                     ),
                   );
                 }),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Divider(
-                  color: Color(0xff00620b),
-                  thickness: 2,
-                  height: 50,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  "Sales History",
-                  style: TextStyle(fontSize: 30),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(10))),
-                  height: 300,
-                  width: double.infinity,
-                  padding: EdgeInsets.all(10),
-                  child: charts.BarChart(
-                    DashBoardScreen.series,
-                    barGroupingType: charts.BarGroupingType.grouped,
-                    animate: true,
-                    // vertical: false,
-                    defaultRenderer: new charts.BarRendererConfig(
-                        // By default, bar renderer will draw rounded bars with a constant
-                        // radius of 100.
-                        // To not have any rounded corners, use [NoCornerStrategy]
-                        // To change the radius of the bars, use [ConstCornerStrategy]
-                        cornerStrategy: const charts.ConstCornerStrategy(30)),
-                  ),
-                ),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),

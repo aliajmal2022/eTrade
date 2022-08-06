@@ -52,8 +52,9 @@ class _MyAppState extends State<MyApp> {
           return MaterialApp(
             title: 'eTrade',
             debugShowCheckedModeBanner: false,
-            theme: ThemeData(),
-            darkTheme: ThemeData.dark(),
+            theme: ThemeData(fontFamily: 'NunitoSans'),
+            darkTheme: ThemeData(
+                brightness: Brightness.dark, fontFamily: 'NunitoSans'),
             themeMode: currentMode,
             home: (isexist)
                 ? MySplashScreen()
