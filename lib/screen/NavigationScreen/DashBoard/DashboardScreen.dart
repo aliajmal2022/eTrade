@@ -276,17 +276,9 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                           height: 200,
                           width: 200,
                           decoration: BoxDecoration(
-                              color: (DashBoardScreen.dashBoard[index].order >
-                                      DashBoardScreen
-                                          .dashBoard[index].compareOrder)
-                                  ? Color(0xff00620b)
-                                  : (DashBoardScreen.dashBoard[index].order !=
-                                          DashBoardScreen
-                                              .dashBoard[index].compareOrder)
-                                      ? Colors.red
-                                      : (MyApp.isDark)
-                                          ? Color(0xff424242)
-                                          : Colors.white,
+                              color: (MyApp.isDark)
+                                  ? Color(0xff424242)
+                                  : Colors.white,
                               boxShadow: [
                                 BoxShadow(
                                   color: Colors.black,
@@ -338,7 +330,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                                                         .compareOrder)
                                                 ? Icons.arrow_upward
                                                 : Icons.arrow_downward,
-                                            size: 50,
+                                            size: 30,
                                             color: (DashBoardScreen
                                                         .dashBoard[index]
                                                         .order >
