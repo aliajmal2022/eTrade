@@ -41,6 +41,7 @@ dependencies:
   animated_text_kit:
   shared_preferences:
   intl:
+  get:
   date_format:
   syncfusion_flutter_datepicker: ^20.1.61
   flutter_slidable: ^1.3.0

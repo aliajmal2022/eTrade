@@ -4,7 +4,10 @@ import 'package:eTrade/screen/Connection/ConnectionScreen.dart';
 import 'package:eTrade/screen/NavigationScreen/Take%20Order/TakeOrderScreen.dart';
 import 'package:eTrade/screen/SplashScreen/SplashScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'dart:core';
+
+import 'package:get/get_navigation/get_navigation.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -44,12 +47,13 @@ class _MyAppState extends State<MyApp> {
     super.initState();
   }
 
+  final contrller = Get.put(Controller());
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<ThemeMode>(
         valueListenable: MyApp.themeNotifier,
         builder: (context, ThemeMode currentMode, __) {
-          return MaterialApp(
+          return GetMaterialApp(
             title: 'eTrade',
             debugShowCheckedModeBanner: false,
             theme: ThemeData(fontFamily: 'NunitoSans'),
@@ -64,4 +68,9 @@ class _MyAppState extends State<MyApp> {
           );
         });
   }
+}
+
+class Controller extends GetxController {
+  var count = 0.obs;
+  increment() => count++;
 }

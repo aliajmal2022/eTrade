@@ -25,6 +25,7 @@ import 'package:eTrade/screen/NavigationScreen/Booking/ViewBookingScreen.dart';
 import 'package:find_dropdown/find_dropdown.dart';
 import 'package:flutter/foundation.dart';
 import "package:flutter/material.dart";
+import 'package:get/get.dart';
 
 class TakeOrderScreen extends StatefulWidget {
   TakeOrderScreen(
@@ -287,28 +288,24 @@ class _TakeOrderScreenState extends State<TakeOrderScreen>
                       resetCartList();
                     });
                     await TakeOrderScreen.getdataFromDb();
-                    Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => MyNavigationBar(
-                                selectedIndex: 2,
-                                editRecovery: ViewRecovery(
-                                    amount: 0,
-                                    description: "",
-                                    checkOrCash: "",
-                                    recoveryID: 0,
-                                    dated: "",
-                                    party: Customer(
-                                        partyId: 0,
-                                        partyName: "",
-                                        userId: 0,
-                                        address: "",
-                                        discount: 0)),
-                                list: [],
-                                date: widget.date,
-                                id: widget.iD,
-                                partyName: "Search Customer")),
-                        (route) => false);
+                    Get.off(MyNavigationBar(
+                        selectedIndex: 2,
+                        editRecovery: ViewRecovery(
+                            amount: 0,
+                            description: "",
+                            checkOrCash: "",
+                            recoveryID: 0,
+                            dated: "",
+                            party: Customer(
+                                partyId: 0,
+                                partyName: "",
+                                userId: 0,
+                                address: "",
+                                discount: 0)),
+                        list: [],
+                        date: widget.date,
+                        id: widget.iD,
+                        partyName: "Search Customer"));
                   },
                 )
               : (TakeOrderScreen.isSaleSpot)
@@ -326,28 +323,24 @@ class _TakeOrderScreenState extends State<TakeOrderScreen>
                           resetCartList();
                         });
                         await TakeOrderScreen.getdataFromDb();
-                        Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => MyNavigationBar(
-                                    selectedIndex: 1,
-                                    editRecovery: ViewRecovery(
-                                        amount: 0,
-                                        description: "",
-                                        recoveryID: 0,
-                                        checkOrCash: "",
-                                        dated: "",
-                                        party: Customer(
-                                            partyId: 0,
-                                            partyName: "",
-                                            userId: 0,
-                                            address: "",
-                                            discount: 0)),
-                                    list: [],
-                                    date: widget.date,
-                                    id: widget.iD,
-                                    partyName: "Search Customer")),
-                            (route) => false);
+                        Get.off(MyNavigationBar(
+                            selectedIndex: 1,
+                            editRecovery: ViewRecovery(
+                                amount: 0,
+                                description: "",
+                                recoveryID: 0,
+                                checkOrCash: "",
+                                dated: "",
+                                party: Customer(
+                                    partyId: 0,
+                                    partyName: "",
+                                    userId: 0,
+                                    address: "",
+                                    discount: 0)),
+                            list: [],
+                            date: widget.date,
+                            id: widget.iD,
+                            partyName: "Search Customer"));
                       },
                     )
                   : Builder(
@@ -389,25 +382,24 @@ class _TakeOrderScreenState extends State<TakeOrderScreen>
                         (widget.getParty().partyName == "Search Customer")
                             ? null
                             : () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => CartScreen(
-                                            selectedItems: getCartList(),
-                                            userID: MyNavigationBar.userID,
-                                            selecedCustomer: widget.getParty(),
-                                            date: (TakeOrderScreen.isEditOrder)
-                                                ? TakeOrderScreen.orderDATE
-                                                : (TakeOrderScreen.isEditSale)
-                                                    ? TakeOrderScreen.saleDATE
-                                                    : widget.date,
-                                            iD: TakeOrderScreen.isEditOrder
-                                                ? TakeOrderScreen.orderId
-                                                : (TakeOrderScreen.isEditSale)
-                                                    ? TakeOrderScreen.InvoiceID
-                                                    : widget.iD,
-                                          )),
-                                );
+                                Get.off(
+                                    () => CartScreen(
+                                          selectedItems: getCartList(),
+                                          userID: MyNavigationBar.userID,
+                                          selecedCustomer: widget.getParty(),
+                                          date: (TakeOrderScreen.isEditOrder)
+                                              ? TakeOrderScreen.orderDATE
+                                              : (TakeOrderScreen.isEditSale)
+                                                  ? TakeOrderScreen.saleDATE
+                                                  : widget.date,
+                                          iD: TakeOrderScreen.isEditOrder
+                                              ? TakeOrderScreen.orderId
+                                              : (TakeOrderScreen.isEditSale)
+                                                  ? TakeOrderScreen.InvoiceID
+                                                  : widget.iD,
+                                        ),
+                                    transition: Transition.rightToLeft,
+                                    duration: Duration(milliseconds: 1000));
                               },
                     // disabledColor: Color(0xff424242),
                     disabledColor: Colors.grey,

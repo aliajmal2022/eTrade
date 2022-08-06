@@ -8,6 +8,7 @@ import 'package:eTrade/entities/Customer.dart';
 import 'package:eTrade/entities/ViewRecovery.dart';
 import 'package:eTrade/screen/LoginScreen/LoginScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class ConnectionScreen extends StatefulWidget {
   ConnectionScreen({required this.isConnectionfromdrawer});
@@ -133,29 +134,25 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
                                 });
                                 if (widget.isConnectionfromdrawer) {
                                   UserSharePreferences.setIp(userIp);
-                                  Navigator.pushAndRemoveUntil(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => MyNavigationBar(
-                                                selectedIndex: 0,
-                                                editRecovery: ViewRecovery(
-                                                    amount: 0,
-                                                    description: "",
-                                                    checkOrCash: "",
-                                                    recoveryID: 0,
-                                                    dated: "",
-                                                    party: Customer(
-                                                        partyId: 0,
-                                                        userId: 0,
-                                                        address: "",
-                                                        discount: 0,
-                                                        partyName: "")),
-                                                list: [],
-                                                date: "",
-                                                id: 0,
-                                                partyName: "Search Customer",
-                                              )),
-                                      (route) => false);
+                                  Get.to(MyNavigationBar(
+                                    selectedIndex: 0,
+                                    editRecovery: ViewRecovery(
+                                        amount: 0,
+                                        description: "",
+                                        checkOrCash: "",
+                                        recoveryID: 0,
+                                        dated: "",
+                                        party: Customer(
+                                            partyId: 0,
+                                            userId: 0,
+                                            address: "",
+                                            discount: 0,
+                                            partyName: "")),
+                                    list: [],
+                                    date: "",
+                                    id: 0,
+                                    partyName: "Search Customer",
+                                  ));
                                 } else {
                                   Navigator.push(
                                       context,

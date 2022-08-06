@@ -18,6 +18,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
@@ -75,28 +76,24 @@ class _ViewBookingScreenState extends State<ViewBookingScreen>
                         ViewBookingScreen.isSaleBooking = false;
                         // dispose();
                       });
-                      Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => MyNavigationBar(
-                                  selectedIndex: 2,
-                                  editRecovery: ViewRecovery(
-                                      amount: 0,
-                                      description: "",
-                                      recoveryID: 0,
-                                      checkOrCash: "",
-                                      dated: "",
-                                      party: Customer(
-                                          partyId: 0,
-                                          partyName: "",
-                                          userId: 0,
-                                          address: "",
-                                          discount: 0)),
-                                  list: [],
-                                  date: "",
-                                  id: 0,
-                                  partyName: "Search Customer")),
-                          (route) => false);
+                      Get.off(MyNavigationBar(
+                          selectedIndex: 2,
+                          editRecovery: ViewRecovery(
+                              amount: 0,
+                              description: "",
+                              recoveryID: 0,
+                              checkOrCash: "",
+                              dated: "",
+                              party: Customer(
+                                  partyId: 0,
+                                  partyName: "",
+                                  userId: 0,
+                                  address: "",
+                                  discount: 0)),
+                          list: [],
+                          date: "",
+                          id: 0,
+                          partyName: "Search Customer"));
                     },
                   )
                 : Builder(

@@ -13,6 +13,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class RecoveryScreen extends StatefulWidget {
@@ -182,11 +183,7 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                       amount = 0;
                       description = "";
                     });
-                    Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ViewRecoveryScreen()),
-                        (route) => false);
+                    Get.off(ViewRecoveryScreen());
                   },
                 )
               : Builder(
@@ -199,29 +196,25 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                         MyDrawer.isopen = true;
                         // dispose();
                         MyNavigationBar.currentIndex = 1;
-                        Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => MyNavigationBar(
-                                      editRecovery: ViewRecovery(
-                                          amount: 0,
-                                          description: "",
-                                          checkOrCash: "",
-                                          recoveryID: 0,
-                                          dated: "",
-                                          party: Customer(
-                                              discount: 0,
-                                              userId: 0,
-                                              address: "",
-                                              partyId: 0,
-                                              partyName: "")),
-                                      selectedIndex: 2,
-                                      list: [],
-                                      date: "",
-                                      id: 0,
-                                      partyName: "Search Customer",
-                                    )),
-                            (e) => false);
+                        Get.off(MyNavigationBar(
+                          editRecovery: ViewRecovery(
+                              amount: 0,
+                              description: "",
+                              checkOrCash: "",
+                              recoveryID: 0,
+                              dated: "",
+                              party: Customer(
+                                  discount: 0,
+                                  userId: 0,
+                                  address: "",
+                                  partyId: 0,
+                                  partyName: "")),
+                          selectedIndex: 2,
+                          list: [],
+                          date: "",
+                          id: 0,
+                          partyName: "Search Customer",
+                        ));
 
                         Scaffold.of(context).openDrawer();
                       },
@@ -510,12 +503,7 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                                         address: "",
                                         partyId: 0,
                                         partyName: "Search Customer");
-                                    Navigator.pushAndRemoveUntil(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                ViewRecoveryScreen()),
-                                        (route) => false);
+                                    Get.off(ViewRecoveryScreen());
                                     ScaffoldMessenger.of(context)
                                         .showSnackBar(snackBar);
                                   }
@@ -557,30 +545,25 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                                         address: "",
                                         partyId: 0,
                                         partyName: "Search Customer");
-                                    Navigator.pushAndRemoveUntil(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                MyNavigationBar(
-                                                  selectedIndex: 0,
-                                                  editRecovery: ViewRecovery(
-                                                      amount: 0,
-                                                      description: "",
-                                                      checkOrCash: "",
-                                                      recoveryID: 0,
-                                                      dated: "",
-                                                      party: Customer(
-                                                          discount: 0,
-                                                          partyId: 0,
-                                                          userId: 0,
-                                                          partyName: "",
-                                                          address: "")),
-                                                  date: "",
-                                                  id: 0,
-                                                  list: [],
-                                                  partyName: "Search Customer",
-                                                )),
-                                        (route) => false);
+                                    Get.off(MyNavigationBar(
+                                      selectedIndex: 0,
+                                      editRecovery: ViewRecovery(
+                                          amount: 0,
+                                          description: "",
+                                          checkOrCash: "",
+                                          recoveryID: 0,
+                                          dated: "",
+                                          party: Customer(
+                                              discount: 0,
+                                              partyId: 0,
+                                              userId: 0,
+                                              partyName: "",
+                                              address: "")),
+                                      date: "",
+                                      id: 0,
+                                      list: [],
+                                      partyName: "Search Customer",
+                                    ));
                                     ScaffoldMessenger.of(context)
                                         .showSnackBar(snackBar);
                                   },

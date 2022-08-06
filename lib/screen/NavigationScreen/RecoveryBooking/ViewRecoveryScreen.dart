@@ -21,6 +21,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
@@ -56,30 +57,27 @@ class _ViewRecoveryScreenState extends State<ViewRecoveryScreen>
           leading: IconButton(
             onPressed: () {
               TakeOrderScreen.isSelected = true;
-              Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => MyNavigationBar(
-                      editRecovery: ViewRecovery(
-                          amount: 0,
-                          checkOrCash: "",
-                          description: "",
-                          recoveryID: 0,
-                          dated: "",
-                          party: Customer(
-                              partyId: 0,
-                              userId: 0,
-                              partyName: "",
-                              discount: 0,
-                              address: "")),
-                      selectedIndex: 0,
-                      list: [],
-                      date: "",
-                      id: 0,
-                      partyName: "Search Customer",
-                    ),
-                  ),
-                  (route) => false);
+              Get.off(
+                MyNavigationBar(
+                  editRecovery: ViewRecovery(
+                      amount: 0,
+                      checkOrCash: "",
+                      description: "",
+                      recoveryID: 0,
+                      dated: "",
+                      party: Customer(
+                          partyId: 0,
+                          userId: 0,
+                          partyName: "",
+                          discount: 0,
+                          address: "")),
+                  selectedIndex: 0,
+                  list: [],
+                  date: "",
+                  id: 0,
+                  partyName: "Search Customer",
+                ),
+              );
             },
             icon: Icon(
               Icons.arrow_back,

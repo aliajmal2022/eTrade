@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter_share/flutter_share.dart';
+import 'package:get/get.dart';
 import 'package:path/path.dart';
 import 'package:eTrade/components/NavigationBar.dart';
 import 'package:date_format/date_format.dart';
@@ -57,72 +58,60 @@ class _MyDrawerState extends State<MyDrawer>
             bool isconnected = await Sql_Connection.connect(context, ip, port);
             if (isconnected) {
               Navigator.pop(context);
-              Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => LoginScreen(
-                            ip: ping,
-                            fromMasterReset: true,
-                          )),
-                  (route) => true);
+              Get.to(LoginScreen(
+                ip: ping,
+                fromMasterReset: true,
+              ));
             }
           } else {
             final snackBar = const SnackBar(
               content:
                   Text("Host unaccessible. Keep your device near to router."),
             );
-            Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => MyNavigationBar(
-                          editRecovery: ViewRecovery(
-                              amount: 0,
-                              description: "",
-                              checkOrCash: "",
-                              recoveryID: 0,
-                              dated: "",
-                              party: Customer(
-                                  userId: 0,
-                                  address: "",
-                                  partyId: 0,
-                                  partyName: "",
-                                  discount: 0)),
-                          selectedIndex: 0,
-                          list: [],
-                          date: "",
-                          id: 0,
-                          partyName: "Search Customer",
-                        )),
-                (route) => false);
+            Get.off(MyNavigationBar(
+              editRecovery: ViewRecovery(
+                  amount: 0,
+                  description: "",
+                  checkOrCash: "",
+                  recoveryID: 0,
+                  dated: "",
+                  party: Customer(
+                      userId: 0,
+                      address: "",
+                      partyId: 0,
+                      partyName: "",
+                      discount: 0)),
+              selectedIndex: 0,
+              list: [],
+              date: "",
+              id: 0,
+              partyName: "Search Customer",
+            ));
             ScaffoldMessenger.of(context).showSnackBar(snackBar);
           }
         });
     Widget cancelButton = TextButton(
       child: const Text("Cancel"),
       onPressed: () {
-        Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(
-                builder: (context) => MyNavigationBar(
-                      editRecovery: ViewRecovery(
-                          amount: 0,
-                          checkOrCash: "",
-                          description: "",
-                          recoveryID: 0,
-                          dated: "",
-                          party: Customer(
-                              address: "",
-                              userId: 0,
-                              partyId: 0,
-                              partyName: "",
-                              discount: 0)),
-                      selectedIndex: 0,
-                      date: "",
-                      list: [],
-                      partyName: "Search Customer",
-                      id: 0,
-                    )),
-            (route) => false);
+        Get.off(MyNavigationBar(
+          editRecovery: ViewRecovery(
+              amount: 0,
+              checkOrCash: "",
+              description: "",
+              recoveryID: 0,
+              dated: "",
+              party: Customer(
+                  address: "",
+                  userId: 0,
+                  partyId: 0,
+                  partyName: "",
+                  discount: 0)),
+          selectedIndex: 0,
+          date: "",
+          list: [],
+          partyName: "Search Customer",
+          id: 0,
+        ));
       },
     );
     // set up the AlertDialog
@@ -295,29 +284,25 @@ class _MyDrawerState extends State<MyDrawer>
                                 content: Text(
                                     "Host unaccessible. Keep your device near to router."),
                               );
-                              Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => MyNavigationBar(
-                                            editRecovery: ViewRecovery(
-                                                amount: 0,
-                                                checkOrCash: "",
-                                                description: "",
-                                                recoveryID: 0,
-                                                dated: "",
-                                                party: Customer(
-                                                    userId: 0,
-                                                    partyId: 0,
-                                                    partyName: "",
-                                                    address: "",
-                                                    discount: 0)),
-                                            selectedIndex: 0,
-                                            date: "",
-                                            list: [],
-                                            id: 0,
-                                            partyName: "Search Customer",
-                                          )),
-                                  (route) => false);
+                              Get.off(MyNavigationBar(
+                                editRecovery: ViewRecovery(
+                                    amount: 0,
+                                    checkOrCash: "",
+                                    description: "",
+                                    recoveryID: 0,
+                                    dated: "",
+                                    party: Customer(
+                                        userId: 0,
+                                        partyId: 0,
+                                        partyName: "",
+                                        address: "",
+                                        discount: 0)),
+                                selectedIndex: 0,
+                                date: "",
+                                list: [],
+                                id: 0,
+                                partyName: "Search Customer",
+                              ));
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(snackBar);
                             }
@@ -392,12 +377,7 @@ class _MyDrawerState extends State<MyDrawer>
                       ),
                       MaterialButton(
                         onPressed: () async {
-                          Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      PostingData(ping: ping)),
-                              (route) => false);
+                          Get.off(PostingData(ping: ping));
                         },
                         child: Row(
                           children: const [

@@ -7,6 +7,7 @@ import 'package:eTrade/entities/ViewRecovery.dart';
 import 'package:eTrade/screen/NavigationScreen/Take%20Order/TakeOrderScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class NewUsrAddLocalDB extends StatefulWidget {
   NewUsrAddLocalDB({required this.index, required this.recovery});
@@ -196,18 +197,14 @@ class _NewUsrAddLocalDBState extends State<NewUsrAddLocalDB> {
                                 await SQLHelper.instance.createParty(nCustomer);
                                 await DataBaseDataLoad.DataLoading();
 
-                                Navigator.pushAndRemoveUntil(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => MyNavigationBar(
-                                              date: "",
-                                              editRecovery: widget.recovery,
-                                              selectedIndex: widget.index,
-                                              list: [],
-                                              partyName: "Search Customer",
-                                              id: 0,
-                                            )),
-                                    (route) => false);
+                                Get.off(MyNavigationBar(
+                                  date: "",
+                                  editRecovery: widget.recovery,
+                                  selectedIndex: widget.index,
+                                  list: [],
+                                  partyName: "Search Customer",
+                                  id: 0,
+                                ));
                               } else {
                                 setState(() {
                                   _controller.clear();

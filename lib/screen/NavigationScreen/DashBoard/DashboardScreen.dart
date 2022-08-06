@@ -83,6 +83,7 @@ class DashBoardScreen extends StatefulWidget {
   ];
   static List<MonthOrderHistory> staticMonths = [];
   static Future<List<MonthOrderHistory>> getMonthlyRecorderDB() async {
+    double number = 10000;
     List<MonthOrderHistory> list = [];
     staticMonths = [];
     var months = await SQLHelper.getMonthOrderHistory();
@@ -90,7 +91,6 @@ class DashBoardScreen extends StatefulWidget {
     for (count = 1; count <= monthName.length - 1; count++) {
       MonthOrderHistory orderData = MonthOrderHistory(month: "", amount: 0);
       MonthOrderHistory orderStatic = MonthOrderHistory(month: "", amount: 0);
-      double number = 10000;
       // orderData.month = element;
       orderData.amount = months[0][monthName[count]].toDouble();
       orderData.month = count.toString();
@@ -107,15 +107,16 @@ class DashBoardScreen extends StatefulWidget {
     List<Items> list = [];
     var products = await SQLHelper.getTopTenProductByAmount();
     if (products.isNotEmpty) {
+      var formatter = NumberFormat('#,###,000');
       for (var element in products) {
-        Items item = Items(productName: "", amount: 0, ordered: 40);
+        Items item = Items(productName: "", amount: "", ordered: 40);
         item.productName = element['ItemName'];
-        item.amount = element['Amount'];
+        item.amount = formatter.format(element['Amount'].toInt());
         item.ordered = element['Quantity'];
         list.add(item);
       }
     } else {
-      list.add(Items(productName: "Nothing Order", amount: 0, ordered: 1));
+      list.add(Items(productName: "Nothing Order", amount: "", ordered: 1));
     }
     return list;
   }
@@ -124,7 +125,8 @@ class DashBoardScreen extends StatefulWidget {
   State<DashBoardScreen> createState() => _DashBoardScreenState();
 }
 
-class _DashBoardScreenState extends State<DashBoardScreen> {
+class _DashBoardScreenState extends State<DashBoardScreen>
+    with SingleTickerProviderStateMixin {
   updateData() async {
     DashBoardScreen.dashBoard = await DashBoardScreen.getOrderHistory();
     DashBoardScreen.itemdata = await DashBoardScreen.getTopProduct();
@@ -134,166 +136,147 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
       DashBoardScreen.itemdata;
       DashBoardScreen.dashBoard;
       DashBoardScreen.monthlyOrderList;
-      DashBoardScreen.series = [
-        charts.Series(
-          id: "set",
-          data: DashBoardScreen.staticMonths,
-          domainFn: (MonthOrderHistory series, _) => series.month,
-          measureFn: (MonthOrderHistory series, _) => series.amount,
-          colorFn: (_, __) =>
-              // MyApp.isDark
-              //     ? charts.MaterialPalette.red.shadDe
-              // :
-              charts.MaterialPalette.red.shadeDefault,
-        ),
-        charts.Series(
-          id: "Query",
-          data: DashBoardScreen.monthlyOrderList,
-          domainFn: (MonthOrderHistory series, _) => series.month,
-          measureFn: (MonthOrderHistory series, _) => series.amount,
-          colorFn: (_, __) =>
-              // MyApp.isDark
-              //     ? charts.MaterialPalette.gray.shade800
-              //     :
-              charts.MaterialPalette.green.shadeDefault,
-        ),
-      ];
     });
   }
 
+  var _animationController;
   @override
   void initState() {
     setState(() {
+      _animationController = AnimationController(
+          vsync: this, duration: Duration(milliseconds: 500));
+      _animationController.forward();
       updateData();
     });
     super.initState();
   }
 
   TooltipBehavior _tooltipBehavior = TooltipBehavior(enable: true);
+  TooltipBehavior _columntooltipBehavior = TooltipBehavior(enable: true);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Color(0xFF00620b),
-          toolbarHeight: 80,
-          shape: const RoundedRectangleBorder(
-            borderRadius: const BorderRadius.vertical(
-              bottom: Radius.circular(30),
-            ),
-          ),
-          automaticallyImplyLeading: false,
-          leading: Builder(
-            builder: (BuildContext context) {
-              return IconButton(
-                icon: const Icon(
-                  Icons.menu,
-                ),
-                onPressed: () {
-                  Scaffold.of(context).openDrawer();
-                },
-                tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-              );
-            },
-          ),
-          title: const Text(
-            'Home',
-            style: const TextStyle(color: Colors.white),
-          ),
-        ),
-        drawer: MyDrawer(),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  "Order",
-                  style: TextStyle(fontSize: 30),
+    return FadeTransition(
+        opacity: _animationController,
+        child: Scaffold(
+            appBar: AppBar(
+              backgroundColor: Color(0xFF00620b),
+              toolbarHeight: 80,
+              shape: const RoundedRectangleBorder(
+                borderRadius: const BorderRadius.vertical(
+                  bottom: Radius.circular(30),
                 ),
               ),
-              Container(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(10))),
-                  height: 300,
-                  width: double.infinity,
-                  padding: EdgeInsets.all(10),
-                  child: SfCartesianChart(
-                    // Initialize category axis
-                    primaryXAxis: CategoryAxis(),
-                    series: <ColumnSeries<MonthOrderHistory, String>>[
-                      ColumnSeries<MonthOrderHistory, String>(
-                          // Bind data source
-                          dataSource: DashBoardScreen.staticMonths,
-                          name: "Target Profite",
-                          xValueMapper: (MonthOrderHistory sales, _) =>
-                              sales.month,
-                          yValueMapper: (MonthOrderHistory sales, _) =>
-                              sales.amount),
-                      ColumnSeries<MonthOrderHistory, String>(
-                          // Bind data source
-                          dataSource: DashBoardScreen.monthlyOrderList,
-                          name: "Profit",
-                          xValueMapper: (MonthOrderHistory sales, _) =>
-                              sales.month,
-                          yValueMapper: (MonthOrderHistory sales, _) =>
-                              sales.amount),
-                    ],
-
-                    legend: Legend(
-                      // xAxisName: "Months",
-                      // yAxisName: "Rupees",
-                      // isResponsive: true,
-                      // legendItemBuilder:
-                      //     ((legendText, series, point, seriesIndex) {
-                      //   return Padding(
-                      //     padding: const EdgeInsets.all(3.0),
-                      //     child: Text(
-                      //       "${DashBoardScreen.itemdata[seriesIndex].ordered} - $legendText  (${DashBoardScreen.itemdata[seriesIndex].amount.toInt()})",
-                      //     ),
-                      //   );
-                      // }),
-                      isVisible: true,
-                      position: LegendPosition.bottom,
-                      // overflowMode: LegendItemOverflowMode.wrap
+              automaticallyImplyLeading: false,
+              leading: Builder(
+                builder: (BuildContext context) {
+                  return IconButton(
+                    icon: const Icon(
+                      Icons.menu,
+                    ),
+                    onPressed: () {
+                      Scaffold.of(context).openDrawer();
+                    },
+                    tooltip:
+                        MaterialLocalizations.of(context).openAppDrawerTooltip,
+                  );
+                },
+              ),
+              title: const Text(
+                'Home',
+                style: const TextStyle(color: Colors.white),
+              ),
+            ),
+            drawer: MyDrawer(),
+            body: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      "Order",
+                      style: TextStyle(fontSize: 30),
                     ),
                   ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Divider(
-                  color: Color(0xff00620b),
-                  thickness: 2,
-                  height: 50,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  "Order History",
-                  style: TextStyle(fontSize: 30),
-                ),
-              ),
-              GridView.count(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                crossAxisCount: 2,
-                crossAxisSpacing: 2.0,
-                mainAxisSpacing: 2.0,
-                children:
-                    List.generate(DashBoardScreen.dashBoard.length, (index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(12.0),
+                  Container(
+                    padding: const EdgeInsets.all(2.0),
                     child: Container(
-                      height: 200,
-                      width: 200,
                       decoration: BoxDecoration(
-                          color: (MyApp.isDark)
-                              ? Color(0xff424242)
-                              : (DashBoardScreen.dashBoard[index].order >
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
+                      height: 300,
+                      width: double.infinity,
+                      padding: EdgeInsets.all(10),
+                      child: SfCartesianChart(
+                        // Initialize category axis
+                        primaryXAxis: CategoryAxis(
+                          title: AxisTitle(text: "Months"),
+                        ),
+                        primaryYAxis: NumericAxis(
+                            title: AxisTitle(text: "Prices"),
+                            minimum: 0,
+                            maximum: 11000,
+                            interval: 3000),
+                        // primaryYAxis: CategoryAxis(
+                        //   title: AxisTitle(text: "Prices"),
+                        // ),
+                        tooltipBehavior: _columntooltipBehavior,
+
+                        series: <ColumnSeries<MonthOrderHistory, String>>[
+                          ColumnSeries<MonthOrderHistory, String>(
+                              // Bind data source
+                              dataSource: DashBoardScreen.staticMonths,
+                              name: "Target Profite",
+                              xValueMapper: (MonthOrderHistory sales, _) =>
+                                  sales.month,
+                              yValueMapper: (MonthOrderHistory sales, _) =>
+                                  sales.amount),
+                          ColumnSeries<MonthOrderHistory, String>(
+                              // Bind data source
+                              dataSource: DashBoardScreen.monthlyOrderList,
+                              name: "Profit",
+                              xValueMapper: (MonthOrderHistory sales, _) =>
+                                  sales.month,
+                              yValueMapper: (MonthOrderHistory sales, _) =>
+                                  sales.amount),
+                        ],
+
+                        // legend: Legend(
+                        //     isVisible: true,
+                        //     position: LegendPosition.bottom,
+                        //     overflowMode: LegendItemOverflowMode.wrap),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Divider(
+                      color: Color(0xff00620b),
+                      thickness: 2,
+                      height: 50,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      "Order History",
+                      style: TextStyle(fontSize: 30),
+                    ),
+                  ),
+                  GridView.count(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 2.0,
+                    mainAxisSpacing: 2.0,
+                    children: List.generate(DashBoardScreen.dashBoard.length,
+                        (index) {
+                      return Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Container(
+                          height: 200,
+                          width: 200,
+                          decoration: BoxDecoration(
+                              color: (DashBoardScreen.dashBoard[index].order >
                                       DashBoardScreen
                                           .dashBoard[index].compareOrder)
                                   ? Color(0xff00620b)
@@ -301,185 +284,206 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                                           DashBoardScreen
                                               .dashBoard[index].compareOrder)
                                       ? Colors.red
-                                      : Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black,
-                              // color: Color(0xff00620b),
-                              offset: Offset(0.0, 0.5), //(x,y)
-                              blurRadius: 4.0,
-                            ),
-                          ],
-                          borderRadius: BorderRadius.all(Radius.circular(5))),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Center(
-                              child: Text(
-                            DashBoardScreen.dashBoard[index].time,
-                            style: TextStyle(
-                                color: (MyApp.isDark)
-                                    ? Colors.white
-                                    : Color(0xff00620b),
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18),
-                          )),
-                          Padding(
-                            padding: EdgeInsets.only(
-                                left: 8.0, right: 8.0, bottom: 8.0),
-                            child: Divider(
-                              thickness: 2,
-                              height: 10,
-                              color: (MyApp.isDark)
-                                  ? Color(0xff00620b)
-                                  : Colors.black,
-                            ),
-                          ),
-                          Row(
+                                      : (MyApp.isDark)
+                                          ? Color(0xff424242)
+                                          : Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black,
+                                  // color: Color(0xff00620b),
+                                  offset: Offset(0.0, 0.5), //(x,y)
+                                  blurRadius: 4.0,
+                                ),
+                              ],
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(5))),
+                          child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              (DashBoardScreen.dashBoard[index].order !=
-                                      DashBoardScreen
-                                          .dashBoard[index].compareOrder)
-                                  ? Flexible(
-                                      flex: 1,
-                                      child: Icon(
-                                        (DashBoardScreen
-                                                    .dashBoard[index].order >
-                                                DashBoardScreen.dashBoard[index]
-                                                    .compareOrder)
-                                            ? Icons.arrow_upward
-                                            : Icons.arrow_downward,
-                                        size: 50,
-                                        color: (DashBoardScreen
-                                                    .dashBoard[index].order >
-                                                DashBoardScreen.dashBoard[index]
-                                                    .compareOrder)
-                                            ? Colors.green
-                                            : (DashBoardScreen.dashBoard[index]
-                                                        .order ==
+                              Center(
+                                  child: Text(
+                                DashBoardScreen.dashBoard[index].time,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18),
+                              )),
+                              Padding(
+                                padding: EdgeInsets.only(
+                                    left: 8.0, right: 8.0, bottom: 8.0),
+                                child: Divider(
+                                  thickness: 2,
+                                  height: 10,
+                                  color: (MyApp.isDark)
+                                      ? Color(0xff00620b)
+                                      : Colors.black,
+                                ),
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  (DashBoardScreen.dashBoard[index].order !=
+                                          DashBoardScreen
+                                              .dashBoard[index].compareOrder)
+                                      ? Flexible(
+                                          flex: 1,
+                                          child: Icon(
+                                            (DashBoardScreen.dashBoard[index]
+                                                        .order >
                                                     DashBoardScreen
                                                         .dashBoard[index]
                                                         .compareOrder)
-                                                ? Color(0xff00620b)
-                                                : Colors.red,
-                                      ))
-                                  : Flexible(
-                                      flex: 1,
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        children: [
-                                          Icon(
-                                            Icons.arrow_upward,
-                                            size: 25,
+                                                ? Icons.arrow_upward
+                                                : Icons.arrow_downward,
+                                            size: 50,
+                                            color: (DashBoardScreen
+                                                        .dashBoard[index]
+                                                        .order >
+                                                    DashBoardScreen
+                                                        .dashBoard[index]
+                                                        .compareOrder)
+                                                ? Colors.green
+                                                : (DashBoardScreen
+                                                            .dashBoard[index]
+                                                            .order ==
+                                                        DashBoardScreen
+                                                            .dashBoard[index]
+                                                            .compareOrder)
+                                                    ? Color(0xff00620b)
+                                                    : Colors.red,
+                                          ))
+                                      : Flexible(
+                                          flex: 1,
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: [
+                                              Icon(
+                                                Icons.arrow_upward,
+                                                size: 25,
+                                              ),
+                                              Icon(
+                                                Icons.arrow_downward,
+                                                size: 25,
+                                              ),
+                                            ],
+                                          )),
+                                  Flexible(
+                                    flex: 3,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 10.0),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                "Orders:",
+                                                style: TextStyle(
+                                                    color: Colors.white),
+                                              ),
+                                              Text(
+                                                "${DashBoardScreen.dashBoard[index].order}",
+                                                style: TextStyle(
+                                                    color: Colors.white),
+                                              ),
+                                            ],
                                           ),
-                                          Icon(
-                                            Icons.arrow_downward,
-                                            size: 25,
+                                        ),
+                                        SizedBox(
+                                          height: 20,
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 10.0),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                "${DashBoardScreen.dashBoard[index].compareTime}:",
+                                                style: TextStyle(
+                                                    color: Colors.white),
+                                              ),
+                                              Text(
+                                                "${DashBoardScreen.dashBoard[index].compareOrder}",
+                                                style: TextStyle(
+                                                    color: Colors.white),
+                                              ),
+                                            ],
                                           ),
-                                        ],
-                                      )),
-                              Flexible(
-                                flex: 3,
-                                child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 10.0),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text("Orders:"),
-                                          Text(
-                                              "${DashBoardScreen.dashBoard[index].order}"),
-                                        ],
-                                      ),
+                                        ),
+                                      ],
                                     ),
-                                    SizedBox(
-                                      height: 20,
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 10.0),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                              "${DashBoardScreen.dashBoard[index].compareTime}:"),
-                                          Text(
-                                              "${DashBoardScreen.dashBoard[index].compareOrder}"),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
-                        ],
-                      ),
+                        ),
+                      );
+                    }),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Divider(
+                      color: Color(0xff00620b),
+                      thickness: 2,
+                      height: 50,
                     ),
-                  );
-                }),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Divider(
-                  color: Color(0xff00620b),
-                  thickness: 2,
-                  height: 50,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  "Top 10 Ordered Products",
-                  style: TextStyle(fontSize: 30),
-                ),
-              ),
-              Container(
-                height: 300,
-                width: double.infinity,
-                child: SfCircularChart(
-                  tooltipBehavior: _tooltipBehavior,
-                  series: [
-                    // Renders column chart
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      "Top 10 Ordered Products",
+                      style: TextStyle(fontSize: 30),
+                    ),
+                  ),
+                  Container(
+                    height: 300,
+                    width: double.infinity,
+                    child: SfCircularChart(
+                      tooltipBehavior: _tooltipBehavior,
+                      series: [
+                        // Renders column chart
 
-                    PieSeries<Items, String>(
-                        explode: true,
-                        strokeWidth: 500,
-                        dataSource: DashBoardScreen.itemdata,
-                        dataLabelSettings: DataLabelSettings(isVisible: true),
-                        xValueMapper: (Items data, _) => data.productName,
-                        yValueMapper: (Items data, _) => data.ordered)
-                  ],
-                  legend: Legend(
-                      // isResponsive: true,
-                      legendItemBuilder:
-                          ((legendText, series, point, seriesIndex) {
-                        return Padding(
-                          padding: const EdgeInsets.all(3.0),
-                          child: Text(
-                            "${DashBoardScreen.itemdata[seriesIndex].ordered} - $legendText  (${DashBoardScreen.itemdata[seriesIndex].amount.toInt()})",
-                          ),
-                        );
-                      }),
-                      isVisible: true,
-                      position: LegendPosition.bottom,
-                      overflowMode: LegendItemOverflowMode.wrap),
-                ),
+                        PieSeries<Items, String>(
+                            explode: true,
+                            strokeWidth: 500,
+                            dataSource: DashBoardScreen.itemdata,
+                            dataLabelSettings:
+                                DataLabelSettings(isVisible: true),
+                            xValueMapper: (Items data, _) => data.productName,
+                            yValueMapper: (Items data, _) => data.ordered)
+                      ],
+                      legend: Legend(
+                          // isResponsive: true,
+                          legendItemBuilder:
+                              ((legendText, series, point, seriesIndex) {
+                            return Padding(
+                              padding: const EdgeInsets.all(3.0),
+                              child: Text(
+                                "${DashBoardScreen.itemdata[seriesIndex].ordered} - $legendText  (${DashBoardScreen.itemdata[seriesIndex].amount})",
+                              ),
+                            );
+                          }),
+                          isVisible: true,
+                          position: LegendPosition.bottom,
+                          overflowMode: LegendItemOverflowMode.wrap),
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
-        ));
+            )));
   }
 }
 
@@ -489,7 +493,7 @@ class Items {
 
   String productName;
 
-  double amount;
+  String amount;
   int ordered;
 }
 

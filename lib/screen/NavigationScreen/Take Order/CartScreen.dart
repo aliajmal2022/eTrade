@@ -13,6 +13,7 @@ import 'package:eTrade/main.dart';
 import 'package:eTrade/screen/NavigationScreen/Take%20Order/TakeOrderScreen.dart';
 import "package:flutter/material.dart";
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class CartScreen extends StatefulWidget {
@@ -95,30 +96,28 @@ class _CartScreenState extends State<CartScreen> {
             leading: IconButton(
               onPressed: () {
                 TakeOrderScreen.isSelected = true;
-                Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => MyNavigationBar(
-                        editRecovery: ViewRecovery(
-                            amount: 0,
-                            description: "",
-                            checkOrCash: "",
-                            recoveryID: 0,
-                            dated: "",
-                            party: Customer(
-                                address: "",
-                                userId: 0,
-                                partyId: 0,
-                                partyName: "",
-                                discount: 0)),
-                        selectedIndex: 1,
-                        list: [],
-                        date: widget.date,
-                        id: widget.iD,
-                        partyName: "Search Customer",
-                      ),
-                    ),
-                    (route) => false);
+                Get.off(
+                    () => MyNavigationBar(
+                          editRecovery: ViewRecovery(
+                              amount: 0,
+                              description: "",
+                              checkOrCash: "",
+                              recoveryID: 0,
+                              dated: "",
+                              party: Customer(
+                                  address: "",
+                                  userId: 0,
+                                  partyId: 0,
+                                  partyName: "",
+                                  discount: 0)),
+                          selectedIndex: 1,
+                          list: [],
+                          date: widget.date,
+                          id: widget.iD,
+                          partyName: "Search Customer",
+                        ),
+                    transition: Transition.leftToRight,
+                    duration: Duration(milliseconds: 1000));
               },
               icon: Icon(
                 Icons.arrow_back,
@@ -401,31 +400,27 @@ class _CartScreenState extends State<CartScreen> {
                                             resetCartList();
                                             TakeOrderScreen.getdataFromDb();
                                           });
-                                          Navigator.pushAndRemoveUntil(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    MyNavigationBar(
-                                                  selectedIndex: 2,
-                                                  editRecovery: ViewRecovery(
-                                                      amount: 0,
-                                                      description: "",
-                                                      checkOrCash: "",
-                                                      recoveryID: 0,
-                                                      dated: "",
-                                                      party: Customer(
-                                                          discount: 0,
-                                                          userId: 0,
-                                                          partyId: 0,
-                                                          partyName: "",
-                                                          address: "")),
-                                                  list: [],
-                                                  id: 0,
-                                                  date: "",
-                                                  partyName: "Search Customer",
-                                                ),
-                                              ),
-                                              (route) => false);
+                                          Get.off(
+                                            MyNavigationBar(
+                                              selectedIndex: 2,
+                                              editRecovery: ViewRecovery(
+                                                  amount: 0,
+                                                  description: "",
+                                                  checkOrCash: "",
+                                                  recoveryID: 0,
+                                                  dated: "",
+                                                  party: Customer(
+                                                      discount: 0,
+                                                      userId: 0,
+                                                      partyId: 0,
+                                                      partyName: "",
+                                                      address: "")),
+                                              list: [],
+                                              id: 0,
+                                              date: "",
+                                              partyName: "Search Customer",
+                                            ),
+                                          );
                                         } else {
                                           await SQLHelper.deleteItem(
                                               "SaleDetail",
@@ -457,31 +452,27 @@ class _CartScreenState extends State<CartScreen> {
                                             resetCartList();
                                             TakeOrderScreen.getdataFromDb();
                                           });
-                                          Navigator.pushAndRemoveUntil(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    MyNavigationBar(
-                                                  selectedIndex: 2,
-                                                  editRecovery: ViewRecovery(
-                                                      amount: 0,
-                                                      description: "",
-                                                      recoveryID: 0,
-                                                      checkOrCash: "",
-                                                      dated: "",
-                                                      party: Customer(
-                                                          userId: 0,
-                                                          discount: 0,
-                                                          partyId: 0,
-                                                          partyName: "",
-                                                          address: "")),
-                                                  list: [],
-                                                  id: 0,
-                                                  date: "",
-                                                  partyName: "Search Customer",
-                                                ),
-                                              ),
-                                              (route) => false);
+                                          Get.off(
+                                            MyNavigationBar(
+                                              selectedIndex: 2,
+                                              editRecovery: ViewRecovery(
+                                                  amount: 0,
+                                                  description: "",
+                                                  recoveryID: 0,
+                                                  checkOrCash: "",
+                                                  dated: "",
+                                                  party: Customer(
+                                                      userId: 0,
+                                                      discount: 0,
+                                                      partyId: 0,
+                                                      partyName: "",
+                                                      address: "")),
+                                              list: [],
+                                              id: 0,
+                                              date: "",
+                                              partyName: "Search Customer",
+                                            ),
+                                          );
                                         }
                                       }
                                     : TakeOrderScreen.isSaleSpot
@@ -528,34 +519,27 @@ class _CartScreenState extends State<CartScreen> {
                                                   false;
                                               controller.clear();
                                               resetCartList();
-                                              Navigator.pushAndRemoveUntil(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        MyNavigationBar(
-                                                      selectedIndex: 1,
-                                                      editRecovery:
-                                                          ViewRecovery(
-                                                              amount: 0,
-                                                              description: "",
-                                                              checkOrCash: "",
-                                                              recoveryID: 0,
-                                                              dated: "",
-                                                              party: Customer(
-                                                                  partyId: 0,
-                                                                  userId: 0,
-                                                                  address: "",
-                                                                  discount: 0,
-                                                                  partyName:
-                                                                      "")),
-                                                      list: [],
-                                                      date: "",
-                                                      id: 0,
-                                                      partyName:
-                                                          "Search Customer",
-                                                    ),
-                                                  ),
-                                                  (route) => false);
+                                              Get.off(
+                                                MyNavigationBar(
+                                                  selectedIndex: 1,
+                                                  editRecovery: ViewRecovery(
+                                                      amount: 0,
+                                                      description: "",
+                                                      checkOrCash: "",
+                                                      recoveryID: 0,
+                                                      dated: "",
+                                                      party: Customer(
+                                                          partyId: 0,
+                                                          userId: 0,
+                                                          address: "",
+                                                          discount: 0,
+                                                          partyName: "")),
+                                                  list: [],
+                                                  date: "",
+                                                  id: 0,
+                                                  partyName: "Search Customer",
+                                                ),
+                                              );
                                             });
                                           }
                                         : () async {
@@ -603,32 +587,27 @@ class _CartScreenState extends State<CartScreen> {
                                             DashBoardScreen.dashBoard =
                                                 await DashBoardScreen
                                                     .getOrderHistory();
-                                            Navigator.pushAndRemoveUntil(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      MyNavigationBar(
-                                                    selectedIndex: 1,
-                                                    editRecovery: ViewRecovery(
-                                                        amount: 0,
-                                                        description: "",
-                                                        recoveryID: 0,
-                                                        checkOrCash: "",
-                                                        dated: "",
-                                                        party: Customer(
-                                                            partyId: 0,
-                                                            userId: 0,
-                                                            address: "",
-                                                            discount: 0,
-                                                            partyName: "")),
-                                                    list: [],
-                                                    date: "",
-                                                    id: 0,
-                                                    partyName:
-                                                        "Search Customer",
-                                                  ),
-                                                ),
-                                                (route) => false);
+                                            Get.off(
+                                              MyNavigationBar(
+                                                selectedIndex: 1,
+                                                editRecovery: ViewRecovery(
+                                                    amount: 0,
+                                                    description: "",
+                                                    recoveryID: 0,
+                                                    checkOrCash: "",
+                                                    dated: "",
+                                                    party: Customer(
+                                                        partyId: 0,
+                                                        userId: 0,
+                                                        address: "",
+                                                        discount: 0,
+                                                        partyName: "")),
+                                                list: [],
+                                                date: "",
+                                                id: 0,
+                                                partyName: "Search Customer",
+                                              ),
+                                            );
                                           },
                             minWidth: double.infinity,
                             height: 40,
