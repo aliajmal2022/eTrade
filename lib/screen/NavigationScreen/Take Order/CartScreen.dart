@@ -1,3 +1,4 @@
+import 'package:eTrade/components/constants.dart';
 import 'package:eTrade/entities/Edit.dart';
 import 'package:eTrade/screen/NavigationScreen/DashBoard/DashboardScreen.dart';
 import 'package:eTrade/screen/NavigationScreen/Take%20Order/components/AddItemModelSheet.dart';
@@ -91,7 +92,7 @@ class _CartScreenState extends State<CartScreen> {
                 bottom: Radius.circular(30),
               ),
             ),
-            backgroundColor: Color(0xFF00620b),
+            backgroundColor: eTradeGreen,
             toolbarHeight: 80,
             leading: IconButton(
               onPressed: () {
@@ -169,7 +170,7 @@ class _CartScreenState extends State<CartScreen> {
                                   ),
                                   Switch(
                                     value: isCash,
-                                    activeColor: Color(0xff00620b),
+                                    activeColor: eTradeGreen,
                                     onChanged: (value) async {
                                       setState(() {
                                         isCash = value;
@@ -281,7 +282,7 @@ class _CartScreenState extends State<CartScreen> {
                           ? Color(0xff424242)
                           : Colors.grey.shade100,
                       border: Border(
-                        top: BorderSide(color: Color(0xff00620b), width: 4),
+                        top: BorderSide(color: eTradeGreen, width: 4),
                       )),
                   height: (isLandscape) ? 170 : 220.0,
                   width: double.infinity,
@@ -315,15 +316,14 @@ class _CartScreenState extends State<CartScreen> {
                                     borderSide: BorderSide(width: 20.0)),
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
-                                  borderSide:
-                                      BorderSide(color: Color(0xff00620b)),
+                                  borderSide: BorderSide(color: eTradeGreen),
                                 ),
                                 disabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
                                   borderSide: BorderSide(color: Colors.grey),
                                 ),
                                 labelText: 'Description',
-                                // labelStyle: TextStyle(color: Color(0xff00620b)),
+                                // labelStyle: TextStyle(color: eTradeGreen),
                               ),
                             ),
                           ),
@@ -520,26 +520,30 @@ class _CartScreenState extends State<CartScreen> {
                                               controller.clear();
                                               resetCartList();
                                               Get.off(
-                                                MyNavigationBar(
-                                                  selectedIndex: 1,
-                                                  editRecovery: ViewRecovery(
-                                                      amount: 0,
-                                                      description: "",
-                                                      checkOrCash: "",
-                                                      recoveryID: 0,
-                                                      dated: "",
-                                                      party: Customer(
-                                                          partyId: 0,
-                                                          userId: 0,
-                                                          address: "",
-                                                          discount: 0,
-                                                          partyName: "")),
-                                                  list: [],
-                                                  date: "",
-                                                  id: 0,
-                                                  partyName: "Search Customer",
-                                                ),
-                                              );
+                                                  MyNavigationBar(
+                                                    selectedIndex: 1,
+                                                    editRecovery: ViewRecovery(
+                                                        amount: 0,
+                                                        description: "",
+                                                        checkOrCash: "",
+                                                        recoveryID: 0,
+                                                        dated: "",
+                                                        party: Customer(
+                                                            partyId: 0,
+                                                            userId: 0,
+                                                            address: "",
+                                                            discount: 0,
+                                                            partyName: "")),
+                                                    list: [],
+                                                    date: "",
+                                                    id: 0,
+                                                    partyName:
+                                                        "Search Customer",
+                                                  ),
+                                                  transition:
+                                                      Transition.leftToRight,
+                                                  duration: Duration(
+                                                      milliseconds: 700));
                                             });
                                           }
                                         : () async {
@@ -588,30 +592,33 @@ class _CartScreenState extends State<CartScreen> {
                                                 await DashBoardScreen
                                                     .getOrderHistory();
                                             Get.off(
-                                              MyNavigationBar(
-                                                selectedIndex: 1,
-                                                editRecovery: ViewRecovery(
-                                                    amount: 0,
-                                                    description: "",
-                                                    recoveryID: 0,
-                                                    checkOrCash: "",
-                                                    dated: "",
-                                                    party: Customer(
-                                                        partyId: 0,
-                                                        userId: 0,
-                                                        address: "",
-                                                        discount: 0,
-                                                        partyName: "")),
-                                                list: [],
-                                                date: "",
-                                                id: 0,
-                                                partyName: "Search Customer",
-                                              ),
-                                            );
+                                                MyNavigationBar(
+                                                  selectedIndex: 1,
+                                                  editRecovery: ViewRecovery(
+                                                      amount: 0,
+                                                      description: "",
+                                                      recoveryID: 0,
+                                                      checkOrCash: "",
+                                                      dated: "",
+                                                      party: Customer(
+                                                          partyId: 0,
+                                                          userId: 0,
+                                                          address: "",
+                                                          discount: 0,
+                                                          partyName: "")),
+                                                  list: [],
+                                                  date: "",
+                                                  id: 0,
+                                                  partyName: "Search Customer",
+                                                ),
+                                                transition:
+                                                    Transition.leftToRight,
+                                                duration: Duration(
+                                                    milliseconds: 700));
                                           },
                             minWidth: double.infinity,
                             height: 40,
-                            color: Color(0xff00620b),
+                            color: eTradeGreen,
                             child: Text(
                               TakeOrderScreen.isEditOrder
                                   ? "Update Order"

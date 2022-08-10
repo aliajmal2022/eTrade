@@ -1,4 +1,5 @@
 import 'package:eTrade/components/NavigationBar.dart';
+import 'package:eTrade/components/constants.dart';
 import 'package:eTrade/screen/NavigationScreen/RecoveryBooking/components/ViewRecoveryTabBar.dart';
 import 'package:eTrade/helper/sqlhelper.dart';
 import 'package:eTrade/entities/ViewBooking.dart';
@@ -44,90 +45,93 @@ class _ListOfRecoveryState extends State<ListOfRecovery> {
             controller: _controller,
             itemBuilder: (BuildContext context, index) {
               return Padding(
-                padding: const EdgeInsets.all(5.0),
-                child: Slidable(
-                    key: const ValueKey(0),
-                    endActionPane: ActionPane(
-                      motion: const ScrollMotion(),
-                      children: [
-                        SlidableAction(
-                          onPressed: (((context) async {
-                            RecoveryScreen.isEditRecovery = true;
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => MyNavigationBar(
-                                          selectedIndex: 3,
-                                          date: "",
-                                          editRecovery: dummyOrderList[index],
-                                          list: [],
-                                          id: 0,
-                                          partyName: "",
-                                        )));
-                          })),
-                          backgroundColor: const Color(0xFF21B7CA),
-                          foregroundColor: Colors.white,
-                          icon: Icons.edit,
-                          label: 'Edit',
-                        ),
-                        SlidableAction(
-                          onPressed: (((context) async {
-                            await SQLHelper.deleteItem("Recovery", "RecoveryID",
-                                dummyOrderList[index].recoveryID);
+                  padding: const EdgeInsets.all(5.0),
+                  child: Slidable(
+                      key: const ValueKey(0),
+                      endActionPane: ActionPane(
+                        motion: const ScrollMotion(),
+                        children: [
+                          SlidableAction(
+                            onPressed: (((context) async {
+                              RecoveryScreen.isEditRecovery = true;
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => MyNavigationBar(
+                                            selectedIndex: 3,
+                                            date: "",
+                                            editRecovery: dummyOrderList[index],
+                                            list: [],
+                                            id: 0,
+                                            partyName: "",
+                                          )));
+                            })),
+                            backgroundColor: const Color(0xFF21B7CA),
+                            foregroundColor: Colors.white,
+                            icon: Icons.edit,
+                            label: 'Edit',
+                          ),
+                          SlidableAction(
+                            onPressed: (((context) async {
+                              await SQLHelper.deleteItem(
+                                  "Recovery",
+                                  "RecoveryID",
+                                  dummyOrderList[index].recoveryID);
 
-                            var _recovery;
-                            DateFormat dateFormat = DateFormat('dd-MM-yyyy');
-                            if (widget.tabName == "Search") {
-                              _recovery = await SQLHelper.getFromToRecovery(
-                                  RecoveryTabBarItem.getFromDate(),
-                                  RecoveryTabBarItem.getToDate());
-                            } else if (widget.tabName == "Today") {
-                              String todayDate =
-                                  dateFormat.format(DateTime.now());
-                              _recovery = await SQLHelper.getSpecificRecovery(
-                                  todayDate);
-                            } else if (widget.tabName == "Yesterday") {
-                              String yesterdayDate = dateFormat.format(
-                                  DateTime.now().subtract(Duration(days: 1)));
-                              _recovery = await SQLHelper.getSpecificRecovery(
-                                  yesterdayDate);
-                            } else {
-                              _recovery = await SQLHelper.getAllRecovery();
-                            }
-                            setState(() {
-                              RecoveryTabBarItem.listOfRecovery =
-                                  ViewRecovery.ViewRecoveryFromDb(_recovery);
-                              if (RecoveryTabBarItem
-                                  .listOfRecovery.isNotEmpty) {
-                                CheckList(RecoveryTabBarItem.listOfRecovery);
+                              var _recovery;
+                              DateFormat dateFormat = DateFormat('dd-MM-yyyy');
+                              if (widget.tabName == "Search") {
+                                _recovery = await SQLHelper.getFromToRecovery(
+                                    RecoveryTabBarItem.getFromDate(),
+                                    RecoveryTabBarItem.getToDate());
+                              } else if (widget.tabName == "Today") {
+                                String todayDate =
+                                    dateFormat.format(DateTime.now());
+                                _recovery = await SQLHelper.getSpecificRecovery(
+                                    todayDate);
+                              } else if (widget.tabName == "Yesterday") {
+                                String yesterdayDate = dateFormat.format(
+                                    DateTime.now().subtract(Duration(days: 1)));
+                                _recovery = await SQLHelper.getSpecificRecovery(
+                                    yesterdayDate);
+                              } else {
+                                _recovery = await SQLHelper.getAllRecovery();
                               }
-                            });
-                          })),
-                          backgroundColor: const Color(0xFFFE4A49),
-                          foregroundColor: Colors.white,
-                          icon: Icons.delete,
-                          label: 'Delete',
-                        ),
-                      ],
-                    ),
-                    child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 5.0),
-                        child: Container(
-                            height: 110,
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                                color: (MyApp.isDark)
-                                    ? Color(0xff424242)
-                                    : Colors.white,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black,
-                                    offset: Offset(0.0, 0.5), //(x,y)
-                                    blurRadius: 3.0,
-                                  ),
-                                ],
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(5))),
+                              setState(() {
+                                RecoveryTabBarItem.listOfRecovery =
+                                    ViewRecovery.ViewRecoveryFromDb(_recovery);
+                                if (RecoveryTabBarItem
+                                    .listOfRecovery.isNotEmpty) {
+                                  CheckList(RecoveryTabBarItem.listOfRecovery);
+                                }
+                              });
+                            })),
+                            backgroundColor: const Color(0xFFFE4A49),
+                            foregroundColor: Colors.white,
+                            icon: Icons.delete,
+                            label: 'Delete',
+                          ),
+                        ],
+                      ),
+                      child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 5.0),
+                          // child: Container(
+                          //     height: 110,
+                          //     width: double.infinity,
+                          //     decoration: BoxDecoration(
+                          //         color: (MyApp.isDark)
+                          //             ? Color(0xff424242)
+                          //             : Colors.white,
+                          //         boxShadow: [
+                          //           BoxShadow(
+                          //             color: Colors.black,
+                          //             offset: Offset(0.0, 0.5), //(x,y)
+                          //             blurRadius: 3.0,
+                          //           ),
+                          //         ],
+                          //         borderRadius:
+                          //             BorderRadius.all(Radius.circular(5))),
+                          child: Card(
                             child: Padding(
                               padding: EdgeInsets.all(12.0),
                               child: Row(
@@ -181,7 +185,7 @@ class _ListOfRecoveryState extends State<ListOfRecovery> {
                                       Container(
                                         padding: EdgeInsets.all(4),
                                         decoration: BoxDecoration(
-                                            color: Color(0xff00620b),
+                                            color: eTradeGreen,
                                             borderRadius: BorderRadius.all(
                                                 Radius.circular(5))),
                                         child: Text(
@@ -213,14 +217,14 @@ class _ListOfRecoveryState extends State<ListOfRecovery> {
                                                   : Colors.grey.shade300,
                                               // border: Border.all(
                                               //     color:
-                                              //         Color(0xff00620b),
+                                              //         eTradeGreen,
                                               //     width: 1),
                                               borderRadius: BorderRadius.all(
                                                   Radius.circular(5))),
                                           child: Text(
                                             "Recovery Detail",
                                             style: TextStyle(
-                                                color: Color(0xff00620b),
+                                                color: eTradeGreen,
                                                 // fontStyle: FontStyle.italic,
                                                 fontSize: 15),
                                           ),
@@ -230,8 +234,10 @@ class _ListOfRecoveryState extends State<ListOfRecovery> {
                                   ),
                                 ],
                               ),
-                            )))),
-              );
+                            ),
+                          )))
+                  // ),
+                  );
             },
             itemCount: dummyOrderList.length,
             shrinkWrap: true,

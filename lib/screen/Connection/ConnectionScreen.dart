@@ -1,7 +1,10 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:math';
+
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:eTrade/components/NavigationBar.dart';
+import 'package:eTrade/components/constants.dart';
 import 'package:eTrade/helper/Sql_Connection.dart';
 import 'package:eTrade/components/sharePreferences.dart';
 import 'package:eTrade/entities/Customer.dart';
@@ -36,7 +39,7 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
                 height: 200,
                 alignment: Alignment.centerRight,
                 decoration: BoxDecoration(
-                  color: Color(0xFF00620b),
+                  color: eTradeGreen,
                   borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(25),
                       bottomRight: Radius.circular(25)),
@@ -96,7 +99,7 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
                             borderSide: BorderSide(width: 30.0)),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(20)),
-                          borderSide: BorderSide(color: Color(0xff00620b)),
+                          borderSide: BorderSide(color: eTradeGreen),
                         ),
                         labelText: '  IP Address',
                         errorText: valid ? null : _error,
@@ -176,7 +179,7 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
                           }
                         },
                         elevation: 20.0,
-                        color: Color(0xff00620b),
+                        color: eTradeGreen,
                         shape: RoundedRectangleBorder(
                             borderRadius:
                                 BorderRadius.all(Radius.circular(25.0))),

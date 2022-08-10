@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:eTrade/components/constants.dart';
 import 'package:eTrade/helper/onldt_to_local_db.dart';
 import 'package:eTrade/components/sharePreferences.dart';
 import 'package:eTrade/helper/sqlhelper.dart';
@@ -35,7 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 200,
                 alignment: Alignment.centerRight,
                 decoration: BoxDecoration(
-                  color: Color(0xFF00620b),
+                  color: eTradeGreen,
                   borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(25),
                       bottomRight: Radius.circular(25)),
@@ -112,7 +113,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             focusedBorder: OutlineInputBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(20)),
-                              borderSide: BorderSide(color: Color(0xFF00620b)),
+                              borderSide: BorderSide(color: eTradeGreen),
                             ),
                             labelText: 'Username',
                           ),
@@ -136,7 +137,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             focusedBorder: OutlineInputBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(20)),
-                              borderSide: BorderSide(color: Color(0xFF00620b)),
+                              borderSide: BorderSide(color: eTradeGreen),
                             ),
                             labelText: 'Password',
                           ),
@@ -188,7 +189,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             elevation: 20.0,
                             disabledColor: Colors.grey,
                             // disabledColor: Color(0x0ff1e1e1),
-                            color: Color(0xff00620b),
+                            color: eTradeGreen,
                             shape: RoundedRectangleBorder(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(25.0))),

@@ -1,4 +1,5 @@
 import 'package:dart_ping/dart_ping.dart';
+import 'package:eTrade/components/constants.dart';
 import 'package:eTrade/screen/NavigationScreen/Take%20Order/components/AddItemModelSheet.dart';
 import 'package:eTrade/components/NavigationBar.dart';
 import 'package:eTrade/helper/sqlhelper.dart';
@@ -81,7 +82,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
               bottom: Radius.circular(30),
             ),
           ),
-          backgroundColor: Color(0xFF00620b),
+          backgroundColor: eTradeGreen,
           toolbarHeight: 80,
           title: Text(
             'Order Detail',
@@ -166,7 +167,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                 ),
                 Divider(
                   thickness: 2,
-                  color: Color(0xff00620b),
+                  color: eTradeGreen,
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
@@ -231,7 +232,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                         ? Color(0xff424242)
                         : Colors.grey.shade100,
                     border: Border(
-                      top: BorderSide(color: Color(0xff00620b), width: 4),
+                      top: BorderSide(color: eTradeGreen, width: 4),
                     )),
                 height: 80,
                 width: double.infinity,

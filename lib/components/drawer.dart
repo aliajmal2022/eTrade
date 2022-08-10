@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:eTrade/components/CustomNavigator.dart';
+import 'package:eTrade/components/constants.dart';
 import 'package:flutter_share/flutter_share.dart';
 import 'package:get/get.dart';
 import 'package:path/path.dart';
@@ -151,7 +153,7 @@ class _MyDrawerState extends State<MyDrawer>
           // ),
           Divider(
             thickness: 2,
-            color: Color(0xff00620b),
+            color: eTradeGreen,
           ),
           Padding(
               padding: const EdgeInsets.all(20),
@@ -206,7 +208,8 @@ class _MyDrawerState extends State<MyDrawer>
                           TakeOrderScreen.isSelected = false;
                           Navigator.push(
                               context,
-                              MaterialPageRoute(
+                              MyCustomRoute(
+                                  slide: "Left",
                                   builder: (context) => MyNavigationBar(
                                         editRecovery: ViewRecovery(
                                             amount: 0,
@@ -240,7 +243,8 @@ class _MyDrawerState extends State<MyDrawer>
                           ViewBookingScreen.isSaleBooking = true;
                           Navigator.push(
                               context,
-                              MaterialPageRoute(
+                              MyCustomRoute(
+                                  slide: "Left",
                                   builder: (context) => MyNavigationBar(
                                         editRecovery: ViewRecovery(
                                             amount: 0,
@@ -391,7 +395,8 @@ class _MyDrawerState extends State<MyDrawer>
                           Navigator.pop(context);
                           Navigator.push(
                               context,
-                              MaterialPageRoute(
+                              MyCustomRoute(
+                                  slide: "Left",
                                   builder: (context) => ViewRecoveryScreen()));
                         },
                         child: Row(

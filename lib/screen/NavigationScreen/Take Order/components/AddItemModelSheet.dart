@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:eTrade/components/CustomNavigator.dart';
+import 'package:eTrade/components/constants.dart';
 import 'package:eTrade/entities/Products.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -190,10 +192,9 @@ class _AddItemModelSheetState extends State<AddItemModelSheet> {
                                     borderSide: BorderSide(width: 20.0)),
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
-                                  borderSide:
-                                      BorderSide(color: Color(0xff00620b)),
+                                  borderSide: BorderSide(color: eTradeGreen),
                                 ),
-                                labelStyle: TextStyle(color: Color(0xff00620b)),
+                                labelStyle: TextStyle(color: eTradeGreen),
                                 labelText: 'Quantity',
                               ),
                             ),
@@ -226,11 +227,10 @@ class _AddItemModelSheetState extends State<AddItemModelSheet> {
                                   borderSide: BorderSide(width: 20.0)),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
-                                borderSide:
-                                    BorderSide(color: Color(0xff00620b)),
+                                borderSide: BorderSide(color: eTradeGreen),
                               ),
                               labelText: 'Rate',
-                              labelStyle: TextStyle(color: Color(0xff00620b)),
+                              labelStyle: TextStyle(color: eTradeGreen),
                             ),
                           ),
                         ),
@@ -253,11 +253,10 @@ class _AddItemModelSheetState extends State<AddItemModelSheet> {
                                   borderSide: BorderSide(width: 20.0)),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
-                                borderSide:
-                                    BorderSide(color: Color(0xff00620b)),
+                                borderSide: BorderSide(color: eTradeGreen),
                               ),
                               labelText: 'Discount',
-                              labelStyle: TextStyle(color: Color(0xff00620b)),
+                              labelStyle: TextStyle(color: eTradeGreen),
                             ),
                           ),
                         ),
@@ -293,14 +292,11 @@ class _AddItemModelSheetState extends State<AddItemModelSheet> {
                                   borderSide: BorderSide(width: 20.0)),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
-                                borderSide:
-                                    BorderSide(color: Color(0xff00620b)),
+                                borderSide: BorderSide(color: eTradeGreen),
                               ),
                               labelText: 'Bonus',
                               labelStyle: TextStyle(
-                                  color: (tO != 0)
-                                      ? Colors.grey
-                                      : Color(0xff00620b)),
+                                  color: (tO != 0) ? Colors.grey : eTradeGreen),
                             ),
                           ),
                         ),
@@ -328,8 +324,7 @@ class _AddItemModelSheetState extends State<AddItemModelSheet> {
                                   borderSide: BorderSide(width: 20.0)),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
-                                borderSide:
-                                    BorderSide(color: Color(0xff00620b)),
+                                borderSide: BorderSide(color: eTradeGreen),
                               ),
                               disabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
@@ -337,9 +332,8 @@ class _AddItemModelSheetState extends State<AddItemModelSheet> {
                               ),
                               labelText: 'T.o.',
                               labelStyle: TextStyle(
-                                  color: (bonus != 0)
-                                      ? Colors.grey
-                                      : Color(0xff00620b)),
+                                  color:
+                                      (bonus != 0) ? Colors.grey : eTradeGreen),
                             ),
                           ),
                         ),
@@ -371,12 +365,13 @@ class _AddItemModelSheetState extends State<AddItemModelSheet> {
 
                                 Navigator.pushAndRemoveUntil(
                                     context,
-                                    MaterialPageRoute(
+                                    MyCustomRoute(
+                                        slide: "Left",
                                         builder: (context) => widget.screen),
                                     (route) => true);
                               },
                         elevation: 20.0,
-                        color: Color(0xff00620b),
+                        color:eTradeGreen ,
                         shape: RoundedRectangleBorder(
                             borderRadius:
                                 BorderRadius.all(Radius.circular(25.0))),

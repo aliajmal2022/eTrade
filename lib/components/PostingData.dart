@@ -1,6 +1,7 @@
 import 'dart:ffi';
 
 import 'package:eTrade/components/NavigationBar.dart';
+import 'package:eTrade/components/constants.dart';
 import 'package:eTrade/components/drawer.dart';
 import 'package:eTrade/entities/Customer.dart';
 import 'package:eTrade/entities/ViewRecovery.dart';
@@ -382,7 +383,7 @@ class _PostingDataState extends State<PostingData> {
                                 elevation: 2.0,
                                 padding: EdgeInsets.all(15.0),
                                 shape: CircleBorder(),
-                                color: Color(0xff00620b),
+                                color: eTradeGreen,
                                 child: Icon(
                                   Icons.check,
                                   color: Colors.white,
@@ -587,7 +588,7 @@ class _PostingDataState extends State<PostingData> {
                                   elevation: 2.0,
                                   padding: EdgeInsets.all(15.0),
                                   shape: CircleBorder(),
-                                  color: Color(0xff00620b),
+                                  color: eTradeGreen,
                                   child: Icon(
                                     Icons.check,
                                     color: Colors.white,

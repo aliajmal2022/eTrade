@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:eTrade/components/NavigationBar.dart';
+import 'package:eTrade/components/constants.dart';
 import 'package:eTrade/screen/NavigationScreen/Booking/components/SearchListOrder.dart';
 import 'package:eTrade/screen/NavigationScreen/Booking/components/ViewBookingTabBar.dart';
 import 'package:eTrade/components/drawer.dart';
@@ -54,7 +55,7 @@ class _ViewBookingScreenState extends State<ViewBookingScreen>
       child: Scaffold(
           key: _scaffoldKey,
           appBar: AppBar(
-            backgroundColor: Color(0xFF00620b),
+            backgroundColor: eTradeGreen,
             toolbarHeight: 80,
             automaticallyImplyLeading: false,
             bottom: TabBar(
@@ -76,24 +77,26 @@ class _ViewBookingScreenState extends State<ViewBookingScreen>
                         ViewBookingScreen.isSaleBooking = false;
                         // dispose();
                       });
-                      Get.off(MyNavigationBar(
-                          selectedIndex: 2,
-                          editRecovery: ViewRecovery(
-                              amount: 0,
-                              description: "",
-                              recoveryID: 0,
-                              checkOrCash: "",
-                              dated: "",
-                              party: Customer(
-                                  partyId: 0,
-                                  partyName: "",
-                                  userId: 0,
-                                  address: "",
-                                  discount: 0)),
-                          list: [],
-                          date: "",
-                          id: 0,
-                          partyName: "Search Customer"));
+                      Get.off(
+                          MyNavigationBar(
+                              selectedIndex: 2,
+                              editRecovery: ViewRecovery(
+                                  amount: 0,
+                                  description: "",
+                                  recoveryID: 0,
+                                  checkOrCash: "",
+                                  dated: "",
+                                  party: Customer(
+                                      partyId: 0,
+                                      partyName: "",
+                                      userId: 0,
+                                      address: "",
+                                      discount: 0)),
+                              list: [],
+                              date: "",
+                              id: 0,
+                              partyName: "Search Customer"),
+                          transition: Transition.leftToRight);
                     },
                   )
                 : Builder(

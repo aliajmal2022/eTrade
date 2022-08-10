@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:eTrade/components/NavigationBar.dart';
+import 'package:eTrade/components/constants.dart';
 import 'package:eTrade/screen/NavigationScreen/Booking/components/SearchListOrder.dart';
 import 'package:eTrade/screen/NavigationScreen/RecoveryBooking/components/SearchListRecovery.dart';
 import 'package:eTrade/screen/NavigationScreen/RecoveryBooking/components/ViewRecoveryTabBar.dart';
@@ -42,7 +43,7 @@ class _ViewRecoveryScreenState extends State<ViewRecoveryScreen>
       onWillPop: () async => false,
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Color(0xFF00620b),
+          backgroundColor: eTradeGreen,
           toolbarHeight: 80,
           bottom: TabBar(
             indicatorColor: Colors.white,

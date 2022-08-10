@@ -5,6 +5,7 @@ import 'dart:ffi';
 import 'dart:io';
 
 // import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:eTrade/components/constants.dart';
 import 'package:eTrade/main.dart';
 import 'package:eTrade/screen/NavigationScreen/DashBoard/DashboardScreen.dart';
 import 'package:eTrade/screen/NavigationScreen/Take%20Order/components/AddItemModelSheet.dart';
@@ -161,7 +162,7 @@ class TakeOrderScreen extends StatefulWidget {
 }
 
 class _TakeOrderScreenState extends State<TakeOrderScreen>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   var _animationController;
   String searchString = "";
   var controller;
@@ -255,11 +256,17 @@ class _TakeOrderScreenState extends State<TakeOrderScreen>
   }
 
   @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Color(0xFF00620b),
+          backgroundColor: eTradeGreen,
           toolbarHeight: 80,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(
@@ -288,24 +295,26 @@ class _TakeOrderScreenState extends State<TakeOrderScreen>
                       resetCartList();
                     });
                     await TakeOrderScreen.getdataFromDb();
-                    Get.off(MyNavigationBar(
-                        selectedIndex: 2,
-                        editRecovery: ViewRecovery(
-                            amount: 0,
-                            description: "",
-                            checkOrCash: "",
-                            recoveryID: 0,
-                            dated: "",
-                            party: Customer(
-                                partyId: 0,
-                                partyName: "",
-                                userId: 0,
-                                address: "",
-                                discount: 0)),
-                        list: [],
-                        date: widget.date,
-                        id: widget.iD,
-                        partyName: "Search Customer"));
+                    Get.off(
+                        () => MyNavigationBar(
+                            selectedIndex: 2,
+                            editRecovery: ViewRecovery(
+                                amount: 0,
+                                description: "",
+                                checkOrCash: "",
+                                recoveryID: 0,
+                                dated: "",
+                                party: Customer(
+                                    partyId: 0,
+                                    partyName: "",
+                                    userId: 0,
+                                    address: "",
+                                    discount: 0)),
+                            list: [],
+                            date: widget.date,
+                            id: widget.iD,
+                            partyName: "Search Customer"),
+                        transition: Transition.leftToRight);
                   },
                 )
               : (TakeOrderScreen.isSaleSpot)
@@ -323,24 +332,26 @@ class _TakeOrderScreenState extends State<TakeOrderScreen>
                           resetCartList();
                         });
                         await TakeOrderScreen.getdataFromDb();
-                        Get.off(MyNavigationBar(
-                            selectedIndex: 1,
-                            editRecovery: ViewRecovery(
-                                amount: 0,
-                                description: "",
-                                recoveryID: 0,
-                                checkOrCash: "",
-                                dated: "",
-                                party: Customer(
-                                    partyId: 0,
-                                    partyName: "",
-                                    userId: 0,
-                                    address: "",
-                                    discount: 0)),
-                            list: [],
-                            date: widget.date,
-                            id: widget.iD,
-                            partyName: "Search Customer"));
+                        Get.off(
+                            () => MyNavigationBar(
+                                selectedIndex: 1,
+                                editRecovery: ViewRecovery(
+                                    amount: 0,
+                                    description: "",
+                                    recoveryID: 0,
+                                    checkOrCash: "",
+                                    dated: "",
+                                    party: Customer(
+                                        partyId: 0,
+                                        partyName: "",
+                                        userId: 0,
+                                        address: "",
+                                        discount: 0)),
+                                list: [],
+                                date: widget.date,
+                                id: widget.iD,
+                                partyName: "Search Customer"),
+                            transition: Transition.leftToRight);
                       },
                     )
                   : Builder(
@@ -399,7 +410,7 @@ class _TakeOrderScreenState extends State<TakeOrderScreen>
                                                   : widget.iD,
                                         ),
                                     transition: Transition.rightToLeft,
-                                    duration: Duration(milliseconds: 1000));
+                                    duration: Duration(milliseconds: 700));
                               },
                     // disabledColor: Color(0xff424242),
                     disabledColor: Colors.grey,
@@ -528,7 +539,7 @@ class _TakeOrderScreenState extends State<TakeOrderScreen>
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(2)),
                                           // color: Colors.white,
-                                          color: Color(0xff00620b),
+                                          color: eTradeGreen,
                                           // color: Color(0xff424242),
                                         ),
                                         child: MaterialButton(
@@ -602,18 +613,18 @@ class _TakeOrderScreenState extends State<TakeOrderScreen>
                                         vertical: 13, horizontal: 20),
                                     enabledBorder: OutlineInputBorder(
                                       borderSide:
-                                          BorderSide(color: Color(0xff00620b)),
+                                          BorderSide(color: eTradeGreen),
                                     ),
                                     focusedBorder: OutlineInputBorder(
                                       // borderRadius: BorderRadius.circular(20),
                                       borderSide:
-                                          BorderSide(color: Color(0xff00620b)),
+                                          BorderSide(color: eTradeGreen),
                                     ),
                                     labelText: 'Search Product',
-                                    // labelStyle: TextStyle(color: Color(0xff00620b)),
+                                    // labelStyle: TextStyle(color: eTradeGreen),
                                     suffixIcon: Icon(
                                       Icons.search,
-                                      color: Color(0xff00620b),
+                                      color: eTradeGreen,
                                     ),
                                   ),
                                 ),
@@ -640,15 +651,14 @@ class _TakeOrderScreenState extends State<TakeOrderScreen>
                                       },
                                       child: Text(
                                         "Clear List",
-                                        style:
-                                            TextStyle(color: Color(0xff00620b)),
+                                        style: TextStyle(color: eTradeGreen),
                                       )),
                                 ),
                               ),
                             ),
                           ),
                           Divider(
-                            color: Color(0xff00620b),
+                            color: eTradeGreen,
                             thickness: 2,
                             height: 10,
                           ),

@@ -1,5 +1,6 @@
 import 'package:eTrade/components/NavigationBar.dart';
 import 'package:eTrade/components/NewCustomer.dart';
+import 'package:eTrade/components/constants.dart';
 import 'package:eTrade/components/drawer.dart';
 import 'package:eTrade/helper/onldt_to_local_db.dart';
 import 'package:eTrade/helper/sqlhelper.dart';
@@ -15,6 +16,7 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 class RecoveryScreen extends StatefulWidget {
   RecoveryScreen({required this.recovery, required this.userID});
@@ -75,7 +77,9 @@ class RecoveryScreen extends StatefulWidget {
   static final amountcontroller = TextEditingController();
 }
 
-class _RecoveryScreenState extends State<RecoveryScreen> {
+class _RecoveryScreenState extends State<RecoveryScreen>
+    with TickerProviderStateMixin {
+  var _animationController;
   Future<List<Customer>> getData(String filter) async {
     return DataBaseDataLoad.ListOCustomer.where((element) =>
             element.partyName.toLowerCase().contains(filter.toLowerCase()))
@@ -101,6 +105,8 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
   static bool isCash = true;
   @override
   void initState() {
+    _animationController = AnimationController(
+        vsync: this, duration: Duration(microseconds: 1000));
     PreLoadDataBase();
     setState(() {
       if (!RecoveryScreen.isSync) {
@@ -146,12 +152,18 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
   }
 
   @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
-          backgroundColor: Color(0xFF00620b),
+          backgroundColor: eTradeGreen,
           toolbarHeight: 80,
           shape: const RoundedRectangleBorder(
             borderRadius: const BorderRadius.vertical(
@@ -280,7 +292,7 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                           ),
                           Switch(
                             value: isCash,
-                            activeColor: Color(0xff00620b),
+                            activeColor: eTradeGreen,
                             onChanged: (value) async {
                               setState(() {
                                 isCash = value;
@@ -384,7 +396,7 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                                     topRight: Radius.circular(20),
                                     bottomRight: Radius.circular(20)),
                                 // color: Colors.white,
-                                color: Color(0xff00620b),
+                                color: eTradeGreen,
                                 // color: Color(0xff424242),
                               ),
                               child: MaterialButton(
@@ -484,30 +496,35 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                                         amount,
                                         description,
                                         _groupValue);
-                                    RecoveryScreen.amountcontroller.clear();
-                                    RecoveryScreen.descriptioncontroller
-                                        .clear();
-                                    amount = 0;
-                                    description = "";
-                                    RecoveryScreen.isEditRecovery = false;
-                                    RecoveryScreen.getData = false;
-                                    widget.setParty(Customer(
-                                        discount: 0,
-                                        userId: 0,
-                                        partyId: 0,
-                                        address: "",
-                                        partyName: "Search Customer"));
-                                    RecoveryScreen.tcustomer = Customer(
-                                        discount: 0,
-                                        userId: 0,
-                                        address: "",
-                                        partyId: 0,
-                                        partyName: "Search Customer");
+                                    setState(() {
+                                      RecoveryScreen.amountcontroller.clear();
+                                      RecoveryScreen.descriptioncontroller
+                                          .clear();
+                                      amount = 0;
+                                      description = "";
+                                      RecoveryScreen.isEditRecovery = false;
+                                      RecoveryScreen.getData = false;
+                                      widget.setParty(Customer(
+                                          discount: 0,
+                                          userId: 0,
+                                          partyId: 0,
+                                          address: "",
+                                          partyName: "Search Customer"));
+                                      RecoveryScreen.tcustomer = Customer(
+                                          discount: 0,
+                                          userId: 0,
+                                          address: "",
+                                          partyId: 0,
+                                          partyName: "Search Customer");
+                                    });
                                     Get.off(ViewRecoveryScreen());
                                     ScaffoldMessenger.of(context)
                                         .showSnackBar(snackBar);
                                   }
-                                : () {
+                                : () async {
+                                    var snackBar = const SnackBar(
+                                      content: Text("Recovery is Saved."),
+                                    );
                                     Recovery recovery = Recovery(
                                         amount: amount,
                                         recoveryID: 0,
@@ -525,26 +542,25 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                                                 widget.getParty().partyName),
                                         description: description,
                                         isPost: false);
-                                    SQLHelper.instance
+                                    await SQLHelper.instance
                                         .createRecoveryitem(recovery, false);
-                                    final snackBar = const SnackBar(
-                                      content: Text("Recovery is Saved."),
-                                    );
-                                    RecoveryScreen.amountcontroller.clear();
-                                    RecoveryScreen.descriptioncontroller
-                                        .clear();
-                                    widget.setParty(Customer(
-                                        partyId: 0,
-                                        userId: 0,
-                                        discount: 0,
-                                        address: "",
-                                        partyName: "Search Customer"));
-                                    RecoveryScreen.tcustomer = Customer(
-                                        discount: 0,
-                                        userId: 0,
-                                        address: "",
-                                        partyId: 0,
-                                        partyName: "Search Customer");
+                                    setState(() {
+                                      RecoveryScreen.amountcontroller.clear();
+                                      RecoveryScreen.descriptioncontroller
+                                          .clear();
+                                      widget.setParty(Customer(
+                                          partyId: 0,
+                                          userId: 0,
+                                          discount: 0,
+                                          address: "",
+                                          partyName: "Search Customer"));
+                                      RecoveryScreen.tcustomer = Customer(
+                                          discount: 0,
+                                          userId: 0,
+                                          address: "",
+                                          partyId: 0,
+                                          partyName: "Search Customer");
+                                    });
                                     Get.off(MyNavigationBar(
                                       selectedIndex: 0,
                                       editRecovery: ViewRecovery(
@@ -570,7 +586,7 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                         elevation: 20.0,
                         disabledColor: Color(0x0ff1e1e1),
                         disabledElevation: 1,
-                        color: Color(0xff00620b),
+                        color: eTradeGreen,
                         shape: RoundedRectangleBorder(
                             borderRadius:
                                 BorderRadius.all(Radius.circular(25.0))),

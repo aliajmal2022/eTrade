@@ -48,7 +48,7 @@ dependencies:
   syncfusion_flutter_charts: ^20.2.39
   find_dropdown: ^1.0.0
   charts_flutter: ^0.12.0
-  
+  google_nav_bar: ^5.0.6 
   flutter_share:
 
 dev_dependencies:

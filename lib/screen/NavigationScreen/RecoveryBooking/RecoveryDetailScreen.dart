@@ -1,4 +1,5 @@
 import 'package:dart_ping/dart_ping.dart';
+import 'package:eTrade/components/constants.dart';
 import 'package:eTrade/screen/NavigationScreen/Take%20Order/components/AddItemModelSheet.dart';
 import 'package:eTrade/components/NavigationBar.dart';
 import 'package:eTrade/helper/sqlhelper.dart';
@@ -35,7 +36,7 @@ class _RecoveryDetailScreenState extends State<RecoveryDetailScreen> {
               bottom: Radius.circular(30),
             ),
           ),
-          backgroundColor: Color(0xFF00620b),
+          backgroundColor: eTradeGreen,
           toolbarHeight: 80,
           title: Text(
             'Order Detail',
@@ -138,7 +139,7 @@ class _RecoveryDetailScreenState extends State<RecoveryDetailScreen> {
                       ),
                       Divider(
                         thickness: 2,
-                        color: Color(0xff00620b),
+                        color: eTradeGreen,
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,

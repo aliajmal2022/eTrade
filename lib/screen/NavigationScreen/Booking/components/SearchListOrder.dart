@@ -1,4 +1,5 @@
 import 'package:eTrade/components/NavigationBar.dart';
+import 'package:eTrade/components/constants.dart';
 import 'package:eTrade/screen/NavigationScreen/Booking/components/ViewBookingTabBar.dart';
 import 'package:eTrade/helper/sqlhelper.dart';
 import 'package:eTrade/entities/Customer.dart';
@@ -194,20 +195,21 @@ class _ListOfOrderState extends State<ListOfOrder> {
                   ]),
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 5.0),
-                    child: Container(
-                      height: 110,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                          color:
-                              (MyApp.isDark) ? Color(0xff424242) : Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black,
-                              offset: Offset(0.0, 0.5), //(x,y)
-                              blurRadius: 3.0,
-                            ),
-                          ],
-                          borderRadius: BorderRadius.all(Radius.circular(5))),
+                    // child: Container(
+                    //   height: 110,
+                    //   width: double.infinity,
+                    //   decoration: BoxDecoration(
+                    //       color:
+                    //           (MyApp.isDark) ? Color(0xff424242) : Colors.white,
+                    //       boxShadow: [
+                    //         BoxShadow(
+                    //           color: Colors.black,
+                    //           offset: Offset(0.0, 0.5), //(x,y)
+                    //           blurRadius: 3.0,
+                    //         ),
+                    //       ],
+                    //       borderRadius: BorderRadius.all(Radius.circular(5))),
+                    child: Card(
                       child: Padding(
                         padding: EdgeInsets.all(12.0),
                         child: Row(
@@ -262,7 +264,7 @@ class _ListOfOrderState extends State<ListOfOrder> {
                                 Container(
                                   padding: EdgeInsets.all(4),
                                   decoration: BoxDecoration(
-                                      color: Color(0xff00620b),
+                                      color: eTradeGreen,
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(5))),
                                   child: Text(
@@ -345,7 +347,7 @@ class _ListOfOrderState extends State<ListOfOrder> {
                                             : Colors.grey.shade300,
                                         // border: Border.all(
                                         //     color:
-                                        //         Color(0xff00620b),
+                                        //         eTradeGreen,
                                         //     width: 1),
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(5))),
@@ -354,7 +356,7 @@ class _ListOfOrderState extends State<ListOfOrder> {
                                           ? "Sale Detail"
                                           : "Order Detail",
                                       style: TextStyle(
-                                          color: Color(0xff00620b),
+                                          color: eTradeGreen,
                                           // fontStyle: FontStyle.italic,
                                           fontSize: 15),
                                     ),
@@ -368,6 +370,7 @@ class _ListOfOrderState extends State<ListOfOrder> {
                     ),
                   ),
                 ),
+                // ),
               );
             },
             itemCount: dummyOrderList.length,
