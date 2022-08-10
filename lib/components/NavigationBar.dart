@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:eTrade/components/constants.dart';
 import 'package:eTrade/components/drawer.dart';
 import 'package:eTrade/components/sharePreferences.dart';
@@ -72,78 +70,21 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
 
     return Scaffold(
         body: _pages[widget.selectedIndex],
-        bottomNavigationBar:
-
-            // Container(
-            //     height: 100,
-            //     decoration: BoxDecoration(
-            //         border: Border(
-            //       top: BorderSide(width: 0.5, color: Colors.grey.shade800),
-            //     )),
-            //     child:
-            //  BottomNavigationBar(
-            //   backgroundColor: eTradeGreen,
-            //   type: BottomNavigationBarType.shifting,
-            //   selectedFontSize: 16,
-            //   showSelectedLabels: true,
-            //   showUnselectedLabels: false,
-            //   selectedIconTheme: const IconThemeData(color: eTradeBlue),
-            //   selectedItemColor: Colors.white,
-            //   unselectedItemColor: Colors.grey,
-            //   unselectedIconTheme: IconThemeData(color: Colors.grey),
-            //   elevation: 19,
-            //   items: <BottomNavigationBarItem>[
-            //     BottomNavigationBarItem(
-            //       icon: Icon(Icons.trending_up_outlined),
-            //       label: 'Home',
-            //     ),
-            //     BottomNavigationBarItem(
-            //       icon: Icon(Icons.edit_note_outlined),
-            //       label: (TakeOrderScreen.isSaleSpot)
-            //           ? 'Invoice'
-            //           : (TakeOrderScreen.isEditSale)
-            //               ? 'Edit Invoice'
-            //               : (TakeOrderScreen.isEditOrder)
-            //                   ? 'Edit Order'
-            //                   : 'Take Order',
-            //     ),
-            //     BottomNavigationBarItem(
-            //       icon: Icon(Icons.wysiwyg_outlined),
-            //       label: (ViewBookingScreen.isSaleBooking)
-            //           ? "View Invoice"
-            //           : 'View Booking',
-            //     ),
-            //     BottomNavigationBarItem(
-            //       icon: Icon(Icons.grading_outlined),
-            //       label: 'Recovery',
-            //     ),
-            //   ],
-            //   currentIndex: MyNavigationBar.currentIndex,
-            //   onTap: _onItemTapped,
-            // ),
-            GNav(
-                rippleColor: Colors
-                    .grey.shade800, // tab button ripple color when pressed
-                hoverColor: Colors.grey.shade700, // tab button hover color
-                haptic: true, // haptic feedback
-                tabBorderRadius: 15,
-                tabActiveBorder: Border.all(
-                    color: Colors.black, width: 1), // tab button border
-                tabBorder: Border.all(
-                    color: Colors.grey, width: 1), // tab button border
-                tabShadow: [
-                  BoxShadow(color: Colors.grey.withOpacity(0.5), blurRadius: 8)
-                ], // tab button shadow
-                curve: Curves.easeOutExpo, // tab animation curves
-                duration: Duration(milliseconds: 900), // tab animation duration
-                gap: 8, // the tab button gap between icon and text
-                color: Colors.grey[800], // unselected icon color
-                activeColor: Colors.purple, // selected icon and text color
-                iconSize: 24, // tab button icon size
-                tabBackgroundColor: Colors.purple
-                    .withOpacity(0.1), // selected tab background color
-                padding: EdgeInsets.symmetric(
-                    horizontal: 20, vertical: 5), // navigation bar padding
+        bottomNavigationBar: Material(
+          elevation: 23,
+          child: Container(
+            decoration: BoxDecoration(
+                border: Border(
+              top: BorderSide(width: 1.5, color: eTradeGreen),
+            )),
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            child: GNav(
+                selectedIndex: MyNavigationBar.currentIndex,
+                onTabChange: _onItemTapped,
+                activeColor: Colors.white,
+                tabBackgroundColor: eTradeGreen,
+                gap: 8,
+                padding: EdgeInsets.all(14),
                 tabs: [
                   GButton(
                     icon: Icons.trending_up_outlined,
@@ -169,7 +110,9 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
                     icon: Icons.grading_outlined,
                     text: 'Recovery',
                   ),
-                ])
+                ]),
+          ),
+        )
         // )
         );
   }

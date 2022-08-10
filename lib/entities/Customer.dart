@@ -50,7 +50,7 @@ class Customer {
         _customer.partyId = element['PartyID'];
         _customer.partyName = element['PartyName'];
         _customer.discount = element['Discount'];
-        _customer.address = element['Address'];
+        _customer.address = element['Address'].toString();
 
         _listProduct.add(_customer);
       });

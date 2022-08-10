@@ -16,7 +16,7 @@ class Recovery {
   Customer party;
   int userID;
   double amount;
-  String isCashOrCheck;
+  bool isCashOrCheck;
   int recoveryID;
   String description;
   bool isPost;
@@ -26,7 +26,7 @@ class Recovery {
     if (_order.isNotEmpty) {
       _order.forEach((element) {
         Recovery recoveryOrder = Recovery(
-            isCashOrCheck: "",
+            isCashOrCheck: false,
             amount: 0,
             recoveryID: 0,
             userID: 0,

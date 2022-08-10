@@ -441,10 +441,12 @@ class _TakeOrderScreenState extends State<TakeOrderScreen>
                             child: Padding(
                               padding: const EdgeInsets.all(15.0),
                               child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
                                   Flexible(
                                     child: FindDropdown<Customer>(
                                       autofocus: true,
+                                      label: "Search Customer",
                                       onFind: (String filter) =>
                                           getData(filter),
                                       onChanged: (Customer? value) {
@@ -467,20 +469,15 @@ class _TakeOrderScreenState extends State<TakeOrderScreen>
                                               color: MyApp.isDark
                                                   ? Color(0xff303030)
                                                   : Color(0xfffafafa)),
-                                          child: (item?.partyName == null)
-                                              ? ListTile(
-                                                  leading: Text(
-                                                  "Search Customer",
-                                                  style:
-                                                      TextStyle(fontSize: 16),
-                                                ))
-                                              : ListTile(
-                                                  leading: Text(
-                                                    item!.partyName,
-                                                    style:
-                                                        TextStyle(fontSize: 16),
-                                                  ),
-                                                ),
+                                          child: ListTile(
+                                            leading: Text(
+                                              (item!.partyName ==
+                                                      "Search Customer")
+                                                  ? "Type Here..."
+                                                  : item.partyName,
+                                              style: TextStyle(fontSize: 16),
+                                            ),
+                                          ),
                                         );
                                       },
                                       selectedItem: TakeOrderScreen.customer,
@@ -488,39 +485,42 @@ class _TakeOrderScreenState extends State<TakeOrderScreen>
                                           (BuildContext context, Customer item,
                                               bool isSelected) {
                                         return Container(
+                                          height: 60,
                                           decoration: !isSelected
                                               ? null
                                               : BoxDecoration(
                                                   border: Border.all(
-                                                      color: Colors.blue),
+                                                      color: eTradeGreen),
                                                   borderRadius:
                                                       BorderRadius.circular(5),
                                                   color: MyApp.isDark
                                                       ? Color(0xff424242)
                                                       : Colors.white,
                                                 ),
-                                          child: ListTile(
-                                              selected: isSelected,
-                                              title: Text(
-                                                item.partyName,
-                                                style: TextStyle(
-                                                    color: !isSelected &&
-                                                            !MyApp.isDark
-                                                        ? Colors.black54
-                                                        : MyApp.isDark
-                                                            ? Colors.white
-                                                            : Colors.black),
-                                              ),
-                                              subtitle: Text(
-                                                  item.address.toString(),
+                                          child: Center(
+                                            child: ListTile(
+                                                selected: isSelected,
+                                                title: Text(
+                                                  item.partyName,
                                                   style: TextStyle(
                                                       color: !isSelected &&
                                                               !MyApp.isDark
-                                                          ? Colors.grey
+                                                          ? Colors.black54
                                                           : MyApp.isDark
                                                               ? Colors.white
-                                                              : Colors
-                                                                  .black54))),
+                                                              : Colors.black),
+                                                ),
+                                                subtitle: Text(
+                                                    item.address.toString(),
+                                                    style: TextStyle(
+                                                        color: !isSelected &&
+                                                                !MyApp.isDark
+                                                            ? Colors.grey
+                                                            : MyApp.isDark
+                                                                ? Colors.white
+                                                                : Colors
+                                                                    .black54))),
+                                          ),
                                         );
                                       },
                                     ),
@@ -533,7 +533,7 @@ class _TakeOrderScreenState extends State<TakeOrderScreen>
                                   Material(
                                     elevation: 4,
                                     child: Container(
-                                        height: 48,
+                                        height: 49,
                                         width: 58,
                                         decoration: const BoxDecoration(
                                           borderRadius: BorderRadius.all(

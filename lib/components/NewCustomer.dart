@@ -94,13 +94,14 @@ class _NewUsrAddLocalDBState extends State<NewUsrAddLocalDB> {
                           ),
                         ),
                         const SizedBox(
-                          height: 10,
+                          height: 5,
                         ),
                         Expanded(
                           flex: 2,
                           child: TextField(
                             autofocus: true,
                             keyboardType: TextInputType.number,
+                            maxLength: 2,
                             controller: _discountcontroller,
                             onChanged: (value) {
                               setState(() {

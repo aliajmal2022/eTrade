@@ -267,7 +267,7 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
   RATE REAL NOT NULL,
   Discount REAL,
   Bonus INTEGER,
-  [TO] Real,
+  TradeOffer Real,
   Amount REAL NOT NULL,
 	Dated DATE NOT NULL,
 isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
@@ -285,7 +285,7 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
       'OrderID': orderID,
       'Discount': product.discount,
       'Bonus': product.bonus,
-      '[TO]': product.to,
+      'TradeOffer': product.to,
       'ItemID': product.ID,
       'Quantity': product.Quantity,
       'Rate': product.Price,
@@ -305,7 +305,7 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
   static Future<List> getOrderDetail(int id) async {
     Database db = await instance.database;
     var ListOrder = await db.rawQuery(
-        "SELECT i.ItemName, od.Bonus,od.Discount,od.[TO],od.Quantity,od.Rate,od.Amount,i.itemID,o.Description FROM OrderDetail as od LEFT JOIN Item AS i ON i.ItemID = od.ItemID LEFT JOIN [Order] AS o ON o.OrderID=od.OrderID WHERE od.OrderID=$id and od.isPosted=0");
+        "SELECT i.ItemName, od.Bonus,od.Discount,od.TradeOffer,od.Quantity,od.Rate,od.Amount,i.itemID,o.Description FROM OrderDetail as od LEFT JOIN Item AS i ON i.ItemID = od.ItemID LEFT JOIN [Order] AS o ON o.OrderID=od.OrderID WHERE od.OrderID=$id and od.isPosted=0");
 
     return ListOrder;
   }
@@ -320,7 +320,7 @@ TotalQuantity INTEGER NOT NULL,
 TotalValue REAL NOT NULL,
 Dated DATE NOT NULL,
 Description TEXT,
-isCash BOOLEAN NOT NULL CHECK (isCash IN (0, 1)) ,
+isCashInvoice BOOLEAN NOT NULL CHECK (isCashInvoice IN (0, 1)) ,
 isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
   )
       ''');
@@ -335,7 +335,7 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
       'Description': sale.description,
       'TotalQuantity': sale.totalQuantity,
       'UserID': sale.userID,
-      'isCash': sale.isCash,
+      'isCashInvoice': sale.isCash,
       'TotalValue': sale.totalValue,
       'Dated': sale.date,
       'isPosted': isPost,
@@ -385,7 +385,7 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
     Database db = await instance.database;
     try {
       await db.execute(
-          "UPDATE Sale SET TotalQuantity = 	(SELECT Sum(Quantity) FROM SaleDetail as sd WHERE  sd.InvoiceID=$id), TotalValue= (SELECT Sum(Amount) FROM SaleDetail as sd WHERE  sd.InvoiceID=$id),Description='$description',PartyID='$partyID',isCash='$isCash' WHERE Sale.InvoiceID=$id and Sale.isPosted=0"
+          "UPDATE Sale SET TotalQuantity = 	(SELECT Sum(Quantity) FROM SaleDetail as sd WHERE  sd.InvoiceID=$id), TotalValue= (SELECT Sum(Amount) FROM SaleDetail as sd WHERE  sd.InvoiceID=$id),Description='$description',PartyID='$partyID',isCashInvoice='$isCash' WHERE Sale.InvoiceID=$id and Sale.isPosted=0"
 
           // "UPDATE [Order] SET  PartyID=$partyID,Description='$description',TotalQuantity = (SELECT Sum(Quantity) FROM OrderDetail , [Order] as o WHERE o.OrderID = OrderDetail.OrderID and o.OrderID=$id),TotalValue=(SELECT Sum(Amount) FROM OrderDetail , [Order] as o WHERE o.OrderID = OrderDetail.OrderID and o.OrderID=$id) WHERE [Order].OrderID=$id"
           );
@@ -405,7 +405,7 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
   RATE REAL NOT NULL,
   Discount REAL,
   Bonus INTEGER,
-  [TO] Real,
+  TradeOffer Real,
   Amount REAL NOT NULL,
 	Dated DATE NOT NULL,
 isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
@@ -423,7 +423,7 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
       'InvoiceID': InvoiceID,
       'Discount': product.discount,
       'Bonus': product.bonus,
-      '[TO]': product.to,
+      'TradeOffer': product.to,
       'ItemID': product.ID,
       'Quantity': product.Quantity,
       'Rate': product.Price,
@@ -443,7 +443,7 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
   static Future<List> getSaleDetail(int id) async {
     Database db = await instance.database;
     var ListOrder = await db.rawQuery(
-        "SELECT i.ItemName,sd.Bonus,sd.Discount,sd.[TO],sd.Quantity,sd.Rate,sd.Amount,i.itemID,s.Description FROM SaleDetail as sd LEFT JOIN Item AS i ON i.ItemID = sd.ItemID LEFT JOIN Sale AS s ON sd.InvoiceID=s.InvoiceID WHERE sd.InvoiceID=$id and sd.isPosted=0");
+        "SELECT i.ItemName,sd.Bonus,sd.Discount,sd.TradeOffer,sd.Quantity,sd.Rate,sd.Amount,i.itemID,s.Description FROM SaleDetail as sd LEFT JOIN Item AS i ON i.ItemID = sd.ItemID LEFT JOIN Sale AS s ON sd.InvoiceID=s.InvoiceID WHERE sd.InvoiceID=$id and sd.isPosted=0");
 
     return ListOrder;
   }
@@ -456,7 +456,7 @@ PartyID INTEGER NOT NULL,
 UserID INTEGER NOT NULL,
 Amount REAL NOT NULL,
 Dated DATE NOT NULL,
-[CheckOrCash] TEXT NOT NULL,
+isCash BOOLEAN NOT NULL CHECK (isCash IN (0, 1)) ,
 Description TEXT,
 isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
   )
@@ -470,7 +470,7 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
     final data = {
       'PartyID': recovery.party.partyId,
       'UserID': recovery.userID,
-      'CheckOrCash': recovery.isCashOrCheck,
+      'isCash': recovery.isCashOrCheck,
       'Description': recovery.description,
       'Dated': recovery.dated,
       'Amount': recovery.amount,
@@ -521,7 +521,7 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
     Database db = await instance.database;
     try {
       await db.execute(
-          "UPDATE Recovery SET Amount=$amount, PartyID=$partyID,[CheckOrCash]='$isCashOCheck',Description='$description' WHERE Recovery.RecoveryId=$id and Recovery.isPosted=0");
+          "UPDATE Recovery SET Amount=$amount, PartyID=$partyID,isCash='$isCashOCheck',Description='$description' WHERE Recovery.RecoveryId=$id and Recovery.isPosted=0");
     } catch (e) {
       debugPrint('Recovery is not update');
     }

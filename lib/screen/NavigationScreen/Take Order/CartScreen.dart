@@ -401,26 +401,29 @@ class _CartScreenState extends State<CartScreen> {
                                             TakeOrderScreen.getdataFromDb();
                                           });
                                           Get.off(
-                                            MyNavigationBar(
-                                              selectedIndex: 2,
-                                              editRecovery: ViewRecovery(
-                                                  amount: 0,
-                                                  description: "",
-                                                  checkOrCash: "",
-                                                  recoveryID: 0,
-                                                  dated: "",
-                                                  party: Customer(
-                                                      discount: 0,
-                                                      userId: 0,
-                                                      partyId: 0,
-                                                      partyName: "",
-                                                      address: "")),
-                                              list: [],
-                                              id: 0,
-                                              date: "",
-                                              partyName: "Search Customer",
-                                            ),
-                                          );
+                                              MyNavigationBar(
+                                                selectedIndex: 2,
+                                                editRecovery: ViewRecovery(
+                                                    amount: 0,
+                                                    description: "",
+                                                    checkOrCash: "",
+                                                    recoveryID: 0,
+                                                    dated: "",
+                                                    party: Customer(
+                                                        discount: 0,
+                                                        userId: 0,
+                                                        partyId: 0,
+                                                        partyName: "",
+                                                        address: "")),
+                                                list: [],
+                                                id: 0,
+                                                date: "",
+                                                partyName: "Search Customer",
+                                              ),
+                                              transition:
+                                                  Transition.rightToLeft,
+                                              duration:
+                                                  Duration(milliseconds: 700));
                                         } else {
                                           await SQLHelper.deleteItem(
                                               "SaleDetail",
@@ -453,26 +456,29 @@ class _CartScreenState extends State<CartScreen> {
                                             TakeOrderScreen.getdataFromDb();
                                           });
                                           Get.off(
-                                            MyNavigationBar(
-                                              selectedIndex: 2,
-                                              editRecovery: ViewRecovery(
-                                                  amount: 0,
-                                                  description: "",
-                                                  recoveryID: 0,
-                                                  checkOrCash: "",
-                                                  dated: "",
-                                                  party: Customer(
-                                                      userId: 0,
-                                                      discount: 0,
-                                                      partyId: 0,
-                                                      partyName: "",
-                                                      address: "")),
-                                              list: [],
-                                              id: 0,
-                                              date: "",
-                                              partyName: "Search Customer",
-                                            ),
-                                          );
+                                              MyNavigationBar(
+                                                selectedIndex: 2,
+                                                editRecovery: ViewRecovery(
+                                                    amount: 0,
+                                                    description: "",
+                                                    recoveryID: 0,
+                                                    checkOrCash: "",
+                                                    dated: "",
+                                                    party: Customer(
+                                                        userId: 0,
+                                                        discount: 0,
+                                                        partyId: 0,
+                                                        partyName: "",
+                                                        address: "")),
+                                                list: [],
+                                                id: 0,
+                                                date: "",
+                                                partyName: "Search Customer",
+                                              ),
+                                              transition:
+                                                  Transition.rightToLeft,
+                                              duration:
+                                                  Duration(milliseconds: 700));
                                         }
                                       }
                                     : TakeOrderScreen.isSaleSpot

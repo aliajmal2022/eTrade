@@ -6,10 +6,12 @@ import 'package:eTrade/screen/SplashScreen/SplashScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'dart:core';
-
 import 'package:get/get_navigation/get_navigation.dart';
 
 Future main() async {
+  // var app_secret = "AndroidGuid";
+  // await AppCenter.start(
+  //     app_secret, [AppCenterAnalytics.id, AppCenterCrashes.id]);
   WidgetsFlutterBinding.ensureInitialized();
   await UserSharePreferences.init();
   // MyApp.isDark = await UserSharePreferences.setmode(false);
