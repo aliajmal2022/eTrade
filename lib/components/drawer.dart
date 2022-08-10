@@ -42,7 +42,7 @@ class _MyDrawerState extends State<MyDrawer>
   @override
   void initState() {
     _animationController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 600));
+        AnimationController(vsync: this, duration: Duration(milliseconds: 300));
     _animationController.forward();
     ping = UserSharePreferences.getIp();
     super.initState();
@@ -74,7 +74,7 @@ class _MyDrawerState extends State<MyDrawer>
               editRecovery: ViewRecovery(
                   amount: 0,
                   description: "",
-                  checkOrCash: "",
+                  checkOrCash: false,
                   recoveryID: 0,
                   dated: "",
                   party: Customer(
@@ -98,7 +98,7 @@ class _MyDrawerState extends State<MyDrawer>
         Get.off(MyNavigationBar(
           editRecovery: ViewRecovery(
               amount: 0,
-              checkOrCash: "",
+              checkOrCash: false,
               description: "",
               recoveryID: 0,
               dated: "",
@@ -215,7 +215,7 @@ class _MyDrawerState extends State<MyDrawer>
                                             amount: 0,
                                             description: "",
                                             recoveryID: 0,
-                                            checkOrCash: "",
+                                            checkOrCash: false,
                                             dated: "",
                                             party: Customer(
                                                 userId: 0,
@@ -251,7 +251,7 @@ class _MyDrawerState extends State<MyDrawer>
                                             description: "",
                                             recoveryID: 0,
                                             dated: "",
-                                            checkOrCash: "",
+                                            checkOrCash: false,
                                             party: Customer(
                                                 address: "",
                                                 userId: 0,
@@ -291,7 +291,7 @@ class _MyDrawerState extends State<MyDrawer>
                               Get.off(MyNavigationBar(
                                 editRecovery: ViewRecovery(
                                     amount: 0,
-                                    checkOrCash: "",
+                                    checkOrCash: false,
                                     description: "",
                                     recoveryID: 0,
                                     dated: "",
@@ -357,7 +357,7 @@ class _MyDrawerState extends State<MyDrawer>
                                             amount: 0,
                                             description: "",
                                             recoveryID: 0,
-                                            checkOrCash: "",
+                                            checkOrCash: false,
                                             dated: "",
                                             party: Customer(
                                                 address: "",

@@ -62,7 +62,7 @@ class _ViewRecoveryScreenState extends State<ViewRecoveryScreen>
                 MyNavigationBar(
                   editRecovery: ViewRecovery(
                       amount: 0,
-                      checkOrCash: "",
+                      checkOrCash: false,
                       description: "",
                       recoveryID: 0,
                       dated: "",

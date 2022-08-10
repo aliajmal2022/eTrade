@@ -131,7 +131,9 @@ class _RecoveryDetailScreenState extends State<RecoveryDetailScreen> {
                                 ),
                               ),
                               Text(
-                                "${widget.selectedRecovery.checkOrCash}",
+                                widget.selectedRecovery.checkOrCash
+                                    ? "Check"
+                                    : "Cash",
                                 style: TextStyle(
                                     fontSize: 15, fontWeight: FontWeight.bold),
                               ),

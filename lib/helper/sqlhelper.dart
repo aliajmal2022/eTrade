@@ -77,7 +77,8 @@ class SQLHelper {
 CREATE TABLE User(
   ID INTEGER PRIMARY KEY NOT NULL,
   UserName TEXT NOT NULL,
-  PASSWORD TEXT NOT NULL
+  PASSWORD TEXT NOT NULL,
+  MonthlyTarget INT NOT NULL
   )
    ''');
     print("successfully created User table");
@@ -88,6 +89,7 @@ CREATE TABLE User(
     final data = {
       'UserName': user.userName,
       'Password': user.password,
+      'MonthlyTarget': user.monthlyTarget,
     };
     return await db.insert('User', data,
         conflictAlgorithm: ConflictAlgorithm.replace);
@@ -493,7 +495,7 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
     end = '${splitDate[2]}-${splitDate[1]}-${splitDate[0]}';
     Database db = await instance.database;
     var listRecovery = await db.rawQuery(
-        "SELECT strftime('%d-%m-%Y', r.Dated)  as Dated,r.CheckOrCash,r.Description,r.RecoveryID,r.Amount,p.PartyName,p.PartyID FROM Recovery AS r INNER JOIN Party AS p ON p.PartyID = r.PartyID WHERE r.Dated BETWEEN '$start' AND '$end' and r.isPosted=0");
+        "SELECT strftime('%d-%m-%Y', r.Dated)  as Dated,r.isCash,r.Description,r.RecoveryID,r.Amount,p.PartyName,p.PartyID FROM Recovery AS r INNER JOIN Party AS p ON p.PartyID = r.PartyID WHERE r.Dated BETWEEN '$start' AND '$end' and r.isPosted=0");
 
     return listRecovery;
   }
@@ -503,7 +505,7 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
     var splitDate = date.split('-');
     date = '${splitDate[2]}-${splitDate[1]}-${splitDate[0]}';
     var listRecovery = await db.rawQuery(
-        "SELECT strftime('%d-%m-%Y', r.Dated)  as Dated,r.CheckOrCash,r.Description,r.RecoveryID,r.Amount,p.PartyName,p.PartyID FROM Recovery AS r INNER JOIN Party AS p ON p.PartyID = r.PartyID WHERE r.Dated = '$date' and r.isPosted=0");
+        "SELECT strftime('%d-%m-%Y', r.Dated)  as Dated,r.isCash,r.Description,r.RecoveryID,r.Amount,p.PartyName,p.PartyID FROM Recovery AS r INNER JOIN Party AS p ON p.PartyID = r.PartyID WHERE r.Dated = '$date' and r.isPosted=0");
 
     return listRecovery;
   }
@@ -511,7 +513,7 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
   static Future<List> getAllRecovery() async {
     Database db = await instance.database;
     var listRecovery = await db.rawQuery(
-        "SELECT strftime('%d-%m-%Y', r.Dated)  as Dated,r.CheckOrCash,r.Description,r.RecoveryID,r.Amount,p.PartyName,p.PartyID FROM Recovery AS r INNER JOIN Party AS p ON p.PartyID = r.PartyID WHERE r.isPosted=0");
+        "SELECT strftime('%d-%m-%Y', r.Dated)  as Dated,r.isCash,r.Description,r.RecoveryID,r.Amount,p.PartyName,p.PartyID FROM Recovery AS r INNER JOIN Party AS p ON p.PartyID = r.PartyID WHERE r.isPosted=0");
 
     return listRecovery;
   }

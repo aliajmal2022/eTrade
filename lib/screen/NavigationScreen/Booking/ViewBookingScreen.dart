@@ -84,7 +84,7 @@ class _ViewBookingScreenState extends State<ViewBookingScreen>
                                   amount: 0,
                                   description: "",
                                   recoveryID: 0,
-                                  checkOrCash: "",
+                                  checkOrCash: false,
                                   dated: "",
                                   party: Customer(
                                       partyId: 0,

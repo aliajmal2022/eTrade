@@ -128,8 +128,7 @@ class _RecoveryScreenState extends State<RecoveryScreen>
                 widget.recovery.description;
             amount = double.parse(RecoveryScreen.amountcontroller.text);
             description = RecoveryScreen.descriptioncontroller.text;
-            _groupValue = widget.recovery.checkOrCash;
-            isCash = _groupValue == "Cash" ? false : true;
+            isCash = widget.recovery.checkOrCash;
             widget.setParty(widget.recovery.party);
             RecoveryScreen.tcustomer = widget.recovery.party;
             RecoveryScreen.getData = true;
@@ -205,7 +204,8 @@ class _RecoveryScreenState extends State<RecoveryScreen>
                       amount = 0;
                       description = "";
                     });
-                    Get.off(ViewRecoveryScreen());
+                    Get.off(ViewRecoveryScreen(),
+                        transition: Transition.leftToRight);
                   },
                 )
               : Builder(
@@ -222,7 +222,7 @@ class _RecoveryScreenState extends State<RecoveryScreen>
                           editRecovery: ViewRecovery(
                               amount: 0,
                               description: "",
-                              checkOrCash: "",
+                              checkOrCash: false,
                               recoveryID: 0,
                               dated: "",
                               party: Customer(
@@ -607,7 +607,7 @@ class _RecoveryScreenState extends State<RecoveryScreen>
                                             editRecovery: ViewRecovery(
                                                 amount: 0,
                                                 description: "",
-                                                checkOrCash: "",
+                                                checkOrCash: false,
                                                 recoveryID: 0,
                                                 dated: "",
                                                 party: Customer(

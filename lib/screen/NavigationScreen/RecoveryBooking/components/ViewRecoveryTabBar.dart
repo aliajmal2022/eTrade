@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:eTrade/components/CustomNavigator.dart';
 import 'package:eTrade/components/NavigationBar.dart';
 import 'package:eTrade/components/constants.dart';
 import 'package:eTrade/screen/NavigationScreen/Booking/components/SearchListOrder.dart';
@@ -302,7 +303,8 @@ class _RecoveryTabBarItemState extends State<RecoveryTabBarItem>
                                       RecoveryScreen.isEditRecovery = true;
                                       Navigator.push(
                                           context,
-                                          MaterialPageRoute(
+                                          MyCustomRoute(
+                                              slide: "Left",
                                               builder: (context) =>
                                                   MyNavigationBar(
                                                       selectedIndex: 3,
@@ -369,22 +371,6 @@ class _RecoveryTabBarItemState extends State<RecoveryTabBarItem>
                               child: Padding(
                                   padding:
                                       EdgeInsets.symmetric(horizontal: 5.0),
-                                  // child: Container(
-                                  //     height: 110,
-                                  //     width: double.infinity,
-                                  //     decoration: BoxDecoration(
-                                  //         color: (MyApp.isDark)
-                                  //             ? Color(0xff424242)
-                                  //             : Colors.white,
-                                  //         boxShadow: [
-                                  //           BoxShadow(
-                                  //             color: Colors.black,
-                                  //             offset: Offset(0.0, 0.5), //(x,y)
-                                  //             blurRadius: 3.0,
-                                  //           ),
-                                  //         ],
-                                  //         borderRadius: BorderRadius.all(
-                                  //             Radius.circular(5))),
                                   child: Card(
                                     child: Padding(
                                       padding: EdgeInsets.all(12.0),

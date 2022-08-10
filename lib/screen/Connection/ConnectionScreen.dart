@@ -142,7 +142,7 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
                                     editRecovery: ViewRecovery(
                                         amount: 0,
                                         description: "",
-                                        checkOrCash: "",
+                                        checkOrCash: false,
                                         recoveryID: 0,
                                         dated: "",
                                         party: Customer(

@@ -15,18 +15,19 @@ class ViewRecovery {
   Customer party;
   double amount;
   String dated;
-  String checkOrCash;
+  bool checkOrCash;
   String description;
 
   static List<ViewRecovery> ViewRecoveryFromDb(List _recovery) {
     List<ViewRecovery> _listRecovery = [];
     if (_recovery.isNotEmpty) {
       _recovery.forEach((element) {
+        int isCash = 0;
         ViewRecovery recovery = ViewRecovery(
             recoveryID: 0,
             amount: 0,
             dated: "",
-            checkOrCash: "",
+            checkOrCash: false,
             description: "",
             party: Customer(
                 partyId: 0,
@@ -40,7 +41,12 @@ class ViewRecovery {
         recovery.recoveryID = element['RecoveryID'];
         recovery.description = element['Description'];
         recovery.dated = element['Dated'];
-        recovery.checkOrCash = element['CheckOrCash'];
+        isCash = element['isCash'];
+        if (isCash == 1) {
+          recovery.checkOrCash = true;
+        } else {
+          recovery.checkOrCash = false;
+        }
         _listRecovery.add(recovery);
       });
     }

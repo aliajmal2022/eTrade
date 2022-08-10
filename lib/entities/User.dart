@@ -2,58 +2,61 @@ import 'package:eTrade/helper/Sql_Connection.dart';
 import 'package:eTrade/helper/sqlhelper.dart';
 
 class User {
-  User({required this.userName, required this.password, required this.id});
+  User(
+      {required this.userName,
+      required this.password,
+      required this.monthlyTarget,
+      required this.id});
   int id;
   String userName;
   String password;
+  int monthlyTarget;
   static Future<List<User>> UserList(bool islocaldb) async {
     List<dynamic> _user = [];
     List<User> _listUser = [];
     if (islocaldb) {
       _user = await SQLHelper.instance.getTable("User", "ID");
     } else {
-      _user = await Sql_Connection()
-          .read('SELECT ID,UserName,[PASSWORD] FROM [Login] AS l');
+      _user = await Sql_Connection().read(
+          'SELECT SrID AS ID,sr.SRName AS UserName,sr.MonthlyTarget,sr.[Password] FROM SaleRap AS sr WHERE ISNULL(sr.MobileAccess,0)=1');
     }
     if (_user.isNotEmpty) {
       _user.forEach((element) {
-        User user = User(id: 0, userName: "", password: "");
+        User user = User(id: 0, userName: "", password: "", monthlyTarget: 0);
         user.id = element['ID'];
         user.userName = element['UserName'];
         user.password = element['PASSWORD'];
+        user.monthlyTarget = element['MonthlyTarget'];
         _listUser.add(user);
       });
     }
     return _listUser;
   }
 
-  static List<dynamic> userListdb(
-    int _length,
-    var _name,
-    var _id,
-    var _password,
-  ) {
-    User _user;
-    List<dynamic> _listUser = [];
-    for (int i = 0; i < _length; i++) {
-      _user = User(userName: "", password: "", id: 0);
-      _user.id = _id[i];
-      _user.userName = _name[i];
-      _user.password = _password[i];
-      _listUser.add(_user);
-    }
-    return _listUser;
-  }
+  // static List<dynamic> userListdb(
+  //     int _length, var _name, var _id, var _password, var _monthlyTarget) {
+  //   User _user;
+  //   List<dynamic> _listUser = [];
+  //   for (int i = 0; i < _length; i++) {
+  //     _user = User(userName: "", password: "", id: 0, monthlyTarget: 0);
+  //     _user.id = _id[i];
+  //     _user.userName = _name[i];
+  //     _user.password = _password[i];
+  //     _user.monthlyTarget = _monthlyTarget[i];
+  //     _listUser.add(_user);
+  //   }
+  //   return _listUser;
+  // }
 
-  static Future<int> CheckExist(String userInp, String passwd) async {
+  static Future<User> CheckExist(String userInp, String passwd) async {
     List<User> userList = await User.UserList(false);
-    int usrid = 0;
+    User usr = User(userName: "", password: "", monthlyTarget: 0, id: 0);
     for (var element in userList) {
       print(element.id);
       if (element.userName == userInp && element.password == passwd) {
-        usrid = element.id;
+        return element;
       }
     }
-    return usrid;
+    return usr;
   }
 }

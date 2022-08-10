@@ -372,7 +372,8 @@ class _BookingTabBarItemState extends State<BookingTabBarItem>
                                                             ViewRecovery(
                                                                 amount: 0,
                                                                 description: "",
-                                                                checkOrCash: "",
+                                                                checkOrCash:
+                                                                    false,
                                                                 recoveryID: 0,
                                                                 dated: "",
                                                                 party: Customer(
@@ -417,7 +418,8 @@ class _BookingTabBarItemState extends State<BookingTabBarItem>
                                                             ViewRecovery(
                                                                 amount: 0,
                                                                 description: "",
-                                                                checkOrCash: "",
+                                                                checkOrCash:
+                                                                    false,
                                                                 recoveryID: 0,
                                                                 dated: "",
                                                                 party: Customer(

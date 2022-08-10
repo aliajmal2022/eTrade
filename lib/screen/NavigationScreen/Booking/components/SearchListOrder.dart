@@ -39,7 +39,6 @@ class _ListOfOrderState extends State<ListOfOrder>
           print(element.partyName.toLowerCase());
           dummyOrderList.add(element);
         });
-
       }
     }
   }
@@ -91,7 +90,7 @@ class _ListOfOrderState extends State<ListOfOrder>
                                               editRecovery: ViewRecovery(
                                                   amount: 0,
                                                   description: "",
-                                                  checkOrCash: "",
+                                                  checkOrCash: false,
                                                   recoveryID: 0,
                                                   dated: "",
                                                   party: Customer(
@@ -123,7 +122,7 @@ class _ListOfOrderState extends State<ListOfOrder>
                                                     amount: 0,
                                                     description: "",
                                                     recoveryID: 0,
-                                                    checkOrCash: "",
+                                                    checkOrCash: false,
                                                     dated: "",
                                                     party: Customer(
                                                         userId: 0,

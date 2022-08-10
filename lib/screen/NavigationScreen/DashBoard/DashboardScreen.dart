@@ -1,3 +1,4 @@
+import 'package:eTrade/components/NavigationBar.dart';
 import 'package:eTrade/components/constants.dart';
 import 'package:eTrade/components/drawer.dart';
 import 'package:eTrade/entities/Products.dart';
@@ -86,7 +87,7 @@ class DashBoardScreen extends StatefulWidget {
   ];
   static List<MonthOrderHistory> staticMonths = [];
   static Future<List<MonthOrderHistory>> getMonthlyRecorderDB() async {
-    double number = 100000;
+    int number = MyNavigationBar.userTarget;
     List<MonthOrderHistory> list = [];
     staticMonths = [];
     var months = await SQLHelper.getMonthOrderHistory();
@@ -98,7 +99,7 @@ class DashBoardScreen extends StatefulWidget {
       orderData.amount = months[0][monthName[count]].toDouble();
       orderData.month = count.toString();
       list.add(orderData);
-      orderStatic.amount = number;
+      orderStatic.amount = number.toDouble();
       orderStatic.month = count.toString();
       // orderStatic.month = element;
       staticMonths.add(orderStatic);

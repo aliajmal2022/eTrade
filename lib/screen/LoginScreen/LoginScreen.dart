@@ -159,10 +159,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                         });
                                     Future.delayed(Duration(seconds: 2),
                                         () async {
-                                      int usrid = await User.CheckExist(
+                                      User usr = await User.CheckExist(
                                           userInp, passwd);
 
-                                      if (usrid != 0) {
+                                      if (usr.id != 0) {
                                         if (widget.fromMasterReset) {
                                           await SQLHelper.resetData("Reset");
 
@@ -171,7 +171,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
                                           await DataBaseDataLoad.DataLoading();
                                         } else {
-                                          UserSharePreferences.setId(usrid);
+                                          UserSharePreferences.setId(usr.id);
+                                          UserSharePreferences.setTarget(
+                                              usr.monthlyTarget);
                                           UserSharePreferences.setIp(widget.ip);
                                           UserSharePreferences.setflag(flag);
                                           UserSharePreferences.setmode(false);

@@ -27,6 +27,7 @@ class MyNavigationBar extends StatefulWidget {
   ViewRecovery editRecovery;
   static int currentIndex = 0;
   static int userID = 0;
+  static int userTarget = 0;
   changeIndex() {
     selectedIndex = 1;
   }
@@ -46,6 +47,7 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
   @override
   void initState() {
     MyNavigationBar.userID = UserSharePreferences.getId();
+    MyNavigationBar.userTarget = UserSharePreferences.getTarget();
     print(MyNavigationBar.userID);
     super.initState();
   }

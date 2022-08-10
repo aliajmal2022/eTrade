@@ -43,7 +43,7 @@ class Edit {
 
         viewOrder.amount = element['Amount'];
         viewOrder.itemId = element['ItemID'];
-        viewOrder.to = element['TO'];
+        viewOrder.to = element['TradeOffer'];
         viewOrder.bonus = element['Bonus'];
         viewOrder.discount = element['Discount'];
         _listOrderView.add(viewOrder);

@@ -22,7 +22,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
           editRecovery: ViewRecovery(
               amount: 0,
               description: "",
-              checkOrCash: "",
+              checkOrCash: false,
               recoveryID: 0,
               dated: "",
               party: Customer(

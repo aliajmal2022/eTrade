@@ -133,7 +133,7 @@ class TakeOrderScreen extends StatefulWidget {
                         amount: 0,
                         description: "",
                         recoveryID: 0,
-                        checkOrCash: "",
+                        checkOrCash: false,
                         dated: "",
                         party: Customer(
                             partyId: 0,
@@ -301,7 +301,7 @@ class _TakeOrderScreenState extends State<TakeOrderScreen>
                             editRecovery: ViewRecovery(
                                 amount: 0,
                                 description: "",
-                                checkOrCash: "",
+                                checkOrCash: false,
                                 recoveryID: 0,
                                 dated: "",
                                 party: Customer(
@@ -339,7 +339,7 @@ class _TakeOrderScreenState extends State<TakeOrderScreen>
                                     amount: 0,
                                     description: "",
                                     recoveryID: 0,
-                                    checkOrCash: "",
+                                    checkOrCash: false,
                                     dated: "",
                                     party: Customer(
                                         partyId: 0,
@@ -562,7 +562,7 @@ class _TakeOrderScreenState extends State<TakeOrderScreen>
                                                 recovery: ViewRecovery(
                                                     amount: 0,
                                                     recoveryID: 0,
-                                                    checkOrCash: "",
+                                                    checkOrCash: false,
                                                     party: Customer(
                                                         discount: 0,
                                                         address: "",
@@ -672,7 +672,7 @@ class _TakeOrderScreenState extends State<TakeOrderScreen>
                               editRecovery: ViewRecovery(
                                   amount: 0,
                                   description: "",
-                                  checkOrCash: "",
+                                  checkOrCash: false,
                                   recoveryID: 0,
                                   dated: "",
                                   party: Customer(

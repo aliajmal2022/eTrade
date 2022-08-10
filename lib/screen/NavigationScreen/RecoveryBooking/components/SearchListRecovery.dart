@@ -1,3 +1,4 @@
+import 'package:eTrade/components/CustomNavigator.dart';
 import 'package:eTrade/components/NavigationBar.dart';
 import 'package:eTrade/components/constants.dart';
 import 'package:eTrade/screen/NavigationScreen/RecoveryBooking/components/ViewRecoveryTabBar.dart';
@@ -73,7 +74,8 @@ class _ListOfRecoveryState extends State<ListOfRecovery>
                                       RecoveryScreen.isEditRecovery = true;
                                       Navigator.push(
                                           context,
-                                          MaterialPageRoute(
+                                          MyCustomRoute(
+                                              slide: "Left",
                                               builder: (context) =>
                                                   MyNavigationBar(
                                                     selectedIndex: 3,

@@ -170,7 +170,7 @@ class _PostingDataState extends State<PostingData> {
                         amount: 0,
                         description: "",
                         recoveryID: 0,
-                        checkOrCash: "",
+                        checkOrCash: false,
                         dated: "",
                         party: Customer(
                             partyId: 0,
@@ -363,7 +363,7 @@ class _PostingDataState extends State<PostingData> {
                                         amount: 0,
                                         description: "",
                                         recoveryID: 0,
-                                        checkOrCash: "",
+                                        checkOrCash: false,
                                         dated: "",
                                         party: Customer(
                                             partyId: 0,
@@ -568,7 +568,7 @@ class _PostingDataState extends State<PostingData> {
                                           amount: 0,
                                           description: "",
                                           recoveryID: 0,
-                                          checkOrCash: "",
+                                          checkOrCash: false,
                                           dated: "",
                                           party: Customer(
                                               partyId: 0,
