@@ -207,8 +207,11 @@ class _PostingDataState extends State<PostingData> {
             ? Row(children: [
                 Expanded(
                   flex: 1,
-                  child: Image.asset("images/posting.gif",
-                      gaplessPlayback: true, fit: BoxFit.fill),
+                  child: Image.asset(
+                    "images/posting.gif",
+                    gaplessPlayback: true,
+                    fit: BoxFit.fill,
+                  ),
                 ),
                 Expanded(
                   flex: 3,

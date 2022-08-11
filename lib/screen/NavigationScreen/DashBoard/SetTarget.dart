@@ -1,12 +1,18 @@
+import 'package:eTrade/components/NavigationBar.dart';
 import 'package:eTrade/components/constants.dart';
+import 'package:eTrade/entities/Customer.dart';
 import 'package:eTrade/entities/User.dart';
+import 'package:eTrade/entities/ViewRecovery.dart';
+import 'package:eTrade/helper/sqlhelper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:get/get.dart';
 
 class SetTargetScreen extends StatefulWidget {
+  static bool isTargetDataAvailable = false;
   @override
   State<SetTargetScreen> createState() => _SetTargetScreenState();
 }
@@ -24,9 +30,9 @@ class SetTarget {
 class _SetTargetScreenState extends State<SetTargetScreen> {
   List<SetTarget> targetList = [
     SetTarget(
-        monthName: "Januanry", target: 0, controller: TextEditingController()),
+        monthName: "January", target: 0, controller: TextEditingController()),
     SetTarget(
-        monthName: "Febuary", target: 0, controller: TextEditingController()),
+        monthName: "February", target: 0, controller: TextEditingController()),
     SetTarget(
         monthName: "March", target: 0, controller: TextEditingController()),
     SetTarget(
@@ -47,9 +53,51 @@ class _SetTargetScreenState extends State<SetTargetScreen> {
     SetTarget(
         monthName: "December", target: 0, controller: TextEditingController()),
   ];
+
+  PreLoadDataBase() async {
+    List<String> staticMonthName = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December"
+    ];
+    int count;
+    List<SetTarget> list = [];
+    var months = await SQLHelper.instance.getTable("UserTarget", "ID");
+
+    setState(() {
+      if (months.isNotEmpty) {
+        SetTargetScreen.isTargetDataAvailable = true;
+        int count;
+        targetList.clear();
+        for (count = 0; count < staticMonthName.length; count++) {
+          SetTarget setTarget = SetTarget(
+              controller: TextEditingController(), monthName: "", target: 0);
+          setTarget.target = months[0][staticMonthName[count]];
+          setTarget.monthName = staticMonthName[count];
+          setTarget.controller.text = setTarget.target.toString();
+          // orderStatic.month = element;
+          targetList.add(setTarget);
+        }
+      } else {
+        SetTargetScreen.isTargetDataAvailable = false;
+      }
+    });
+  }
+
   @override
   void initState() {
-    setState(() {});
+    setState(() {
+      PreLoadDataBase();
+    });
     super.initState();
   }
 
@@ -83,13 +131,12 @@ class _SetTargetScreenState extends State<SetTargetScreen> {
           backgroundColor: eTradeGreen,
         ),
         body: ListView.builder(
-          physics: NeverScrollableScrollPhysics(),
           itemBuilder: (context, index) {
-            return Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Card(
+            return Card(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
                 child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Flexible(
                           child: Text(
@@ -98,7 +145,9 @@ class _SetTargetScreenState extends State<SetTargetScreen> {
                       )),
                       Flexible(
                         child: Container(
-                          padding: EdgeInsets.all(4),
+                          height: 50,
+                          width: 100,
+                          // padding: EdgeInsets.all(5),
                           child: TextField(
                             autofocus: true,
                             keyboardType: TextInputType.number,
@@ -137,13 +186,13 @@ class _SetTargetScreenState extends State<SetTargetScreen> {
           scrollDirection: Axis.vertical,
         ),
         floatingActionButton: FloatingActionButton(
-          backgroundColor: eTradeGreen,
+          backgroundColor: check ? Colors.green.shade100 : eTradeGreen,
           onPressed: check
               ? null
-              : () {
+              : () async {
                   UserTarget userTarget = UserTarget(
-                      januanryTarget: 0,
-                      febuaryTarget: 0,
+                      januaryTarget: 0,
+                      februaryTarget: 0,
                       marchTarget: 0,
                       aprilTarget: 0,
                       mayTarget: 0,
@@ -154,8 +203,8 @@ class _SetTargetScreenState extends State<SetTargetScreen> {
                       octoberTarget: 0,
                       novemberTarget: 0,
                       decemberTarget: 0);
-                  userTarget.januanryTarget = targetList[0].target;
-                  userTarget.febuaryTarget = targetList[1].target;
+                  userTarget.januaryTarget = targetList[0].target;
+                  userTarget.februaryTarget = targetList[1].target;
                   userTarget.marchTarget = targetList[2].target;
                   userTarget.aprilTarget = targetList[3].target;
                   userTarget.mayTarget = targetList[4].target;
@@ -166,10 +215,34 @@ class _SetTargetScreenState extends State<SetTargetScreen> {
                   userTarget.octoberTarget = targetList[9].target;
                   userTarget.novemberTarget = targetList[10].target;
                   userTarget.decemberTarget = targetList[11].target;
-                  print(userTarget);
+                  SetTargetScreen.isTargetDataAvailable
+                      ? await SQLHelper.updateUserTargetTable(userTarget)
+                      : await SQLHelper.instance.createUserTarget(userTarget);
+
+                  Get.off(
+                      MyNavigationBar(
+                        editRecovery: ViewRecovery(
+                            amount: 0,
+                            description: "",
+                            checkOrCash: false,
+                            recoveryID: 0,
+                            dated: "",
+                            party: Customer(
+                                userId: 0,
+                                address: "",
+                                partyId: 0,
+                                partyName: "",
+                                discount: 0)),
+                        selectedIndex: 0,
+                        list: [],
+                        date: "",
+                        id: 0,
+                        partyName: "Search Customer",
+                      ),
+                      transition: Transition.rightToLeft);
                 },
           child: Icon(
-            Icons.done_all,
+            SetTargetScreen.isTargetDataAvailable ? Icons.edit : Icons.done_all,
           ),
         ));
   }
@@ -177,8 +250,8 @@ class _SetTargetScreenState extends State<SetTargetScreen> {
 
 class UserTarget {
   UserTarget({
-    required this.januanryTarget,
-    required this.febuaryTarget,
+    required this.januaryTarget,
+    required this.februaryTarget,
     required this.marchTarget,
     required this.aprilTarget,
     required this.mayTarget,
@@ -190,8 +263,8 @@ class UserTarget {
     required this.novemberTarget,
     required this.decemberTarget,
   });
-  int januanryTarget;
-  int febuaryTarget;
+  int januaryTarget;
+  int februaryTarget;
   int marchTarget;
   int aprilTarget;
   int mayTarget;

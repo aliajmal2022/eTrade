@@ -156,7 +156,7 @@ class _AddItemModelSheetState extends State<AddItemModelSheet> {
                       child: Text(
                         widget.selectedItem.Title,
                         style: TextStyle(
-                            fontSize: 30,
+                            fontSize: 25,
                             // color: Colors.white,
                             decoration: TextDecoration.none),
                       ),
@@ -371,7 +371,7 @@ class _AddItemModelSheetState extends State<AddItemModelSheet> {
                                     (route) => true);
                               },
                         elevation: 20.0,
-                        color:eTradeGreen ,
+                        color: eTradeGreen,
                         shape: RoundedRectangleBorder(
                             borderRadius:
                                 BorderRadius.all(Radius.circular(25.0))),

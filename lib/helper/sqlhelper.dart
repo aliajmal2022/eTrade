@@ -80,8 +80,7 @@ class SQLHelper {
 CREATE TABLE User(
   ID INTEGER PRIMARY KEY NOT NULL,
   UserName TEXT NOT NULL,
-  Password TEXT NOT NULL,
-  MonthlyTarget INT NOT NULL
+  Password TEXT NOT NULL
   )
    ''');
     print("successfully created User table");
@@ -92,7 +91,6 @@ CREATE TABLE User(
     final data = {
       'UserName': user.userName,
       'Password': user.password,
-      'MonthlyTarget': user.monthlyTarget,
     };
     return await db.insert('User', data,
         conflictAlgorithm: ConflictAlgorithm.replace);
@@ -102,8 +100,8 @@ CREATE TABLE User(
     await database.execute('''
 CREATE TABLE UserTarget(
   ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-  Januanry INTEGER NOT NULL,
-  Febuary INTEGER NOT NULL,
+  January INTEGER NOT NULL,
+  February INTEGER NOT NULL,
   March INTEGER NOT NULL,
   April INTEGER NOT NULL,
   May INTEGER NOT NULL,
@@ -122,12 +120,12 @@ CREATE TABLE UserTarget(
   Future<int> createUserTarget(UserTarget target) async {
     Database db = await instance.database;
     final data = {
-      'Januanry': target.januanryTarget,
-      'Febuary': target.febuaryTarget,
+      'January': target.januaryTarget,
+      'February': target.februaryTarget,
       'March': target.marchTarget,
       'April': target.aprilTarget,
       'May': target.mayTarget,
-      'June': target.januanryTarget,
+      'June': target.juneTarget,
       'July': target.julyTarget,
       'August': target.augustTarget,
       'September': target.septemberTarget,
@@ -137,6 +135,16 @@ CREATE TABLE UserTarget(
     };
     return await db.insert('UserTarget', data,
         conflictAlgorithm: ConflictAlgorithm.replace);
+  }
+
+  static Future<void> updateUserTargetTable(UserTarget userTarget) async {
+    Database db = await instance.database;
+    try {
+      await db.execute(
+          "UPDATE [UserTarget] SET January=${userTarget.januaryTarget} , February=${userTarget.februaryTarget},March=${userTarget.marchTarget},April=${userTarget.aprilTarget},May=${userTarget.mayTarget},June=${userTarget.juneTarget},July=${userTarget.julyTarget},August=${userTarget.augustTarget},September=${userTarget.septemberTarget},October=${userTarget.octoberTarget},November=${userTarget.novemberTarget},December=${userTarget.decemberTarget} WHERE ID = 1");
+    } catch (e) {
+      debugPrint('Target is not update');
+    }
   }
 
   static Future<void> createPartyTable(Database database) async {

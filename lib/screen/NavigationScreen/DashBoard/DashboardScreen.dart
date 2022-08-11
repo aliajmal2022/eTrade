@@ -66,14 +66,13 @@ class DashBoardScreen extends StatefulWidget {
     return list;
   }
 
-  static List<MonthOrderHistory> monthlyOrderList = [];
+  static List<MonthOrderHistory> monthlyList = [];
   static List<Items> itemdata = [];
   static List<String> monthName = [
     "Jan",
     "Feb",
     "Mar",
     "Apr",
-    "May",
     "May",
     "Jun",
     "Jul",
@@ -84,25 +83,52 @@ class DashBoardScreen extends StatefulWidget {
     "Dec"
   ];
   static List<MonthOrderHistory> staticMonths = [];
-  static Future<List<MonthOrderHistory>> getMonthlyRecorderDB(isOrder) async {
-    int number = MyNavigationBar.userTarget;
+  static Future<List<MonthOrderHistory>> getMonthlyRecordDB(isOrder) async {
     List<MonthOrderHistory> list = [];
-    staticMonths = [];
     var months = isOrder
         ? await SQLHelper.getMonthOrderHistory()
         : await SQLHelper.getMonthSaleHistory();
     int count = 1;
-    for (count = 1; count <= monthName.length - 1; count++) {
+    for (count = 0; count < monthName.length; count++) {
       MonthOrderHistory orderData = MonthOrderHistory(month: "", amount: 0);
-      MonthOrderHistory orderStatic = MonthOrderHistory(month: "", amount: 0);
       // orderData.month = element;
+      print(months[0][monthName[8]]);
       orderData.amount = months[0][monthName[count]].toDouble();
-      orderData.month = count.toString();
+      orderData.month = (count + 1).toString();
       list.add(orderData);
-      orderStatic.amount = number.toDouble();
-      orderStatic.month = count.toString();
-      // orderStatic.month = element;
-      staticMonths.add(orderStatic);
+    }
+    return list;
+  }
+
+  static int greatestTarget = 10000;
+  static Future<List<MonthOrderHistory>> getMonthlyTargetDB(isOrder) async {
+    List<String> staticMonthName = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December"
+    ];
+    int count;
+    greatestTarget = 100000;
+    var months = await SQLHelper.instance.getTable("UserTarget", "ID");
+    List<MonthOrderHistory> list = [];
+    for (count = 0; count < staticMonthName.length; count++) {
+      staticMonths = [];
+      MonthOrderHistory orderStatic = MonthOrderHistory(month: "", amount: 0);
+      orderStatic.amount = months[0][staticMonthName[count]].toDouble();
+      if (months[0][staticMonthName[count]] > greatestTarget) {
+        greatestTarget = orderStatic.amount.toInt();
+      }
+      orderStatic.month = (count + 1).toString();
+      list.add(orderStatic);
     }
     return list;
   }
@@ -135,12 +161,15 @@ class _DashBoardScreenState extends State<DashBoardScreen>
   updateData() async {
     DashBoardScreen.dashBoard = await DashBoardScreen.getOrderHistory();
     DashBoardScreen.itemdata = await DashBoardScreen.getTopProduct();
-    DashBoardScreen.monthlyOrderList =
-        await DashBoardScreen.getMonthlyRecorderDB(isOrder);
+    DashBoardScreen.monthlyList =
+        await DashBoardScreen.getMonthlyRecordDB(isOrder);
+    DashBoardScreen.staticMonths =
+        await DashBoardScreen.getMonthlyTargetDB(isOrder);
     setState(() {
       DashBoardScreen.itemdata;
       DashBoardScreen.dashBoard;
-      DashBoardScreen.monthlyOrderList;
+      DashBoardScreen.monthlyList;
+      DashBoardScreen.staticMonths;
     });
   }
 
@@ -215,10 +244,13 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                       setState(() {
                         isOrder = value;
                       });
-                      DashBoardScreen.monthlyOrderList =
-                          await DashBoardScreen.getMonthlyRecorderDB(isOrder);
+                      DashBoardScreen.monthlyList =
+                          await DashBoardScreen.getMonthlyRecordDB(isOrder);
+                      DashBoardScreen.staticMonths =
+                          await DashBoardScreen.getMonthlyTargetDB(isOrder);
                       setState(() {
-                        DashBoardScreen.monthlyOrderList;
+                        DashBoardScreen.monthlyList;
+                        DashBoardScreen.staticMonths;
                       });
                     },
                   ),
@@ -238,10 +270,10 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                       title: AxisTitle(text: "Months"),
                     ),
                     primaryYAxis: NumericAxis(
-                        title: AxisTitle(text: "Value"),
-                        minimum: 0,
-                        maximum: 100000,
-                        interval: 5000),
+                      title: AxisTitle(text: "Value"),
+                      minimum: 0,
+                      maximum: DashBoardScreen.greatestTarget.toDouble(),
+                    ),
                     // ),
                     tooltipBehavior: _columntooltipBehavior,
                     margin: EdgeInsets.all(0),
@@ -261,7 +293,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                               sales.amount),
                       ColumnSeries<MonthOrderHistory, String>(
                           // Bind data source
-                          dataSource: DashBoardScreen.monthlyOrderList,
+                          dataSource: DashBoardScreen.monthlyList,
                           name: "Achievement",
                           borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(15),
