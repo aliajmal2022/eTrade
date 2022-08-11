@@ -1,8 +1,18 @@
 import 'package:eTrade/components/constants.dart';
+import 'package:eTrade/screen/AboutUs/WebView.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:get/get.dart';
+import 'package:webview_flutter/webview_flutter.dart';
+
+class About {
+  About({required this.title, required this.subtitle, required this.icon});
+  String title;
+  String subtitle;
+  Icon icon;
+}
 
 class AboutScreen extends StatefulWidget {
   @override
@@ -10,6 +20,55 @@ class AboutScreen extends StatefulWidget {
 }
 
 class _AboutScreenState extends State<AboutScreen> {
+  List<About> aboutList = [
+    About(
+      title: "Support Mail",
+      subtitle: "support@exapp.pk",
+      icon: Icon(
+        Icons.mail,
+        color: eTradeGreen,
+      ),
+    ),
+    About(
+      title: "Contact Us",
+      subtitle: "+923040636454",
+      icon: Icon(
+        Icons.phone,
+        color: eTradeGreen,
+      ),
+    ),
+    About(
+      title: "Follow us on Facebook",
+      subtitle: "facebook.com/automatingbiz",
+      icon: Icon(
+        Icons.facebook,
+        color: eTradeGreen,
+      ),
+    ),
+    About(
+      title: "Follow us on Twitter",
+      subtitle: "twitter.com/e_xapp",
+      icon: Icon(
+        Icons.business_center_outlined,
+        color: eTradeGreen,
+      ),
+    ),
+    About(
+        title: "Follow us on LinkedIn",
+        subtitle: "https://www.linkedin.com/company/exapp-pvt-ltd",
+        icon: Icon(
+          Icons.linked_camera_outlined,
+          color: eTradeGreen,
+        )),
+    About(
+      title: "Official Website",
+      subtitle: "www.exapp.pk",
+      icon: Icon(
+        Icons.web,
+        color: eTradeGreen,
+      ),
+    ),
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,30 +91,25 @@ class _AboutScreenState extends State<AboutScreen> {
                 ),
               ),
               ListView.builder(
+                physics: NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
-                  return Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Flexible(
-                                child: Text(
-                              "Name",
-                              style: TextStyle(fontSize: 20),
-                            )),
-                            Flexible(
-                              child: Container(
-                                  height: 50,
-                                  width: 100,
-                                  // padding: EdgeInsets.all(5),
-                                  child: Icon(Icons.read_more)),
-                            ),
-                          ]),
+                  return MaterialButton(
+                    padding: EdgeInsets.zero,
+                    onPressed: () {
+                      if (index > 1)
+                        Get.to(WebViewScreen(link: aboutList[index].subtitle),
+                            transition: Transition.rightToLeft);
+                    },
+                    child: Card(
+                      child: ListTile(
+                        title: Text(aboutList[index].title),
+                        subtitle: Text(aboutList[index].subtitle),
+                        leading: aboutList[index].icon,
+                      ),
                     ),
                   );
                 },
-                itemCount: 6,
+                itemCount: aboutList.length,
                 shrinkWrap: true,
                 padding: EdgeInsets.all(5),
                 scrollDirection: Axis.vertical,

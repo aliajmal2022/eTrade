@@ -383,7 +383,7 @@ class _MyDrawerState extends State<MyDrawer>
                       ),
                       MaterialButton(
                         onPressed: () async {
-                          Get.off(PostingData(ping: ping));
+                          Get.to(PostingData(ping: ping));
                         },
                         child: Row(
                           children: const [

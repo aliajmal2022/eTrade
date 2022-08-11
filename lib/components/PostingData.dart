@@ -205,16 +205,13 @@ class _PostingDataState extends State<PostingData> {
       child: Scaffold(
         body: isLandscape
             ? Row(children: [
-                Expanded(
-                  flex: 1,
-                  child: Image.asset(
-                    "images/posting.gif",
-                    gaplessPlayback: true,
-                    fit: BoxFit.fill,
-                  ),
+                Image.asset(
+                  "images/posting.gif",
+                  gaplessPlayback: true,
+                  fit: BoxFit.fill,
                 ),
                 Expanded(
-                  flex: 3,
+                  flex: 1,
                   child: Container(
                     // constraints: BoxConstraints(maxHeight: 29),
                     decoration: BoxDecoration(
@@ -401,12 +398,12 @@ class _PostingDataState extends State<PostingData> {
             : Column(
                 children: [
                   Expanded(
-                    flex: 2,
+                    flex: 1,
                     child: Image.asset("images/posting.gif",
                         gaplessPlayback: true, fit: BoxFit.fill),
                   ),
                   Expanded(
-                    flex: 2,
+                    flex: 1,
                     child: Container(
                       // constraints: BoxConstraints(maxHeight: 29),
                       decoration: BoxDecoration(
