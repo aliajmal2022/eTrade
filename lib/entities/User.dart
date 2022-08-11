@@ -18,15 +18,15 @@ class User {
       _user = await SQLHelper.instance.getTable("User", "ID");
     } else {
       _user = await Sql_Connection().read(
-          'SELECT SrID AS ID,sr.SRName AS UserName,sr.MonthlyTarget,sr.[Password] FROM SaleRap AS sr WHERE ISNULL(sr.MobileAccess,0)=1');
+          'SELECT SrID AS ID,sr.SRName AS UserName,sr.[Password] FROM SaleRap AS sr WHERE ISNULL(sr.MobileAccess,0)=1');
     }
     if (_user.isNotEmpty) {
       _user.forEach((element) {
         User user = User(id: 0, userName: "", password: "", monthlyTarget: 0);
         user.id = element['ID'];
         user.userName = element['UserName'];
-        user.password = element['PASSWORD'];
-        user.monthlyTarget = element['MonthlyTarget'];
+        user.password = element['Password'];
+        // user.monthlyTarget = element['MonthlyTarget'];
         _listUser.add(user);
       });
     }

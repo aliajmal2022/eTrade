@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:eTrade/components/CustomNavigator.dart';
 import 'package:eTrade/components/constants.dart';
+import 'package:eTrade/screen/NavigationScreen/DashBoard/SetTarget.dart';
 import 'package:flutter_share/flutter_share.dart';
 import 'package:get/get.dart';
 import 'package:path/path.dart';
@@ -420,6 +421,18 @@ class _MyDrawerState extends State<MyDrawer>
                           children: const [
                             Icon(Icons.share),
                             Text("Share DataBase")
+                          ],
+                        ),
+                      ),
+                      MaterialButton(
+                        onPressed: () async {
+                          Get.to(() => SetTargetScreen(),
+                              transition: Transition.leftToRight);
+                        },
+                        child: Row(
+                          children: const [
+                            Icon(Icons.exit_to_app),
+                            Text("Set Target")
                           ],
                         ),
                       ),

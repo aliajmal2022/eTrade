@@ -22,7 +22,7 @@ class UserSharePreferences {
   static bool getmode() => prefs.getBool(mode);
   static Future setId(int usrid) async => await prefs.setInt(id, usrid);
   static int getId() => prefs.getInt(id);
-  static Future setTarget(int usrTarget) async =>
+  static Future SetTargetScreen(int usrTarget) async =>
       await prefs.setInt(id, usrTarget);
   static int getTarget() => prefs.getInt(id);
 }

@@ -172,7 +172,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                           await DataBaseDataLoad.DataLoading();
                                         } else {
                                           UserSharePreferences.setId(usr.id);
-                                          UserSharePreferences.setTarget(
+                                          UserSharePreferences.SetTargetScreen(
                                               usr.monthlyTarget);
                                           UserSharePreferences.setIp(widget.ip);
                                           UserSharePreferences.setflag(flag);

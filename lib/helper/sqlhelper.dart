@@ -4,6 +4,7 @@ import 'package:eTrade/entities/Products.dart';
 import 'package:eTrade/entities/Recovery.dart';
 import 'package:eTrade/entities/Sale.dart';
 import 'package:eTrade/entities/User.dart';
+import 'package:eTrade/screen/NavigationScreen/DashBoard/SetTarget.dart';
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -45,6 +46,7 @@ class SQLHelper {
       await deleteTable(_database, "Party");
       await deleteTable(_database, "Order");
       await deleteTable(_database, "User");
+      await deleteTable(_database, "UserTarget");
       await deleteTable(_database, "Order");
       await deleteTable(_database, "OrderDetail");
       await deleteTable(_database, "Sale");
@@ -64,6 +66,7 @@ class SQLHelper {
       await createPartyTable(database);
       await createItemTable(database);
       await createUserTable(database);
+      await createUserTargetTable(database);
       await createOrderTable(database);
       await createOrderDetailTable(database);
       await createSaleTable(database);
@@ -77,7 +80,7 @@ class SQLHelper {
 CREATE TABLE User(
   ID INTEGER PRIMARY KEY NOT NULL,
   UserName TEXT NOT NULL,
-  PASSWORD TEXT NOT NULL,
+  Password TEXT NOT NULL,
   MonthlyTarget INT NOT NULL
   )
    ''');
@@ -92,6 +95,47 @@ CREATE TABLE User(
       'MonthlyTarget': user.monthlyTarget,
     };
     return await db.insert('User', data,
+        conflictAlgorithm: ConflictAlgorithm.replace);
+  }
+
+  static Future<void> createUserTargetTable(Database database) async {
+    await database.execute('''
+CREATE TABLE UserTarget(
+  ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+  Januanry INTEGER NOT NULL,
+  Febuary INTEGER NOT NULL,
+  March INTEGER NOT NULL,
+  April INTEGER NOT NULL,
+  May INTEGER NOT NULL,
+  June INTEGER NOT NULL,
+  July INTEGER NOT NULL,
+  August INTEGER NOT NULL,
+  September INTEGER NOT NULL,
+  October INTEGER NOT NULL,
+  November INTEGER NOT NULL,
+  December INTEGER NOT NULL
+  )
+   ''');
+    print("successfully created UserTarget table");
+  }
+
+  Future<int> createUserTarget(UserTarget target) async {
+    Database db = await instance.database;
+    final data = {
+      'Januanry': target.januanryTarget,
+      'Febuary': target.febuaryTarget,
+      'March': target.marchTarget,
+      'April': target.aprilTarget,
+      'May': target.mayTarget,
+      'June': target.januanryTarget,
+      'July': target.julyTarget,
+      'August': target.augustTarget,
+      'September': target.septemberTarget,
+      'October': target.octoberTarget,
+      'November': target.novemberTarget,
+      'December': target.decemberTarget,
+    };
+    return await db.insert('UserTarget', data,
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
@@ -350,6 +394,13 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
   static Future<List> getNotPostedSale() async {
     Database db = await instance.database;
     return await db.rawQuery("SELECT * FROM Sale WHERE isPosted=0");
+  }
+
+  static Future<List> getMonthSaleHistory() async {
+    Database db = await instance.database;
+    var listOrder = await db.rawQuery(
+        "SELECT IFNULL(SUM(CASE WHEN strftime('%m', dated) = '01' THEN s.Amount END),0) AS Jan,IFNULL(SUM(CASE WHEN strftime('%m', dated) = '02' THEN s.Amount END),0) as Feb,IFNULL(SUM(CASE WHEN strftime('%m', dated) = '03' THEN s.Amount END),0) as Mar,IFNULL(SUM(CASE WHEN strftime('%m', dated) = '04' THEN s.Amount END),0) as Apr,IFNULL(SUM(CASE WHEN strftime('%m', dated) = '05' THEN s.Amount END),0) as May,IFNULL(SUM(CASE WHEN strftime('%m', dated) = '06' THEN s.Amount END),0) as Jun,IFNULL(SUM(CASE WHEN strftime('%m', dated) = '07' THEN s.Amount END),0) as Jul,IFNULL(SUM(CASE WHEN strftime('%m', dated) = '08' THEN s.Amount END),0) as Aug,IFNULL(SUM(CASE WHEN strftime('%m', dated) = '09' THEN s.Amount END),0) as Sep,IFNULL(SUM(CASE WHEN strftime('%m', dated) = '10' THEN s.Amount END),0) as Oct,IFNULL(SUM(CASE WHEN strftime('%m', dated) = '11' THEN s.Amount END),0) as Nov,IFNULL(SUM(CASE WHEN strftime('%m', dated) = '12' THEN s.Amount END),0) as [Dec] FROM SaleDetail s where strftime('%Y',Dated) = strftime('%Y',Date())");
+    return listOrder;
   }
 
   static Future<List> getFromToViewSale(var start, var end) async {

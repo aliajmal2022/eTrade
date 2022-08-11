@@ -449,15 +449,14 @@ class _TakeOrderScreenState extends State<TakeOrderScreen>
                                       label: "Search Customer",
                                       onFind: (String filter) =>
                                           getData(filter),
-                                      onChanged: (Customer? value) {
+                                      onChanged: (value) {
                                         setState(() {
                                           widget.setParty(value!);
                                           TakeOrderScreen.customer = value;
                                         });
                                       },
                                       items: DataBaseDataLoad.ListOCustomer,
-                                      dropdownBuilder: (BuildContext context,
-                                          Customer? item) {
+                                      dropdownBuilder: (context, item) {
                                         return Container(
                                           height: 49,
                                           decoration: BoxDecoration(
@@ -471,10 +470,10 @@ class _TakeOrderScreenState extends State<TakeOrderScreen>
                                                   : Color(0xfffafafa)),
                                           child: ListTile(
                                             leading: Text(
-                                              (item!.partyName ==
+                                              (item?.partyName ==
                                                       "Search Customer")
                                                   ? "Type Here..."
-                                                  : item.partyName,
+                                                  : item?.partyName ?? "",
                                               style: TextStyle(fontSize: 16),
                                             ),
                                           ),

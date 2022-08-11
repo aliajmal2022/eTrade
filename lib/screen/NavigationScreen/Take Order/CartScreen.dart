@@ -131,7 +131,7 @@ class _CartScreenState extends State<CartScreen> {
           ),
           body: widget.selectedItems.isEmpty
               ? Center(
-                  child: Text("Nothing you add  "),
+                  child: Text("There is no Item in Cart."),
                 )
               : SingleChildScrollView(
                   child: Column(

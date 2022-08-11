@@ -12,7 +12,6 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get_navigation/src/routes/default_transitions.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
 
 class DashBoardScreen extends StatefulWidget {
   static List<DashBoard> dashBoard = [];
@@ -67,7 +66,6 @@ class DashBoardScreen extends StatefulWidget {
     return list;
   }
 
-  static List<charts.Series<MonthOrderHistory, String>> series = [];
   static List<MonthOrderHistory> monthlyOrderList = [];
   static List<Items> itemdata = [];
   static List<String> monthName = [
@@ -86,11 +84,13 @@ class DashBoardScreen extends StatefulWidget {
     "Dec"
   ];
   static List<MonthOrderHistory> staticMonths = [];
-  static Future<List<MonthOrderHistory>> getMonthlyRecorderDB() async {
+  static Future<List<MonthOrderHistory>> getMonthlyRecorderDB(isOrder) async {
     int number = MyNavigationBar.userTarget;
     List<MonthOrderHistory> list = [];
     staticMonths = [];
-    var months = await SQLHelper.getMonthOrderHistory();
+    var months = isOrder
+        ? await SQLHelper.getMonthOrderHistory()
+        : await SQLHelper.getMonthSaleHistory();
     int count = 1;
     for (count = 1; count <= monthName.length - 1; count++) {
       MonthOrderHistory orderData = MonthOrderHistory(month: "", amount: 0);
@@ -131,11 +131,12 @@ class DashBoardScreen extends StatefulWidget {
 
 class _DashBoardScreenState extends State<DashBoardScreen>
     with TickerProviderStateMixin {
+  bool isOrder = true;
   updateData() async {
     DashBoardScreen.dashBoard = await DashBoardScreen.getOrderHistory();
     DashBoardScreen.itemdata = await DashBoardScreen.getTopProduct();
     DashBoardScreen.monthlyOrderList =
-        await DashBoardScreen.getMonthlyRecorderDB();
+        await DashBoardScreen.getMonthlyRecorderDB(isOrder);
     setState(() {
       DashBoardScreen.itemdata;
       DashBoardScreen.dashBoard;
@@ -197,12 +198,31 @@ class _DashBoardScreenState extends State<DashBoardScreen>
         body: SingleChildScrollView(
           child: Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  "Order",
-                  style: TextStyle(fontSize: 30),
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      isOrder ? "Order" : "Sale",
+                      style: TextStyle(fontSize: 30),
+                    ),
+                  ),
+                  Switch(
+                    activeColor: eTradeGreen,
+                    value: isOrder,
+                    onChanged: (value) async {
+                      setState(() {
+                        isOrder = value;
+                      });
+                      DashBoardScreen.monthlyOrderList =
+                          await DashBoardScreen.getMonthlyRecorderDB(isOrder);
+                      setState(() {
+                        DashBoardScreen.monthlyOrderList;
+                      });
+                    },
+                  ),
+                ],
               ),
               Container(
                 padding: const EdgeInsets.all(2.0),
@@ -222,8 +242,6 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                         minimum: 0,
                         maximum: 100000,
                         interval: 5000),
-                    // primaryYAxis: CategoryAxis(
-                    //   title: AxisTitle(text: "Prices"),
                     // ),
                     tooltipBehavior: _columntooltipBehavior,
                     margin: EdgeInsets.all(0),
@@ -255,11 +273,6 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                           yValueMapper: (MonthOrderHistory sales, _) =>
                               sales.amount),
                     ],
-
-                    // legend: Legend(
-                    //     isVisible: true,
-                    //     position: LegendPosition.bottom,
-                    //     overflowMode: LegendItemOverflowMode.wrap),
                   ),
                 ),
               ),
@@ -472,8 +485,9 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                         strokeWidth: 500,
                         dataSource: DashBoardScreen.itemdata,
                         dataLabelSettings: DataLabelSettings(isVisible: true),
-                        xValueMapper: (Items data, _) => data.productName,
-                        yValueMapper: (Items data, _) => data.ordered)
+                        xValueMapper: (Items? data, _) =>
+                            data?.productName ?? null,
+                        yValueMapper: (Items? data, _) => data?.ordered ?? null)
                   ],
                   legend: Legend(
                       // isResponsive: true,
