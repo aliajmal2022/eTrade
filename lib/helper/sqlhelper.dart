@@ -366,7 +366,7 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
     Database db = await instance.database;
     try {
       await db.execute(
-          "UPDATE [Order] SET TotalQuantity = 	(SELECT Sum(Quantity) FROM OrderDetail as od WHERE  od.OrderID=$id), TotalValue= (SELECT Sum(Amount) FROM OrderDetail as od WHERE  od.OrderID=$id),Description='$description',PartyID=$partyID WHERE [Order].OrderID=$id and [Order].isPosted=0"
+          "UPDATE [Order] SET TotalQuantity = 	(SELECT Sum(Quantity) FROM OrderDetail as od WHERE  od.OrderID=$id), TotalValue= (SELECT Sum(Amount) FROM OrderDetail as od WHERE  od.OrderID=$id),Description='$description',PartyID=$partyID WHERE OrderID=$id "
 
           // "UPDATE [Order] SET  PartyID=$partyID,Description='$description',TotalQuantity = (SELECT Sum(Quantity) FROM OrderDetail , [Order] as o WHERE o.OrderID = OrderDetail.OrderID and o.OrderID=$id),TotalValue=(SELECT Sum(Amount) FROM OrderDetail , [Order] as o WHERE o.OrderID = OrderDetail.OrderID and o.OrderID=$id) WHERE [Order].OrderID=$id"
           );
@@ -508,15 +508,16 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
 
   static Future<void> updateSaleTable(
       int id, int partyID, String description, bool isCash) async {
+    int iscash = isCash ? 1 : 0;
     Database db = await instance.database;
     try {
       await db.execute(
-          "UPDATE Sale SET TotalQuantity = 	(SELECT Sum(Quantity) FROM SaleDetail as sd WHERE  sd.InvoiceID=$id), TotalValue= (SELECT Sum(Amount) FROM SaleDetail as sd WHERE  sd.InvoiceID=$id),Description='$description',PartyID='$partyID',isCashInvoice='$isCash' WHERE Sale.InvoiceID=$id and Sale.isPosted=0"
+          "UPDATE Sale SET TotalQuantity = 	(SELECT Sum(sd.Quantity) FROM SaleDetail as sd WHERE  sd.InvoiceID=$id), TotalValue= (SELECT Sum(sd.Amount) FROM SaleDetail as sd WHERE  sd.InvoiceID=$id),Description='$description',PartyID=$partyID,isCashInvoice='$iscash' WHERE InvoiceID=$id "
 
           // "UPDATE [Order] SET  PartyID=$partyID,Description='$description',TotalQuantity = (SELECT Sum(Quantity) FROM OrderDetail , [Order] as o WHERE o.OrderID = OrderDetail.OrderID and o.OrderID=$id),TotalValue=(SELECT Sum(Amount) FROM OrderDetail , [Order] as o WHERE o.OrderID = OrderDetail.OrderID and o.OrderID=$id) WHERE [Order].OrderID=$id"
           );
     } catch (e) {
-      debugPrint('Order is not update');
+      debugPrint('Order is not update \n ${e.toString()}');
     }
   }
 

@@ -391,21 +391,8 @@ class _CartScreenState extends State<CartScreen> {
                                               widget.iD,
                                               widget.selecedCustomer.partyId,
                                               description);
-                                          setState(() {
-                                            if (TakeOrderScreen.isEditOrder) {
-                                              TakeOrderScreen.isEditOrder =
-                                                  false;
-                                              TakeOrderScreen.isSelected =
-                                                  false;
-                                              TakeOrderScreen.isordered = true;
-                                            } else {
-                                              TakeOrderScreen.isEditSale =
-                                                  false;
-                                              TakeOrderScreen.isSelected =
-                                                  false;
-                                            }
-                                          });
-                                          await TakeOrderScreen.getdataFromDb();
+                                          TakeOrderScreen.isEditOrder = false;
+                                          TakeOrderScreen.isSelected = false;
                                           resetCartList();
                                           TakeOrderScreen.setParty(Customer(
                                               partyId: 0,
@@ -413,6 +400,7 @@ class _CartScreenState extends State<CartScreen> {
                                               userId: 0,
                                               address: "",
                                               partyName: "Search Customer"));
+                                          await TakeOrderScreen.getdataFromDb();
                                           controller.clear();
                                           Get.off(
                                               MyNavigationBar(
@@ -463,12 +451,17 @@ class _CartScreenState extends State<CartScreen> {
                                               isCash);
                                           setState(() {
                                             TakeOrderScreen.isEditSale = false;
-                                            TakeOrderScreen.isordered = true;
                                             TakeOrderScreen.isSelected = false;
                                             controller.clear();
+                                            TakeOrderScreen.setParty(Customer(
+                                                partyId: 0,
+                                                discount: 0,
+                                                userId: 0,
+                                                address: "",
+                                                partyName: "Search Customer"));
                                             resetCartList();
-                                            TakeOrderScreen.getdataFromDb();
                                           });
+                                          await TakeOrderScreen.getdataFromDb();
                                           Get.off(
                                               MyNavigationBar(
                                                 selectedIndex: 2,
