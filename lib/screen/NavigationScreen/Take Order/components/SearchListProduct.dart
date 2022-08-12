@@ -10,7 +10,6 @@ SearchListProduct(BuildContext context, List<Product> product, String matchItem,
   for (var element in product) {
     if (element.Title.toLowerCase().contains(matchItem)) {
       dummyProductList.add(element);
-      print(dummyProductList);
     }
   }
   return dummyProductList.isNotEmpty

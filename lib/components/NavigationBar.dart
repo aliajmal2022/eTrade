@@ -48,7 +48,6 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
   void initState() {
     MyNavigationBar.userID = UserSharePreferences.getId();
     MyNavigationBar.userTarget = UserSharePreferences.getTarget();
-    print(MyNavigationBar.userID);
     super.initState();
   }
 
@@ -89,7 +88,7 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
                 padding: EdgeInsets.all(14),
                 tabs: [
                   GButton(
-                    icon: Icons.trending_up_outlined,
+                    icon: Icons.home,
                     text: 'Home',
                   ),
                   GButton(

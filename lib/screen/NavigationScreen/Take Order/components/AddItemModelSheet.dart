@@ -55,7 +55,6 @@ var quantity = 0;
 void resetCartList() {
   try {
     CartList.clear();
-    print(CartList.isEmpty);
   } catch (e) {
     print("Something wrong during resest cartlist");
   }
@@ -181,7 +180,6 @@ class _AddItemModelSheetState extends State<AddItemModelSheet> {
                                 setState(() {
                                   if (value.isNotEmpty) {
                                     setQuantity(int.parse(value));
-                                    print(getQuantity());
                                   } else {
                                     setQuantity(0);
                                   }

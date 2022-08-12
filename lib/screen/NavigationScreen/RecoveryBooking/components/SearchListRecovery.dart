@@ -31,7 +31,6 @@ class _ListOfRecoveryState extends State<ListOfRecovery>
     for (var element in list) {
       if (element.party.partyName.toLowerCase().contains(widget.matchItem)) {
         setState(() {
-          print(element.party.partyName.toLowerCase());
           dummyOrderList.add(element);
         });
       }

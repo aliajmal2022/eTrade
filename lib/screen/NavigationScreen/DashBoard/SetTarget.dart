@@ -106,9 +106,9 @@ class _SetTargetScreenState extends State<SetTargetScreen> {
     bool contain = false;
     try {
       for (var element in list) {
-        if (element.target == 0) {
+        if (element.target != 0) {
           setState(() {
-            check = true;
+            check = false;
             contain = true;
             throw "";
           });
@@ -117,17 +117,18 @@ class _SetTargetScreenState extends State<SetTargetScreen> {
     } catch (e) {
       debugPrint("help");
     }
-    if (!contain) {
-      setState(() {
-        check = false;
-      });
-    }
+    // if (contain) {
+    //   setState(() {
+    //     check = false;
+    //   });
+    // }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          title: Text('Set Target'),
           backgroundColor: eTradeGreen,
         ),
         body: ListView.builder(
@@ -168,7 +169,7 @@ class _SetTargetScreenState extends State<SetTargetScreen> {
                                   borderSide: BorderSide(width: 20.0)),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
-                                borderSide: BorderSide(color: eTradeBlue),
+                                borderSide: BorderSide(color: eTradeGreen),
                               ),
                               labelText: 'Set Target',
                               labelStyle: TextStyle(color: eTradeGreen),

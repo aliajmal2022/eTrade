@@ -174,7 +174,6 @@ class _CartScreenState extends State<CartScreen> {
                                     onChanged: (value) async {
                                       setState(() {
                                         isCash = value;
-                                        print(isCash);
                                       });
                                     },
                                   ),
@@ -506,7 +505,6 @@ class _CartScreenState extends State<CartScreen> {
                                                 saleRes.whereType<Map>().first;
                                             var dated = maptoListOrder['Dated'];
                                             TakeOrderScreen.getdataFromDb();
-                                            print(dated);
                                             for (var element
                                                 in widget.selectedItems) {
                                               await SQLHelper.instance
@@ -576,7 +574,6 @@ class _CartScreenState extends State<CartScreen> {
                                                 orderRes.whereType<Map>().first;
                                             var dated = maptoListOrder['Dated'];
                                             TakeOrderScreen.getdataFromDb();
-                                            print(dated);
                                             for (var element
                                                 in widget.selectedItems) {
                                               await SQLHelper.instance

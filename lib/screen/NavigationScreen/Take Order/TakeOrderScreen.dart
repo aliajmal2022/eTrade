@@ -250,9 +250,13 @@ class _TakeOrderScreenState extends State<TakeOrderScreen>
   }
 
   Future<List<Customer>> getData(String filter) async {
-    return DataBaseDataLoad.ListOCustomer.where((element) =>
-            element.partyName.toLowerCase().contains(filter.toLowerCase()))
-        .toList();
+    List<Customer> customerlist = [];
+    DataBaseDataLoad.ListOCustomer.forEach((element) {
+      if (element.partyName.toLowerCase().contains(filter.toLowerCase())) {
+        customerlist.add(element);
+      }
+    });
+    return customerlist;
   }
 
   @override
@@ -480,6 +484,19 @@ class _TakeOrderScreenState extends State<TakeOrderScreen>
                                         );
                                       },
                                       selectedItem: TakeOrderScreen.customer,
+                                      searchBoxDecoration: InputDecoration(
+                                          focusedBorder: UnderlineInputBorder(
+                                            borderSide: BorderSide(
+                                              color: eTradeGreen,
+                                              width: 2,
+                                            ),
+                                          ),
+                                          suffixIcon: Icon(
+                                            Icons.search,
+                                            color: eTradeGreen,
+                                          ),
+                                          labelStyle:
+                                              TextStyle(color: eTradeGreen)),
                                       dropdownItemBuilder:
                                           (BuildContext context, Customer item,
                                               bool isSelected) {
@@ -496,29 +513,36 @@ class _TakeOrderScreenState extends State<TakeOrderScreen>
                                                       ? Color(0xff424242)
                                                       : Colors.white,
                                                 ),
-                                          child: Center(
-                                            child: ListTile(
-                                                selected: isSelected,
-                                                title: Text(
-                                                  item.partyName,
-                                                  style: TextStyle(
-                                                      color: !isSelected &&
-                                                              !MyApp.isDark
-                                                          ? Colors.black54
-                                                          : MyApp.isDark
-                                                              ? Colors.white
-                                                              : Colors.black),
-                                                ),
-                                                subtitle: Text(
-                                                    item.address.toString(),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    item.partyName,
                                                     style: TextStyle(
                                                         color: !isSelected &&
                                                                 !MyApp.isDark
-                                                            ? Colors.grey
+                                                            ? Colors.black54
                                                             : MyApp.isDark
                                                                 ? Colors.white
-                                                                : Colors
-                                                                    .black54))),
+                                                                : Colors.black,
+                                                        fontSize: 16),
+                                                  ),
+                                                  Text(item.address.toString(),
+                                                      style: TextStyle(
+                                                          color: !isSelected &&
+                                                                  !MyApp.isDark
+                                                              ? Colors.grey
+                                                              : MyApp.isDark
+                                                                  ? Colors.grey
+                                                                  : Colors
+                                                                      .black54,
+                                                          fontSize: 14)),
+                                                ]),
                                           ),
                                         );
                                       },

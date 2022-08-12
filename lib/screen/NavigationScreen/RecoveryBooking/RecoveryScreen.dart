@@ -313,7 +313,6 @@ class _RecoveryScreenState extends State<RecoveryScreen>
                                     setState(() {
                                       isCash = value;
                                       _groupValue = !isCash ? "Cash" : "Check";
-                                      print(_groupValue);
                                     });
                                   },
                                 ),
@@ -469,10 +468,9 @@ class _RecoveryScreenState extends State<RecoveryScreen>
                                       BorderRadius.all(Radius.circular(20)),
                                   borderSide: BorderSide(width: 30.0)),
                               focusedBorder: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(20)),
-                                borderSide: BorderSide(color: Colors.blue),
-                              ),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20)),
+                                  borderSide: BorderSide(color: eTradeGreen)),
                               contentPadding: const EdgeInsets.symmetric(
                                   vertical: 13, horizontal: 20),
                               labelText: 'Enter Amount',
@@ -498,10 +496,9 @@ class _RecoveryScreenState extends State<RecoveryScreen>
                                       BorderRadius.all(Radius.circular(20)),
                                   borderSide: BorderSide(width: 30.0)),
                               focusedBorder: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(20)),
-                                borderSide: BorderSide(color: Colors.blue),
-                              ),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20)),
+                                  borderSide: BorderSide(color: eTradeGreen)),
                               contentPadding: const EdgeInsets.symmetric(
                                   vertical: 13, horizontal: 20),
                               labelText: 'Description',

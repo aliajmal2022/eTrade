@@ -52,7 +52,6 @@ class User {
     List<User> userList = await User.UserList(false);
     User usr = User(userName: "", password: "", monthlyTarget: 0, id: 0);
     for (var element in userList) {
-      print(element.id);
       if (element.userName == userInp && element.password == passwd) {
         return element;
       }

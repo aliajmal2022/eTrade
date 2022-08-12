@@ -36,7 +36,6 @@ class _ListOfOrderState extends State<ListOfOrder>
     for (var element in list) {
       if (element.partyName.toLowerCase().contains(widget.matchItem)) {
         setState(() {
-          print(element.partyName.toLowerCase());
           dummyOrderList.add(element);
         });
       }

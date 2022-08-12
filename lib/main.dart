@@ -1,4 +1,5 @@
 import 'package:eTrade/components/NavigationBar.dart';
+import 'package:eTrade/components/constants.dart';
 import 'package:eTrade/components/sharePreferences.dart';
 import 'package:eTrade/screen/Connection/ConnectionScreen.dart';
 import 'package:eTrade/screen/NavigationScreen/Take%20Order/TakeOrderScreen.dart';
@@ -60,7 +61,10 @@ class _MyAppState extends State<MyApp> {
             debugShowCheckedModeBanner: false,
             theme: ThemeData(fontFamily: 'NunitoSans'),
             darkTheme: ThemeData(
-                brightness: Brightness.dark, fontFamily: 'NunitoSans'),
+                textSelectionTheme: TextSelectionThemeData(
+                    cursorColor: eTradeGreen, selectionColor: eTradeGreen),
+                brightness: Brightness.dark,
+                fontFamily: 'NunitoSans'),
             themeMode: currentMode,
             home: (isexist)
                 ? MySplashScreen()

@@ -39,7 +39,7 @@ dependencies:
   connectivity_plus:
   dart_ping:
   animated_text_kit:
-  shared_preferences:
+  shared_preferences: ^2.0.15
   intl:
   get:
   date_format:
