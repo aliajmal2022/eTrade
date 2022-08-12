@@ -1,13 +1,18 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:eTrade/components/CustomNavigator.dart';
+import 'package:eTrade/components/NavigationBar.dart';
 import 'package:eTrade/components/constants.dart';
+import 'package:eTrade/entities/Customer.dart';
+import 'package:eTrade/entities/ViewRecovery.dart';
 import 'package:eTrade/helper/onldt_to_local_db.dart';
 import 'package:eTrade/components/sharePreferences.dart';
 import 'package:eTrade/helper/sqlhelper.dart';
 import 'package:eTrade/entities/User.dart';
 import 'package:eTrade/screen/NavigationScreen/Take%20Order/TakeOrderScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class LoginScreen extends StatefulWidget {
   LoginScreen({required this.ip, required this.fromMasterReset});
@@ -177,8 +182,46 @@ class _LoginScreenState extends State<LoginScreen> {
                                           UserSharePreferences.setIp(widget.ip);
                                           UserSharePreferences.setflag(flag);
                                           UserSharePreferences.setmode(false);
-                                          await TakeOrderScreen.onLoading(
-                                              context, false);
+                                          if (!SQLHelper.existDataBase) {
+                                            await TakeOrderScreen.onLoading(
+                                                context, false);
+                                          } else {
+                                            SQLHelper.existDataBase = false;
+
+                                            Navigator.pushAndRemoveUntil(
+                                                context,
+                                                MyCustomRoute(
+                                                    slide: "Left",
+                                                    builder: (context) =>
+                                                        MyNavigationBar(
+                                                          editRecovery:
+                                                              ViewRecovery(
+                                                                  amount: 0,
+                                                                  description:
+                                                                      "",
+                                                                  recoveryID: 0,
+                                                                  checkOrCash:
+                                                                      false,
+                                                                  dated: "",
+                                                                  party: Customer(
+                                                                      partyId:
+                                                                          0,
+                                                                      userId: 0,
+                                                                      partyName:
+                                                                          "",
+                                                                      discount:
+                                                                          0,
+                                                                      address:
+                                                                          "")),
+                                                          selectedIndex: 0,
+                                                          date: "",
+                                                          list: [],
+                                                          id: 0,
+                                                          partyName:
+                                                              "Search Customer",
+                                                        )),
+                                                (route) => false);
+                                          }
                                         }
                                       } else {
                                         setState(() {

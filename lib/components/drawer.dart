@@ -144,7 +144,13 @@ class _MyDrawerState extends State<MyDrawer>
           FadeTransition(
             opacity: _animationController,
             child: DrawerHeader(
-                child: Image.asset("images/logo.png", fit: BoxFit.cover)),
+                child: CircleAvatar(
+                    backgroundColor: Color(0xfffafafa),
+                    child: Image.asset(
+                      "images/logo.png",
+                      fit: BoxFit.cover,
+                      width: 200,
+                    ))),
           ),
 
           //  Text(
@@ -154,7 +160,7 @@ class _MyDrawerState extends State<MyDrawer>
           // ),
           // ),
           Divider(
-            thickness: 2,
+            thickness: 1,
             color: eTradeGreen,
           ),
           Padding(
@@ -393,6 +399,76 @@ class _MyDrawerState extends State<MyDrawer>
                         ),
                       ),
                       MaterialButton(
+                        onPressed: () async {
+                          await SQLHelper.backupDB();
+                          Navigator.pushAndRemoveUntil(
+                              context,
+                              MyCustomRoute(
+                                  slide: "Left",
+                                  builder: (context) => MyNavigationBar(
+                                        editRecovery: ViewRecovery(
+                                            amount: 0,
+                                            description: "",
+                                            recoveryID: 0,
+                                            checkOrCash: false,
+                                            dated: "",
+                                            party: Customer(
+                                                partyId: 0,
+                                                userId: 0,
+                                                partyName: "",
+                                                discount: 0,
+                                                address: "")),
+                                        selectedIndex: 0,
+                                        date: "",
+                                        list: [],
+                                        id: 0,
+                                        partyName: "Search Customer",
+                                      )),
+                              (route) => false);
+                        },
+                        child: Row(
+                          children: const [
+                            Icon(Icons.backup),
+                            Text("Backup Data")
+                          ],
+                        ),
+                      ),
+                      MaterialButton(
+                        onPressed: () async {
+                          await SQLHelper.restoreDB();
+                          Navigator.pushAndRemoveUntil(
+                              context,
+                              MyCustomRoute(
+                                  slide: "Left",
+                                  builder: (context) => MyNavigationBar(
+                                        editRecovery: ViewRecovery(
+                                            amount: 0,
+                                            description: "",
+                                            recoveryID: 0,
+                                            checkOrCash: false,
+                                            dated: "",
+                                            party: Customer(
+                                                partyId: 0,
+                                                userId: 0,
+                                                partyName: "",
+                                                discount: 0,
+                                                address: "")),
+                                        selectedIndex: 0,
+                                        date: "",
+                                        list: [],
+                                        id: 0,
+                                        partyName: "Search Customer",
+                                      )),
+                              (route) => false);
+                        },
+                        child: Row(
+                          children: const [
+                            Icon(Icons.restore),
+                            Text("Restore Data")
+                          ],
+                        ),
+                      ),
+                      MaterialButton(
                         onPressed: () {
                           Navigator.pop(context);
                           Navigator.push(
@@ -444,7 +520,7 @@ class _MyDrawerState extends State<MyDrawer>
                         },
                         child: Row(
                           children: const [
-                            Icon(Icons.exit_to_app),
+                            Icon(Icons.info_outline),
                             Text("About Us")
                           ],
                         ),

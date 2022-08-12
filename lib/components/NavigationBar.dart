@@ -47,7 +47,6 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
   @override
   void initState() {
     MyNavigationBar.userID = UserSharePreferences.getId();
-    MyNavigationBar.userTarget = UserSharePreferences.getTarget();
     super.initState();
   }
 

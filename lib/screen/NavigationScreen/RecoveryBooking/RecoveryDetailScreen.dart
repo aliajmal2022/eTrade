@@ -39,7 +39,7 @@ class _RecoveryDetailScreenState extends State<RecoveryDetailScreen> {
           backgroundColor: eTradeGreen,
           toolbarHeight: 80,
           title: Text(
-            'Order Detail',
+            'Recovery Detail',
             style: TextStyle(color: Colors.white),
           ),
         ),
@@ -82,6 +82,27 @@ class _RecoveryDetailScreenState extends State<RecoveryDetailScreen> {
                             children: [
                               Expanded(
                                 child: Text(
+                                  "Date: ",
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                              Text(
+                                "${widget.selectedRecovery.dated}",
+                                style: TextStyle(
+                                    fontSize: 15, fontWeight: FontWeight.bold),
+                              ),
+                            ]),
+                      ),
+                      Container(
+                        width: double.infinity,
+                        height: 50,
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                child: Text(
                                   "Amount: ",
                                   style: TextStyle(
                                       fontSize: 18,
@@ -103,28 +124,7 @@ class _RecoveryDetailScreenState extends State<RecoveryDetailScreen> {
                             children: [
                               Expanded(
                                 child: Text(
-                                  "Order Date: ",
-                                  style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                              Text(
-                                "${widget.selectedRecovery.dated}",
-                                style: TextStyle(
-                                    fontSize: 15, fontWeight: FontWeight.bold),
-                              ),
-                            ]),
-                      ),
-                      Container(
-                        width: double.infinity,
-                        height: 50,
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  "Check Or Cash: ",
+                                  "Payment Mode: ",
                                   style: TextStyle(
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold),
@@ -139,25 +139,29 @@ class _RecoveryDetailScreenState extends State<RecoveryDetailScreen> {
                               ),
                             ]),
                       ),
+                      Container(
+                        width: double.infinity,
+                        height: 50,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Description : ",
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold),
+                            ),
+                            Text(widget.selectedRecovery.description,
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                )),
+                          ],
+                        ),
+                      ),
                       Divider(
                         thickness: 2,
                         color: eTradeGreen,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Description : ",
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
-                          ),
-                          Center(
-                            child: Text(widget.selectedRecovery.description,
-                                style: TextStyle(
-                                  fontSize: 14,
-                                )),
-                          ),
-                        ],
                       ),
                     ],
                   ),

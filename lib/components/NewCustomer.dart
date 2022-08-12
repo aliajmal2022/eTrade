@@ -1,3 +1,4 @@
+import 'package:eTrade/components/CustomNavigator.dart';
 import 'package:eTrade/components/NavigationBar.dart';
 import 'package:eTrade/components/constants.dart';
 import 'package:eTrade/helper/onldt_to_local_db.dart';
@@ -199,15 +200,19 @@ class _NewUsrAddLocalDBState extends State<NewUsrAddLocalDB> {
                                   await SQLHelper.instance
                                       .createParty(nCustomer);
                                   await DataBaseDataLoad.DataLoading();
-
-                                  Get.off(MyNavigationBar(
-                                    date: "",
-                                    editRecovery: widget.recovery,
-                                    selectedIndex: widget.index,
-                                    list: [],
-                                    partyName: "Search Customer",
-                                    id: 0,
-                                  ));
+                                  Navigator.pushAndRemoveUntil(
+                                      context,
+                                      MyCustomRoute(
+                                          builder: (context) => MyNavigationBar(
+                                                date: "",
+                                                editRecovery: widget.recovery,
+                                                selectedIndex: widget.index,
+                                                list: [],
+                                                partyName: "Search Customer",
+                                                id: 0,
+                                              ),
+                                          slide: "Left"),
+                                      (route) => false);
                                 } else {
                                   setState(() {
                                     _controller.clear();

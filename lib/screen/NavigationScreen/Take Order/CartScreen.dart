@@ -392,13 +392,28 @@ class _CartScreenState extends State<CartScreen> {
                                               widget.selecedCustomer.partyId,
                                               description);
                                           setState(() {
-                                            TakeOrderScreen.isEditOrder = false;
-                                            TakeOrderScreen.isordered = true;
-                                            TakeOrderScreen.isSelected = false;
-                                            controller.clear();
-                                            resetCartList();
-                                            TakeOrderScreen.getdataFromDb();
+                                            if (TakeOrderScreen.isEditOrder) {
+                                              TakeOrderScreen.isEditOrder =
+                                                  false;
+                                              TakeOrderScreen.isSelected =
+                                                  false;
+                                              TakeOrderScreen.isordered = true;
+                                            } else {
+                                              TakeOrderScreen.isEditSale =
+                                                  false;
+                                              TakeOrderScreen.isSelected =
+                                                  false;
+                                            }
                                           });
+                                          await TakeOrderScreen.getdataFromDb();
+                                          resetCartList();
+                                          TakeOrderScreen.setParty(Customer(
+                                              partyId: 0,
+                                              discount: 0,
+                                              userId: 0,
+                                              address: "",
+                                              partyName: "Search Customer"));
+                                          controller.clear();
                                           Get.off(
                                               MyNavigationBar(
                                                 selectedIndex: 2,

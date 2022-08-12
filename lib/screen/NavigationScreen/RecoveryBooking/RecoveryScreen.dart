@@ -1,3 +1,4 @@
+import 'package:eTrade/components/CustomNavigator.dart';
 import 'package:eTrade/components/NavigationBar.dart';
 import 'package:eTrade/components/NewCustomer.dart';
 import 'package:eTrade/components/constants.dart';
@@ -524,7 +525,7 @@ class _RecoveryScreenState extends State<RecoveryScreen>
                                               RecoveryScreen.tcustomer.partyId,
                                               amount,
                                               description,
-                                              _groupValue);
+                                              isCash);
                                           setState(() {
                                             RecoveryScreen.amountcontroller
                                                 .clear();
@@ -599,25 +600,36 @@ class _RecoveryScreenState extends State<RecoveryScreen>
                                                 partyId: 0,
                                                 partyName: "Search Customer");
                                           });
-                                          Get.off(MyNavigationBar(
-                                            selectedIndex: 0,
-                                            editRecovery: ViewRecovery(
-                                                amount: 0,
-                                                description: "",
-                                                checkOrCash: false,
-                                                recoveryID: 0,
-                                                dated: "",
-                                                party: Customer(
-                                                    discount: 0,
-                                                    partyId: 0,
-                                                    userId: 0,
-                                                    partyName: "",
-                                                    address: "")),
-                                            date: "",
-                                            id: 0,
-                                            list: [],
-                                            partyName: "Search Customer",
-                                          ));
+                                          Navigator.pushAndRemoveUntil(
+                                              context,
+                                              MyCustomRoute(
+                                                  builder: (context) =>
+                                                      MyNavigationBar(
+                                                        selectedIndex: 0,
+                                                        editRecovery:
+                                                            ViewRecovery(
+                                                                amount: 0,
+                                                                description: "",
+                                                                checkOrCash:
+                                                                    false,
+                                                                recoveryID: 0,
+                                                                dated: "",
+                                                                party: Customer(
+                                                                    discount: 0,
+                                                                    partyId: 0,
+                                                                    userId: 0,
+                                                                    partyName:
+                                                                        "",
+                                                                    address:
+                                                                        "")),
+                                                        date: "",
+                                                        id: 0,
+                                                        list: [],
+                                                        partyName:
+                                                            "Search Customer",
+                                                      ),
+                                                  slide: "Right"),
+                                              (route) => false);
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(snackBar);
                                         },

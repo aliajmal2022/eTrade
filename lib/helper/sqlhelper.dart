@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:eTrade/components/sharePreferences.dart';
 import 'package:eTrade/entities/Customer.dart';
 import 'package:eTrade/entities/Order.dart';
 import 'package:eTrade/entities/Products.dart';
@@ -6,6 +9,8 @@ import 'package:eTrade/entities/Sale.dart';
 import 'package:eTrade/entities/User.dart';
 import 'package:eTrade/screen/NavigationScreen/DashBoard/SetTarget.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -17,9 +22,11 @@ class SQLHelper {
   static var _database;
   static var isExit = false;
   static var directory;
+  static bool existDataBase = false;
+
   static bool onceCheck = true;
   static var path;
-  Future<Database> CheckDBExit() async {
+  static Future<Database> checkDBExit() async {
     if (onceCheck) {
       directory = await getDatabasesPath();
       path = join(directory, _dbname);
@@ -36,6 +43,43 @@ class SQLHelper {
     }
     _database = await _initiateDatabase();
     return _database;
+  }
+
+  static backupDB() async {
+    var status = await Permission.manageExternalStorage.status;
+    if (!status.isGranted) {
+      await Permission.manageExternalStorage.request();
+    }
+    var status1 = await Permission.storage.status;
+    if (!status1.isGranted) {
+      await Permission.storage.request();
+    }
+    try {
+      File ourDBFile = File('$directory/eTrade.db');
+      Directory folderPathForDB =
+          Directory('/storage/emulated/0/eTrade_Backup/');
+      if (!await folderPathForDB.exists()) await folderPathForDB.create();
+      await ourDBFile.copy('/storage/emulated/0/eTrade_Backup/eTrade.db');
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
+
+  static restoreDB() async {
+    var status = await Permission.manageExternalStorage.status;
+    if (!status.isGranted) {
+      await Permission.manageExternalStorage.request();
+    }
+    var status1 = await Permission.storage.status;
+    if (!status1.isGranted) {
+      await Permission.storage.request();
+    }
+    try {
+      File savedDBFile = File('/storage/emulated/0/eTrade_Backup/eTrade.db');
+      await savedDBFile.copy('$directory/eTrade.db');
+    } catch (e) {
+      debugPrint(e.toString());
+    }
   }
 
   static Future<void> resetData(String action) async {
@@ -56,23 +100,44 @@ class SQLHelper {
   }
 
   Future<dynamic> get database async {
-    var db = await CheckDBExit();
+    var db = await checkDBExit();
     return db;
   }
 
   static _initiateDatabase() async {
-    return await openDatabase(path, version: _dbversion,
-        onOpen: (Database database) async {
-      await createPartyTable(database);
-      await createItemTable(database);
-      await createUserTable(database);
-      await createUserTargetTable(database);
-      await createOrderTable(database);
-      await createOrderDetailTable(database);
-      await createSaleTable(database);
-      await createSaleDetailTable(database);
-      await createRecoveryTable(database);
-    });
+    var status = await Permission.manageExternalStorage.status;
+    if (!status.isGranted) {
+      await Permission.manageExternalStorage.request();
+    }
+    var status1 = await Permission.storage.status;
+    if (!status1.isGranted) {
+      await Permission.storage.request();
+    }
+    try {
+      File savedDBFile = File('/storage/emulated/0/eTrade_Backup/eTrade.db');
+      if (await savedDBFile.exists()) {
+        await savedDBFile.copy('$directory/eTrade.db');
+        UserSharePreferences.setmode(false);
+        existDataBase = true;
+
+        return await checkDBExit();
+      } else {
+        return await openDatabase(path, version: _dbversion,
+            onOpen: (Database database) async {
+          await createPartyTable(database);
+          await createItemTable(database);
+          await createUserTable(database);
+          await createUserTargetTable(database);
+          await createOrderTable(database);
+          await createOrderDetailTable(database);
+          await createSaleTable(database);
+          await createSaleDetailTable(database);
+          await createRecoveryTable(database);
+        });
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
   }
 
   static Future<void> createUserTable(Database database) async {
@@ -578,13 +643,14 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
   }
 
   static Future<void> updateRecoveryTable(int id, int partyID, double amount,
-      String description, String isCashOCheck) async {
+      String description, bool isCash) async {
     Database db = await instance.database;
+    int iscash = isCash ? 1 : 0;
     try {
       await db.execute(
-          "UPDATE Recovery SET Amount=$amount, PartyID=$partyID,isCash='$isCashOCheck',Description='$description' WHERE Recovery.RecoveryId=$id and Recovery.isPosted=0");
+          "UPDATE Recovery SET Amount=$amount, PartyID=$partyID,isCash=$iscash,Description='$description' WHERE RecoveryID=$id ");
     } catch (e) {
-      debugPrint('Recovery is not update');
+      debugPrint(e.toString());
     }
   }
 

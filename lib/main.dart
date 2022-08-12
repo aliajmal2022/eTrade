@@ -1,6 +1,7 @@
 import 'package:eTrade/components/NavigationBar.dart';
 import 'package:eTrade/components/constants.dart';
 import 'package:eTrade/components/sharePreferences.dart';
+import 'package:eTrade/helper/sqlhelper.dart';
 import 'package:eTrade/screen/Connection/ConnectionScreen.dart';
 import 'package:eTrade/screen/NavigationScreen/Take%20Order/TakeOrderScreen.dart';
 import 'package:eTrade/screen/SplashScreen/SplashScreen.dart';
@@ -10,12 +11,8 @@ import 'dart:core';
 import 'package:get/get_navigation/get_navigation.dart';
 
 Future main() async {
-  // var app_secret = "AndroidGuid";
-  // await AppCenter.start(
-  //     app_secret, [AppCenterAnalytics.id, AppCenterCrashes.id]);
   WidgetsFlutterBinding.ensureInitialized();
   await UserSharePreferences.init();
-  // MyApp.isDark = await UserSharePreferences.setmode(false);
   MyApp.isExist = await MyApp.PreLoadDataBase();
   runApp(MyApp());
 }
@@ -66,11 +63,11 @@ class _MyAppState extends State<MyApp> {
                 brightness: Brightness.dark,
                 fontFamily: 'NunitoSans'),
             themeMode: currentMode,
-            home: (isexist)
-                ? MySplashScreen()
-                : ConnectionScreen(
-                    isConnectionfromdrawer: false,
-                  ),
+            home: (!isexist)
+                ? ConnectionScreen(isConnectionfromdrawer: false)
+                : (SQLHelper.existDataBase)
+                    ? ConnectionScreen(isConnectionfromdrawer: false)
+                    : MySplashScreen(),
           );
         });
   }

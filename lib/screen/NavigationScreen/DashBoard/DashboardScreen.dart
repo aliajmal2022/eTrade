@@ -5,6 +5,7 @@ import 'package:eTrade/entities/Products.dart';
 import 'package:eTrade/entities/Sale.dart';
 import 'package:eTrade/helper/sqlhelper.dart';
 import 'package:eTrade/main.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/src/foundation/key.dart';
@@ -329,141 +330,17 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                   itemBuilder: (context, index) {
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        height: 90,
-                        // width: double.infinity,
-                        decoration: BoxDecoration(
-                            color: Theme.of(context).cardColor,
-                            boxShadow: [
-                              BoxShadow(
-                                // color: eTradeGreen,
-                                // color: Colors.white,
-                                color: Theme.of(context).dividerColor,
-                                blurRadius: 1.0,
-                              ),
-                            ],
-                            borderRadius: BorderRadius.all(Radius.circular(5))),
-                        child: Row(
-                          // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          // crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              flex: 3,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.edit_calendar,
-                                    size: 40,
-                                    color: (DashBoardScreen
-                                                .dashBoard[index].order >
-                                            DashBoardScreen
-                                                .dashBoard[index].compareOrder)
-                                        ? eTradeGreen
-                                        : (DashBoardScreen
-                                                    .dashBoard[index].order ==
-                                                DashBoardScreen.dashBoard[index]
-                                                    .compareOrder)
-                                            ? eTradeBlue
-                                            : eTradeRed,
-                                  ),
-                                  Text(
-                                    "${DashBoardScreen.dashBoard[index].time}",
-                                    style: TextStyle(
-                                        // color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: Padding(
-                                padding: EdgeInsets.all(8),
-                                child: VerticalDivider(
-                                  thickness: 2,
-                                  width: 10,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 5,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10.0),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          "Orders:",
-                                          // style: TextStyle(
-                                          //     color: Colors.white),
-                                        ),
-                                        Text(
-                                          "${DashBoardScreen.dashBoard[index].order}",
-                                          // style: TextStyle(
-                                          //     color: Colors.white),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 20,
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10.0),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          "${DashBoardScreen.dashBoard[index].compareTime}:",
-                                          // style: TextStyle(
-                                          //     color: Colors.white),
-                                        ),
-                                        Text(
-                                          "${DashBoardScreen.dashBoard[index].compareOrder}",
-                                          // style: TextStyle(
-                                          //     color: Colors.white),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: Padding(
-                                padding: EdgeInsets.all(8),
-                                child: VerticalDivider(
-                                  thickness: 2,
-                                  width: 10,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                            ),
-                            (DashBoardScreen.dashBoard[index].order !=
-                                    DashBoardScreen
-                                        .dashBoard[index].compareOrder)
-                                ? Expanded(
-                                    flex: 2,
-                                    child: Icon(
+                      child: Material(
+                        elevation: 5,
+                        child: Container(
+                          height: 90,
+                          // width: double.infinity,
+                          decoration: BoxDecoration(
+                              color: Theme.of(context).cardColor,
+                              boxShadow: [
+                                BoxShadow(
+                                  color:
                                       (DashBoardScreen.dashBoard[index].order >
-                                              DashBoardScreen.dashBoard[index]
-                                                  .compareOrder)
-                                          ? Icons.arrow_upward
-                                          : Icons.arrow_downward,
-                                      size: 30,
-                                      color: (DashBoardScreen
-                                                  .dashBoard[index].order >
                                               DashBoardScreen.dashBoard[index]
                                                   .compareOrder)
                                           ? eTradeGreen
@@ -474,26 +351,164 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                                                       .compareOrder)
                                               ? eTradeBlue
                                               : eTradeRed,
-                                    ))
-                                : Expanded(
-                                    flex: 2,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Icon(
-                                          Icons.arrow_upward,
-                                          size: 25,
-                                        ),
-                                        Icon(
-                                          Icons.arrow_downward,
-                                          size: 25,
-                                        ),
-                                      ],
-                                    )),
-                          ],
+                                  // color: eTradeGreen,
+                                  // color: Theme.of(context).dividerColor,
+                                  blurRadius: 1.0,
+                                ),
+                              ],
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(5))),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                flex: 3,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.edit_calendar,
+                                      size: 40,
+                                      // color: (DashBoardScreen
+                                      //             .dashBoard[index].order >
+                                      //         DashBoardScreen
+                                      //             .dashBoard[index].compareOrder)
+                                      //     ? eTradeGreen
+                                      //     : (DashBoardScreen
+                                      //                 .dashBoard[index].order ==
+                                      //             DashBoardScreen.dashBoard[index]
+                                      //                 .compareOrder)
+                                      //         ? eTradeBlue
+                                      //         : eTradeRed,
+                                    ),
+                                    Text(
+                                      "${DashBoardScreen.dashBoard[index].time}",
+                                      style: TextStyle(
+                                          // color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: Padding(
+                                  padding: EdgeInsets.all(8),
+                                  child: VerticalDivider(
+                                    thickness: 2,
+                                    width: 10,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 5,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10.0),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            "Orders:",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          Text(
+                                            "${DashBoardScreen.dashBoard[index].order}",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 20,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10.0),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            "${DashBoardScreen.dashBoard[index].compareTime}:",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          Text(
+                                            "${DashBoardScreen.dashBoard[index].compareOrder}",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: Padding(
+                                  padding: EdgeInsets.all(8),
+                                  child: VerticalDivider(
+                                    thickness: 2,
+                                    width: 10,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ),
+                              (DashBoardScreen.dashBoard[index].order !=
+                                      DashBoardScreen
+                                          .dashBoard[index].compareOrder)
+                                  ? Expanded(
+                                      flex: 2,
+                                      child: Icon(
+                                        (DashBoardScreen
+                                                    .dashBoard[index].order >
+                                                DashBoardScreen.dashBoard[index]
+                                                    .compareOrder)
+                                            ? Icons.arrow_upward
+                                            : Icons.arrow_downward,
+                                        size: 30,
+                                        color: (DashBoardScreen
+                                                    .dashBoard[index].order >
+                                                DashBoardScreen.dashBoard[index]
+                                                    .compareOrder)
+                                            ? eTradeGreen
+                                            : (DashBoardScreen.dashBoard[index]
+                                                        .order ==
+                                                    DashBoardScreen
+                                                        .dashBoard[index]
+                                                        .compareOrder)
+                                                ? eTradeBlue
+                                                : eTradeRed,
+                                      ))
+                                  : Expanded(
+                                      flex: 2,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Icon(
+                                            Icons.arrow_upward,
+                                            size: 25,
+                                          ),
+                                          Icon(
+                                            Icons.arrow_downward,
+                                            size: 25,
+                                          ),
+                                        ],
+                                      )),
+                            ],
+                          ),
                         ),
                       ),
                     );

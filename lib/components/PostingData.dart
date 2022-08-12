@@ -37,6 +37,7 @@ class _PostingDataState extends State<PostingData> {
   List _party = [];
   bool notData = false;
   Future<void> checkDataAvialable() async {
+    await SQLHelper.backupDB();
     _recovery = await SQLHelper.getNotPostedRecovery();
     _sale = await SQLHelper.getNotPostedSale();
     _saleDetail = await SQLHelper.getNotPostedSaleDetail();
@@ -51,6 +52,7 @@ class _PostingDataState extends State<PostingData> {
       snackBar = SnackBar(
         content: Text("Posting is Completed."),
       );
+
       if (_order.isNotEmpty ||
           _orderDetail.isNotEmpty ||
           _party.isNotEmpty ||
@@ -197,6 +199,7 @@ class _PostingDataState extends State<PostingData> {
     super.initState();
   }
 
+  bool isCompleted = false;
   @override
   Widget build(BuildContext context) {
     final isLandscape =
@@ -205,220 +208,27 @@ class _PostingDataState extends State<PostingData> {
       child: Scaffold(
         body: isLandscape
             ? Row(children: [
-                Image.asset(
-                  "images/posting.gif",
-                  gaplessPlayback: true,
-                  fit: BoxFit.fill,
+                Expanded(
+                  flex: 1,
+                  child: Image.asset(
+                    "images/posting.gif",
+                    gaplessPlayback: true,
+                    fit: BoxFit.fill,
+                  ),
                 ),
                 Expanded(
                   flex: 1,
-                  child: Container(
-                    // constraints: BoxConstraints(maxHeight: 29),
-                    decoration: BoxDecoration(
-                        color: Colors.white,
+                  child: Card(
+                    child: Container(
+                      // constraints: BoxConstraints(maxHeight: 29),
+                      decoration: BoxDecoration(
+                        // color: Colors.white,
                         borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(
                                 5.0), // Set rounded corner radius
                             topRight: Radius.circular(
                                 5.0)), // Set rounded corner radius
-                        boxShadow: [
-                          BoxShadow(
-                              blurRadius: 10,
-                              color: Colors.black,
-                              offset: Offset(1, 3))
-                        ]),
-
-                    width: double.infinity,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: Text(
-                            "Posting Data",
-                            style: TextStyle(fontSize: 25),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(4.0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text("Total Customers Posted: "),
-                                    (PostingData.cCount == 0 ||
-                                                _party.length == 0) &&
-                                            !notData
-                                        ? CircularProgressIndicator(
-                                            strokeWidth: 2,
-                                          )
-                                        : Text("${PostingData.cCount}"),
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(4.0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text("Total Order Posted: "),
-                                    (PostingData.oCount == 0 ||
-                                                _order.length == 0) &&
-                                            !notData
-                                        ? CircularProgressIndicator()
-                                        : Text("${PostingData.oCount}"),
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(4.0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text("Total OrderDetail Posted: "),
-                                    (PostingData.odCount == 0 ||
-                                                _orderDetail.length == 0) &&
-                                            !notData
-                                        ? CircularProgressIndicator()
-                                        : Text("${PostingData.odCount}"),
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(4.0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text("Total Sale Posted: "),
-                                    (PostingData.sCount == 0 ||
-                                                _sale.length == 0) &&
-                                            !notData
-                                        ? SizedBox(
-                                            width: 12,
-                                            height: 12,
-                                            child: CircularProgressIndicator())
-                                        : Text("${PostingData.sCount}"),
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(4.0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text("Total SaleDetail Posted: "),
-                                    (PostingData.sdCount == 0 ||
-                                                _saleDetail.length == 0) &&
-                                            !notData
-                                        ? SizedBox(
-                                            width: 12,
-                                            height: 12,
-                                            child: CircularProgressIndicator())
-                                        : Text("${PostingData.sdCount}"),
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(4.0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text("Total Recovery Posted: "),
-                                    (PostingData.rCount == 0 &&
-                                                _recovery.length == 0) &&
-                                            !notData
-                                        ? SizedBox(
-                                            width: 12,
-                                            height: 12,
-                                            child: CircularProgressIndicator())
-                                        : Text("${PostingData.rCount}"),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        PostingData.isPosteddone
-                            ? MaterialButton(
-                                onPressed: () {
-                                  PostingData.oCount = 0;
-                                  PostingData.odCount = 0;
-                                  PostingData.cCount = 0;
-                                  PostingData.sCount = 0;
-                                  PostingData.rCount = 0;
-                                  PostingData.sdCount = 0;
-                                  PostingData.isPosteddone = false;
-                                  Get.off(MyNavigationBar(
-                                    editRecovery: ViewRecovery(
-                                        amount: 0,
-                                        description: "",
-                                        recoveryID: 0,
-                                        checkOrCash: false,
-                                        dated: "",
-                                        party: Customer(
-                                            partyId: 0,
-                                            userId: 0,
-                                            partyName: "",
-                                            discount: 0,
-                                            address: "")),
-                                    selectedIndex: 0,
-                                    date: "",
-                                    list: [],
-                                    id: 0,
-                                    partyName: "Search Customer",
-                                  ));
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(snackBar);
-                                },
-                                elevation: 2.0,
-                                padding: EdgeInsets.all(15.0),
-                                shape: CircleBorder(),
-                                color: eTradeGreen,
-                                child: Icon(
-                                  Icons.check,
-                                  color: Colors.white,
-                                ),
-                              )
-                            : CircularProgressIndicator(),
-                      ],
-                    ),
-                  ),
-                )
-              ])
-            : Column(
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: Image.asset("images/posting.gif",
-                        gaplessPlayback: true, fit: BoxFit.fill),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      // constraints: BoxConstraints(maxHeight: 29),
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(
-                                  5.0), // Set rounded corner radius
-                              topRight: Radius.circular(
-                                  5.0)), // Set rounded corner radius
-                          boxShadow: [
-                            BoxShadow(
-                                blurRadius: 10,
-                                color: Colors.black,
-                                offset: Offset(1, 3))
-                          ]),
+                      ),
 
                       width: double.infinity,
                       child: Column(
@@ -427,7 +237,9 @@ class _PostingDataState extends State<PostingData> {
                           Padding(
                             padding: const EdgeInsets.all(15.0),
                             child: Text(
-                              "Posting Data",
+                              isCompleted
+                                  ? "Posted Successfully"
+                                  : "Posting Data",
                               style: TextStyle(fontSize: 25),
                             ),
                           ),
@@ -446,11 +258,10 @@ class _PostingDataState extends State<PostingData> {
                                       (PostingData.cCount == 0 ||
                                                   _party.length == 0) &&
                                               !notData
-                                          ? SizedBox(
-                                              width: 12,
-                                              height: 12,
-                                              child:
-                                                  CircularProgressIndicator())
+                                          ? CircularProgressIndicator(
+                                              color: eTradeGreen,
+                                              strokeWidth: 2,
+                                            )
                                           : Text("${PostingData.cCount}"),
                                     ],
                                   ),
@@ -465,11 +276,8 @@ class _PostingDataState extends State<PostingData> {
                                       (PostingData.oCount == 0 ||
                                                   _order.length == 0) &&
                                               !notData
-                                          ? SizedBox(
-                                              width: 12,
-                                              height: 12,
-                                              child:
-                                                  CircularProgressIndicator())
+                                          ? CircularProgressIndicator(
+                                              color: eTradeGreen)
                                           : Text("${PostingData.oCount}"),
                                     ],
                                   ),
@@ -484,11 +292,8 @@ class _PostingDataState extends State<PostingData> {
                                       (PostingData.odCount == 0 ||
                                                   _orderDetail.length == 0) &&
                                               !notData
-                                          ? SizedBox(
-                                              width: 12,
-                                              height: 12,
-                                              child:
-                                                  CircularProgressIndicator())
+                                          ? CircularProgressIndicator(
+                                              color: eTradeGreen)
                                           : Text("${PostingData.odCount}"),
                                     ],
                                   ),
@@ -506,8 +311,8 @@ class _PostingDataState extends State<PostingData> {
                                           ? SizedBox(
                                               width: 12,
                                               height: 12,
-                                              child:
-                                                  CircularProgressIndicator())
+                                              child: CircularProgressIndicator(
+                                                  color: eTradeGreen))
                                           : Text("${PostingData.sCount}"),
                                     ],
                                   ),
@@ -525,8 +330,8 @@ class _PostingDataState extends State<PostingData> {
                                           ? SizedBox(
                                               width: 12,
                                               height: 12,
-                                              child:
-                                                  CircularProgressIndicator())
+                                              child: CircularProgressIndicator(
+                                                  color: eTradeGreen))
                                           : Text("${PostingData.sdCount}"),
                                     ],
                                   ),
@@ -544,8 +349,8 @@ class _PostingDataState extends State<PostingData> {
                                           ? SizedBox(
                                               width: 12,
                                               height: 12,
-                                              child:
-                                                  CircularProgressIndicator())
+                                              child: CircularProgressIndicator(
+                                                  color: eTradeGreen))
                                           : Text("${PostingData.rCount}"),
                                     ],
                                   ),
@@ -594,8 +399,220 @@ class _PostingDataState extends State<PostingData> {
                                     color: Colors.white,
                                   ),
                                 )
-                              : CircularProgressIndicator(),
+                              : CircularProgressIndicator(color: eTradeGreen),
                         ],
+                      ),
+                    ),
+                  ),
+                )
+              ])
+            : Column(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: Image.asset("images/posting.gif",
+                        gaplessPlayback: true, fit: BoxFit.fill),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Card(
+                      child: Container(
+                        // constraints: BoxConstraints(maxHeight: 29),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(
+                                  5.0), // Set rounded corner radius
+                              topRight: Radius.circular(
+                                  5.0)), // Set rounded corner radius
+                        ),
+
+                        width: double.infinity,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(15.0),
+                              child: Text(
+                                PostingData.isPosteddone
+                                    ? "Posted Successfully"
+                                    : "Posting Data",
+                                style:
+                                    TextStyle(fontSize: 25, color: eTradeGreen),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text("Total Customers Posted: "),
+                                        (PostingData.cCount == 0 ||
+                                                    _party.length == 0) &&
+                                                !notData
+                                            ? SizedBox(
+                                                width: 12,
+                                                height: 12,
+                                                child:
+                                                    CircularProgressIndicator(
+                                                        color: eTradeGreen))
+                                            : Text("${PostingData.cCount}"),
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text("Total Order Posted: "),
+                                        (PostingData.oCount == 0 ||
+                                                    _order.length == 0) &&
+                                                !notData
+                                            ? SizedBox(
+                                                width: 12,
+                                                height: 12,
+                                                child:
+                                                    CircularProgressIndicator(
+                                                        color: eTradeGreen))
+                                            : Text("${PostingData.oCount}"),
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text("Total OrderDetail Posted: "),
+                                        (PostingData.odCount == 0 ||
+                                                    _orderDetail.length == 0) &&
+                                                !notData
+                                            ? SizedBox(
+                                                width: 12,
+                                                height: 12,
+                                                child:
+                                                    CircularProgressIndicator(
+                                                        color: eTradeGreen))
+                                            : Text("${PostingData.odCount}"),
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text("Total Sale Posted: "),
+                                        (PostingData.sCount == 0 ||
+                                                    _sale.length == 0) &&
+                                                !notData
+                                            ? SizedBox(
+                                                width: 12,
+                                                height: 12,
+                                                child:
+                                                    CircularProgressIndicator(
+                                                        color: eTradeGreen))
+                                            : Text("${PostingData.sCount}"),
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text("Total SaleDetail Posted: "),
+                                        (PostingData.sdCount == 0 ||
+                                                    _saleDetail.length == 0) &&
+                                                !notData
+                                            ? SizedBox(
+                                                width: 12,
+                                                height: 12,
+                                                child:
+                                                    CircularProgressIndicator(
+                                                        color: eTradeGreen))
+                                            : Text("${PostingData.sdCount}"),
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text("Total Recovery Posted: "),
+                                        (PostingData.rCount == 0 &&
+                                                    _recovery.length == 0) &&
+                                                !notData
+                                            ? SizedBox(
+                                                width: 12,
+                                                height: 12,
+                                                child:
+                                                    CircularProgressIndicator(
+                                                        color: eTradeGreen))
+                                            : Text("${PostingData.rCount}"),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            PostingData.isPosteddone
+                                ? MaterialButton(
+                                    onPressed: () {
+                                      PostingData.oCount = 0;
+                                      PostingData.odCount = 0;
+                                      PostingData.cCount = 0;
+                                      PostingData.sCount = 0;
+                                      PostingData.rCount = 0;
+                                      PostingData.sdCount = 0;
+                                      PostingData.isPosteddone = false;
+                                      Get.off(MyNavigationBar(
+                                        editRecovery: ViewRecovery(
+                                            amount: 0,
+                                            description: "",
+                                            recoveryID: 0,
+                                            checkOrCash: false,
+                                            dated: "",
+                                            party: Customer(
+                                                partyId: 0,
+                                                userId: 0,
+                                                partyName: "",
+                                                discount: 0,
+                                                address: "")),
+                                        selectedIndex: 0,
+                                        date: "",
+                                        list: [],
+                                        id: 0,
+                                        partyName: "Search Customer",
+                                      ));
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(snackBar);
+                                    },
+                                    elevation: 2.0,
+                                    padding: EdgeInsets.all(15.0),
+                                    shape: CircleBorder(),
+                                    color: eTradeGreen,
+                                    child: Icon(
+                                      Icons.check,
+                                      color: Colors.white,
+                                    ),
+                                  )
+                                : CircularProgressIndicator(color: eTradeGreen),
+                          ],
+                        ),
                       ),
                     ),
                   )

@@ -5,6 +5,7 @@ import 'dart:ffi';
 import 'dart:io';
 
 // import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:eTrade/components/CustomNavigator.dart';
 import 'package:eTrade/components/constants.dart';
 import 'package:eTrade/main.dart';
 import 'package:eTrade/screen/NavigationScreen/DashBoard/DashboardScreen.dart';
@@ -86,7 +87,7 @@ class TakeOrderScreen extends StatefulWidget {
     return productdb;
   }
 
-  void setParty(Customer selectedCustomer) {
+  static void setParty(Customer selectedCustomer) {
     customer.partyId = selectedCustomer.partyId;
     customer.partyName = selectedCustomer.partyName;
     customer.discount = selectedCustomer.discount;
@@ -127,7 +128,8 @@ class TakeOrderScreen extends StatefulWidget {
       DashBoardScreen.dashBoard = await DashBoardScreen.getOrderHistory();
       Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(
+          MyCustomRoute(
+              slide: "Left",
               builder: (context) => MyNavigationBar(
                     editRecovery: ViewRecovery(
                         amount: 0,
@@ -197,7 +199,7 @@ class _TakeOrderScreenState extends State<TakeOrderScreen>
             partyName: widget.partyName);
         selectedParty =
             selectedParty.selectedCustomer(DataBaseDataLoad.ListOCustomer);
-        widget.setParty(selectedParty);
+        TakeOrderScreen.setParty(selectedParty);
         if (TakeOrderScreen.isEditOrder) {
           TakeOrderScreen.orderId = widget.iD;
           TakeOrderScreen.orderDATE = widget.date;
@@ -231,11 +233,11 @@ class _TakeOrderScreenState extends State<TakeOrderScreen>
       PreLoadDataBase();
       if (!TakeOrderScreen.isSync && !TakeOrderScreen.isordered) {
         setState(() {
-          widget.setParty(TakeOrderScreen.customer);
+          TakeOrderScreen.setParty(TakeOrderScreen.customer);
         });
       } else if (!TakeOrderScreen.isEditOrder || !TakeOrderScreen.isEditSale) {
         setState(() {
-          widget.setParty(Customer(
+          TakeOrderScreen.setParty(Customer(
               discount: 0,
               partyId: 0,
               userId: 0,
@@ -290,7 +292,7 @@ class _TakeOrderScreenState extends State<TakeOrderScreen>
                         TakeOrderScreen.isEditSale = false;
                         TakeOrderScreen.isSelected = false;
                       }
-                      widget.setParty(Customer(
+                      TakeOrderScreen.setParty(Customer(
                           partyId: 0,
                           discount: 0,
                           userId: 0,
@@ -327,7 +329,7 @@ class _TakeOrderScreenState extends State<TakeOrderScreen>
                       onPressed: () async {
                         setState(() {
                           TakeOrderScreen.isSaleSpot = false;
-                          widget.setParty(Customer(
+                          TakeOrderScreen.setParty(Customer(
                               partyId: 0,
                               discount: 0,
                               userId: 0,
@@ -455,7 +457,7 @@ class _TakeOrderScreenState extends State<TakeOrderScreen>
                                           getData(filter),
                                       onChanged: (value) {
                                         setState(() {
-                                          widget.setParty(value!);
+                                          TakeOrderScreen.setParty(value!);
                                           TakeOrderScreen.customer = value;
                                         });
                                       },
