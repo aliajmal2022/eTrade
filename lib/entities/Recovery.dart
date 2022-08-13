@@ -36,6 +36,7 @@ class Recovery {
             party: Customer(
                 partyName: "",
                 partyId: 0,
+                partyIdMobile: 0,
                 discount: 0,
                 address: "",
                 userId: 0));

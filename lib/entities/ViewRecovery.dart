@@ -30,6 +30,7 @@ class ViewRecovery {
             checkOrCash: false,
             description: "",
             party: Customer(
+                partyIdMobile: 0,
                 partyId: 0,
                 partyName: "",
                 discount: 0,

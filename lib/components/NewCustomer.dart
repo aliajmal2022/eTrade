@@ -203,6 +203,7 @@ class _NewUsrAddLocalDBState extends State<NewUsrAddLocalDB> {
                                           await SQLHelper.getIDForNCustomer();
                                       Customer nCustomer = Customer(
                                           address: address,
+                                          partyIdMobile: id,
                                           userId: MyNavigationBar.userID,
                                           partyId: id,
                                           partyName: InpName,

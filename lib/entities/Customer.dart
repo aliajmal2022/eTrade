@@ -7,18 +7,25 @@ class Customer {
     required this.partyId,
     required this.discount,
     required this.partyName,
+    required this.partyIdMobile,
     required this.userId,
     required this.address,
   });
   double discount;
   int partyId;
   int userId;
+  int partyIdMobile;
   String address;
   String partyName = "Search Customer";
   bool match = false;
   Customer selectedCustomer(List<Customer> customer) {
     Customer selectedcustomer = Customer(
-        partyId: 0, partyName: "", discount: 0, address: "", userId: 0);
+        partyIdMobile: 0,
+        partyId: 0,
+        partyName: "",
+        discount: 0,
+        address: "",
+        userId: 0);
     try {
       for (var element in customer) {
         if (element.partyName == partyName) {
@@ -41,13 +48,19 @@ class Customer {
       _party = await SQLHelper.instance.getTable("Party", "PartyID");
     } else {
       _party = await Sql_Connection().read(
-          'SELECT p.PartyID,p.PartyName,p.Discount,p.Address FROM Party AS p WHERE p.AccTypeID=6');
+          'SELECT p.PartyID,p.PartyName,p.Discount,p.Address,p.PartyID_Mobile FROM Party AS p WHERE p.AccTypeID=6');
     }
     if (_party.isNotEmpty) {
       _party.forEach((element) {
         Customer _customer = Customer(
-            partyId: 0, partyName: "", discount: 0, address: "", userId: 0);
+            partyIdMobile: 0,
+            partyId: 0,
+            partyName: "",
+            discount: 0,
+            address: "",
+            userId: 0);
         _customer.partyId = element['PartyID'];
+        _customer.partyIdMobile = element['PartyID_Mobile'] ?? 0;
         _customer.partyName = element['PartyName'];
         _customer.discount = element['Discount'];
         _customer.address = element['Address'].toString();

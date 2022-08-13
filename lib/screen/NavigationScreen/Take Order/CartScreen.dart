@@ -111,6 +111,7 @@ class _CartScreenState extends State<CartScreen> {
                               party: Customer(
                                   address: "",
                                   userId: 0,
+                                  partyIdMobile: 0,
                                   partyId: 0,
                                   partyName: "",
                                   discount: 0)),
@@ -389,6 +390,7 @@ class _CartScreenState extends State<CartScreen> {
                                           resetCartList();
                                           TakeOrderScreen.setParty(Customer(
                                               partyId: 0,
+                                              partyIdMobile: 0,
                                               discount: 0,
                                               userId: 0,
                                               address: "",
@@ -408,6 +410,7 @@ class _CartScreenState extends State<CartScreen> {
                                                         discount: 0,
                                                         userId: 0,
                                                         partyId: 0,
+                                                        partyIdMobile: 0,
                                                         partyName: "",
                                                         address: "")),
                                                 list: [],
@@ -449,6 +452,7 @@ class _CartScreenState extends State<CartScreen> {
                                             TakeOrderScreen.setParty(Customer(
                                                 partyId: 0,
                                                 discount: 0,
+                                                partyIdMobile: 0,
                                                 userId: 0,
                                                 address: "",
                                                 partyName: "Search Customer"));
@@ -467,6 +471,7 @@ class _CartScreenState extends State<CartScreen> {
                                                     party: Customer(
                                                         userId: 0,
                                                         discount: 0,
+                                                        partyIdMobile: 0,
                                                         partyId: 0,
                                                         partyName: "",
                                                         address: "")),
@@ -535,6 +540,7 @@ class _CartScreenState extends State<CartScreen> {
                                                         dated: "",
                                                         party: Customer(
                                                             partyId: 0,
+                                                            partyIdMobile: 0,
                                                             userId: 0,
                                                             address: "",
                                                             discount: 0,
@@ -607,6 +613,7 @@ class _CartScreenState extends State<CartScreen> {
                                                       party: Customer(
                                                           partyId: 0,
                                                           userId: 0,
+                                                          partyIdMobile: 0,
                                                           address: "",
                                                           discount: 0,
                                                           partyName: "")),

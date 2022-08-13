@@ -148,6 +148,7 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
                                         dated: "",
                                         party: Customer(
                                             partyId: 0,
+                                            partyIdMobile: 0,
                                             userId: 0,
                                             address: "",
                                             discount: 0,

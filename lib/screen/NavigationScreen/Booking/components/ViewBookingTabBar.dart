@@ -386,6 +386,7 @@ class _BookingTabBarItemState extends State<BookingTabBarItem>
                                                                     userId: 0,
                                                                     discount: 0,
                                                                     address: "",
+                                                partyIdMobile: 0,
                                                                     partyId: 0,
                                                                     partyName:
                                                                         "")),
@@ -432,6 +433,7 @@ class _BookingTabBarItemState extends State<BookingTabBarItem>
                                                                     userId: 0,
                                                                     discount: 0,
                                                                     address: "",
+                                                partyIdMobile: 0,
                                                                     partyId: 0,
                                                                     partyName:
                                                                         "")),

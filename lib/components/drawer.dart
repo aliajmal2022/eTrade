@@ -82,6 +82,7 @@ class _MyDrawerState extends State<MyDrawer>
                   party: Customer(
                       userId: 0,
                       address: "",
+                      partyIdMobile: 0,
                       partyId: 0,
                       partyName: "",
                       discount: 0)),
@@ -108,6 +109,7 @@ class _MyDrawerState extends State<MyDrawer>
                   address: "",
                   userId: 0,
                   partyId: 0,
+                  partyIdMobile: 0,
                   partyName: "",
                   discount: 0)),
           selectedIndex: 0,
@@ -230,6 +232,7 @@ class _MyDrawerState extends State<MyDrawer>
                                                 address: "",
                                                 discount: 0,
                                                 partyId: 0,
+                                                partyIdMobile: 0,
                                                 partyName: "")),
                                         selectedIndex: 1,
                                         date: "",
@@ -262,6 +265,7 @@ class _MyDrawerState extends State<MyDrawer>
                                             checkOrCash: false,
                                             party: Customer(
                                                 address: "",
+                                                partyIdMobile: 0,
                                                 userId: 0,
                                                 discount: 0,
                                                 partyId: 0,
@@ -289,7 +293,7 @@ class _MyDrawerState extends State<MyDrawer>
                               bool isconnected = await Sql_Connection.connect(
                                   context, ip, port);
                               if (isconnected) {
-                                TakeOrderScreen.onLoading(context, true);
+                                TakeOrderScreen.onLoading(context, true, false);
                               }
                             } else {
                               final snackBar = const SnackBar(
@@ -305,6 +309,7 @@ class _MyDrawerState extends State<MyDrawer>
                                     dated: "",
                                     party: Customer(
                                         userId: 0,
+                                        partyIdMobile: 0,
                                         partyId: 0,
                                         partyName: "",
                                         address: "",
@@ -369,6 +374,7 @@ class _MyDrawerState extends State<MyDrawer>
                                             dated: "",
                                             party: Customer(
                                                 address: "",
+                                                partyIdMobile: 0,
                                                 userId: 0,
                                                 discount: 0,
                                                 partyId: 0,
@@ -415,6 +421,7 @@ class _MyDrawerState extends State<MyDrawer>
                                             party: Customer(
                                                 partyId: 0,
                                                 userId: 0,
+                                                partyIdMobile: 0,
                                                 partyName: "",
                                                 discount: 0,
                                                 address: "")),
@@ -449,6 +456,7 @@ class _MyDrawerState extends State<MyDrawer>
                                             dated: "",
                                             party: Customer(
                                                 partyId: 0,
+                                                partyIdMobile: 0,
                                                 userId: 0,
                                                 partyName: "",
                                                 discount: 0,

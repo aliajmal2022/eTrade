@@ -95,6 +95,7 @@ class _ListOfOrderState extends State<ListOfOrder>
                                                   party: Customer(
                                                       userId: 0,
                                                       discount: 0,
+                                                partyIdMobile: 0,
                                                       address: "",
                                                       partyId: 0,
                                                       partyName: "")),
@@ -125,6 +126,7 @@ class _ListOfOrderState extends State<ListOfOrder>
                                                     dated: "",
                                                     party: Customer(
                                                         userId: 0,
+                                                partyIdMobile: 0,
                                                         address: "",
                                                         discount: 0,
                                                         partyId: 0,

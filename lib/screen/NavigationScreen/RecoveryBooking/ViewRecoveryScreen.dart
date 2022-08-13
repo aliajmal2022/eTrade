@@ -68,6 +68,7 @@ class _ViewRecoveryScreenState extends State<ViewRecoveryScreen>
                         partyId: 0,
                         userId: 0,
                         partyName: "",
+                        partyIdMobile: 0,
                         discount: 0,
                         address: "")),
                 selectedIndex: 0,

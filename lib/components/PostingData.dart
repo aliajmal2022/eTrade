@@ -179,6 +179,7 @@ class _PostingDataState extends State<PostingData>
                             partyId: 0,
                             userId: 0,
                             partyName: "",
+                            partyIdMobile: 0,
                             discount: 0,
                             address: "")),
                     selectedIndex: 0,
@@ -393,6 +394,7 @@ class _PostingDataState extends State<PostingData>
                                               dated: "",
                                               party: Customer(
                                                   partyId: 0,
+                                                  partyIdMobile: 0,
                                                   userId: 0,
                                                   partyName: "",
                                                   discount: 0,
@@ -611,6 +613,7 @@ class _PostingDataState extends State<PostingData>
                                               party: Customer(
                                                   partyId: 0,
                                                   userId: 0,
+                                                  partyIdMobile: 0,
                                                   partyName: "",
                                                   discount: 0,
                                                   address: "")),
@@ -625,14 +628,17 @@ class _PostingDataState extends State<PostingData>
                                       },
                                       elevation: 2.0,
                                       padding: EdgeInsets.all(15.0),
-                                      // shape: CircleBorder(),
-                                      // color: eTradeGreen,
-                                      child: CircleAvatar(
-                                          radius: 60,
-                                          child: Image.asset(
-                                            'done.gif',
-                                            fit: BoxFit.fill,
-                                          )))
+                                      shape: CircleBorder(),
+                                      color: eTradeGreen,
+                                      child:
+                                          // Image.asset(
+                                          //   'done.gif',
+                                          //   fit: BoxFit.fill,
+                                          // ),
+                                          Icon(
+                                        Icons.done,
+                                        color: Colors.white,
+                                      ))
                                   : CircularProgressIndicator(
                                       color: eTradeGreen),
                             ],

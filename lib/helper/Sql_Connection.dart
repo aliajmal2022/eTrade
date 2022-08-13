@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:ffi';
 import 'dart:io';
 import 'package:dart_ping/dart_ping.dart';
+import 'package:eTrade/components/NavigationBar.dart';
 import 'package:eTrade/helper/sqlhelper.dart';
 import 'package:eTrade/entities/Customer.dart';
 import 'package:eTrade/entities/Products.dart';
@@ -77,6 +78,9 @@ class Sql_Connection {
       LOProduct.forEach((element) async {
         await SQLHelper.instance.createItem(element);
       });
+      await SQLHelper.deleteDataDuringSync(MyNavigationBar.userID);
+      var list = SQLHelper.instance.getTable("Party", "PartyID");
+      print(list);
     }
   }
 }

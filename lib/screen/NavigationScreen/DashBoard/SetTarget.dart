@@ -230,6 +230,7 @@ class _SetTargetScreenState extends State<SetTargetScreen> {
                             dated: "",
                             party: Customer(
                                 userId: 0,
+                                partyIdMobile: 0,
                                 address: "",
                                 partyId: 0,
                                 partyName: "",

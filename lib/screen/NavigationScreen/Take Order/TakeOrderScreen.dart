@@ -44,6 +44,7 @@ class TakeOrderScreen extends StatefulWidget {
   static Customer customer = new Customer(
       userId: 0,
       address: "",
+      partyIdMobile: 0,
       discount: 0,
       partyId: 0,
       partyName: "Search Customer");
@@ -100,7 +101,8 @@ class TakeOrderScreen extends StatefulWidget {
   static bool isEditOrder = false;
   static bool isSync = false;
   static bool isordered = false;
-  static Future<void> onLoading(BuildContext context, bool resetsync) async {
+  static Future<void> onLoading(
+      BuildContext context, bool resetsync, bool isLogin) async {
     showDialog(
         context: context,
         barrierDismissible: false,
@@ -115,7 +117,7 @@ class TakeOrderScreen extends StatefulWidget {
     Future.delayed(const Duration(seconds: 3), () async {
       isonloading = true;
       if (resetsync) {
-        await SQLHelper.resetData("Sync");
+        await SQLHelper.resetData("Sync", isLogin);
         await Sql_Connection.PreLoadData(true);
       } else {
         await Sql_Connection.PreLoadData(false);
@@ -139,6 +141,7 @@ class TakeOrderScreen extends StatefulWidget {
                         dated: "",
                         party: Customer(
                             partyId: 0,
+                            partyIdMobile: 0,
                             userId: 0,
                             partyName: "",
                             discount: 0,
@@ -194,6 +197,7 @@ class _TakeOrderScreenState extends State<TakeOrderScreen>
         var selectedParty = Customer(
             userId: 0,
             discount: 0,
+            partyIdMobile: 0,
             partyId: 0,
             address: "",
             partyName: widget.partyName);
@@ -241,6 +245,7 @@ class _TakeOrderScreenState extends State<TakeOrderScreen>
               discount: 0,
               partyId: 0,
               userId: 0,
+              partyIdMobile: 0,
               address: "",
               partyName: "Search Customer"));
         });
@@ -296,6 +301,7 @@ class _TakeOrderScreenState extends State<TakeOrderScreen>
                       TakeOrderScreen.setParty(Customer(
                           partyId: 0,
                           discount: 0,
+                          partyIdMobile: 0,
                           userId: 0,
                           address: "",
                           partyName: "Search Customer"));
@@ -314,6 +320,7 @@ class _TakeOrderScreenState extends State<TakeOrderScreen>
                                 party: Customer(
                                     partyId: 0,
                                     partyName: "",
+                                    partyIdMobile: 0,
                                     userId: 0,
                                     address: "",
                                     discount: 0)),
@@ -334,6 +341,7 @@ class _TakeOrderScreenState extends State<TakeOrderScreen>
                               partyId: 0,
                               discount: 0,
                               userId: 0,
+                              partyIdMobile: 0,
                               address: "",
                               partyName: "Search Customer"));
                           resetCartList();
@@ -354,6 +362,7 @@ class _TakeOrderScreenState extends State<TakeOrderScreen>
                                         party: Customer(
                                             partyId: 0,
                                             partyName: "",
+                                            partyIdMobile: 0,
                                             userId: 0,
                                             address: "",
                                             discount: 0)),
@@ -598,6 +607,7 @@ class _TakeOrderScreenState extends State<TakeOrderScreen>
                                                         address: "",
                                                         userId: 0,
                                                         partyId: 0,
+                                                        partyIdMobile: 0,
                                                         partyName: ""),
                                                     dated: "",
                                                     description: ""),
@@ -708,6 +718,7 @@ class _TakeOrderScreenState extends State<TakeOrderScreen>
                                   party: Customer(
                                       partyId: 0,
                                       partyName: "",
+                                      partyIdMobile: 0,
                                       userId: 0,
                                       discount: 0,
                                       address: "")),

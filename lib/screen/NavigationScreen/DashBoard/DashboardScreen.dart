@@ -132,16 +132,22 @@ class DashBoardScreen extends StatefulWidget {
     greatestTarget = 100000;
     var months = await SQLHelper.instance.getTable("UserTarget", "ID");
     List<MonthOrderHistory> list = [];
+    // try {
     for (count = 0; count < staticMonthName.length; count++) {
       staticMonths = [];
       MonthOrderHistory orderStatic = MonthOrderHistory(month: "", amount: 0);
-      orderStatic.amount = months[0][staticMonthName[count]].toDouble();
-      if (months[0][staticMonthName[count]] > greatestTarget) {
-        greatestTarget = orderStatic.amount.toInt();
+      if (months[0][staticMonthName[count]]! == null) {
+        orderStatic.amount = months[0][staticMonthName[count]].toDouble();
+        if (months[0][staticMonthName[count]] > greatestTarget) {
+          greatestTarget = orderStatic.amount.toInt();
+        }
       }
       orderStatic.month = (count + 1).toString();
       list.add(orderStatic);
     }
+    // } catch (e) {
+    //   print(e.toString());
+    // }
     return list;
   }
 

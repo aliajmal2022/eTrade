@@ -27,6 +27,7 @@ class RecoveryScreen extends StatefulWidget {
   State<RecoveryScreen> createState() => _RecoveryScreenState();
   Customer customer = Customer(
       userId: 0,
+      partyIdMobile: 0,
       partyId: 0,
       address: "",
       partyName: "Search Customer",
@@ -36,6 +37,7 @@ class RecoveryScreen extends StatefulWidget {
   static Customer tcustomer = Customer(
       userId: 0,
       partyId: 0,
+      partyIdMobile: 0,
       address: "",
       partyName: "Search Customer",
       discount: 0);
@@ -150,6 +152,7 @@ class _RecoveryScreenState extends State<RecoveryScreen>
         widget.setParty(Customer(
             partyId: 0,
             userId: 0,
+            partyIdMobile: 0,
             address: "",
             discount: 0,
             partyName: "Search Customer"));
@@ -192,12 +195,14 @@ class _RecoveryScreenState extends State<RecoveryScreen>
                           partyId: 0,
                           address: "",
                           userId: 0,
+                          partyIdMobile: 0,
                           discount: 0,
                           partyName: "Search Customer");
                       widget.setParty(Customer(
                           partyId: 0,
                           userId: 0,
                           address: "",
+                          partyIdMobile: 0,
                           discount: 0,
                           partyName: "Search Customer"));
                       RecoveryScreen.amountcontroller.clear();
@@ -229,6 +234,7 @@ class _RecoveryScreenState extends State<RecoveryScreen>
                               party: Customer(
                                   discount: 0,
                                   userId: 0,
+                                  partyIdMobile: 0,
                                   address: "",
                                   partyId: 0,
                                   partyName: "")),
@@ -554,6 +560,7 @@ class _RecoveryScreenState extends State<RecoveryScreen>
                                             widget.setParty(Customer(
                                                 discount: 0,
                                                 userId: 0,
+                                                partyIdMobile: 0,
                                                 partyId: 0,
                                                 address: "",
                                                 partyName: "Search Customer"));
@@ -561,6 +568,7 @@ class _RecoveryScreenState extends State<RecoveryScreen>
                                                 discount: 0,
                                                 userId: 0,
                                                 address: "",
+                                                partyIdMobile: 0,
                                                 partyId: 0,
                                                 partyName: "Search Customer");
                                           });
@@ -580,6 +588,7 @@ class _RecoveryScreenState extends State<RecoveryScreen>
                                               dated: storedateFormat
                                                   .format(DateTime.now()),
                                               party: Customer(
+                                                  partyIdMobile: 0,
                                                   partyId:
                                                       widget.getParty().partyId,
                                                   userId:
@@ -603,6 +612,7 @@ class _RecoveryScreenState extends State<RecoveryScreen>
                                             RecoveryScreen.descriptioncontroller
                                                 .clear();
                                             widget.setParty(Customer(
+                                                partyIdMobile: 0,
                                                 partyId: 0,
                                                 userId: 0,
                                                 discount: 0,
@@ -610,6 +620,7 @@ class _RecoveryScreenState extends State<RecoveryScreen>
                                                 partyName: "Search Customer"));
                                             RecoveryScreen.tcustomer = Customer(
                                                 discount: 0,
+                                                partyIdMobile: 0,
                                                 userId: 0,
                                                 address: "",
                                                 partyId: 0,
@@ -621,22 +632,20 @@ class _RecoveryScreenState extends State<RecoveryScreen>
                                                   builder: (context) =>
                                                       MyNavigationBar(
                                                         selectedIndex: 0,
-                                                        editRecovery:
-                                                            ViewRecovery(
-                                                                amount: 0,
-                                                                description: "",
-                                                                checkOrCash:
-                                                                    false,
-                                                                recoveryID: 0,
-                                                                dated: "",
-                                                                party: Customer(
-                                                                    discount: 0,
-                                                                    partyId: 0,
-                                                                    userId: 0,
-                                                                    partyName:
-                                                                        "",
-                                                                    address:
-                                                                        "")),
+                                                        editRecovery: ViewRecovery(
+                                                            amount: 0,
+                                                            description: "",
+                                                            checkOrCash: false,
+                                                            recoveryID: 0,
+                                                            dated: "",
+                                                            party: Customer(
+                                                                discount: 0,
+                                                                partyIdMobile:
+                                                                    0,
+                                                                partyId: 0,
+                                                                userId: 0,
+                                                                partyName: "",
+                                                                address: "")),
                                                         date: "",
                                                         id: 0,
                                                         list: [],

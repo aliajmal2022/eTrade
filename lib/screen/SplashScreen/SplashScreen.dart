@@ -29,6 +29,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
                   address: "",
                   partyId: 0,
                   userId: 0,
+                  partyIdMobile: 0,
                   partyName: "",
                   discount: 0)),
           id: 0,

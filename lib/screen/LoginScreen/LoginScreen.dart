@@ -169,22 +169,25 @@ class _LoginScreenState extends State<LoginScreen> {
 
                                       if (usr.id != 0) {
                                         if (widget.fromMasterReset) {
-                                          await SQLHelper.resetData("Reset");
+                                          await SQLHelper.resetData(
+                                              "Reset", false);
 
                                           await TakeOrderScreen.onLoading(
-                                              context, false);
+                                              context, false, false);
 
+                                          UserSharePreferences.setId(usr.id);
+                                          UserSharePreferences.setIp(widget.ip);
+                                          UserSharePreferences.setflag(flag);
+                                          UserSharePreferences.setmode(false);
                                           await DataBaseDataLoad.DataLoading();
                                         } else {
                                           UserSharePreferences.setId(usr.id);
-                                          UserSharePreferences.SetTargetScreen(
-                                              usr.monthlyTarget);
                                           UserSharePreferences.setIp(widget.ip);
                                           UserSharePreferences.setflag(flag);
                                           UserSharePreferences.setmode(false);
                                           if (!SQLHelper.existDataBase) {
                                             await TakeOrderScreen.onLoading(
-                                                context, false);
+                                                context, false, true);
                                           } else {
                                             SQLHelper.existDataBase = false;
                                             SQLHelper.restoreDB();
@@ -194,25 +197,21 @@ class _LoginScreenState extends State<LoginScreen> {
                                                     slide: "Left",
                                                     builder: (context) =>
                                                         MyNavigationBar(
-                                                          editRecovery:
-                                                              ViewRecovery(
-                                                                  amount: 0,
-                                                                  description:
-                                                                      "",
-                                                                  recoveryID: 0,
-                                                                  checkOrCash:
-                                                                      false,
-                                                                  dated: "",
-                                                                  party: Customer(
-                                                                      partyId:
-                                                                          0,
-                                                                      userId: 0,
-                                                                      partyName:
-                                                                          "",
-                                                                      discount:
-                                                                          0,
-                                                                      address:
-                                                                          "")),
+                                                          editRecovery: ViewRecovery(
+                                                              amount: 0,
+                                                              description: "",
+                                                              recoveryID: 0,
+                                                              checkOrCash:
+                                                                  false,
+                                                              dated: "",
+                                                              party: Customer(
+                                                                  partyId: 0,
+                                                                  userId: 0,
+                                                                  partyIdMobile:
+                                                                      0,
+                                                                  partyName: "",
+                                                                  discount: 0,
+                                                                  address: "")),
                                                           selectedIndex: 0,
                                                           date: "",
                                                           list: [],
