@@ -16,7 +16,8 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 
 class DashBoardScreen extends StatefulWidget {
   static List<DashBoard> dashBoard = [];
-  static Future<List<DashBoard>> getOrderHistory() async {
+  static bool isOrder = true;
+  static Future<List<DashBoard>> getOrderHistory(isOrder) async {
     List<DashBoard> list = [];
     DateFormat dateFormat = DateFormat("dd-MM-yyyy");
     String exactDate = dateFormat.format(DateTime.now());
@@ -31,14 +32,25 @@ class DashBoardScreen extends StatefulWidget {
     int lastYear = 0;
     int today = 0;
     try {
-      today = await SQLHelper.getOrderCount("Today", exactDate);
-      yesterday = await SQLHelper.getOrderCount("Yesterday", yesterdayDate);
-      week = await SQLHelper.getOrderCount("Week", exactDate);
-      lastWeek = await SQLHelper.getOrderCount("PWeek", exactDate);
-      month = await SQLHelper.getOrderCount("Month", exactDate);
-      lastMonth = await SQLHelper.getOrderCount("PMonth", exactDate);
-      year = await SQLHelper.getOrderCount("Year", exactDate);
-      lastYear = await SQLHelper.getOrderCount("PYear", exactDate);
+      if (isOrder) {
+        today = await SQLHelper.getOrderCount("Today", exactDate);
+        yesterday = await SQLHelper.getOrderCount("Yesterday", yesterdayDate);
+        week = await SQLHelper.getOrderCount("Week", exactDate);
+        lastWeek = await SQLHelper.getOrderCount("PWeek", exactDate);
+        month = await SQLHelper.getOrderCount("Month", exactDate);
+        lastMonth = await SQLHelper.getOrderCount("PMonth", exactDate);
+        year = await SQLHelper.getOrderCount("Year", exactDate);
+        lastYear = await SQLHelper.getOrderCount("PYear", exactDate);
+      } else {
+        today = await SQLHelper.getSaleCount("Today", exactDate);
+        yesterday = await SQLHelper.getSaleCount("Yesterday", yesterdayDate);
+        week = await SQLHelper.getSaleCount("Week", exactDate);
+        lastWeek = await SQLHelper.getSaleCount("PWeek", exactDate);
+        month = await SQLHelper.getSaleCount("Month", exactDate);
+        lastMonth = await SQLHelper.getSaleCount("PMonth", exactDate);
+        year = await SQLHelper.getSaleCount("Year", exactDate);
+        lastYear = await SQLHelper.getSaleCount("PYear", exactDate);
+      }
       list = [
         DashBoard(
             compareOrder: yesterday,
@@ -133,9 +145,12 @@ class DashBoardScreen extends StatefulWidget {
     return list;
   }
 
-  static Future<List<Items>> getTopProduct() async {
+  static Future<List<Items>> getTopProduct(isOrder) async {
     List<Items> list = [];
-    var products = await SQLHelper.getTopTenProductByAmount();
+
+    var products = isOrder
+        ? await SQLHelper.getTopTenProductByOrder()
+        : await SQLHelper.getTopTenProductBySale();
     if (products.isNotEmpty) {
       var formatter = NumberFormat('#,###,000');
       for (var element in products) {
@@ -157,14 +172,15 @@ class DashBoardScreen extends StatefulWidget {
 
 class _DashBoardScreenState extends State<DashBoardScreen>
     with TickerProviderStateMixin {
-  bool isOrder = true;
   updateData() async {
-    DashBoardScreen.dashBoard = await DashBoardScreen.getOrderHistory();
-    DashBoardScreen.itemdata = await DashBoardScreen.getTopProduct();
+    DashBoardScreen.dashBoard =
+        await DashBoardScreen.getOrderHistory(DashBoardScreen.isOrder);
+    DashBoardScreen.itemdata =
+        await DashBoardScreen.getTopProduct(DashBoardScreen.isOrder);
     DashBoardScreen.monthlyList =
-        await DashBoardScreen.getMonthlyRecordDB(isOrder);
+        await DashBoardScreen.getMonthlyRecordDB(DashBoardScreen.isOrder);
     DashBoardScreen.staticMonths =
-        await DashBoardScreen.getMonthlyTargetDB(isOrder);
+        await DashBoardScreen.getMonthlyTargetDB(DashBoardScreen.isOrder);
     setState(() {
       DashBoardScreen.itemdata;
       DashBoardScreen.dashBoard;
@@ -233,24 +249,34 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      isOrder ? "Order" : "Sale",
+                      DashBoardScreen.isOrder ? "Order" : "Sale",
                       style: TextStyle(fontSize: 30),
                     ),
                   ),
                   Switch(
                     activeColor: eTradeGreen,
-                    value: isOrder,
+                    value: DashBoardScreen.isOrder,
                     onChanged: (value) async {
                       setState(() {
-                        isOrder = value;
+                        DashBoardScreen.isOrder = value;
                       });
+                      DashBoardScreen.dashBoard =
+                          await DashBoardScreen.getOrderHistory(
+                              DashBoardScreen.isOrder);
+                      DashBoardScreen.itemdata =
+                          await DashBoardScreen.getTopProduct(
+                              DashBoardScreen.isOrder);
                       DashBoardScreen.monthlyList =
-                          await DashBoardScreen.getMonthlyRecordDB(isOrder);
+                          await DashBoardScreen.getMonthlyRecordDB(
+                              DashBoardScreen.isOrder);
                       DashBoardScreen.staticMonths =
-                          await DashBoardScreen.getMonthlyTargetDB(isOrder);
+                          await DashBoardScreen.getMonthlyTargetDB(
+                              DashBoardScreen.isOrder);
                       setState(() {
                         DashBoardScreen.monthlyList;
                         DashBoardScreen.staticMonths;
+                        DashBoardScreen.itemdata;
+                        DashBoardScreen.dashBoard;
                       });
                     },
                   ),
@@ -319,7 +345,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  "Order History",
+                  DashBoardScreen.isOrder ? "Order History" : "Sale History",
                   style: TextStyle(fontSize: 30),
                 ),
               ),
@@ -414,7 +440,9 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
-                                            "Orders:",
+                                            DashBoardScreen.isOrder
+                                                ? "Order "
+                                                : "Sale ",
                                             style: TextStyle(
                                                 fontWeight: FontWeight.bold),
                                           ),
@@ -524,7 +552,9 @@ class _DashBoardScreenState extends State<DashBoardScreen>
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  "Top 10 Ordered Products",
+                  DashBoardScreen.isOrder
+                      ? "Top 10 Ordered Products"
+                      : "Top 10 Sell Products",
                   style: TextStyle(fontSize: 30),
                 ),
               ),
@@ -557,7 +587,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                         );
                       }),
                       isVisible: true,
-                      position: LegendPosition.bottom,
+                      position: LegendPosition.top,
                       overflowMode: LegendItemOverflowMode.wrap),
                 ),
               ),

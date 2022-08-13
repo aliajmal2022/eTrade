@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:eTrade/components/CustomNavigator.dart';
 import 'package:eTrade/components/NavigationBar.dart';
 import 'package:eTrade/components/constants.dart';
 import 'package:eTrade/screen/NavigationScreen/Booking/components/SearchListOrder.dart';
@@ -39,11 +40,16 @@ class _ViewBookingScreenState extends State<ViewBookingScreen>
 
   @override
   void initState() {
+    super.initState();
     if (MyDrawer.isopen) {
       openDrawer();
       MyDrawer.isopen = false;
     }
-    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -77,26 +83,29 @@ class _ViewBookingScreenState extends State<ViewBookingScreen>
                         ViewBookingScreen.isSaleBooking = false;
                         // dispose();
                       });
-                      Get.off(
-                          MyNavigationBar(
-                              selectedIndex: 2,
-                              editRecovery: ViewRecovery(
-                                  amount: 0,
-                                  description: "",
-                                  recoveryID: 0,
-                                  checkOrCash: false,
-                                  dated: "",
-                                  party: Customer(
-                                      partyId: 0,
-                                      partyName: "",
-                                      userId: 0,
-                                      address: "",
-                                      discount: 0)),
-                              list: [],
-                              date: "",
-                              id: 0,
-                              partyName: "Search Customer"),
-                          transition: Transition.leftToRight);
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MyCustomRoute(
+                              builder: (context) => MyNavigationBar(
+                                  selectedIndex: 2,
+                                  editRecovery: ViewRecovery(
+                                      amount: 0,
+                                      description: "",
+                                      recoveryID: 0,
+                                      checkOrCash: false,
+                                      dated: "",
+                                      party: Customer(
+                                          partyId: 0,
+                                          partyName: "",
+                                          userId: 0,
+                                          address: "",
+                                          discount: 0)),
+                                  list: [],
+                                  date: "",
+                                  id: 0,
+                                  partyName: "Search Customer"),
+                              slide: "Right"),
+                          (route) => false);
                     },
                   )
                 : Builder(

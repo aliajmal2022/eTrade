@@ -150,11 +150,11 @@ class _ListOfOrderState extends State<ListOfOrder>
                           label: 'delete',
                           onPressed: ((ViewBookingScreen.isSaleBooking
                               ? (context) async {
-                                  await SQLHelper.deleteItem(
-                                      "Sale", "iD", dummyOrderList[index].iD);
+                                  await SQLHelper.deleteItem("Sale",
+                                      "InvoiceID", dummyOrderList[index].iD);
 
-                                  await SQLHelper.deleteItem("SaleDetail", "iD",
-                                      dummyOrderList[index].iD);
+                                  await SQLHelper.deleteItem("SaleDetail",
+                                      "InvoiceID", dummyOrderList[index].iD);
 
                                   if (widget.tabName == "Search") {
                                     _item = await SQLHelper.getFromToViewSale(
@@ -178,6 +178,9 @@ class _ListOfOrderState extends State<ListOfOrder>
                                     dummyOrderList =
                                         ViewBooking.ViewOrderFromDb(_item);
                                   });
+                                  DashBoardScreen.dashBoard =
+                                      await DashBoardScreen.getOrderHistory(
+                                          false);
                                 }
                               : (context) async {
                                   await SQLHelper.deleteItem("Order", "OrderID",
@@ -210,6 +213,9 @@ class _ListOfOrderState extends State<ListOfOrder>
                                     dummyOrderList =
                                         ViewBooking.ViewOrderFromDb(_item);
                                   });
+                                  DashBoardScreen.dashBoard =
+                                      await DashBoardScreen.getOrderHistory(
+                                          true);
                                 })),
                         ),
                       ]),

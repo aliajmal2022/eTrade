@@ -3,6 +3,7 @@
 import 'dart:math';
 
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:eTrade/components/CustomNavigator.dart';
 import 'package:eTrade/components/NavigationBar.dart';
 import 'package:eTrade/components/constants.dart';
 import 'package:eTrade/helper/Sql_Connection.dart';
@@ -159,7 +160,8 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
                                 } else {
                                   Navigator.push(
                                       context,
-                                      MaterialPageRoute(
+                                      MyCustomRoute(
+                                          slide: "Left",
                                           builder: (context) => LoginScreen(
                                                 ip: userIp,
                                                 fromMasterReset: false,

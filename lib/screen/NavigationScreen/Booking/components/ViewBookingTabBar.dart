@@ -47,13 +47,13 @@ class BookingTabBarItem extends StatefulWidget {
   static List listOfItems = [];
   static Future<List<Edit>> getOrderDetail(int id) async {
     List orderDetail = await SQLHelper.getOrderDetail(id);
-    var getDetail = Edit.ViewFromDb(orderDetail);
+    var getDetail = Edit.ViewFromDb(orderDetail, false);
     return getDetail;
   }
 
   static Future<List<Edit>> getSaleDetail(int id) async {
     List saleDetail = await SQLHelper.getSaleDetail(id);
-    var getDetail = Edit.ViewFromDb(saleDetail);
+    var getDetail = Edit.ViewFromDb(saleDetail, true);
     return getDetail;
   }
 
@@ -73,36 +73,42 @@ class _BookingTabBarItemState extends State<BookingTabBarItem>
   @override
   void dispose() {
     _animationController.dispose();
+    build(context);
     super.dispose();
+  }
+
+  preloadData() {
+    setState(() {
+      _animationController = AnimationController(
+          vsync: this, duration: Duration(milliseconds: 300));
+      _animationController.forward();
+      BookingTabBarItem.listOfItems = [];
+      if (widget.tabName == "Search") {
+        range = BookingTabBarItem.getFromDate() +
+                "-" +
+                BookingTabBarItem.getToDate() ??
+            BookingTabBarItem.getFromDate();
+        if (BookingTabBarItem.getFromDate() != "" &&
+            BookingTabBarItem.getToDate() != "") {
+          setState(() {
+            prerange = range;
+          });
+          checkListDateAvialable(widget.tabName);
+        }
+      } else if (widget.tabName == "Today") {
+        checkListDateAvialable(widget.tabName);
+      } else if (widget.tabName == "Yesterday") {
+        checkListDateAvialable(widget.tabName);
+      } else {
+        checkListDateAvialable(widget.tabName);
+      }
+    });
   }
 
   @override
   void initState() {
-    _animationController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 500));
-    _animationController.forward();
-    BookingTabBarItem.listOfItems = [];
-    if (widget.tabName == "Search") {
-      range = BookingTabBarItem.getFromDate() +
-              "-" +
-              BookingTabBarItem.getToDate() ??
-          BookingTabBarItem.getFromDate();
-      if (BookingTabBarItem.getFromDate() != "" &&
-          BookingTabBarItem.getToDate() != "") {
-        setState(() {
-          prerange = range;
-        });
-        checkListDateAvialable(widget.tabName);
-      }
-    } else if (widget.tabName == "Today") {
-      checkListDateAvialable(widget.tabName);
-    } else if (widget.tabName == "Yesterday") {
-      checkListDateAvialable(widget.tabName);
-    } else {
-      checkListDateAvialable(widget.tabName);
-    }
-
     super.initState();
+    preloadData();
   }
 
   DateFormat dateFormat = DateFormat('dd-MM-yyyy');
@@ -495,6 +501,9 @@ class _BookingTabBarItemState extends State<BookingTabBarItem>
                                             setState(() {
                                               BookingTabBarItem.listOfItems;
                                             });
+                                            DashBoardScreen.dashBoard =
+                                                await DashBoardScreen
+                                                    .getOrderHistory(false);
                                           }
                                         : (context) async {
                                             await SQLHelper.deleteItem(
@@ -544,7 +553,7 @@ class _BookingTabBarItemState extends State<BookingTabBarItem>
                                             });
                                             DashBoardScreen.dashBoard =
                                                 await DashBoardScreen
-                                                    .getOrderHistory();
+                                                    .getOrderHistory(true);
                                           })),
                                     backgroundColor: const Color(0xFFFE4A49),
                                     foregroundColor: Colors.white,
@@ -559,23 +568,6 @@ class _BookingTabBarItemState extends State<BookingTabBarItem>
                                     .animate(_animationController),
                                 child: FadeTransition(
                                   opacity: _animationController,
-                                  // child: Container(
-                                  //   height: 110,
-                                  //   width: double.infinity,
-                                  //   decoration: BoxDecoration(
-                                  //       // color: (MyApp.isDark)
-                                  //       //     ? Color(0xff424242)
-                                  //       //     : Colors.white,
-                                  //       // boxShadow: [
-                                  //       //   BoxShadow(
-                                  //       // color: Colors.black,
-                                  //       color: eTradeGreen,
-                                  //       // offset: Offset(0, 0), //(x,y)
-                                  //       // blurRadius: 1.0,
-                                  //       //   ),
-                                  //       // ],
-                                  //       borderRadius: BorderRadius.all(
-                                  //           Radius.circular(5))),
                                   child: Card(
                                     child: Padding(
                                       padding: EdgeInsets.all(12.0),

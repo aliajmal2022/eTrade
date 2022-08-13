@@ -17,6 +17,7 @@ class WebViewScreen extends StatefulWidget {
 
 class _WebViewScreenState extends State<WebViewScreen> {
   Completer<WebViewController> _controller = Completer<WebViewController>();
+  double webProgress = 0;
   @override
   void initState() {
     if (Platform.isAndroid) WebView.platform = AndroidWebView();
@@ -30,15 +31,32 @@ class _WebViewScreenState extends State<WebViewScreen> {
           title: Text("About Us"),
           backgroundColor: eTradeGreen,
         ),
-        body: WebView(
-          initialUrl: widget.link,
-          javascriptMode: JavascriptMode.unrestricted,
-          onWebViewCreated: (WebViewController controller) {
-            _controller.complete(controller);
-          },
-          onProgress: (int progress) {
-            print('WebView is loading (progress : $progress%)');
-          },
+        body: Column(
+          children: [
+            webProgress < 1
+                ? SizedBox(
+                    height: 3,
+                    child: LinearProgressIndicator(
+                      color: eTradeGreen,
+                      value: webProgress,
+                      backgroundColor: Colors.white,
+                    ),
+                  )
+                : SizedBox(),
+            Expanded(
+              child: WebView(
+                initialUrl: widget.link,
+                javascriptMode: JavascriptMode.unrestricted,
+                onWebViewCreated: (WebViewController controller) {
+                  _controller.complete(controller);
+                },
+                onProgress: (int progress) {
+                  this.webProgress = progress / 100;
+                  print('WebView is loading (progress : $progress%)');
+                },
+              ),
+            ),
+          ],
         ));
   }
 }

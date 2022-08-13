@@ -187,7 +187,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                                 context, false);
                                           } else {
                                             SQLHelper.existDataBase = false;
-
+                                            SQLHelper.restoreDB();
                                             Navigator.pushAndRemoveUntil(
                                                 context,
                                                 MyCustomRoute(

@@ -108,7 +108,9 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
                   ),
                   GButton(
                     icon: Icons.grading_outlined,
-                    text: 'Recovery',
+                    text: RecoveryScreen.isEditRecovery
+                        ? "Edit Recovery"
+                        : 'Recovery',
                   ),
                 ]),
           ),

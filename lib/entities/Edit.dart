@@ -18,8 +18,9 @@ class Edit {
   double discount;
   int bonus;
   double to;
+  static bool isCash = false;
   static String description = "";
-  static List<Edit> ViewFromDb(var _detail) {
+  static List<Edit> ViewFromDb(var _detail, bool isSale) {
     List<Edit> _listOrderView = [];
     int count = 0;
     if (_detail.isNotEmpty) {
@@ -35,6 +36,10 @@ class Edit {
             itemId: "");
         if (count == 0) {
           description = element['Description'];
+          if (isSale) {
+            int number = element['isCashInvoice'];
+            isCash = number == 0 ? false : true;
+          }
           count++;
         }
         viewOrder.itemName = element['ItemName'];
@@ -50,6 +55,10 @@ class Edit {
       });
     }
     return _listOrderView;
+  }
+
+  static bool getisCash() {
+    return isCash;
   }
 
   static String getDescription() {

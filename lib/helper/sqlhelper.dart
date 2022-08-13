@@ -347,17 +347,17 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
     return listOrder;
   }
 
-  static Future<List> getTopTenProductByQuantity() async {
-    Database db = await instance.database;
-    var listOrder = await db.rawQuery(
-        "SELECT od.ItemID,i.ItemName,sum(od.Quantity) as Quantity , sum(od.Amount) as Amount FROM  OrderDetail as od INNER JOIN Item as i on od.ItemID=i.ItemID group by od.ItemID,i.ItemName order by sum(od.Quantity) DESC LIMIT   10");
-    return listOrder;
-  }
-
-  static Future<List> getTopTenProductByAmount() async {
+  static Future<List> getTopTenProductByOrder() async {
     Database db = await instance.database;
     var listOrder = await db.rawQuery(
         "SELECT od.ItemID,i.ItemName,sum(od.Quantity) as Quantity , sum(od.Amount) as Amount FROM  OrderDetail as od INNER JOIN Item as i on od.ItemID=i.ItemID group by od.ItemID,i.ItemName order by sum(od.Amount) DESC LIMIT   10");
+    return listOrder;
+  }
+
+  static Future<List> getTopTenProductBySale() async {
+    Database db = await instance.database;
+    var listOrder = await db.rawQuery(
+        "SELECT sd.ItemID,i.ItemName,sum(sd.Quantity) as Quantity , sum(sd.Amount) as Amount FROM  SaleDetail as sd INNER JOIN Item as i on sd.ItemID=i.ItemID group by sd.ItemID,i.ItemName order by sum(sd.Amount) DESC LIMIT   10");
     return listOrder;
   }
 
@@ -570,7 +570,7 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
   static Future<List> getSaleDetail(int id) async {
     Database db = await instance.database;
     var ListOrder = await db.rawQuery(
-        "SELECT i.ItemName,sd.Bonus,sd.Discount,sd.TradeOffer,sd.Quantity,sd.Rate,sd.Amount,i.itemID,s.Description FROM SaleDetail as sd LEFT JOIN Item AS i ON i.ItemID = sd.ItemID LEFT JOIN Sale AS s ON sd.InvoiceID=s.InvoiceID WHERE sd.InvoiceID=$id and sd.isPosted=0");
+        "SELECT i.ItemName,sd.Bonus,sd.Discount,sd.TradeOffer,sd.Quantity,sd.Rate,sd.Amount,i.itemID,s.Description,s.isCashInvoice FROM SaleDetail as sd LEFT JOIN Item AS i ON i.ItemID = sd.ItemID LEFT JOIN Sale AS s ON sd.InvoiceID=s.InvoiceID WHERE sd.InvoiceID=$id and sd.isPosted=0");
 
     return ListOrder;
   }
@@ -663,6 +663,48 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
     } catch (e) {
       debugPrint('Row is not delete');
     }
+  }
+
+  static Future<int> getSaleCount(String name, String date) async {
+    var db = await instance.database;
+    int count = 0;
+
+    var splitDate = date.split('-');
+    date = '${splitDate[2]}-${splitDate[1]}-${splitDate[0]}';
+    var order;
+    try {
+      if (name == "Week") {
+        order = await db.rawQuery(
+            "SELECT count(s.InvoiceID) FROM Sale as s WHERE s.Dated BETWEEN  DATETIME('$date','-6 day') and DATETIME('$date','localtime')");
+      } else if (name == "PWeek") {
+        order = await db.rawQuery(
+            "SELECT count(s.InvoiceID) FROM Sale as s WHERE s.Dated BETWEEN  DATETIME('$date','-13 day') and DATETIME('$date','-6 day')");
+      } else if (name == "Month") {
+        order = await db.rawQuery(
+            "SELECT count(s.InvoiceID) FROM Sale as s WHERE s.Dated BETWEEN  DATETIME('$date','-1 month') and DATETIME('$date','localtime')");
+      } else if (name == "PMonth") {
+        order = await db.rawQuery(
+            "SELECT count(s.InvoiceID) FROM Sale as s WHERE s.Dated BETWEEN  DATETIME('$date','-2 month') and DATETIME('$date','-1 month')");
+      } else if (name == "Year") {
+        order = await db.rawQuery(
+            "SELECT count(s.InvoiceID) FROM Sale as s WHERE s.Dated BETWEEN  DATETIME('$date','-1 year') and DATETIME('$date','localtime')");
+      } else if (name == "PYear") {
+        order = await db.rawQuery(
+            "SELECT count(s.InvoiceID) FROM Sale as s WHERE s.Dated BETWEEN  DATETIME('$date','-2 year') and DATETIME('$date','-1 year')");
+      } else {
+        order = await db.rawQuery(
+            "SELECT count(s.InvoiceID) FROM Sale as s WHERE s.Dated='$date'");
+      }
+      if (order.isNotEmpty) {
+        var iterable = order.whereType<Map>().first;
+
+        count = iterable['count(s.InvoiceID)'];
+      }
+    } catch (e) {
+      debugPrint("$e");
+    }
+
+    return count;
   }
 
   static Future<int> getOrderCount(String name, String date) async {

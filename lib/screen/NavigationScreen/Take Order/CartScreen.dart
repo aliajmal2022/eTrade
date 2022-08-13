@@ -73,6 +73,9 @@ class _CartScreenState extends State<CartScreen> {
     if (TakeOrderScreen.isEditOrder || TakeOrderScreen.isEditSale) {
       controller.text = Edit.getDescription();
       description = controller.text;
+      if (TakeOrderScreen.isEditSale) {
+        isCash = Edit.getisCash();
+      }
     }
     super.initState();
   }
@@ -160,14 +163,6 @@ class _CartScreenState extends State<CartScreen> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  Text(
-                                    "Credit",
-                                    style: TextStyle(
-                                        fontSize: 17,
-                                        fontWeight: !isCash
-                                            ? FontWeight.bold
-                                            : FontWeight.normal),
-                                  ),
                                   Switch(
                                     value: isCash,
                                     activeColor: eTradeGreen,
@@ -178,12 +173,10 @@ class _CartScreenState extends State<CartScreen> {
                                     },
                                   ),
                                   Text(
-                                    "Cash",
+                                    isCash ? "Cash" : "Credit",
                                     style: TextStyle(
-                                        fontSize: 17,
-                                        fontWeight: isCash
-                                            ? FontWeight.bold
-                                            : FontWeight.normal),
+                                      fontSize: 17,
+                                    ),
                                   ),
                                 ],
                               ),
@@ -599,9 +592,9 @@ class _CartScreenState extends State<CartScreen> {
                                               controller.clear();
                                               resetCartList();
                                             });
-                                            DashBoardScreen.dashBoard =
-                                                await DashBoardScreen
-                                                    .getOrderHistory();
+                                            // DashBoardScreen.dashBoard =
+                                            //     await DashBoardScreen
+                                            //         .getOrderHistory(true);
                                             Get.off(
                                                 MyNavigationBar(
                                                   selectedIndex: 1,

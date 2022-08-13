@@ -39,66 +39,63 @@ class _ViewRecoveryScreenState extends State<ViewRecoveryScreen>
     final isLandscape =
         MediaQuery.of(context).orientation == Orientation.landscape;
     return SafeArea(
-        child: WillPopScope(
-      onWillPop: () async => false,
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: eTradeGreen,
-          toolbarHeight: 80,
-          bottom: TabBar(
-            indicatorColor: Colors.white,
-            tabs: [
-              Tab(text: "All"),
-              Tab(text: "Today"),
-              Tab(text: "Yesterday"),
-              Tab(text: "Search")
-            ],
-            controller: _tcontroller,
-          ),
-          leading: IconButton(
-            onPressed: () {
-              TakeOrderScreen.isSelected = true;
-              Get.off(
-                MyNavigationBar(
-                  editRecovery: ViewRecovery(
-                      amount: 0,
-                      checkOrCash: false,
-                      description: "",
-                      recoveryID: 0,
-                      dated: "",
-                      party: Customer(
-                          partyId: 0,
-                          userId: 0,
-                          partyName: "",
-                          discount: 0,
-                          address: "")),
-                  selectedIndex: 0,
-                  list: [],
-                  date: "",
-                  id: 0,
-                  partyName: "Search Customer",
-                ),
-              );
-            },
-            icon: Icon(
-              Icons.arrow_back,
-            ),
-          ),
-          title: const Text(
-            'View Recoveries',
-            style: const TextStyle(color: Colors.white),
+        child: Scaffold(
+      appBar: AppBar(
+        backgroundColor: eTradeGreen,
+        toolbarHeight: 80,
+        bottom: TabBar(
+          indicatorColor: Colors.white,
+          tabs: [
+            Tab(text: "All"),
+            Tab(text: "Today"),
+            Tab(text: "Yesterday"),
+            Tab(text: "Search")
+          ],
+          controller: _tcontroller,
+        ),
+        leading: IconButton(
+          onPressed: () {
+            TakeOrderScreen.isSelected = true;
+            Get.off(
+              MyNavigationBar(
+                editRecovery: ViewRecovery(
+                    amount: 0,
+                    checkOrCash: false,
+                    description: "",
+                    recoveryID: 0,
+                    dated: "",
+                    party: Customer(
+                        partyId: 0,
+                        userId: 0,
+                        partyName: "",
+                        discount: 0,
+                        address: "")),
+                selectedIndex: 0,
+                list: [],
+                date: "",
+                id: 0,
+                partyName: "Search Customer",
+              ),
+            );
+          },
+          icon: Icon(
+            Icons.arrow_back,
           ),
         ),
-        body: TabBarView(
-            physics: NeverScrollableScrollPhysics(),
-            controller: _tcontroller,
-            children: [
-              RecoveryTabBarItem(tabName: "All"),
-              RecoveryTabBarItem(tabName: "Today"),
-              RecoveryTabBarItem(tabName: "Yesterday"),
-              RecoveryTabBarItem(tabName: "Search"),
-            ]),
+        title: const Text(
+          'View Recoveries',
+          style: const TextStyle(color: Colors.white),
+        ),
       ),
+      body: TabBarView(
+          physics: NeverScrollableScrollPhysics(),
+          controller: _tcontroller,
+          children: [
+            RecoveryTabBarItem(tabName: "All"),
+            RecoveryTabBarItem(tabName: "Today"),
+            RecoveryTabBarItem(tabName: "Yesterday"),
+            RecoveryTabBarItem(tabName: "Search"),
+          ]),
     ));
   }
 }

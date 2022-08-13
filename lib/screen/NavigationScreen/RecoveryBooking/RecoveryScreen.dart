@@ -246,8 +246,8 @@ class _RecoveryScreenState extends State<RecoveryScreen>
                     );
                   },
                 ),
-          title: const Text(
-            'Recovery',
+          title: Text(
+            RecoveryScreen.isEditRecovery ? "Edit Recovery" : 'Recovery',
             style: const TextStyle(color: Colors.white),
           ),
         ),
@@ -299,131 +299,146 @@ class _RecoveryScreenState extends State<RecoveryScreen>
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(
-                                  "Cash",
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: !isCash
-                                          ? FontWeight.bold
-                                          : FontWeight.normal),
-                                ),
                                 Switch(
                                   value: isCash,
                                   activeColor: eTradeGreen,
                                   onChanged: (value) async {
                                     setState(() {
                                       isCash = value;
-                                      _groupValue = !isCash ? "Cash" : "Check";
+                                      _groupValue = isCash ? "Cash" : "Check";
                                     });
                                   },
                                 ),
                                 Text(
-                                  "Check",
+                                  isCash ? "Cash" : "Check",
                                   style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: isCash
-                                          ? FontWeight.bold
-                                          : FontWeight.normal),
+                                    fontSize: 20,
+                                  ),
                                 ),
                               ],
                             ),
                           ),
                           SizedBox(
-                            height: 20,
+                            height: 10,
                           ),
                           Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               Flexible(
                                 child: FindDropdown<Customer>(
                                   autofocus: true,
+                                  label: "Search Customer",
                                   onFind: (String filter) => getData(filter),
-                                  onChanged: (Customer? value) {
+                                  onChanged: (value) {
                                     setState(() {
                                       widget.setParty(value!);
                                       RecoveryScreen.tcustomer = value;
                                     });
                                   },
                                   items: DataBaseDataLoad.ListOCustomer,
-                                  dropdownBuilder:
-                                      (BuildContext context, Customer? item) {
+                                  dropdownBuilder: (context, item) {
                                     return Container(
                                       height: 49,
                                       decoration: BoxDecoration(
                                           border: Border.all(
                                               color: Theme.of(context)
                                                   .disabledColor),
-                                          borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(
-                                                  20.0), // Set rounded corner radius
-                                              bottomLeft:
-                                                  Radius.circular(20.0)), //
+                                          borderRadius:
+                                              BorderRadius.circular(5),
                                           color: MyApp.isDark
                                               ? Color(0xff303030)
                                               : Color(0xfffafafa)),
-                                      child: (item?.partyName == null)
-                                          ? ListTile(
-                                              leading: Text("Search Customer"))
-                                          : ListTile(
-                                              leading: Text(item!.partyName),
-                                            ),
+                                      child: ListTile(
+                                        leading: Text(
+                                          (item?.partyName == "Search Customer")
+                                              ? "Type Here..."
+                                              : item?.partyName ?? "",
+                                          style: TextStyle(fontSize: 16),
+                                        ),
+                                      ),
                                     );
                                   },
                                   selectedItem: widget.customer,
+                                  searchBoxDecoration: InputDecoration(
+                                      focusedBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: eTradeGreen,
+                                          width: 2,
+                                        ),
+                                      ),
+                                      suffixIcon: Icon(
+                                        Icons.search,
+                                        color: eTradeGreen,
+                                      ),
+                                      labelStyle:
+                                          TextStyle(color: eTradeGreen)),
                                   dropdownItemBuilder: (BuildContext context,
                                       Customer item, bool isSelected) {
                                     return Container(
+                                      height: 60,
                                       decoration: !isSelected
                                           ? null
                                           : BoxDecoration(
                                               border: Border.all(
-                                                  color: Colors.blue),
+                                                  color: eTradeGreen),
                                               borderRadius:
-                                                  BorderRadius.circular(5),
+                                                  BorderRadius.circular(15),
                                               color: MyApp.isDark
                                                   ? Color(0xff424242)
                                                   : Colors.white,
                                             ),
-                                      child: ListTile(
-                                          selected: isSelected,
-                                          title: Text(
-                                            item.partyName,
-                                            style: TextStyle(
-                                                color:
-                                                    !isSelected && !MyApp.isDark
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                item.partyName,
+                                                style: TextStyle(
+                                                    color: !isSelected &&
+                                                            !MyApp.isDark
                                                         ? Colors.black54
                                                         : MyApp.isDark
                                                             ? Colors.white
-                                                            : Colors.black),
-                                          ),
-                                          subtitle: Text(
-                                              item.address.toString(),
-                                              style: TextStyle(
-                                                  color: !isSelected &&
-                                                          !MyApp.isDark
-                                                      ? Colors.grey
-                                                      : MyApp.isDark
-                                                          ? Colors.white
-                                                          : Colors.black54))),
+                                                            : Colors.black,
+                                                    fontSize: 16),
+                                              ),
+                                              Text(item.address.toString(),
+                                                  style: TextStyle(
+                                                      color: !isSelected &&
+                                                              !MyApp.isDark
+                                                          ? Colors.grey
+                                                          : MyApp.isDark
+                                                              ? Colors.grey
+                                                              : Colors.black54,
+                                                      fontSize: 14)),
+                                            ]),
+                                      ),
                                     );
                                   },
                                 ),
                               ),
-                              const SizedBox(
+                              SizedBox(
                                 width: 5,
                               ),
                               Material(
+                                // elevation: 4,
                                 child: Container(
-                                    height: 48,
+                                    height: 49,
                                     width: 58,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.only(
-                                          topRight: Radius.circular(20),
-                                          bottomRight: Radius.circular(20)),
+                                    decoration: const BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(5)),
                                       // color: Colors.white,
                                       color: eTradeGreen,
                                       // color: Color(0xff424242),
                                     ),
                                     child: MaterialButton(
+                                      elevation: 5,
                                       onPressed: () {
                                         showModalBottomSheet(
                                           context: context,
@@ -432,11 +447,11 @@ class _RecoveryScreenState extends State<RecoveryScreen>
                                               borderRadius:
                                                   BorderRadius.vertical(
                                                       top: Radius.circular(
-                                                          25.0))),
+                                                          5.0))),
                                           isScrollControlled: true,
                                           builder: (context) =>
                                               NewUsrAddLocalDB(
-                                            index: 2,
+                                            index: 3,
                                             recovery: widget.recovery,
                                           ),
                                         );
@@ -466,11 +481,11 @@ class _RecoveryScreenState extends State<RecoveryScreen>
                             decoration: InputDecoration(
                               border: OutlineInputBorder(
                                   borderRadius:
-                                      BorderRadius.all(Radius.circular(20)),
+                                      BorderRadius.all(Radius.circular(5)),
                                   borderSide: BorderSide(width: 30.0)),
                               focusedBorder: OutlineInputBorder(
                                   borderRadius:
-                                      BorderRadius.all(Radius.circular(20)),
+                                      BorderRadius.all(Radius.circular(5)),
                                   borderSide: BorderSide(color: eTradeGreen)),
                               contentPadding: const EdgeInsets.symmetric(
                                   vertical: 13, horizontal: 20),
@@ -494,11 +509,11 @@ class _RecoveryScreenState extends State<RecoveryScreen>
                             decoration: InputDecoration(
                               border: OutlineInputBorder(
                                   borderRadius:
-                                      BorderRadius.all(Radius.circular(20)),
+                                      BorderRadius.all(Radius.circular(5)),
                                   borderSide: BorderSide(width: 30.0)),
                               focusedBorder: OutlineInputBorder(
                                   borderRadius:
-                                      BorderRadius.all(Radius.circular(20)),
+                                      BorderRadius.all(Radius.circular(5)),
                                   borderSide: BorderSide(color: eTradeGreen)),
                               contentPadding: const EdgeInsets.symmetric(
                                   vertical: 13, horizontal: 20),

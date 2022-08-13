@@ -125,7 +125,7 @@ class TakeOrderScreen extends StatefulWidget {
       TakeOrderScreen.setPartydb(DataBaseDataLoad.ListOCustomer);
       TakeOrderScreen.setProductdb(DataBaseDataLoad.ListOProduct);
 
-      DashBoardScreen.dashBoard = await DashBoardScreen.getOrderHistory();
+      DashBoardScreen.dashBoard = await DashBoardScreen.getOrderHistory(true);
       Navigator.pushAndRemoveUntil(
           context,
           MyCustomRoute(
@@ -220,7 +220,7 @@ class _TakeOrderScreenState extends State<TakeOrderScreen>
   @override
   void initState() {
     _animationController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 900));
+        AnimationController(vsync: this, duration: Duration(milliseconds: 500));
     _animationController.forward();
     if (TakeOrderScreen.databaseExit ||
         TakeOrderScreen.isEditOrder ||
@@ -264,6 +264,7 @@ class _TakeOrderScreenState extends State<TakeOrderScreen>
   @override
   void dispose() {
     _animationController.dispose();
+    build(context);
     super.dispose();
   }
 
@@ -338,26 +339,30 @@ class _TakeOrderScreenState extends State<TakeOrderScreen>
                           resetCartList();
                         });
                         await TakeOrderScreen.getdataFromDb();
-                        Get.off(
-                            () => MyNavigationBar(
-                                selectedIndex: 1,
-                                editRecovery: ViewRecovery(
-                                    amount: 0,
-                                    description: "",
-                                    recoveryID: 0,
-                                    checkOrCash: false,
-                                    dated: "",
-                                    party: Customer(
-                                        partyId: 0,
-                                        partyName: "",
-                                        userId: 0,
-                                        address: "",
-                                        discount: 0)),
-                                list: [],
-                                date: widget.date,
-                                id: widget.iD,
-                                partyName: "Search Customer"),
-                            transition: Transition.leftToRight);
+
+                        Navigator.pushAndRemoveUntil(
+                            context,
+                            MyCustomRoute(
+                                builder: (context) => MyNavigationBar(
+                                    selectedIndex: 1,
+                                    editRecovery: ViewRecovery(
+                                        amount: 0,
+                                        description: "",
+                                        recoveryID: 0,
+                                        checkOrCash: false,
+                                        dated: "",
+                                        party: Customer(
+                                            partyId: 0,
+                                            partyName: "",
+                                            userId: 0,
+                                            address: "",
+                                            discount: 0)),
+                                    list: [],
+                                    date: "",
+                                    id: 0,
+                                    partyName: "Search Customer"),
+                                slide: "Right"),
+                            (route) => false);
                       },
                     )
                   : Builder(
