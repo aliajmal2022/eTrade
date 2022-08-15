@@ -75,7 +75,7 @@ class _NewUsrAddLocalDBState extends State<NewUsrAddLocalDB> {
                             Expanded(
                               flex: 2,
                               child: TextField(
-                                maxLength: 35,
+                                maxLength: 70,
                                 autofocus: true,
                                 keyboardType: TextInputType.name,
                                 controller: _controller,
@@ -146,7 +146,7 @@ class _NewUsrAddLocalDBState extends State<NewUsrAddLocalDB> {
                                       2, // any number you need (It works as the rows for the textarea)
                                   keyboardType: TextInputType.multiline,
                                   maxLines: null,
-                                  maxLength: 35,
+                                  maxLength: 70,
                                   controller: _addresscontroller,
                                   onChanged: (value) {
                                     setState(() {

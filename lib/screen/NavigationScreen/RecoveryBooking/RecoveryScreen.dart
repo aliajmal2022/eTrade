@@ -333,7 +333,6 @@ class _RecoveryScreenState extends State<RecoveryScreen>
                                   dropdownItemBuilder: (BuildContext context,
                                       Customer item, bool isSelected) {
                                     return Container(
-                                      height: 60,
                                       decoration: !isSelected
                                           ? null
                                           : BoxDecoration(

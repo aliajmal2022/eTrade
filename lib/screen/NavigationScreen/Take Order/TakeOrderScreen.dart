@@ -406,8 +406,7 @@ class _TakeOrderScreenState extends State<TakeOrderScreen>
                                       items: DataBaseDataLoad.ListOCustomer,
                                       dropdownBuilder: (context, item) {
                                         return Container(
-                                          height: double.infinity,
-                                          width: double.infinity,
+                                          height: 49,
                                           decoration: BoxDecoration(
                                               border: Border.all(
                                                   color: Theme.of(context)
@@ -446,7 +445,6 @@ class _TakeOrderScreenState extends State<TakeOrderScreen>
                                           (BuildContext context, Customer item,
                                               bool isSelected) {
                                         return Container(
-                                          height: 79,
                                           decoration: !isSelected
                                               ? null
                                               : BoxDecoration(

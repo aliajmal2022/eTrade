@@ -41,7 +41,7 @@ class Sql_Connection {
       var res = await SqlConn.writeData(query);
       print(res.toString());
     } catch (e) {
-      print("data is not posted");
+      print("Error ::::: ${e.toString()}");
     }
   }
 

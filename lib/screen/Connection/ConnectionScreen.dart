@@ -27,6 +27,15 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
   bool indRun = true;
   final _error = "Please Enter Correct Ip or Near to the Router";
   bool valid = true;
+  @override
+  void initState() {
+    setState(() {
+      if (widget.isConnectionfromdrawer) {
+        _controller.text = UserSharePreferences.getIp();
+      }
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

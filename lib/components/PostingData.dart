@@ -95,7 +95,8 @@ class _PostingDataState extends State<PostingData>
               String date = element['Dated'];
               if (count < _recovery.length)
                 await Sql_Connection().write(
-                    " INSERT INTO dbo_m.[Recovery]( RecoveryID, UserId, PartyID, Amount, Dated,isCash [Description]) VALUES ( ${element['RecoveryID']},${element['UserID']},${element['PartyID']},${element['Amount']},'${date}','${element['Description']},${element['isCash']}') ");
+                    """ INSERT INTO dbo_m.[Recovery]( RecoveryID, UserId, PartyID, Amount, Dated,isCash ,[Description]) VALUES 
+                   ( ${element['RecoveryID']},${element['UserID']},${element['PartyID']},${element['Amount']},'${date}',${element['isCash']},'${element['Description']}') """);
               count++;
               setState(() {
                 PostingData.rCount = count;
