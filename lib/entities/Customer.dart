@@ -50,9 +50,12 @@ class Customer {
     List<Customer> _listProduct = [];
     if (islocaldb) {
       _party = await SQLHelper.instance.getTable("Party", "PartyID");
+      _party = await Sql_Connection().read(
+          "SELECT p.PartyID,replace(p.PartyName,'\\','') as PartyName,p.Discount,replace(p.Address,'\\','') as Address,isnull(p.PartyID_Mobile,0)as PartyID_Mobile  FROM Party AS p WHERE p.AccTypeID=6");
     } else {
       _party = await Sql_Connection().read(
-          'SELECT p.PartyID,p.PartyName,p.Discount,p.Address,p.PartyID_Mobile FROM Party AS p WHERE p.AccTypeID=6');
+          'SELECT p.PartyID,p.PartyName,p.Discount,p.Address,isnull(p.PartyID_Mobile,0)as PartyID_Mobile  FROM Party AS p WHERE p.AccTypeID=6');
+      if (_party.isNotEmpty) {}
     }
     if (_party.isNotEmpty) {
       _party.forEach((element) {

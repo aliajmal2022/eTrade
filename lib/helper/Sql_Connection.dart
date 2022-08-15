@@ -25,9 +25,13 @@ class Sql_Connection {
       await SqlConn.connect(
           ip: ip,
           port: port,
-          databaseName: "7495_ePharma",
-          username: "7495_ePharmaUser",
-          password: "ePharma@1234");
+          // databaseName: "7495_ePharma",
+          // username: "7495_ePharmaUser",
+          // password: "ePharma@1234");
+          databaseName: "AGENBAKE2021",
+          username: "sa",
+          password: "exapp");
+
       isConnect = true;
       debugPrint("Connected!");
     } catch (e) {
@@ -47,12 +51,12 @@ class Sql_Connection {
 
   Future<dynamic> read(String query) async {
     try {
-      var res = await SqlConn.readData(query);
+      String res = await SqlConn.readData(query);
       jsonres = json.decode(res);
 
       return jsonres;
     } catch (e) {
-      print(Exception());
+      print(e);
     }
   }
 
