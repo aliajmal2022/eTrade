@@ -75,7 +75,7 @@ class _NewUsrAddLocalDBState extends State<NewUsrAddLocalDB> {
                             Expanded(
                               flex: 2,
                               child: TextField(
-                                maxLength: 70,
+                                maxLength: 35,
                                 autofocus: true,
                                 keyboardType: TextInputType.name,
                                 controller: _controller,
@@ -146,7 +146,7 @@ class _NewUsrAddLocalDBState extends State<NewUsrAddLocalDB> {
                                       2, // any number you need (It works as the rows for the textarea)
                                   keyboardType: TextInputType.multiline,
                                   maxLines: null,
-                                  maxLength: 270,
+                                  maxLength: 35,
                                   controller: _addresscontroller,
                                   onChanged: (value) {
                                     setState(() {
@@ -176,7 +176,7 @@ class _NewUsrAddLocalDBState extends State<NewUsrAddLocalDB> {
                       MaterialButton(
                           // disabledElevation: 10.0,
                           disabledColor: Colors.grey,
-                          onPressed: InpName == "" && address == ""
+                          onPressed: InpName == "" || address == ""
                               ? null
                               : () async {
                                   showDialog(

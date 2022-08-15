@@ -116,13 +116,6 @@ class _MyDrawerState extends State<MyDrawer>
                       width: 200,
                     ))),
           ),
-
-          //  Text(
-          //   "eTrade",
-          //   style: TextStyle(fontSize: 40),
-          // ),
-          // ),
-          // ),
           Divider(
             thickness: 1,
             color: eTradeGreen,
@@ -178,12 +171,13 @@ class _MyDrawerState extends State<MyDrawer>
                           TakeOrderScreen.isSaleSpot = true;
                           TakeOrderScreen.isEditOrder = false;
                           TakeOrderScreen.isSelected = false;
-                          Navigator.push(
+                          Navigator.pushAndRemoveUntil(
                               context,
                               MyCustomRoute(
                                   slide: "Left",
                                   builder: (context) =>
-                                      MyNavigationBar.initializer(1)));
+                                      MyNavigationBar.initializer(1)),
+                              (route) => false);
                         },
                         child: Row(
                           children: const [
@@ -196,12 +190,13 @@ class _MyDrawerState extends State<MyDrawer>
                         onPressed: () async {
                           await TakeOrderScreen.forSaleInVoice();
                           ViewBookingScreen.isSaleBooking = true;
-                          Navigator.push(
+                          Navigator.pushAndRemoveUntil(
                               context,
                               MyCustomRoute(
                                   slide: "Left",
                                   builder: (context) =>
-                                      MyNavigationBar.initializer(2)));
+                                      MyNavigationBar.initializer(2)),
+                              (route) => false);
                         },
                         child: Row(
                           children: const [

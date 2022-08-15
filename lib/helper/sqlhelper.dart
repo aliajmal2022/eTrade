@@ -260,23 +260,23 @@ CREATE TABLE UserTarget(
           "Delete from Party where PartyID in (select PartyID_Mobile from Party where UserID=$id and ifnull(Partyid_mobile,0)>0)");
       // await db.execute(
       //     "UPDATE [Order] SET PartyID =p.PartyId FROM [Order] AS o INNER JOIN Party AS p ON p.PartyId_Mobile = o.PartyID WHERE o.PartyID BETWEEN 2200 AND 2999");
-//       await db.execute("""
-// UPDATE [Order] SET PartyID =(select p.PartyId from Party AS p WHERE ifnull(p.PartyId_Mobile,0)>0 and p.PartyId_Mobile =PartyID)
-// WHERE exists (select PartyID from Party where PartyID_Mobile=[Order].PartyId)
-// and PartyID BETWEEN 2200 AND 2999
-// """);
-// UPDATE Sale
-// SET
-// PartyID =p.PartyId
-// FROM [Sale] AS s
-// INNER JOIN Party AS p ON p.PartyId_Mobile = s.PartyID
-// WHERE s.PartyID BETWEEN 2200 AND 2999
-//       await db.execute("""UPDATE recovery
-// SET
-// PartyID =p.PartyId
-// FROM [recovery] AS r
-// INNER JOIN Party AS p ON p.PartyId_Mobile = r.PartyID
-// WHERE r.PartyID BETWEEN 2200 AND 2999""");
+      await db.execute("""
+UPDATE [Order] 
+SET PartyID= (select PartyID from Party where PartyID_Mobile=[Order].PartyId)
+WHERE PartyID BETWEEN 2200 AND 2999 AND ifnull(isPosted,0)=1
+""");
+      await db.execute("""
+
+UPDATE Sale
+SET PartyID= (select PartyID from Party where PartyID_Mobile=Sale.PartyId)
+WHERE PartyID BETWEEN 2200 AND 2999 AND ifnull(isPosted,0)=1
+""");
+      await db.execute("""
+UPDATE [Recovery]
+SET PartyID= (select PartyID from Party where PartyID_Mobile=[Recovery].PartyId)
+WHERE PartyID BETWEEN 2200 AND 2999 AND ifnull(isPosted,0)=1
+
+""");
     } catch (e) {
       print("error :::::::: ${e.toString()}");
     }
