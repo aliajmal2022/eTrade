@@ -1,6 +1,7 @@
 import 'package:eTrade/components/constants.dart';
 import 'package:eTrade/components/drawer.dart';
 import 'package:eTrade/components/sharePreferences.dart';
+import 'package:eTrade/entities/Customer.dart';
 import 'package:eTrade/entities/Edit.dart';
 import 'package:eTrade/entities/ViewRecovery.dart';
 import 'package:eTrade/screen/NavigationScreen/DashBoard/DashboardScreen.dart';
@@ -30,6 +31,17 @@ class MyNavigationBar extends StatefulWidget {
   static int userTarget = 0;
   changeIndex() {
     selectedIndex = 1;
+  }
+
+  static MyNavigationBar initializer(int index) {
+    return MyNavigationBar(
+      editRecovery: ViewRecovery.initializer(),
+      selectedIndex: index,
+      date: "",
+      list: [],
+      id: 0,
+      partyName: "Search Customer",
+    );
   }
 
   @override

@@ -72,52 +72,14 @@ class _MyDrawerState extends State<MyDrawer>
               content:
                   Text("Host unaccessible. Keep your device near to router."),
             );
-            Get.off(MyNavigationBar(
-              editRecovery: ViewRecovery(
-                  amount: 0,
-                  description: "",
-                  checkOrCash: false,
-                  recoveryID: 0,
-                  dated: "",
-                  party: Customer(
-                      userId: 0,
-                      address: "",
-                      partyIdMobile: 0,
-                      partyId: 0,
-                      partyName: "",
-                      discount: 0)),
-              selectedIndex: 0,
-              list: [],
-              date: "",
-              id: 0,
-              partyName: "Search Customer",
-            ));
+            Get.off(MyNavigationBar.initializer(0));
             ScaffoldMessenger.of(context).showSnackBar(snackBar);
           }
         });
     Widget cancelButton = TextButton(
       child: const Text("Cancel"),
       onPressed: () {
-        Get.off(MyNavigationBar(
-          editRecovery: ViewRecovery(
-              amount: 0,
-              checkOrCash: false,
-              description: "",
-              recoveryID: 0,
-              dated: "",
-              party: Customer(
-                  address: "",
-                  userId: 0,
-                  partyId: 0,
-                  partyIdMobile: 0,
-                  partyName: "",
-                  discount: 0)),
-          selectedIndex: 0,
-          date: "",
-          list: [],
-          partyName: "Search Customer",
-          id: 0,
-        ));
+        Get.off(MyNavigationBar.initializer(0));
       },
     );
     // set up the AlertDialog
@@ -220,26 +182,8 @@ class _MyDrawerState extends State<MyDrawer>
                               context,
                               MyCustomRoute(
                                   slide: "Left",
-                                  builder: (context) => MyNavigationBar(
-                                        editRecovery: ViewRecovery(
-                                            amount: 0,
-                                            description: "",
-                                            recoveryID: 0,
-                                            checkOrCash: false,
-                                            dated: "",
-                                            party: Customer(
-                                                userId: 0,
-                                                address: "",
-                                                discount: 0,
-                                                partyId: 0,
-                                                partyIdMobile: 0,
-                                                partyName: "")),
-                                        selectedIndex: 1,
-                                        date: "",
-                                        list: [],
-                                        id: 0,
-                                        partyName: "Search Customer",
-                                      )));
+                                  builder: (context) =>
+                                      MyNavigationBar.initializer(1)));
                         },
                         child: Row(
                           children: const [
@@ -256,26 +200,8 @@ class _MyDrawerState extends State<MyDrawer>
                               context,
                               MyCustomRoute(
                                   slide: "Left",
-                                  builder: (context) => MyNavigationBar(
-                                        editRecovery: ViewRecovery(
-                                            amount: 0,
-                                            description: "",
-                                            recoveryID: 0,
-                                            dated: "",
-                                            checkOrCash: false,
-                                            party: Customer(
-                                                address: "",
-                                                partyIdMobile: 0,
-                                                userId: 0,
-                                                discount: 0,
-                                                partyId: 0,
-                                                partyName: "")),
-                                        selectedIndex: 2,
-                                        date: "",
-                                        list: [],
-                                        id: 0,
-                                        partyName: "Search Customer",
-                                      )));
+                                  builder: (context) =>
+                                      MyNavigationBar.initializer(2)));
                         },
                         child: Row(
                           children: const [
@@ -300,26 +226,7 @@ class _MyDrawerState extends State<MyDrawer>
                                 content: Text(
                                     "Host unaccessible. Keep your device near to router."),
                               );
-                              Get.off(MyNavigationBar(
-                                editRecovery: ViewRecovery(
-                                    amount: 0,
-                                    checkOrCash: false,
-                                    description: "",
-                                    recoveryID: 0,
-                                    dated: "",
-                                    party: Customer(
-                                        userId: 0,
-                                        partyIdMobile: 0,
-                                        partyId: 0,
-                                        partyName: "",
-                                        address: "",
-                                        discount: 0)),
-                                selectedIndex: 0,
-                                date: "",
-                                list: [],
-                                id: 0,
-                                partyName: "Search Customer",
-                              ));
+                              Get.off(MyNavigationBar.initializer(0));
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(snackBar);
                             }
@@ -365,26 +272,8 @@ class _MyDrawerState extends State<MyDrawer>
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => MyNavigationBar(
-                                        editRecovery: ViewRecovery(
-                                            amount: 0,
-                                            description: "",
-                                            recoveryID: 0,
-                                            checkOrCash: false,
-                                            dated: "",
-                                            party: Customer(
-                                                address: "",
-                                                partyIdMobile: 0,
-                                                userId: 0,
-                                                discount: 0,
-                                                partyId: 0,
-                                                partyName: "")),
-                                        selectedIndex: 1,
-                                        date: "",
-                                        list: [],
-                                        id: 0,
-                                        partyName: "Search Customer",
-                                      )));
+                                  builder: (context) =>
+                                      MyNavigationBar.initializer(1)));
                         },
                         child: Row(
                           children: const [
@@ -411,26 +300,8 @@ class _MyDrawerState extends State<MyDrawer>
                               context,
                               MyCustomRoute(
                                   slide: "Left",
-                                  builder: (context) => MyNavigationBar(
-                                        editRecovery: ViewRecovery(
-                                            amount: 0,
-                                            description: "",
-                                            recoveryID: 0,
-                                            checkOrCash: false,
-                                            dated: "",
-                                            party: Customer(
-                                                partyId: 0,
-                                                userId: 0,
-                                                partyIdMobile: 0,
-                                                partyName: "",
-                                                discount: 0,
-                                                address: "")),
-                                        selectedIndex: 0,
-                                        date: "",
-                                        list: [],
-                                        id: 0,
-                                        partyName: "Search Customer",
-                                      )),
+                                  builder: (context) =>
+                                      MyNavigationBar.initializer(0)),
                               (route) => false);
                         },
                         child: Row(
@@ -447,26 +318,8 @@ class _MyDrawerState extends State<MyDrawer>
                               context,
                               MyCustomRoute(
                                   slide: "Left",
-                                  builder: (context) => MyNavigationBar(
-                                        editRecovery: ViewRecovery(
-                                            amount: 0,
-                                            description: "",
-                                            recoveryID: 0,
-                                            checkOrCash: false,
-                                            dated: "",
-                                            party: Customer(
-                                                partyId: 0,
-                                                partyIdMobile: 0,
-                                                userId: 0,
-                                                partyName: "",
-                                                discount: 0,
-                                                address: "")),
-                                        selectedIndex: 0,
-                                        date: "",
-                                        list: [],
-                                        id: 0,
-                                        partyName: "Search Customer",
-                                      )),
+                                  builder: (context) =>
+                                      MyNavigationBar.initializer(0)),
                               (route) => false);
                         },
                         child: Row(

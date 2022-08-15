@@ -56,28 +56,7 @@ class _ViewRecoveryScreenState extends State<ViewRecoveryScreen>
         leading: IconButton(
           onPressed: () {
             TakeOrderScreen.isSelected = true;
-            Get.off(
-              MyNavigationBar(
-                editRecovery: ViewRecovery(
-                    amount: 0,
-                    checkOrCash: false,
-                    description: "",
-                    recoveryID: 0,
-                    dated: "",
-                    party: Customer(
-                        partyId: 0,
-                        userId: 0,
-                        partyName: "",
-                        partyIdMobile: 0,
-                        discount: 0,
-                        address: "")),
-                selectedIndex: 0,
-                list: [],
-                date: "",
-                id: 0,
-                partyName: "Search Customer",
-              ),
-            );
+            Get.off(MyNavigationBar.initializer(0));
           },
           icon: Icon(
             Icons.arrow_back,

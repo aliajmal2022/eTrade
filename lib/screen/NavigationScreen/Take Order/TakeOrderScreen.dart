@@ -41,13 +41,7 @@ class TakeOrderScreen extends StatefulWidget {
   String partyName;
   @override
   State<TakeOrderScreen> createState() => _TakeOrderScreenState();
-  static Customer customer = new Customer(
-      userId: 0,
-      address: "",
-      partyIdMobile: 0,
-      discount: 0,
-      partyId: 0,
-      partyName: "Search Customer");
+  static Customer customer = Customer.initializer();
   static List<Customer> partydb = [];
   static List<Product> productdb = [];
   static bool databaseExit = false;
@@ -132,26 +126,7 @@ class TakeOrderScreen extends StatefulWidget {
           context,
           MyCustomRoute(
               slide: "Left",
-              builder: (context) => MyNavigationBar(
-                    editRecovery: ViewRecovery(
-                        amount: 0,
-                        description: "",
-                        recoveryID: 0,
-                        checkOrCash: false,
-                        dated: "",
-                        party: Customer(
-                            partyId: 0,
-                            partyIdMobile: 0,
-                            userId: 0,
-                            partyName: "",
-                            discount: 0,
-                            address: "")),
-                    selectedIndex: 0,
-                    date: "",
-                    list: [],
-                    id: 0,
-                    partyName: "Search Customer",
-                  )),
+              builder: (context) => MyNavigationBar.initializer(0)),
           (route) => false);
     });
   }
@@ -241,13 +216,7 @@ class _TakeOrderScreenState extends State<TakeOrderScreen>
         });
       } else if (!TakeOrderScreen.isEditOrder || !TakeOrderScreen.isEditSale) {
         setState(() {
-          TakeOrderScreen.setParty(Customer(
-              discount: 0,
-              partyId: 0,
-              userId: 0,
-              partyIdMobile: 0,
-              address: "",
-              partyName: "Search Customer"));
+          TakeOrderScreen.setParty(Customer.initializer());
         });
       }
       TakeOrderScreen.isSync = false;
@@ -298,32 +267,14 @@ class _TakeOrderScreenState extends State<TakeOrderScreen>
                         TakeOrderScreen.isEditSale = false;
                         TakeOrderScreen.isSelected = false;
                       }
-                      TakeOrderScreen.setParty(Customer(
-                          partyId: 0,
-                          discount: 0,
-                          partyIdMobile: 0,
-                          userId: 0,
-                          address: "",
-                          partyName: "Search Customer"));
+                      TakeOrderScreen.setParty(Customer.initializer());
                       resetCartList();
                     });
                     await TakeOrderScreen.getdataFromDb();
                     Get.off(
                         () => MyNavigationBar(
                             selectedIndex: 2,
-                            editRecovery: ViewRecovery(
-                                amount: 0,
-                                description: "",
-                                checkOrCash: false,
-                                recoveryID: 0,
-                                dated: "",
-                                party: Customer(
-                                    partyId: 0,
-                                    partyName: "",
-                                    partyIdMobile: 0,
-                                    userId: 0,
-                                    address: "",
-                                    discount: 0)),
+                            editRecovery: ViewRecovery.initializer(),
                             list: [],
                             date: widget.date,
                             id: widget.iD,
@@ -337,13 +288,7 @@ class _TakeOrderScreenState extends State<TakeOrderScreen>
                       onPressed: () async {
                         setState(() {
                           TakeOrderScreen.isSaleSpot = false;
-                          TakeOrderScreen.setParty(Customer(
-                              partyId: 0,
-                              discount: 0,
-                              userId: 0,
-                              partyIdMobile: 0,
-                              address: "",
-                              partyName: "Search Customer"));
+                          TakeOrderScreen.setParty(Customer.initializer());
                           resetCartList();
                         });
                         await TakeOrderScreen.getdataFromDb();
@@ -351,25 +296,8 @@ class _TakeOrderScreenState extends State<TakeOrderScreen>
                         Navigator.pushAndRemoveUntil(
                             context,
                             MyCustomRoute(
-                                builder: (context) => MyNavigationBar(
-                                    selectedIndex: 1,
-                                    editRecovery: ViewRecovery(
-                                        amount: 0,
-                                        description: "",
-                                        recoveryID: 0,
-                                        checkOrCash: false,
-                                        dated: "",
-                                        party: Customer(
-                                            partyId: 0,
-                                            partyName: "",
-                                            partyIdMobile: 0,
-                                            userId: 0,
-                                            address: "",
-                                            discount: 0)),
-                                    list: [],
-                                    date: "",
-                                    id: 0,
-                                    partyName: "Search Customer"),
+                                builder: (context) =>
+                                    MyNavigationBar.initializer(1),
                                 slide: "Right"),
                             (route) => false);
                       },
@@ -490,10 +418,10 @@ class _TakeOrderScreenState extends State<TakeOrderScreen>
                                                   : Color(0xfffafafa)),
                                           child: ListTile(
                                             leading: Text(
-                                              (item?.partyName ==
-                                                      "Search Customer")
+                                              (item == null ||
+                                                      item.partyId == 0)
                                                   ? "Type Here..."
-                                                  : item?.partyName ?? "",
+                                                  : item.partyName,
                                               style: TextStyle(fontSize: 16),
                                             ),
                                           ),
@@ -598,19 +526,8 @@ class _TakeOrderScreenState extends State<TakeOrderScreen>
                                               builder: (context) =>
                                                   NewUsrAddLocalDB(
                                                 index: 1,
-                                                recovery: ViewRecovery(
-                                                    amount: 0,
-                                                    recoveryID: 0,
-                                                    checkOrCash: false,
-                                                    party: Customer(
-                                                        discount: 0,
-                                                        address: "",
-                                                        userId: 0,
-                                                        partyId: 0,
-                                                        partyIdMobile: 0,
-                                                        partyName: ""),
-                                                    dated: "",
-                                                    description: ""),
+                                                recovery:
+                                                    ViewRecovery.initializer(),
                                               ),
                                             );
                                           },
@@ -709,19 +626,7 @@ class _TakeOrderScreenState extends State<TakeOrderScreen>
                             searchedInput: searchString,
                             route: MyNavigationBar(
                               selectedIndex: 1,
-                              editRecovery: ViewRecovery(
-                                  amount: 0,
-                                  description: "",
-                                  checkOrCash: false,
-                                  recoveryID: 0,
-                                  dated: "",
-                                  party: Customer(
-                                      partyId: 0,
-                                      partyName: "",
-                                      partyIdMobile: 0,
-                                      userId: 0,
-                                      discount: 0,
-                                      address: "")),
+                              editRecovery: ViewRecovery.initializer(),
                               date: widget.date,
                               id: widget.iD,
                               list: const [],

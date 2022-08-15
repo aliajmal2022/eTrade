@@ -176,7 +176,7 @@ class _NewUsrAddLocalDBState extends State<NewUsrAddLocalDB> {
                       MaterialButton(
                           // disabledElevation: 10.0,
                           disabledColor: Colors.grey,
-                          onPressed: InpName == ""
+                          onPressed: InpName == "" && address == ""
                               ? null
                               : () async {
                                   showDialog(

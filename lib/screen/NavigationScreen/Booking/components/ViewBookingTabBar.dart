@@ -375,21 +375,7 @@ class _BookingTabBarItemState extends State<BookingTabBarItem>
                                                     builder: (context) => MyNavigationBar(
                                                         selectedIndex: 1,
                                                         editRecovery:
-                                                            ViewRecovery(
-                                                                amount: 0,
-                                                                description: "",
-                                                                checkOrCash:
-                                                                    false,
-                                                                recoveryID: 0,
-                                                                dated: "",
-                                                                party: Customer(
-                                                                    userId: 0,
-                                                                    discount: 0,
-                                                                    address: "",
-                                                partyIdMobile: 0,
-                                                                    partyId: 0,
-                                                                    partyName:
-                                                                        "")),
+                                                            ViewRecovery.initializer(),
                                                         date: BookingTabBarItem
                                                             .listOfItems[index]
                                                             .date,
@@ -422,21 +408,7 @@ class _BookingTabBarItemState extends State<BookingTabBarItem>
                                                     builder: (context) => MyNavigationBar(
                                                         selectedIndex: 1,
                                                         editRecovery:
-                                                            ViewRecovery(
-                                                                amount: 0,
-                                                                description: "",
-                                                                checkOrCash:
-                                                                    false,
-                                                                recoveryID: 0,
-                                                                dated: "",
-                                                                party: Customer(
-                                                                    userId: 0,
-                                                                    discount: 0,
-                                                                    address: "",
-                                                partyIdMobile: 0,
-                                                                    partyId: 0,
-                                                                    partyName:
-                                                                        "")),
+                                                            ViewRecovery.initializer(),
                                                         date: BookingTabBarItem
                                                             .listOfItems[index]
                                                             .date,

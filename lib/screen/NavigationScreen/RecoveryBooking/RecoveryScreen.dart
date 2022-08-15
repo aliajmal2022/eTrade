@@ -25,22 +25,10 @@ class RecoveryScreen extends StatefulWidget {
   int userID;
   @override
   State<RecoveryScreen> createState() => _RecoveryScreenState();
-  Customer customer = Customer(
-      userId: 0,
-      partyIdMobile: 0,
-      partyId: 0,
-      address: "",
-      partyName: "Search Customer",
-      discount: 0);
+  Customer customer = Customer.initializer();
   static List<Recovery> recoveryList = [];
   static bool addRecoveryOrder = false;
-  static Customer tcustomer = Customer(
-      userId: 0,
-      partyId: 0,
-      partyIdMobile: 0,
-      address: "",
-      partyName: "Search Customer",
-      discount: 0);
+  static Customer tcustomer = Customer.initializer();
   static bool isEditRecovery = false;
   static List<Customer> partydb = [];
   static void setPartydb(List<Customer> list) {
@@ -149,13 +137,7 @@ class _RecoveryScreenState extends State<RecoveryScreen>
           }
         }
       } else {
-        widget.setParty(Customer(
-            partyId: 0,
-            userId: 0,
-            partyIdMobile: 0,
-            address: "",
-            discount: 0,
-            partyName: "Search Customer"));
+        widget.setParty(Customer.initializer());
         RecoveryScreen.amountcontroller.clear();
         RecoveryScreen.descriptioncontroller.clear();
         RecoveryScreen.isSync = false;
@@ -191,20 +173,8 @@ class _RecoveryScreenState extends State<RecoveryScreen>
                     setState(() {
                       RecoveryScreen.isEditRecovery = false;
                       RecoveryScreen.getData = false;
-                      RecoveryScreen.tcustomer = Customer(
-                          partyId: 0,
-                          address: "",
-                          userId: 0,
-                          partyIdMobile: 0,
-                          discount: 0,
-                          partyName: "Search Customer");
-                      widget.setParty(Customer(
-                          partyId: 0,
-                          userId: 0,
-                          address: "",
-                          partyIdMobile: 0,
-                          discount: 0,
-                          partyName: "Search Customer"));
+                      RecoveryScreen.tcustomer = Customer.initializer();
+                      widget.setParty(Customer.initializer());
                       RecoveryScreen.amountcontroller.clear();
                       RecoveryScreen.descriptioncontroller.clear();
                       amount = 0;
@@ -224,26 +194,7 @@ class _RecoveryScreenState extends State<RecoveryScreen>
                         MyDrawer.isopen = true;
                         // dispose();
                         MyNavigationBar.currentIndex = 1;
-                        Get.off(MyNavigationBar(
-                          editRecovery: ViewRecovery(
-                              amount: 0,
-                              description: "",
-                              checkOrCash: false,
-                              recoveryID: 0,
-                              dated: "",
-                              party: Customer(
-                                  discount: 0,
-                                  userId: 0,
-                                  partyIdMobile: 0,
-                                  address: "",
-                                  partyId: 0,
-                                  partyName: "")),
-                          selectedIndex: 2,
-                          list: [],
-                          date: "",
-                          id: 0,
-                          partyName: "Search Customer",
-                        ));
+                        Get.off(MyNavigationBar.initializer(2));
 
                         Scaffold.of(context).openDrawer();
                       },
@@ -357,9 +308,9 @@ class _RecoveryScreenState extends State<RecoveryScreen>
                                               : Color(0xfffafafa)),
                                       child: ListTile(
                                         leading: Text(
-                                          (item?.partyName == "Search Customer")
+                                          (item == null || item.partyId == 0)
                                               ? "Type Here..."
-                                              : item?.partyName ?? "",
+                                              : item.partyName,
                                           style: TextStyle(fontSize: 16),
                                         ),
                                       ),
@@ -557,20 +508,10 @@ class _RecoveryScreenState extends State<RecoveryScreen>
                                             RecoveryScreen.isEditRecovery =
                                                 false;
                                             RecoveryScreen.getData = false;
-                                            widget.setParty(Customer(
-                                                discount: 0,
-                                                userId: 0,
-                                                partyIdMobile: 0,
-                                                partyId: 0,
-                                                address: "",
-                                                partyName: "Search Customer"));
-                                            RecoveryScreen.tcustomer = Customer(
-                                                discount: 0,
-                                                userId: 0,
-                                                address: "",
-                                                partyIdMobile: 0,
-                                                partyId: 0,
-                                                partyName: "Search Customer");
+                                            widget.setParty(
+                                                Customer.initializer());
+                                            RecoveryScreen.tcustomer =
+                                                Customer.initializer();
                                           });
                                           Get.off(ViewRecoveryScreen());
                                           ScaffoldMessenger.of(context)
@@ -611,47 +552,17 @@ class _RecoveryScreenState extends State<RecoveryScreen>
                                                 .clear();
                                             RecoveryScreen.descriptioncontroller
                                                 .clear();
-                                            widget.setParty(Customer(
-                                                partyIdMobile: 0,
-                                                partyId: 0,
-                                                userId: 0,
-                                                discount: 0,
-                                                address: "",
-                                                partyName: "Search Customer"));
-                                            RecoveryScreen.tcustomer = Customer(
-                                                discount: 0,
-                                                partyIdMobile: 0,
-                                                userId: 0,
-                                                address: "",
-                                                partyId: 0,
-                                                partyName: "Search Customer");
+                                            widget.setParty(
+                                                Customer.initializer());
+                                            RecoveryScreen.tcustomer =
+                                                Customer.initializer();
                                           });
                                           Navigator.pushAndRemoveUntil(
                                               context,
                                               MyCustomRoute(
                                                   builder: (context) =>
-                                                      MyNavigationBar(
-                                                        selectedIndex: 0,
-                                                        editRecovery: ViewRecovery(
-                                                            amount: 0,
-                                                            description: "",
-                                                            checkOrCash: false,
-                                                            recoveryID: 0,
-                                                            dated: "",
-                                                            party: Customer(
-                                                                discount: 0,
-                                                                partyIdMobile:
-                                                                    0,
-                                                                partyId: 0,
-                                                                userId: 0,
-                                                                partyName: "",
-                                                                address: "")),
-                                                        date: "",
-                                                        id: 0,
-                                                        list: [],
-                                                        partyName:
-                                                            "Search Customer",
-                                                      ),
+                                                      MyNavigationBar
+                                                          .initializer(0),
                                                   slide: "Right"),
                                               (route) => false);
                                           ScaffoldMessenger.of(context)

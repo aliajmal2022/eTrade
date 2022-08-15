@@ -18,14 +18,18 @@ class Customer {
   String address;
   String partyName = "Search Customer";
   bool match = false;
-  Customer selectedCustomer(List<Customer> customer) {
-    Customer selectedcustomer = Customer(
+  static Customer initializer() {
+    return Customer(
         partyIdMobile: 0,
         partyId: 0,
         partyName: "",
         discount: 0,
         address: "",
         userId: 0);
+  }
+
+  Customer selectedCustomer(List<Customer> customer) {
+    Customer selectedcustomer = initializer();
     try {
       for (var element in customer) {
         if (element.partyName == partyName) {
@@ -52,13 +56,7 @@ class Customer {
     }
     if (_party.isNotEmpty) {
       _party.forEach((element) {
-        Customer _customer = Customer(
-            partyIdMobile: 0,
-            partyId: 0,
-            partyName: "",
-            discount: 0,
-            address: "",
-            userId: 0);
+        Customer _customer = initializer();
         _customer.partyId = element['PartyID'];
         _customer.partyIdMobile = element['PartyID_Mobile'] ?? 0;
         _customer.partyName = element['PartyName'];

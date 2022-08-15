@@ -129,25 +129,37 @@ class DashBoardScreen extends StatefulWidget {
       "December"
     ];
     int count;
-    greatestTarget = 100000;
-    var months = await SQLHelper.instance.getTable("UserTarget", "ID");
     List<MonthOrderHistory> list = [];
-    // try {
-    for (count = 0; count < staticMonthName.length; count++) {
-      staticMonths = [];
-      MonthOrderHistory orderStatic = MonthOrderHistory(month: "", amount: 0);
-      if (months[0][staticMonthName[count]]! == null) {
-        orderStatic.amount = months[0][staticMonthName[count]].toDouble();
-        if (months[0][staticMonthName[count]] > greatestTarget) {
-          greatestTarget = orderStatic.amount.toInt();
+    greatestTarget = 100000;
+    List<Map<String, dynamic>> months =
+        await SQLHelper.instance.getTable("UserTarget", "ID");
+    try {
+      if (months.isEmpty) {
+        for (count = 0; count < staticMonthName.length; count++) {
+          MonthOrderHistory orderStatic =
+              MonthOrderHistory(month: "", amount: 0);
+          orderStatic.amount = 0;
+
+          orderStatic.month = (count + 1).toString();
+          list.add(orderStatic);
+        }
+      } else {
+        for (count = 0; count < staticMonthName.length; count++) {
+          MonthOrderHistory orderStatic =
+              MonthOrderHistory(month: "", amount: 0);
+          orderStatic.amount =
+              months[0][staticMonthName[count]]!.toDouble() ?? 100000;
+          if (months[0][staticMonthName[count]] > greatestTarget) {
+            greatestTarget = orderStatic.amount.toInt();
+          }
+
+          orderStatic.month = (count + 1).toString();
+          list.add(orderStatic);
         }
       }
-      orderStatic.month = (count + 1).toString();
-      list.add(orderStatic);
+    } catch (e) {
+      print("Error ::::::::::  ${e.toString()}");
     }
-    // } catch (e) {
-    //   print(e.toString());
-    // }
     return list;
   }
 
@@ -179,6 +191,7 @@ class DashBoardScreen extends StatefulWidget {
 class _DashBoardScreenState extends State<DashBoardScreen>
     with TickerProviderStateMixin {
   updateData() async {
+    await DashBoardScreen.getMonthlyTargetDB(DashBoardScreen.isOrder);
     DashBoardScreen.dashBoard =
         await DashBoardScreen.getOrderHistory(DashBoardScreen.isOrder);
     DashBoardScreen.itemdata =
@@ -187,6 +200,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
         await DashBoardScreen.getMonthlyRecordDB(DashBoardScreen.isOrder);
     DashBoardScreen.staticMonths =
         await DashBoardScreen.getMonthlyTargetDB(DashBoardScreen.isOrder);
+
     setState(() {
       DashBoardScreen.itemdata;
       DashBoardScreen.dashBoard;
@@ -577,9 +591,8 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                         strokeWidth: 500,
                         dataSource: DashBoardScreen.itemdata,
                         dataLabelSettings: DataLabelSettings(isVisible: true),
-                        xValueMapper: (Items? data, _) =>
-                            data?.productName ?? null,
-                        yValueMapper: (Items? data, _) => data?.ordered ?? null)
+                        xValueMapper: (Items? data, _) => data?.productName,
+                        yValueMapper: (Items? data, _) => data?.ordered)
                   ],
                   legend: Legend(
                       // isResponsive: true,

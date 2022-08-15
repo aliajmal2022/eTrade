@@ -86,25 +86,8 @@ class _ViewBookingScreenState extends State<ViewBookingScreen>
                       Navigator.pushAndRemoveUntil(
                           context,
                           MyCustomRoute(
-                              builder: (context) => MyNavigationBar(
-                                  selectedIndex: 2,
-                                  editRecovery: ViewRecovery(
-                                      amount: 0,
-                                      description: "",
-                                      recoveryID: 0,
-                                      checkOrCash: false,
-                                      dated: "",
-                                      party: Customer(
-                                          partyId: 0,
-                                          partyName: "",
-                                          partyIdMobile: 0,
-                                          userId: 0,
-                                          address: "",
-                                          discount: 0)),
-                                  list: [],
-                                  date: "",
-                                  id: 0,
-                                  partyName: "Search Customer"),
+                              builder: (context) =>
+                                  MyNavigationBar.initializer(2),
                               slide: "Right"),
                           (route) => false);
                     },

@@ -17,25 +17,22 @@ class ViewRecovery {
   String dated;
   bool checkOrCash;
   String description;
+  static ViewRecovery initializer() {
+    return ViewRecovery(
+        recoveryID: 0,
+        amount: 0,
+        dated: "",
+        checkOrCash: false,
+        description: "",
+        party: Customer.initializer());
+  }
 
   static List<ViewRecovery> ViewRecoveryFromDb(List _recovery) {
     List<ViewRecovery> _listRecovery = [];
     if (_recovery.isNotEmpty) {
       _recovery.forEach((element) {
         int isCash = 0;
-        ViewRecovery recovery = ViewRecovery(
-            recoveryID: 0,
-            amount: 0,
-            dated: "",
-            checkOrCash: false,
-            description: "",
-            party: Customer(
-                partyIdMobile: 0,
-                partyId: 0,
-                partyName: "",
-                discount: 0,
-                address: "",
-                userId: 0));
+        ViewRecovery recovery = initializer();
         recovery.party.partyName = element['PartyName'];
         recovery.party.partyId = element['PartyID'];
         recovery.amount = element['Amount'];

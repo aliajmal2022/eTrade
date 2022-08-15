@@ -366,7 +366,7 @@ class _AddItemModelSheetState extends State<AddItemModelSheet> {
                                     MyCustomRoute(
                                         slide: "Left",
                                         builder: (context) => widget.screen),
-                                    (route) => true);
+                                    (route) => false);
                               },
                         elevation: 20.0,
                         color: eTradeGreen,

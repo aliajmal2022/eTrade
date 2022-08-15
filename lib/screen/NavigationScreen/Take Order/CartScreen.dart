@@ -102,19 +102,7 @@ class _CartScreenState extends State<CartScreen> {
                 TakeOrderScreen.isSelected = true;
                 Get.off(
                     () => MyNavigationBar(
-                          editRecovery: ViewRecovery(
-                              amount: 0,
-                              description: "",
-                              checkOrCash: false,
-                              recoveryID: 0,
-                              dated: "",
-                              party: Customer(
-                                  address: "",
-                                  userId: 0,
-                                  partyIdMobile: 0,
-                                  partyId: 0,
-                                  partyName: "",
-                                  discount: 0)),
+                          editRecovery: ViewRecovery.initializer(),
                           selectedIndex: 1,
                           list: [],
                           date: widget.date,
@@ -388,36 +376,11 @@ class _CartScreenState extends State<CartScreen> {
                                           TakeOrderScreen.isEditOrder = false;
                                           TakeOrderScreen.isSelected = false;
                                           resetCartList();
-                                          TakeOrderScreen.setParty(Customer(
-                                              partyId: 0,
-                                              partyIdMobile: 0,
-                                              discount: 0,
-                                              userId: 0,
-                                              address: "",
-                                              partyName: "Search Customer"));
+                                          TakeOrderScreen.setParty(Customer.initializer());
                                           await TakeOrderScreen.getdataFromDb();
                                           controller.clear();
                                           Get.off(
-                                              MyNavigationBar(
-                                                selectedIndex: 2,
-                                                editRecovery: ViewRecovery(
-                                                    amount: 0,
-                                                    description: "",
-                                                    checkOrCash: false,
-                                                    recoveryID: 0,
-                                                    dated: "",
-                                                    party: Customer(
-                                                        discount: 0,
-                                                        userId: 0,
-                                                        partyId: 0,
-                                                        partyIdMobile: 0,
-                                                        partyName: "",
-                                                        address: "")),
-                                                list: [],
-                                                id: 0,
-                                                date: "",
-                                                partyName: "Search Customer",
-                                              ),
+                                              MyNavigationBar.initializer(2),
                                               transition:
                                                   Transition.rightToLeft,
                                               duration:
@@ -449,37 +412,12 @@ class _CartScreenState extends State<CartScreen> {
                                             TakeOrderScreen.isEditSale = false;
                                             TakeOrderScreen.isSelected = false;
                                             controller.clear();
-                                            TakeOrderScreen.setParty(Customer(
-                                                partyId: 0,
-                                                discount: 0,
-                                                partyIdMobile: 0,
-                                                userId: 0,
-                                                address: "",
-                                                partyName: "Search Customer"));
+                                            TakeOrderScreen.setParty(Customer.initializer());
                                             resetCartList();
                                           });
                                           await TakeOrderScreen.getdataFromDb();
                                           Get.off(
-                                              MyNavigationBar(
-                                                selectedIndex: 2,
-                                                editRecovery: ViewRecovery(
-                                                    amount: 0,
-                                                    description: "",
-                                                    recoveryID: 0,
-                                                    checkOrCash: false,
-                                                    dated: "",
-                                                    party: Customer(
-                                                        userId: 0,
-                                                        discount: 0,
-                                                        partyIdMobile: 0,
-                                                        partyId: 0,
-                                                        partyName: "",
-                                                        address: "")),
-                                                list: [],
-                                                id: 0,
-                                                date: "",
-                                                partyName: "Search Customer",
-                                              ),
+                                              MyNavigationBar.initializer(2),
                                               transition:
                                                   Transition.rightToLeft,
                                               duration:
@@ -530,27 +468,7 @@ class _CartScreenState extends State<CartScreen> {
                                               controller.clear();
                                               resetCartList();
                                               Get.off(
-                                                  MyNavigationBar(
-                                                    selectedIndex: 1,
-                                                    editRecovery: ViewRecovery(
-                                                        amount: 0,
-                                                        description: "",
-                                                        checkOrCash: false,
-                                                        recoveryID: 0,
-                                                        dated: "",
-                                                        party: Customer(
-                                                            partyId: 0,
-                                                            partyIdMobile: 0,
-                                                            userId: 0,
-                                                            address: "",
-                                                            discount: 0,
-                                                            partyName: "")),
-                                                    list: [],
-                                                    date: "",
-                                                    id: 0,
-                                                    partyName:
-                                                        "Search Customer",
-                                                  ),
+                                                  MyNavigationBar.initializer(1),
                                                   transition:
                                                       Transition.leftToRight,
                                                   duration: Duration(
@@ -602,26 +520,7 @@ class _CartScreenState extends State<CartScreen> {
                                             //     await DashBoardScreen
                                             //         .getOrderHistory(true);
                                             Get.off(
-                                                MyNavigationBar(
-                                                  selectedIndex: 1,
-                                                  editRecovery: ViewRecovery(
-                                                      amount: 0,
-                                                      description: "",
-                                                      recoveryID: 0,
-                                                      checkOrCash: false,
-                                                      dated: "",
-                                                      party: Customer(
-                                                          partyId: 0,
-                                                          userId: 0,
-                                                          partyIdMobile: 0,
-                                                          address: "",
-                                                          discount: 0,
-                                                          partyName: "")),
-                                                  list: [],
-                                                  date: "",
-                                                  id: 0,
-                                                  partyName: "Search Customer",
-                                                ),
+                                                MyNavigationBar.initializer(1),
                                                 transition:
                                                     Transition.leftToRight,
                                                 duration: Duration(

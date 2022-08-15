@@ -86,19 +86,8 @@ class _ListOfOrderState extends State<ListOfOrder>
                                       MaterialPageRoute(
                                           builder: (context) => MyNavigationBar(
                                               selectedIndex: 1,
-                                              editRecovery: ViewRecovery(
-                                                  amount: 0,
-                                                  description: "",
-                                                  checkOrCash: false,
-                                                  recoveryID: 0,
-                                                  dated: "",
-                                                  party: Customer(
-                                                      userId: 0,
-                                                      discount: 0,
-                                                partyIdMobile: 0,
-                                                      address: "",
-                                                      partyId: 0,
-                                                      partyName: "")),
+                                              editRecovery:
+                                                  ViewRecovery.initializer(),
                                               date: dummyOrderList[index].date,
                                               list: saleDetail,
                                               partyName: dummyOrderList[index]
@@ -118,19 +107,7 @@ class _ListOfOrderState extends State<ListOfOrder>
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => MyNavigationBar(
-                                                editRecovery: ViewRecovery(
-                                                    amount: 0,
-                                                    description: "",
-                                                    recoveryID: 0,
-                                                    checkOrCash: false,
-                                                    dated: "",
-                                                    party: Customer(
-                                                        userId: 0,
-                                                partyIdMobile: 0,
-                                                        address: "",
-                                                        discount: 0,
-                                                        partyId: 0,
-                                                        partyName: "")),
+                                                editRecovery: ViewRecovery.initializer(),
                                                 date:
                                                     dummyOrderList[index].date,
                                                 selectedIndex: 1,
@@ -223,20 +200,6 @@ class _ListOfOrderState extends State<ListOfOrder>
                       ]),
                       child: Padding(
                         padding: EdgeInsets.symmetric(horizontal: 5.0),
-                        // child: Container(
-                        //   height: 110,
-                        //   width: double.infinity,
-                        //   decoration: BoxDecoration(
-                        //       color:
-                        //           (MyApp.isDark) ? Color(0xff424242) : Colors.white,
-                        //       boxShadow: [
-                        //         BoxShadow(
-                        //           color: Colors.black,
-                        //           offset: Offset(0.0, 0.5), //(x,y)
-                        //           blurRadius: 3.0,
-                        //         ),
-                        //       ],
-                        //       borderRadius: BorderRadius.all(Radius.circular(5))),
                         child: Card(
                           child: Padding(
                             padding: EdgeInsets.all(12.0),

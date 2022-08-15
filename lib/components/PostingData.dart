@@ -1,5 +1,6 @@
 import 'dart:ffi';
 
+import 'package:eTrade/components/CustomNavigator.dart';
 import 'package:eTrade/components/NavigationBar.dart';
 import 'package:eTrade/components/constants.dart';
 import 'package:eTrade/components/drawer.dart';
@@ -167,27 +168,9 @@ class _PostingDataState extends State<PostingData>
       );
       Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(
-              builder: (context) => MyNavigationBar(
-                    editRecovery: ViewRecovery(
-                        amount: 0,
-                        description: "",
-                        recoveryID: 0,
-                        checkOrCash: false,
-                        dated: "",
-                        party: Customer(
-                            partyId: 0,
-                            userId: 0,
-                            partyName: "",
-                            partyIdMobile: 0,
-                            discount: 0,
-                            address: "")),
-                    selectedIndex: 0,
-                    date: "",
-                    list: [],
-                    id: 0,
-                    partyName: "Search Customer",
-                  )),
+          MyCustomRoute(
+              slide: "Left",
+              builder: (context) => MyNavigationBar.initializer(0)),
           (route) => false);
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
@@ -385,26 +368,7 @@ class _PostingDataState extends State<PostingData>
                                         PostingData.rCount = 0;
                                         PostingData.sdCount = 0;
                                         PostingData.isPosteddone = false;
-                                        Get.off(MyNavigationBar(
-                                          editRecovery: ViewRecovery(
-                                              amount: 0,
-                                              description: "",
-                                              recoveryID: 0,
-                                              checkOrCash: false,
-                                              dated: "",
-                                              party: Customer(
-                                                  partyId: 0,
-                                                  partyIdMobile: 0,
-                                                  userId: 0,
-                                                  partyName: "",
-                                                  discount: 0,
-                                                  address: "")),
-                                          selectedIndex: 0,
-                                          date: "",
-                                          list: [],
-                                          id: 0,
-                                          partyName: "Search Customer",
-                                        ));
+                                        Get.off(MyNavigationBar.initializer(0));
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(snackBar);
                                       },
@@ -603,26 +567,7 @@ class _PostingDataState extends State<PostingData>
                                         PostingData.rCount = 0;
                                         PostingData.sdCount = 0;
                                         PostingData.isPosteddone = false;
-                                        Get.off(MyNavigationBar(
-                                          editRecovery: ViewRecovery(
-                                              amount: 0,
-                                              description: "",
-                                              recoveryID: 0,
-                                              checkOrCash: false,
-                                              dated: "",
-                                              party: Customer(
-                                                  partyId: 0,
-                                                  userId: 0,
-                                                  partyIdMobile: 0,
-                                                  partyName: "",
-                                                  discount: 0,
-                                                  address: "")),
-                                          selectedIndex: 0,
-                                          date: "",
-                                          list: [],
-                                          id: 0,
-                                          partyName: "Search Customer",
-                                        ));
+                                        Get.off(MyNavigationBar.initializer(0));
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(snackBar);
                                       },

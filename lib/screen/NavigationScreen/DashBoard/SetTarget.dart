@@ -220,27 +220,7 @@ class _SetTargetScreenState extends State<SetTargetScreen> {
                       ? await SQLHelper.updateUserTargetTable(userTarget)
                       : await SQLHelper.instance.createUserTarget(userTarget);
 
-                  Get.off(
-                      MyNavigationBar(
-                        editRecovery: ViewRecovery(
-                            amount: 0,
-                            description: "",
-                            checkOrCash: false,
-                            recoveryID: 0,
-                            dated: "",
-                            party: Customer(
-                                userId: 0,
-                                partyIdMobile: 0,
-                                address: "",
-                                partyId: 0,
-                                partyName: "",
-                                discount: 0)),
-                        selectedIndex: 0,
-                        list: [],
-                        date: "",
-                        id: 0,
-                        partyName: "Search Customer",
-                      ),
+                  Get.off(MyNavigationBar.initializer(0),
                       transition: Transition.rightToLeft);
                 },
           child: Icon(

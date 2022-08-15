@@ -17,26 +17,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
     super.initState();
     Future.delayed(const Duration(seconds: 3), () async {
       Get.off(
-        () => MyNavigationBar(
-          selectedIndex: 0,
-          editRecovery: ViewRecovery(
-              amount: 0,
-              description: "",
-              checkOrCash: false,
-              recoveryID: 0,
-              dated: "",
-              party: Customer(
-                  address: "",
-                  partyId: 0,
-                  userId: 0,
-                  partyIdMobile: 0,
-                  partyName: "",
-                  discount: 0)),
-          id: 0,
-          list: [],
-          date: "",
-          partyName: "Search Customer",
-        ),
+        () => MyNavigationBar.initializer(0),
         transition: Transition.circularReveal,
         duration: Duration(seconds: 2),
       );

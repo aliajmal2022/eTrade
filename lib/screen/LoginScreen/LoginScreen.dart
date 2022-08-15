@@ -196,29 +196,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                                 MyCustomRoute(
                                                     slide: "Left",
                                                     builder: (context) =>
-                                                        MyNavigationBar(
-                                                          editRecovery: ViewRecovery(
-                                                              amount: 0,
-                                                              description: "",
-                                                              recoveryID: 0,
-                                                              checkOrCash:
-                                                                  false,
-                                                              dated: "",
-                                                              party: Customer(
-                                                                  partyId: 0,
-                                                                  userId: 0,
-                                                                  partyIdMobile:
-                                                                      0,
-                                                                  partyName: "",
-                                                                  discount: 0,
-                                                                  address: "")),
-                                                          selectedIndex: 0,
-                                                          date: "",
-                                                          list: [],
-                                                          id: 0,
-                                                          partyName:
-                                                              "Search Customer",
-                                                        )),
+                                                        MyNavigationBar
+                                                            .initializer(0)),
                                                 (route) => false);
                                           }
                                         }

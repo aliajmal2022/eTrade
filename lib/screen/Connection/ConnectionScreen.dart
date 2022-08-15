@@ -138,26 +138,7 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
                                 });
                                 if (widget.isConnectionfromdrawer) {
                                   UserSharePreferences.setIp(userIp);
-                                  Get.to(MyNavigationBar(
-                                    selectedIndex: 0,
-                                    editRecovery: ViewRecovery(
-                                        amount: 0,
-                                        description: "",
-                                        checkOrCash: false,
-                                        recoveryID: 0,
-                                        dated: "",
-                                        party: Customer(
-                                            partyId: 0,
-                                            partyIdMobile: 0,
-                                            userId: 0,
-                                            address: "",
-                                            discount: 0,
-                                            partyName: "")),
-                                    list: [],
-                                    date: "",
-                                    id: 0,
-                                    partyName: "Search Customer",
-                                  ));
+                                  Get.to(MyNavigationBar.initializer(0));
                                 } else {
                                   Navigator.push(
                                       context,
