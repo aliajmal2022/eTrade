@@ -29,7 +29,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
     return Scaffold(
         appBar: AppBar(
           title: Text("About Us"),
-          backgroundColor: eTradeGreen,
+          backgroundColor: eTradeMainColor,
         ),
         body: Column(
           children: [
@@ -37,7 +37,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
                 ? SizedBox(
                     height: 3,
                     child: LinearProgressIndicator(
-                      color: eTradeGreen,
+                      color: eTradeMainColor,
                       value: webProgress,
                       backgroundColor: Colors.white,
                     ),

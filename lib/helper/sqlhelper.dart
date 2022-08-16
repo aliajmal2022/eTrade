@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:eTrade/components/NavigationBar.dart';
 import 'package:eTrade/components/sharePreferences.dart';
 import 'package:eTrade/entities/Customer.dart';
 import 'package:eTrade/entities/Order.dart';
@@ -168,6 +169,7 @@ CREATE TABLE User(
     await database.execute('''
 CREATE TABLE UserTarget(
   ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+  UserID NOT NULL, 
   January INTEGER NOT NULL,
   February INTEGER NOT NULL,
   March INTEGER NOT NULL,
@@ -188,6 +190,7 @@ CREATE TABLE UserTarget(
   Future<int> createUserTarget(UserTarget target) async {
     Database db = await instance.database;
     final data = {
+      'UserID': MyNavigationBar.userID,
       'January': target.januaryTarget,
       'February': target.februaryTarget,
       'March': target.marchTarget,
@@ -250,7 +253,7 @@ CREATE TABLE UserTarget(
   static Future<List> getNotPostedParty() async {
     Database db = await instance.database;
     return await db.rawQuery(
-        "SELECT * FROM Party WHERE PartyID BETWEEN 2201 and 2999 and isPosted=0");
+        "SELECT * FROM Party WHERE PartyID BETWEEN 2201 and 2999 and isPosted=0  and  UserID=${MyNavigationBar.userID}");
   }
 
   static Future<void> deleteDataDuringSync(int id) async {
@@ -341,7 +344,8 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
 
   static Future<List> getNotPostedOrder() async {
     Database db = await instance.database;
-    return await db.rawQuery("SELECT * FROM [Order] WHERE isPosted=0");
+    return await db.rawQuery(
+        "SELECT * FROM [Order] WHERE isPosted=0 and  UserID=${MyNavigationBar.userID}");
   }
 
   static Future<List> getFromToViewOrder(String start, String end) async {
@@ -351,7 +355,7 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
     splitDate = end.split('-');
     end = '${splitDate[2]}-${splitDate[1]}-${splitDate[0]}';
     var listOrder = await db.rawQuery(
-        "SELECT strftime('%d-%m-%Y', o.Dated)  as Dated,o.OrderID,o.TotalQuantity,p.PartyName FROM [Order] AS o INNER JOIN Party AS p ON p.PartyID = o.PartyID WHERE o.Dated BETWEEN '$start' AND '$end'  ");
+        "SELECT strftime('%d-%m-%Y', o.Dated)  as Dated,o.OrderID,o.TotalQuantity,p.PartyName FROM [Order] AS o INNER JOIN Party AS p ON p.PartyID = o.PartyID WHERE o.Dated BETWEEN '$start' AND '$end'  and  o.UserID=${MyNavigationBar.userID}");
 
     return listOrder;
   }
@@ -361,7 +365,7 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
     var splitDate = date.split('-');
     date = '${splitDate[2]}-${splitDate[1]}-${splitDate[0]}';
     var listOrder = await db.rawQuery(
-        "SELECT strftime('%d-%m-%Y', o.Dated)  as Dated,o.OrderID,o.TotalQuantity,p.PartyName FROM [Order] AS o INNER JOIN Party AS p ON p.PartyID = o.PartyID WHERE o.Dated ='${date}' ");
+        "SELECT strftime('%d-%m-%Y', o.Dated)  as Dated,o.OrderID,o.TotalQuantity,p.PartyName FROM [Order] AS o INNER JOIN Party AS p ON p.PartyID = o.PartyID WHERE o.Dated ='${date}' and  o.UserID=${MyNavigationBar.userID}");
 
     return listOrder;
   }
@@ -369,7 +373,7 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
   static Future<List> getAllViewOrder() async {
     Database db = await instance.database;
     var listOrder = await db.rawQuery(
-        "SELECT strftime('%d-%m-%Y', o.Dated)  as Dated,o.OrderID,o.TotalQuantity,p.PartyName FROM [Order] AS o INNER JOIN Party AS p ON p.PartyID = o.PartyID  ");
+        "SELECT strftime('%d-%m-%Y', o.Dated)  as Dated,o.OrderID,o.TotalQuantity,p.PartyName FROM [Order] AS o INNER JOIN Party AS p ON p.PartyID = o.PartyID  and  o.UserID=${MyNavigationBar.userID}");
 
     return listOrder;
   }
@@ -377,21 +381,14 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
   static Future<List> getMonthOrderHistory() async {
     Database db = await instance.database;
     var listOrder = await db.rawQuery(
-        "SELECT IFNULL(SUM(CASE WHEN strftime('%m', dated) = '01' THEN o.Amount END),0) AS Jan,IFNULL(SUM(CASE WHEN strftime('%m', dated) = '02' THEN o.Amount END),0) as Feb,IFNULL(SUM(CASE WHEN strftime('%m', dated) = '03' THEN o.Amount END),0) as Mar,IFNULL(SUM(CASE WHEN strftime('%m', dated) = '04' THEN o.Amount END),0) as Apr,IFNULL(SUM(CASE WHEN strftime('%m', dated) = '05' THEN o.Amount END),0) as May,IFNULL(SUM(CASE WHEN strftime('%m', dated) = '06' THEN o.Amount END),0) as Jun,IFNULL(SUM(CASE WHEN strftime('%m', dated) = '07' THEN o.Amount END),0) as Jul,IFNULL(SUM(CASE WHEN strftime('%m', dated) = '08' THEN o.Amount END),0) as Aug,IFNULL(SUM(CASE WHEN strftime('%m', dated) = '09' THEN o.Amount END),0) as Sep,IFNULL(SUM(CASE WHEN strftime('%m', dated) = '10' THEN o.Amount END),0) as Oct,IFNULL(SUM(CASE WHEN strftime('%m', dated) = '11' THEN o.Amount END),0) as Nov,IFNULL(SUM(CASE WHEN strftime('%m', dated) = '12' THEN o.Amount END),0) as [Dec] FROM OrderDetail o where strftime('%Y',Dated) = strftime('%Y',Date())");
+        "SELECT IFNULL(SUM(CASE WHEN strftime('%m', dated) = '01' THEN o.Amount END),0) AS Jan,IFNULL(SUM(CASE WHEN strftime('%m', dated) = '02' THEN o.Amount END),0) as Feb,IFNULL(SUM(CASE WHEN strftime('%m', dated) = '03' THEN o.Amount END),0) as Mar,IFNULL(SUM(CASE WHEN strftime('%m', dated) = '04' THEN o.Amount END),0) as Apr,IFNULL(SUM(CASE WHEN strftime('%m', dated) = '05' THEN o.Amount END),0) as May,IFNULL(SUM(CASE WHEN strftime('%m', dated) = '06' THEN o.Amount END),0) as Jun,IFNULL(SUM(CASE WHEN strftime('%m', dated) = '07' THEN o.Amount END),0) as Jul,IFNULL(SUM(CASE WHEN strftime('%m', dated) = '08' THEN o.Amount END),0) as Aug,IFNULL(SUM(CASE WHEN strftime('%m', dated) = '09' THEN o.Amount END),0) as Sep,IFNULL(SUM(CASE WHEN strftime('%m', dated) = '10' THEN o.Amount END),0) as Oct,IFNULL(SUM(CASE WHEN strftime('%m', dated) = '11' THEN o.Amount END),0) as Nov,IFNULL(SUM(CASE WHEN strftime('%m', dated) = '12' THEN o.Amount END),0) as [Dec] FROM OrderDetail o where strftime('%Y',Dated) = strftime('%Y',Date()) and o.UserID=${MyNavigationBar.userID}");
     return listOrder;
   }
 
   static Future<List> getTopTenProductByOrder() async {
     Database db = await instance.database;
     var listOrder = await db.rawQuery(
-        "SELECT od.ItemID,i.ItemName,sum(od.Quantity) as Quantity , sum(od.Amount) as Amount FROM  OrderDetail as od INNER JOIN Item as i on od.ItemID=i.ItemID group by od.ItemID,i.ItemName order by sum(od.Amount) DESC LIMIT   10");
-    return listOrder;
-  }
-
-  static Future<List> getTopTenProductBySale() async {
-    Database db = await instance.database;
-    var listOrder = await db.rawQuery(
-        "SELECT sd.ItemID,i.ItemName,sum(sd.Quantity) as Quantity , sum(sd.Amount) as Amount FROM  SaleDetail as sd INNER JOIN Item as i on sd.ItemID=i.ItemID group by sd.ItemID,i.ItemName order by sum(sd.Amount) DESC LIMIT   10");
+        "SELECT od.ItemID,i.ItemName,sum(od.Quantity) as Quantity , sum(od.Amount) as Amount FROM  OrderDetail as od INNER JOIN Item as i on od.ItemID=i.ItemID WHERE od.UserID=${MyNavigationBar.userID} group by od.ItemID,i.ItemName order by sum(od.Amount) DESC LIMIT   10 ");
     return listOrder;
   }
 
@@ -400,7 +397,7 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
     Database db = await instance.database;
     try {
       await db.execute(
-          "UPDATE [Order] SET TotalQuantity = 	(SELECT Sum(Quantity) FROM OrderDetail as od WHERE  od.OrderID=$id), TotalValue= (SELECT Sum(Amount) FROM OrderDetail as od WHERE  od.OrderID=$id),Description='$description',PartyID=$partyID WHERE OrderID=$id "
+          "UPDATE [Order] SET TotalQuantity = 	(SELECT Sum(Quantity) FROM OrderDetail as od WHERE  od.OrderID=$id), TotalValue= (SELECT Sum(Amount) FROM OrderDetail as od WHERE  od.OrderID=$id),Description='$description',PartyID=$partyID WHERE OrderID=$id  and  UserID=${MyNavigationBar.userID}"
 
           // "UPDATE [Order] SET  PartyID=$partyID,Description='$description',TotalQuantity = (SELECT Sum(Quantity) FROM OrderDetail , [Order] as o WHERE o.OrderID = OrderDetail.OrderID and o.OrderID=$id),TotalValue=(SELECT Sum(Amount) FROM OrderDetail , [Order] as o WHERE o.OrderID = OrderDetail.OrderID and o.OrderID=$id) WHERE [Order].OrderID=$id"
           );
@@ -452,13 +449,14 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
 
   static Future<List> getNotPostedOrderDetail() async {
     Database db = await instance.database;
-    return await db.rawQuery("SELECT * FROM OrderDetail WHERE isPosted=0");
+    return await db.rawQuery(
+        "SELECT * FROM OrderDetail WHERE isPosted=0 and  UserID=${MyNavigationBar.userID}");
   }
 
   static Future<List> getOrderDetail(int id) async {
     Database db = await instance.database;
     var ListOrder = await db.rawQuery(
-        "SELECT i.ItemName, od.Bonus,od.Discount,od.TradeOffer,od.Quantity,od.Rate,od.Amount,i.itemID,o.Description FROM OrderDetail as od LEFT JOIN Item AS i ON i.ItemID = od.ItemID LEFT JOIN [Order] AS o ON o.OrderID=od.OrderID WHERE od.OrderID=$id and od.isPosted=0");
+        "SELECT i.ItemName, od.Bonus,od.Discount,od.TradeOffer,od.Quantity,od.Rate,od.Amount,i.itemID,o.Description FROM OrderDetail as od LEFT JOIN Item AS i ON i.ItemID = od.ItemID LEFT JOIN [Order] AS o ON o.OrderID=od.OrderID WHERE od.OrderID=$id and  od.UserID=${MyNavigationBar.userID}");
 
     return ListOrder;
   }
@@ -500,13 +498,21 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
 
   static Future<List> getNotPostedSale() async {
     Database db = await instance.database;
-    return await db.rawQuery("SELECT * FROM Sale WHERE isPosted=0");
+    return await db.rawQuery(
+        "SELECT * FROM Sale WHERE isPosted=0 and  UserID=${MyNavigationBar.userID}");
   }
 
   static Future<List> getMonthSaleHistory() async {
     Database db = await instance.database;
     var listOrder = await db.rawQuery(
-        "SELECT IFNULL(SUM(CASE WHEN strftime('%m', dated) = '01' THEN s.Amount END),0) AS Jan,IFNULL(SUM(CASE WHEN strftime('%m', dated) = '02' THEN s.Amount END),0) as Feb,IFNULL(SUM(CASE WHEN strftime('%m', dated) = '03' THEN s.Amount END),0) as Mar,IFNULL(SUM(CASE WHEN strftime('%m', dated) = '04' THEN s.Amount END),0) as Apr,IFNULL(SUM(CASE WHEN strftime('%m', dated) = '05' THEN s.Amount END),0) as May,IFNULL(SUM(CASE WHEN strftime('%m', dated) = '06' THEN s.Amount END),0) as Jun,IFNULL(SUM(CASE WHEN strftime('%m', dated) = '07' THEN s.Amount END),0) as Jul,IFNULL(SUM(CASE WHEN strftime('%m', dated) = '08' THEN s.Amount END),0) as Aug,IFNULL(SUM(CASE WHEN strftime('%m', dated) = '09' THEN s.Amount END),0) as Sep,IFNULL(SUM(CASE WHEN strftime('%m', dated) = '10' THEN s.Amount END),0) as Oct,IFNULL(SUM(CASE WHEN strftime('%m', dated) = '11' THEN s.Amount END),0) as Nov,IFNULL(SUM(CASE WHEN strftime('%m', dated) = '12' THEN s.Amount END),0) as [Dec] FROM SaleDetail s where strftime('%Y',Dated) = strftime('%Y',Date())");
+        "SELECT IFNULL(SUM(CASE WHEN strftime('%m', dated) = '01' THEN s.Amount END),0) AS Jan,IFNULL(SUM(CASE WHEN strftime('%m', dated) = '02' THEN s.Amount END),0) as Feb,IFNULL(SUM(CASE WHEN strftime('%m', dated) = '03' THEN s.Amount END),0) as Mar,IFNULL(SUM(CASE WHEN strftime('%m', dated) = '04' THEN s.Amount END),0) as Apr,IFNULL(SUM(CASE WHEN strftime('%m', dated) = '05' THEN s.Amount END),0) as May,IFNULL(SUM(CASE WHEN strftime('%m', dated) = '06' THEN s.Amount END),0) as Jun,IFNULL(SUM(CASE WHEN strftime('%m', dated) = '07' THEN s.Amount END),0) as Jul,IFNULL(SUM(CASE WHEN strftime('%m', dated) = '08' THEN s.Amount END),0) as Aug,IFNULL(SUM(CASE WHEN strftime('%m', dated) = '09' THEN s.Amount END),0) as Sep,IFNULL(SUM(CASE WHEN strftime('%m', dated) = '10' THEN s.Amount END),0) as Oct,IFNULL(SUM(CASE WHEN strftime('%m', dated) = '11' THEN s.Amount END),0) as Nov,IFNULL(SUM(CASE WHEN strftime('%m', dated) = '12' THEN s.Amount END),0) as [Dec] FROM SaleDetail s where strftime('%Y',Dated) = strftime('%Y',Date()) and  s.UserID=${MyNavigationBar.userID}");
+    return listOrder;
+  }
+
+  static Future<List> getTopTenProductBySale() async {
+    Database db = await instance.database;
+    var listOrder = await db.rawQuery(
+        "SELECT sd.ItemID,i.ItemName,sum(sd.Quantity) as Quantity , sum(sd.Amount) as Amount FROM  SaleDetail as sd INNER JOIN Item as i on sd.ItemID=i.ItemID WHERE sd.UserID=${MyNavigationBar.userID} group by sd.ItemID,i.ItemName order by sum(sd.Amount) DESC LIMIT   10  ");
     return listOrder;
   }
 
@@ -517,7 +523,7 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
     splitDate = end.split('-');
     end = '${splitDate[2]}-${splitDate[1]}-${splitDate[0]}';
     var listOrder = await db.rawQuery(
-        "SELECT strftime('%d-%m-%Y', s.Dated)  as Dated,s.InvoiceID,s.TotalQuantity,p.PartyName FROM Sale AS s INNER JOIN Party AS p ON p.PartyID = s.PartyID WHERE s.Dated BETWEEN '$start' AND '$end' ");
+        "SELECT strftime('%d-%m-%Y', s.Dated)  as Dated,s.InvoiceID,s.TotalQuantity,p.PartyName FROM Sale AS s INNER JOIN Party AS p ON p.PartyID = s.PartyID WHERE s.Dated BETWEEN '$start' AND '$end' and  s.UserID=${MyNavigationBar.userID}");
 
     return listOrder;
   }
@@ -527,7 +533,7 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
     var splitDate = date.split('-');
     date = '${splitDate[2]}-${splitDate[1]}-${splitDate[0]}';
     var listOrder = await db.rawQuery(
-        "SELECT strftime('%d-%m-%Y', s.Dated)  as Dated,s.InvoiceID,s.TotalQuantity,p.PartyName FROM Sale AS s INNER JOIN Party AS p ON p.PartyID = s.PartyID WHERE s.Dated ='${date}' ");
+        "SELECT strftime('%d-%m-%Y', s.Dated)  as Dated,s.InvoiceID,s.TotalQuantity,p.PartyName FROM Sale AS s INNER JOIN Party AS p ON p.PartyID = s.PartyID WHERE s.Dated ='${date}' and  s.UserID=${MyNavigationBar.userID}");
 
     return listOrder;
   }
@@ -535,7 +541,7 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
   static Future<List> getAllViewSale() async {
     Database db = await instance.database;
     var listOrder = await db.rawQuery(
-        "SELECT strftime('%d-%m-%Y', s.Dated)  as Dated,s.InvoiceID,s.TotalQuantity,p.PartyName FROM Sale AS s INNER JOIN Party AS p ON s.PartyID = p.PartyID ");
+        "SELECT strftime('%d-%m-%Y', s.Dated)  as Dated,s.InvoiceID,s.TotalQuantity,p.PartyName FROM Sale AS s INNER JOIN Party AS p ON s.PartyID = p.PartyID and  s.UserID=${MyNavigationBar.userID}");
 
     return listOrder;
   }
@@ -546,7 +552,7 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
     Database db = await instance.database;
     try {
       await db.execute(
-          "UPDATE Sale SET TotalQuantity = 	(SELECT Sum(sd.Quantity) FROM SaleDetail as sd WHERE  sd.InvoiceID=$id), TotalValue= (SELECT Sum(sd.Amount) FROM SaleDetail as sd WHERE  sd.InvoiceID=$id),Description='$description',PartyID=$partyID,isCashInvoice='$iscash' WHERE InvoiceID=$id "
+          "UPDATE Sale SET TotalQuantity = 	(SELECT Sum(sd.Quantity) FROM SaleDetail as sd WHERE  sd.InvoiceID=$id), TotalValue= (SELECT Sum(sd.Amount) FROM SaleDetail as sd WHERE  sd.InvoiceID=$id),Description='$description',PartyID=$partyID,isCashInvoice='$iscash' WHERE InvoiceID=$id and  UserID=${MyNavigationBar.userID}"
 
           // "UPDATE [Order] SET  PartyID=$partyID,Description='$description',TotalQuantity = (SELECT Sum(Quantity) FROM OrderDetail , [Order] as o WHERE o.OrderID = OrderDetail.OrderID and o.OrderID=$id),TotalValue=(SELECT Sum(Amount) FROM OrderDetail , [Order] as o WHERE o.OrderID = OrderDetail.OrderID and o.OrderID=$id) WHERE [Order].OrderID=$id"
           );
@@ -598,13 +604,14 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
 
   static Future<List> getNotPostedSaleDetail() async {
     Database db = await instance.database;
-    return await db.rawQuery("SELECT * FROM SaleDetail WHERE isPosted=0");
+    return await db.rawQuery(
+        "SELECT * FROM SaleDetail WHERE isPosted=0 and  UserID=${MyNavigationBar.userID}");
   }
 
   static Future<List> getSaleDetail(int id) async {
     Database db = await instance.database;
     var ListOrder = await db.rawQuery(
-        "SELECT i.ItemName,sd.Bonus,sd.Discount,sd.TradeOffer,sd.Quantity,sd.Rate,sd.Amount,i.itemID,s.Description,s.isCashInvoice FROM SaleDetail as sd LEFT JOIN Item AS i ON i.ItemID = sd.ItemID LEFT JOIN Sale AS s ON sd.InvoiceID=s.InvoiceID WHERE sd.InvoiceID=$id and sd.isPosted=0");
+        "SELECT i.ItemName,sd.Bonus,sd.Discount,sd.TradeOffer,sd.Quantity,sd.Rate,sd.Amount,i.itemID,s.Description,s.isCashInvoice FROM SaleDetail as sd LEFT JOIN Item AS i ON i.ItemID = sd.ItemID LEFT JOIN Sale AS s ON sd.InvoiceID=s.InvoiceID WHERE sd.InvoiceID=$id and sd.UserID=${MyNavigationBar.userID}");
 
     return ListOrder;
   }
@@ -644,7 +651,8 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
 
   static Future<List> getNotPostedRecovery() async {
     Database db = await instance.database;
-    return await db.rawQuery("SELECT * FROM Recovery WHERE isPosted=0");
+    return await db.rawQuery(
+        "SELECT * FROM Recovery WHERE isPosted=0 and  UserID=${MyNavigationBar.userID}");
   }
 
   static Future<List> getFromToRecovery(var start, var end) async {
@@ -654,7 +662,7 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
     end = '${splitDate[2]}-${splitDate[1]}-${splitDate[0]}';
     Database db = await instance.database;
     var listRecovery = await db.rawQuery(
-        "SELECT strftime('%d-%m-%Y', r.Dated)  as Dated,r.isCash,r.Description,r.RecoveryID,r.Amount,p.PartyName,p.PartyID FROM Recovery AS r INNER JOIN Party AS p ON p.PartyID = r.PartyID WHERE r.Dated BETWEEN '$start' AND '$end' ");
+        "SELECT strftime('%d-%m-%Y', r.Dated)  as Dated,r.isCash,r.Description,r.RecoveryID,r.Amount,p.PartyName,p.PartyID FROM Recovery AS r INNER JOIN Party AS p ON p.PartyID = r.PartyID WHERE r.Dated BETWEEN '$start' AND '$end' and  r.UserID=${MyNavigationBar.userID}");
 
     return listRecovery;
   }
@@ -664,7 +672,7 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
     var splitDate = date.split('-');
     date = '${splitDate[2]}-${splitDate[1]}-${splitDate[0]}';
     var listRecovery = await db.rawQuery(
-        "SELECT strftime('%d-%m-%Y', r.Dated)  as Dated,r.isCash,r.Description,r.RecoveryID,r.Amount,p.PartyName,p.PartyID FROM Recovery AS r INNER JOIN Party AS p ON p.PartyID = r.PartyID WHERE r.Dated = '$date'");
+        "SELECT strftime('%d-%m-%Y', r.Dated)  as Dated,r.isCash,r.Description,r.RecoveryID,r.Amount,p.PartyName,p.PartyID FROM Recovery AS r INNER JOIN Party AS p ON p.PartyID = r.PartyID WHERE r.Dated = '$date' and  r.UserID=${MyNavigationBar.userID}");
 
     return listRecovery;
   }
@@ -672,7 +680,7 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
   static Future<List> getAllRecovery() async {
     Database db = await instance.database;
     var listRecovery = await db.rawQuery(
-        "SELECT strftime('%d-%m-%Y', r.Dated)  as Dated,r.isCash,r.Description,r.RecoveryID,r.Amount,p.PartyName,p.PartyID FROM Recovery AS r INNER JOIN Party AS p ON p.PartyID = r.PartyID ");
+        "SELECT strftime('%d-%m-%Y', r.Dated)  as Dated,r.isCash,r.Description,r.RecoveryID,r.Amount,p.PartyName,p.PartyID FROM Recovery AS r INNER JOIN Party AS p ON p.PartyID = r.PartyID where r.UserID=${MyNavigationBar.userID}");
 
     return listRecovery;
   }
@@ -683,7 +691,7 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
     int iscash = isCash ? 1 : 0;
     try {
       await db.execute(
-          "UPDATE Recovery SET Amount=$amount, PartyID=$partyID,isCash=$iscash,Description='$description' WHERE RecoveryID=$id ");
+          "UPDATE Recovery SET Amount=$amount, PartyID=$partyID,isCash=$iscash,Description='$description' WHERE RecoveryID=$id  and  UserID=${MyNavigationBar.userID}");
     } catch (e) {
       debugPrint(e.toString());
     }
@@ -692,8 +700,8 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
   static Future<void> deleteItem(String table, String idName, var id) async {
     Database db = await instance.database;
     try {
-      await db
-          .execute("DELETE FROM [$table] WHERE $idName=$id AND isPosted=0 ");
+      await db.execute(
+          "DELETE FROM [$table] WHERE $idName=$id AND isPosted=0 and  UserID=${MyNavigationBar.userID}");
     } catch (e) {
       debugPrint('Row is not delete');
     }
@@ -709,25 +717,25 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
     try {
       if (name == "Week") {
         order = await db.rawQuery(
-            "SELECT count(s.InvoiceID) FROM Sale as s WHERE s.Dated BETWEEN  DATETIME('$date','-6 day') and DATETIME('$date','localtime')");
+            "SELECT count(s.InvoiceID) FROM Sale as s WHERE s.Dated BETWEEN  DATETIME('$date','-6 day') and DATETIME('$date','localtime') and  s.UserID=${MyNavigationBar.userID}");
       } else if (name == "PWeek") {
         order = await db.rawQuery(
-            "SELECT count(s.InvoiceID) FROM Sale as s WHERE s.Dated BETWEEN  DATETIME('$date','-13 day') and DATETIME('$date','-6 day')");
+            "SELECT count(s.InvoiceID) FROM Sale as s WHERE s.Dated BETWEEN  DATETIME('$date','-13 day') and DATETIME('$date','-6 day') and  s.UserID=${MyNavigationBar.userID}");
       } else if (name == "Month") {
         order = await db.rawQuery(
-            "SELECT count(s.InvoiceID) FROM Sale as s WHERE s.Dated BETWEEN  DATETIME('$date','-1 month') and DATETIME('$date','localtime')");
+            "SELECT count(s.InvoiceID) FROM Sale as s WHERE s.Dated BETWEEN  DATETIME('$date','-1 month') and DATETIME('$date','localtime') and  s.UserID=${MyNavigationBar.userID}");
       } else if (name == "PMonth") {
         order = await db.rawQuery(
-            "SELECT count(s.InvoiceID) FROM Sale as s WHERE s.Dated BETWEEN  DATETIME('$date','-2 month') and DATETIME('$date','-1 month')");
+            "SELECT count(s.InvoiceID) FROM Sale as s WHERE s.Dated BETWEEN  DATETIME('$date','-2 month') and DATETIME('$date','-1 month') and  s.UserID=${MyNavigationBar.userID}");
       } else if (name == "Year") {
         order = await db.rawQuery(
-            "SELECT count(s.InvoiceID) FROM Sale as s WHERE s.Dated BETWEEN  DATETIME('$date','-1 year') and DATETIME('$date','localtime')");
+            "SELECT count(s.InvoiceID) FROM Sale as s WHERE s.Dated BETWEEN  DATETIME('$date','-1 year') and DATETIME('$date','localtime') and s.UserID=${MyNavigationBar.userID}");
       } else if (name == "PYear") {
         order = await db.rawQuery(
-            "SELECT count(s.InvoiceID) FROM Sale as s WHERE s.Dated BETWEEN  DATETIME('$date','-2 year') and DATETIME('$date','-1 year')");
+            "SELECT count(s.InvoiceID) FROM Sale as s WHERE s.Dated BETWEEN  DATETIME('$date','-2 year') and DATETIME('$date','-1 year') and s.UserID=${MyNavigationBar.userID}");
       } else {
         order = await db.rawQuery(
-            "SELECT count(s.InvoiceID) FROM Sale as s WHERE s.Dated='$date'");
+            "SELECT count(s.InvoiceID) FROM Sale as s WHERE s.Dated='$date' and s.UserID=${MyNavigationBar.userID}");
       }
       if (order.isNotEmpty) {
         var iterable = order.whereType<Map>().first;
@@ -751,25 +759,25 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
     try {
       if (name == "Week") {
         order = await db.rawQuery(
-            "SELECT count(o.OrderID) FROM [Order] as o WHERE o.Dated BETWEEN  DATETIME('$date','-6 day') and DATETIME('$date','localtime')");
+            "SELECT count(o.OrderID) FROM [Order] as o WHERE o.Dated BETWEEN  DATETIME('$date','-6 day') and DATETIME('$date','localtime') and  o.UserID=${MyNavigationBar.userID}");
       } else if (name == "PWeek") {
         order = await db.rawQuery(
-            "SELECT count(o.OrderID) FROM [Order] as o WHERE o.Dated BETWEEN  DATETIME('$date','-13 day') and DATETIME('$date','-6 day')");
+            "SELECT count(o.OrderID) FROM [Order] as o WHERE o.Dated BETWEEN  DATETIME('$date','-13 day') and DATETIME('$date','-6 day') and  o.UserID=${MyNavigationBar.userID}");
       } else if (name == "Month") {
         order = await db.rawQuery(
-            "SELECT count(o.OrderID) FROM [Order] as o WHERE o.Dated BETWEEN  DATETIME('$date','-1 month') and DATETIME('$date','localtime')");
+            "SELECT count(o.OrderID) FROM [Order] as o WHERE o.Dated BETWEEN  DATETIME('$date','-1 month') and DATETIME('$date','localtime') and  o.UserID=${MyNavigationBar.userID}");
       } else if (name == "PMonth") {
         order = await db.rawQuery(
-            "SELECT count(o.OrderID) FROM [Order] as o WHERE o.Dated BETWEEN  DATETIME('$date','-2 month') and DATETIME('$date','-1 month')");
+            "SELECT count(o.OrderID) FROM [Order] as o WHERE o.Dated BETWEEN  DATETIME('$date','-2 month') and DATETIME('$date','-1 month') and  o.UserID=${MyNavigationBar.userID}");
       } else if (name == "Year") {
         order = await db.rawQuery(
-            "SELECT count(o.OrderID) FROM [Order] as o WHERE o.Dated BETWEEN  DATETIME('$date','-1 year') and DATETIME('$date','localtime')");
+            "SELECT count(o.OrderID) FROM [Order] as o WHERE o.Dated BETWEEN  DATETIME('$date','-1 year') and DATETIME('$date','localtime') and  o.UserID=${MyNavigationBar.userID}");
       } else if (name == "PYear") {
         order = await db.rawQuery(
-            "SELECT count(o.OrderID) FROM [Order] as o WHERE o.Dated BETWEEN  DATETIME('$date','-2 year') and DATETIME('$date','-1 year')");
+            "SELECT count(o.OrderID) FROM [Order] as o WHERE o.Dated BETWEEN  DATETIME('$date','-2 year') and DATETIME('$date','-1 year') and  o.UserID=${MyNavigationBar.userID}");
       } else {
         order = await db.rawQuery(
-            "SELECT count(o.OrderID) FROM [Order] as o WHERE o.Dated='$date'");
+            "SELECT count(o.OrderID) FROM [Order] as o WHERE o.Dated='$date' and  o.UserID=${MyNavigationBar.userID}");
       }
       if (order.isNotEmpty) {
         var iterable = order.whereType<Map>().first;
@@ -801,9 +809,12 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
     if (tableName == "Order" ||
         tableName == "OrderDetail" ||
         tableName == "Sale" ||
+        tableName == "Party" ||
         tableName == "SaleDetail" ||
         tableName == "Recovery") {
-      return db.query(tableName, orderBy: id, where: "isPosted=0");
+      return db.query(tableName,
+          orderBy: id,
+          where: "isPosted=0 and  UserID=${MyNavigationBar.userID}");
     } else {
       return db.query(tableName, orderBy: id);
     }
@@ -832,19 +843,24 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
     bool isAvialable = false;
     var list = [];
     Database db = await instance.database;
-    list = await db.query("select PartyID FROM Party where isPosted=0");
+    list = await db.rawQuery(
+        "SELECT p.PartyID FROM Party AS p where p.isPosted=0 and  p.UserID=${MyNavigationBar.userID}");
     // "select PartyID FROM Party where isPosted=0 limit 1");
     if (list.isNotEmpty) return isAvialable = true;
-    list = await db.query("select OrderID FROM [Order] where isPosted=0 ");
+    list = await db.rawQuery(
+        "SELECT o.OrderID FROM [Order] AS o where o.isPosted=0   and  o.UserID=${MyNavigationBar.userID}");
     if (list.isNotEmpty) return isAvialable = true;
+    list = await db.rawQuery(
+        "select od.OrderID FROM OrderDetail AS od where od.isPosted=0   and  od.UserID=${MyNavigationBar.userID}");
     if (list.isNotEmpty) return isAvialable = true;
-    list = await db.query("select OrderID FROM OrderDetail where isPosted=0 ");
+    list = await db.rawQuery(
+        "select s.InvoiceID FROM Sale as s where s.isPosted=0  and  s.UserID=${MyNavigationBar.userID}");
     if (list.isNotEmpty) return isAvialable = true;
-    list = await db.query("select InvoiceID FROM Sale where isPosted=0 ");
+    list = await db.rawQuery(
+        "select sd.InvoiceID FROM SaleDetail as sd where sd.isPosted=0  and  sd.UserID=${MyNavigationBar.userID}");
     if (list.isNotEmpty) return isAvialable = true;
-    list = await db.query("select InvoiceID FROM SaleDetail where isPosted=0");
-    if (list.isNotEmpty) return isAvialable = true;
-    list = await db.query("select RecoveryID FROM Recovery where isPosted=0 ");
+    list = await db.rawQuery(
+        "select r.RecoveryID FROM Recovery as r  where r.isPosted=0   and r.UserID=${MyNavigationBar.userID}");
     if (list.isNotEmpty) return isAvialable = true;
     return isAvialable = false;
   }
@@ -852,12 +868,18 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
   static Future<void> tablenotPosted() async {
     try {
       Database db = await instance.database;
-      await db.execute("UPDATE [Order] SET isPosted=0");
-      await db.execute("UPDATE [OrderDetail] SET isPosted=0");
-      await db.execute("UPDATE [Recovery] SET isPosted=0");
-      await db.execute("UPDATE [Party] SET isPosted=0");
-      await db.execute("UPDATE [Sale] SET isPosted=0");
-      await db.execute("UPDATE [SaleDetail] SET isPosted=0");
+      await db.execute(
+          "UPDATE [Order] SET isPosted=0 where  UserID=${MyNavigationBar.userID}");
+      await db.execute(
+          "UPDATE [OrderDetail] SET isPosted=0 where  UserID=${MyNavigationBar.userID}");
+      await db.execute(
+          "UPDATE [Recovery] SET isPosted=0 where  UserID=${MyNavigationBar.userID}");
+      await db.execute(
+          "UPDATE [Party] SET isPosted=0 where  UserID=${MyNavigationBar.userID}");
+      await db.execute(
+          "UPDATE [Sale] SET isPosted=0 where  UserID=${MyNavigationBar.userID}");
+      await db.execute(
+          "UPDATE [SaleDetail] SET isPosted=0 where  UserID=${MyNavigationBar.userID}");
     } catch (e) {
       debugPrint("Error During posting update");
     }
@@ -866,12 +888,18 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
   static Future<void> tablePosted() async {
     try {
       Database db = await instance.database;
-      await db.execute("UPDATE [Order] SET isPosted=1");
-      await db.execute("UPDATE [OrderDetail] SET isPosted=1");
-      await db.execute("UPDATE [Recovery] SET isPosted=1");
-      await db.execute("UPDATE [Party] SET isPosted=1");
-      await db.execute("UPDATE [Sale] SET isPosted=1");
-      await db.execute("UPDATE [SaleDetail] SET isPosted=1");
+      await db.execute(
+          "UPDATE [Order] SET isPosted=1 where  UserID=${MyNavigationBar.userID}");
+      await db.execute(
+          "UPDATE [OrderDetail] SET isPosted=1 where  UserID=${MyNavigationBar.userID}");
+      await db.execute(
+          "UPDATE [Recovery] SET isPosted=1 where  UserID=${MyNavigationBar.userID}");
+      await db.execute(
+          "UPDATE [Party] SET isPosted=1 where  UserID=${MyNavigationBar.userID}");
+      await db.execute(
+          "UPDATE [Sale] SET isPosted=1 where  UserID=${MyNavigationBar.userID}");
+      await db.execute(
+          "UPDATE [SaleDetail] SET isPosted=1 where  UserID=${MyNavigationBar.userID}");
     } catch (e) {
       debugPrint("Error During posting update");
     }

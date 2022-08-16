@@ -82,7 +82,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
               bottom: Radius.circular(30),
             ),
           ),
-          backgroundColor: eTradeGreen,
+          backgroundColor: eTradeMainColor,
           toolbarHeight: 80,
           title: Text(
             'Order Detail',
@@ -172,7 +172,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                 ),
                 Divider(
                   thickness: 2,
-                  color: eTradeGreen,
+                  color: eTradeMainColor,
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
@@ -237,7 +237,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                         ? Color(0xff424242)
                         : Colors.grey.shade100,
                     border: Border(
-                      top: BorderSide(color: eTradeGreen, width: 4),
+                      top: BorderSide(color: eTradeMainColor, width: 4),
                     )),
                 height: 80,
                 width: double.infinity,

@@ -26,7 +26,7 @@ class _AboutScreenState extends State<AboutScreen> {
       subtitle: "support@exapp.pk",
       icon: Icon(
         Icons.mail,
-        color: eTradeGreen,
+        color: eTradeMainColor,
       ),
     ),
     About(
@@ -34,7 +34,7 @@ class _AboutScreenState extends State<AboutScreen> {
       subtitle: "+923040636454",
       icon: Icon(
         Icons.phone,
-        color: eTradeGreen,
+        color: eTradeMainColor,
       ),
     ),
     About(
@@ -42,7 +42,7 @@ class _AboutScreenState extends State<AboutScreen> {
       subtitle: "facebook.com/automatingbiz",
       icon: Icon(
         Icons.facebook,
-        color: eTradeGreen,
+        color: eTradeMainColor,
       ),
     ),
     About(
@@ -50,7 +50,7 @@ class _AboutScreenState extends State<AboutScreen> {
       subtitle: "twitter.com/e_xapp",
       icon: Icon(
         Icons.business_center_outlined,
-        color: eTradeGreen,
+        color: eTradeMainColor,
       ),
     ),
     About(
@@ -58,14 +58,14 @@ class _AboutScreenState extends State<AboutScreen> {
         subtitle: "https://www.linkedin.com/company/exapp-pvt-ltd",
         icon: Icon(
           Icons.linked_camera_outlined,
-          color: eTradeGreen,
+          color: eTradeMainColor,
         )),
     About(
       title: "Official Website",
       subtitle: "www.exapp.pk",
       icon: Icon(
         Icons.web,
-        color: eTradeGreen,
+        color: eTradeMainColor,
       ),
     ),
   ];
@@ -74,7 +74,7 @@ class _AboutScreenState extends State<AboutScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text("About Us"),
-        backgroundColor: eTradeGreen,
+        backgroundColor: eTradeMainColor,
       ),
       body: SingleChildScrollView(
         child: Container(

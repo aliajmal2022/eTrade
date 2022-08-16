@@ -129,7 +129,7 @@ class _SetTargetScreenState extends State<SetTargetScreen> {
     return Scaffold(
         appBar: AppBar(
           title: Text('Set Target'),
-          backgroundColor: eTradeGreen,
+          backgroundColor: eTradeMainColor,
         ),
         body: ListView.builder(
           itemBuilder: (context, index) {
@@ -169,10 +169,10 @@ class _SetTargetScreenState extends State<SetTargetScreen> {
                                   borderSide: BorderSide(width: 20.0)),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
-                                borderSide: BorderSide(color: eTradeGreen),
+                                borderSide: BorderSide(color: eTradeMainColor),
                               ),
                               labelText: 'Set Target',
-                              labelStyle: TextStyle(color: eTradeGreen),
+                              labelStyle: TextStyle(color: eTradeMainColor),
                             ),
                           ),
                         ),
@@ -187,7 +187,7 @@ class _SetTargetScreenState extends State<SetTargetScreen> {
           scrollDirection: Axis.vertical,
         ),
         floatingActionButton: FloatingActionButton(
-          backgroundColor: check ? Colors.green.shade100 : eTradeGreen,
+          backgroundColor: check ? Colors.green.shade100 : eTradeMainColor,
           onPressed: check
               ? null
               : () async {

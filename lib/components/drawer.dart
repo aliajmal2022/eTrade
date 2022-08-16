@@ -131,7 +131,7 @@ class _MyDrawerState extends State<MyDrawer>
           ),
           Divider(
             thickness: 1,
-            color: eTradeGreen,
+            color: eTradeMainColor,
           ),
           Padding(
               padding: const EdgeInsets.all(20),
@@ -236,9 +236,9 @@ class _MyDrawerState extends State<MyDrawer>
                               );
                               // set up the AlertDialog
                               AlertDialog alert = AlertDialog(
-                                title: const Text(
-                                    "There is data which is not posted yet."),
-                                content: const Text("  Please post the data."),
+                                title: const Text("Alert!"),
+                                content: const Text(
+                                    "Please post the data to proceed."),
                                 actions: [okButton],
                               );
                               // show the dialog

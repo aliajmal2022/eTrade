@@ -93,10 +93,11 @@ class _NewUsrAddLocalDBState extends State<NewUsrAddLocalDB> {
                                       borderSide: BorderSide(width: 20.0)),
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
-                                    borderSide: BorderSide(color: eTradeGreen),
+                                    borderSide:
+                                        BorderSide(color: eTradeMainColor),
                                   ),
                                   labelText: 'Enter Customer Name',
-                                  labelStyle: TextStyle(color: eTradeGreen),
+                                  labelStyle: TextStyle(color: eTradeMainColor),
                                   errorText: msg
                                       ? null
                                       : "The Customer is already exist.",
@@ -127,11 +128,11 @@ class _NewUsrAddLocalDBState extends State<NewUsrAddLocalDB> {
                                       borderSide: BorderSide(width: 20.0)),
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
-                                    borderSide:
-                                        const BorderSide(color: eTradeGreen),
+                                    borderSide: const BorderSide(
+                                        color: eTradeMainColor),
                                   ),
                                   labelText: 'Enter Discount',
-                                  labelStyle: TextStyle(color: eTradeGreen),
+                                  labelStyle: TextStyle(color: eTradeMainColor),
                                 ),
                               ),
                             ),
@@ -158,11 +159,12 @@ class _NewUsrAddLocalDBState extends State<NewUsrAddLocalDB> {
                                         borderSide: BorderSide(width: 20.0)),
                                     focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
-                                      borderSide:
-                                          const BorderSide(color: eTradeGreen),
+                                      borderSide: const BorderSide(
+                                          color: eTradeMainColor),
                                     ),
                                     labelText: 'Address',
-                                    labelStyle: TextStyle(color: eTradeGreen),
+                                    labelStyle:
+                                        TextStyle(color: eTradeMainColor),
                                   ),
                                 ),
                               ),
@@ -239,7 +241,7 @@ class _NewUsrAddLocalDBState extends State<NewUsrAddLocalDB> {
                                   });
                                 },
                           // elevation: 20.0,
-                          color: eTradeGreen,
+                          color: eTradeMainColor,
                           shape: RoundedRectangleBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(25.0))),

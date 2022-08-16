@@ -247,7 +247,7 @@ class _TakeOrderScreenState extends State<TakeOrderScreen>
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: eTradeGreen,
+          backgroundColor: eTradeMainColor,
           toolbarHeight: 80,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(
@@ -433,16 +433,16 @@ class _TakeOrderScreenState extends State<TakeOrderScreen>
                                       searchBoxDecoration: InputDecoration(
                                           focusedBorder: UnderlineInputBorder(
                                             borderSide: BorderSide(
-                                              color: eTradeGreen,
+                                              color: eTradeMainColor,
                                               width: 2,
                                             ),
                                           ),
                                           suffixIcon: Icon(
                                             Icons.search,
-                                            color: eTradeGreen,
+                                            color: eTradeMainColor,
                                           ),
-                                          labelStyle:
-                                              TextStyle(color: eTradeGreen)),
+                                          labelStyle: TextStyle(
+                                              color: eTradeMainColor)),
                                       dropdownItemBuilder:
                                           (BuildContext context, Customer item,
                                               bool isSelected) {
@@ -451,7 +451,7 @@ class _TakeOrderScreenState extends State<TakeOrderScreen>
                                               ? null
                                               : BoxDecoration(
                                                   border: Border.all(
-                                                      color: eTradeGreen),
+                                                      color: eTradeMainColor),
                                                   borderRadius:
                                                       BorderRadius.circular(5),
                                                   color: MyApp.isDark
@@ -507,7 +507,7 @@ class _TakeOrderScreenState extends State<TakeOrderScreen>
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(2)),
                                           // color: Colors.white,
-                                          color: eTradeGreen,
+                                          color: eTradeMainColor,
                                           // color: Color(0xff424242),
                                         ),
                                         child: MaterialButton(
@@ -571,18 +571,18 @@ class _TakeOrderScreenState extends State<TakeOrderScreen>
                                         vertical: 13, horizontal: 20),
                                     enabledBorder: OutlineInputBorder(
                                       borderSide:
-                                          BorderSide(color: eTradeGreen),
+                                          BorderSide(color: eTradeMainColor),
                                     ),
                                     focusedBorder: OutlineInputBorder(
                                       // borderRadius: BorderRadius.circular(20),
                                       borderSide:
-                                          BorderSide(color: eTradeGreen),
+                                          BorderSide(color: eTradeMainColor),
                                     ),
                                     labelText: 'Search Product',
-                                    // labelStyle: TextStyle(color: eTradeGreen),
+                                    // labelStyle: TextStyle(color: eTradeMainColor),
                                     suffixIcon: Icon(
                                       Icons.search,
-                                      color: eTradeGreen,
+                                      color: eTradeMainColor,
                                     ),
                                   ),
                                 ),
@@ -609,14 +609,15 @@ class _TakeOrderScreenState extends State<TakeOrderScreen>
                                       },
                                       child: Text(
                                         "Clear List",
-                                        style: TextStyle(color: eTradeGreen),
+                                        style:
+                                            TextStyle(color: eTradeMainColor),
                                       )),
                                 ),
                               ),
                             ),
                           ),
                           Divider(
-                            color: eTradeGreen,
+                            color: eTradeMainColor,
                             thickness: 2,
                             height: 10,
                           ),

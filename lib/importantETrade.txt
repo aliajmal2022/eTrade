@@ -1,83 +1,133 @@
-
-spot sale item in navigation bar 
-take order screen in 
-sale in voice 
-
-quantity 
-sale(isCash bool)  saledetail same as order orderdetail
+manager view 
+* specific acc like admin 
+* dashboard waisay hi ai ga lkn wahan dropdown ho ga user ka ur unka data ai ga 
+* take order katam ho jai ga 
+* view booking as it is 
 
 
 
 
 
-select * from dbo_m.[Party]
-select * from dbo_m.[Order]
-select * from dbo_m.[OrderDetail]
-select * from dbo_m.[Sale]
-select * from dbo_m.[SaleDetail]
-select * from dbo_m.[Recovery]
-delete  from dbo_m.[Party]
-delete  from dbo_m.[Order]
-delete  from dbo_m.[OrderDetail]
-delete  from dbo_m.[Recovery]
-delete  from dbo_m.[Sale]
-delete  from dbo_m.[SaleDetail]
-
-
-
-addquantity may discount set 
-search in viewbooking and viewselling 
 
 
 
 
-SELECT work.name FROM work WHERE work.dated BETWEEN  DATETIME('now','-6 day') and DATETIME('now','localtime');
 
-SELECT work.name FROM work WHERE work.dated BETWEEN  DATETIME('now','-12 day') and DATETIME('now','-6 day');
+///////////////////////////////////////////////////////////////Manager View
+On posting , insert UserTargetTable  data into  insert by below Line  ;
+
+INSERT INTO dbo_m.SaleRapTarget
+(
+	-- Id -- this column value is auto-generated
+	SRID,
+	January,
+	February,
+	March,
+	April,
+	May,
+	June,
+	July,
+	August,
+	September,
+	October,
+	November,
+	December
+)
+VALUES
+(
+	/*{ SRID }*/,
+	/*{ January }*/,
+	/*{ February }*/,
+	/*{ March }*/,
+	/*{ April }*/,
+	/*{ May }*/,
+	/*{ June }*/,
+	/*{ July }*/,
+	/*{ August }*/,
+	/*{ September }*/,
+	/*{ October }*/,
+	/*{ November }*/,
+	/*{ December }*/
+)
 
 
+Take DB Backup on Successful Login of Manager
+Disable Edit/Delete in Booking/Recovery/Spot Sale
+Add a drop down list to select a user on Dashboard
+Get Data=>Get Parties, Items as already Done. 
+Delete and Recreate  these tables "Order,OrderDetail,Sale,SaleDetail,Recovery,UserTarget without autoincreament (Primary Key)". 
+Insert data into Order,OrderDetail,Sale,SaleDetail,Recovery,UserTarget Tables as returned from Host.
 
-SELECT work.name FROM work WHERE work.dated BETWEEN  DATETIME('now','-1 month') and DATETIME('now','localtime');
-
-SELECT work.name FROM work WHERE work.dated BETWEEN  DATETIME('now','-2 month') and DATETIME('now','-1 month');
-
-
-SELECT work.name FROM work WHERE work.dated BETWEEN  DATETIME('now','-1 year') and DATETIME('now','localtime');
-
-SELECT work.name FROM work WHERE work.dated BETWEEN  DATETIME('now','-2 year') and DATETIME('now','-1 year')
-
-
-
+//User Target Table Fetch Query
+(a) -------- SELECT srt.SRID,srt.January,srt.February,srt.March,srt.April,srt.May,srt.June,srt.July,srt.August,srt.September,srt.October,srt.November,srt.December
+FROM dbo_m.SaleRapTarget AS srt
+!!!!!! Remarks== Description
+//Order Table Fetch Query
 SELECT 
-IFNULL(SUM(CASE WHEN strftime('%m', dated) = '01' THEN s.Amount END),0) AS jan,
-IFNULL(SUM(CASE WHEN strftime('%m', dated) = '02' THEN s.Amount END),0) as feb,
-IFNULL(SUM(CASE WHEN strftime('%m', dated) = '03' THEN s.Amount END),0) as mar,
-IFNULL(SUM(CASE WHEN strftime('%m', dated) = '04' THEN s.Amount END),0) as apr,
-IFNULL(SUM(CASE WHEN strftime('%m', dated) = '05' THEN s.Amount END),0) as may,
-IFNULL(SUM(CASE WHEN strftime('%m', dated) = '06' THEN s.Amount END),0) as jun,
-IFNULL(SUM(CASE WHEN strftime('%m', dated) = '07' THEN s.Amount END),0) as july,
-IFNULL(SUM(CASE WHEN strftime('%m', dated) = '08' THEN s.Amount END),0) as aug,
-IFNULL(SUM(CASE WHEN strftime('%m', dated) = '09' THEN s.Amount END),0) as sep,
-IFNULL(SUM(CASE WHEN strftime('%m', dated) = '10' THEN s.Amount END),0) as oct,
-IFNULL(SUM(CASE WHEN strftime('%m', dated) = '11' THEN s.Amount END),0) as nov,
-IFNULL(SUM(CASE WHEN strftime('%m', dated) = '12' THEN s.Amount END),0) as [dec]
-FROM OrderDetail s
-where strftime('%Y',Dated) = strftime('%Y',Date())
+	s.BillNo,
+	s.SRId_Mobile,
+	[PartyID],
+	TotalQuantity,
+	s.NetAmount,
+	s.Remarks,
+	s.Dated
+FROM dbo.Sale AS s WHERE ISNULL(s.InvoiceId_Mobile,0)>0 AND ISNULL(s.IsOrder_Mobile,0)=1
+
+//Order Detail Fetch Query
+SELECT 
+	d.BillNo,
+	s.SRId_Mobile,
+	d.ItemID,
+	abs(d.Quantity) AS Quantity,
+	d.Rate,d.Amount,
+	d.Dated,
+	d.Dated,
+	d.Discount_line,
+	d.TradeOffer,
+	d.Bonus
+FROM dbo.Sale AS s
+INNER JOIN Detail AS d ON d.BillNo = s.BillNo
+WHERE ISNULL(s.InvoiceId_Mobile,0)>0 AND ISNULL(s.IsOrder_Mobile,0)=1
+
+//Sale Table Fetch Query
+SELECT 
+	s.BillNo,
+	s.SRId_Mobile,
+	[PartyID],
+	TotalQuantity,
+	s.NetAmount,
+	s.Dated,
+	s.Remarks,
+	s.Dated,
+	CASE WHEN s.PayMode=1 THEN 1 ELSE 0 END AS IsCashInvoice
+FROM dbo.Sale AS s WHERE ISNULL(s.InvoiceId_Mobile,0)>0 AND ISNULL(s.IsOrder_Mobile,0)=0
+
+//Sale Detail Table Fetch Query
+SELECT 
+	d.BillNo,
+	s.SRId_Mobile,
+	d.ItemID,
+	abs(d.Quantity) AS Quantity,
+	d.Rate,d.Amount,
+	d.Dated,
+	d.Dated,
+	d.Discount_line,
+	d.TradeOffer,
+	d.Bonus
+FROM dbo.Sale AS s
+INNER JOIN Detail AS d ON d.BillNo = s.BillNo
+WHERE ISNULL(s.InvoiceId_Mobile,0)>0 AND ISNULL(s.IsOrder_Mobile,0)=0
 
 
-
-pie chart
-
-SELECT od.ItemID,i.ItemName,sum(od.Quantity) as Quantity , sum(od.Amount) as Amount FROM  
-OrderDetail as od 
-INNER JOIN Item as i on od.ItemID=i.ItemID
-group by od.ItemID,i.ItemName
-order by sum(od.Quantity) DESC 
-LIMIT    10
-
-SELECT od.ItemID,i.ItemName,sum(od.Quantity) as Quantity , sum(od.Amount) as Amount FROM  
-OrderDetail as od 
-INNER JOIN Item as i on od.ItemID=i.ItemID
-group by od.ItemID,i.ItemName
-order by sum(od.Amount) DESC 
-LIMIT    10
+!!!! Detail == Description
+--Recovery Detail Table Fetch Query
+SELECT 
+	l.RecoveryId_Mobile,
+	l.SRId_Mobile,
+	l.PartyID,
+	l.Amount,
+	l.Dated,
+	l.Detail,
+	l.Dated
+FROM dbo.Ledger AS l
+WHERE ISNULL(l.SRId_Mobile,0)>0 AND l.Amount<0

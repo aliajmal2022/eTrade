@@ -40,7 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 200,
                 alignment: Alignment.centerRight,
                 decoration: BoxDecoration(
-                  color: eTradeGreen,
+                  color: eTradeMainColor,
                   borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(25),
                       bottomRight: Radius.circular(25)),
@@ -117,7 +117,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             focusedBorder: OutlineInputBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(20)),
-                              borderSide: BorderSide(color: eTradeGreen),
+                              borderSide: BorderSide(color: eTradeMainColor),
                             ),
                             labelText: 'Username',
                           ),
@@ -141,7 +141,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             focusedBorder: OutlineInputBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(20)),
-                              borderSide: BorderSide(color: eTradeGreen),
+                              borderSide: BorderSide(color: eTradeMainColor),
                             ),
                             labelText: 'Password',
                           ),
@@ -197,7 +197,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             elevation: 20.0,
                             disabledColor: Colors.grey,
                             // disabledColor: Color(0x0ff1e1e1),
-                            color: eTradeGreen,
+                            color: eTradeMainColor,
                             shape: RoundedRectangleBorder(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(25.0))),

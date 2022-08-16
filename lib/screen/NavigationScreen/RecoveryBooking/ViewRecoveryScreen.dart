@@ -41,7 +41,7 @@ class _ViewRecoveryScreenState extends State<ViewRecoveryScreen>
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
-        backgroundColor: eTradeGreen,
+        backgroundColor: eTradeMainColor,
         toolbarHeight: 80,
         bottom: TabBar(
           indicatorColor: Colors.white,

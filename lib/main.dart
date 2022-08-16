@@ -59,7 +59,8 @@ class _MyAppState extends State<MyApp> {
             theme: ThemeData(fontFamily: 'NunitoSans'),
             darkTheme: ThemeData(
                 textSelectionTheme: TextSelectionThemeData(
-                    cursorColor: eTradeGreen, selectionColor: eTradeGreen),
+                    cursorColor: eTradeMainColor,
+                    selectionColor: eTradeMainColor),
                 brightness: Brightness.dark,
                 fontFamily: 'NunitoSans'),
             themeMode: currentMode,

@@ -162,12 +162,12 @@ class _ListOfRecoveryState extends State<ListOfRecovery>
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  "RecoveryID: #${dummyOrderList[index].recoveryID}",
+                                                  "Recovery Id: ${dummyOrderList[index].recoveryID}",
                                                   style: TextStyle(
                                                       color: Colors.grey),
                                                 ),
                                                 Text(
-                                                  " ${dummyOrderList[index].party.partyName}",
+                                                  "${dummyOrderList[index].party.partyName}",
                                                   style: const TextStyle(
                                                     fontSize: 15,
                                                     fontWeight: FontWeight.bold,
@@ -183,11 +183,12 @@ class _ListOfRecoveryState extends State<ListOfRecovery>
                                                   children: [
                                                     Text("Recovery On",
                                                         style: TextStyle(
-                                                            fontSize: 15,
-                                                            color: Colors.grey,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold)),
+                                                          fontSize: 15,
+                                                          color: Colors.grey,
+                                                          // fontWeight:
+                                                          //     FontWeight
+                                                          //         .bold
+                                                        )),
                                                     Text(
                                                       "${dummyOrderList[index].dated}",
                                                       style: TextStyle(
@@ -211,7 +212,8 @@ class _ListOfRecoveryState extends State<ListOfRecovery>
                                                 Container(
                                                   padding: EdgeInsets.all(4),
                                                   decoration: BoxDecoration(
-                                                      color: eTradeGreen,
+                                                      color: Theme.of(context)
+                                                          .backgroundColor,
                                                       borderRadius:
                                                           BorderRadius.all(
                                                               Radius.circular(
@@ -219,9 +221,11 @@ class _ListOfRecoveryState extends State<ListOfRecovery>
                                                   child: Text(
                                                     "Rs ${dummyOrderList[index].amount}",
                                                     style: TextStyle(
-                                                        fontStyle:
-                                                            FontStyle.italic,
-                                                        color: Colors.white),
+                                                      fontStyle:
+                                                          FontStyle.italic,
+                                                      color: ThemeData.light()
+                                                          .cardColor,
+                                                    ),
                                                   ),
                                                 ),
                                                 SizedBox(
@@ -244,13 +248,14 @@ class _ListOfRecoveryState extends State<ListOfRecovery>
                                                   child: Container(
                                                     padding: EdgeInsets.all(8),
                                                     decoration: BoxDecoration(
-                                                        color: (MyApp.isDark)
-                                                            ? Colors.grey
-                                                            : Colors
-                                                                .grey.shade300,
+                                                        color: eTradeMainColor,
+                                                        // (MyApp.isDark)
+                                                        // ? Colors.grey
+                                                        // : Colors
+                                                        //     .grey.shade300,
                                                         // border: Border.all(
                                                         //     color:
-                                                        //         eTradeGreen,
+                                                        //         eTradeMainColor,
                                                         //     width: 1),
                                                         borderRadius:
                                                             BorderRadius.all(
@@ -259,9 +264,11 @@ class _ListOfRecoveryState extends State<ListOfRecovery>
                                                     child: Text(
                                                       "Recovery Detail",
                                                       style: TextStyle(
-                                                          color: eTradeGreen,
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .cardColor,
                                                           // fontStyle: FontStyle.italic,
-                                                          fontSize: 15),
+                                                          fontSize: 13),
                                                     ),
                                                   ),
                                                 ),

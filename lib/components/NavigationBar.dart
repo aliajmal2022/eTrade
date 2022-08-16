@@ -87,14 +87,14 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
           child: Container(
             decoration: BoxDecoration(
                 border: Border(
-              top: BorderSide(width: 1.5, color: eTradeGreen),
+              top: BorderSide(width: 1.5, color: eTradeMainColor),
             )),
             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
             child: GNav(
                 selectedIndex: MyNavigationBar.currentIndex,
                 onTabChange: _onItemTapped,
                 activeColor: Colors.white,
-                tabBackgroundColor: eTradeGreen,
+                tabBackgroundColor: eTradeMainColor,
                 gap: 8,
                 padding: EdgeInsets.all(14),
                 tabs: [

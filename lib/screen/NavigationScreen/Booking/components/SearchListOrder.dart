@@ -217,12 +217,12 @@ class _ListOfOrderState extends State<ListOfOrder>
                                     children: [
                                       Text(
                                         ViewBookingScreen.isSaleBooking
-                                            ? "SaleID: #${dummyOrderList[index].iD}"
-                                            : "OrderID: #${dummyOrderList[index].iD}",
+                                            ? "Sale Id: ${dummyOrderList[index].iD}"
+                                            : "Order Id: ${dummyOrderList[index].iD}",
                                         style: TextStyle(color: Colors.grey),
                                       ),
                                       Text(
-                                        " ${dummyOrderList[index].partyName}",
+                                        "${dummyOrderList[index].partyName}",
                                         style: const TextStyle(
                                           fontSize: 15,
                                           fontWeight: FontWeight.bold,
@@ -240,9 +240,10 @@ class _ListOfOrderState extends State<ListOfOrder>
                                                   ? "Sale On"
                                                   : "Order On",
                                               style: TextStyle(
-                                                  fontSize: 15,
-                                                  color: Colors.grey,
-                                                  fontWeight: FontWeight.bold)),
+                                                fontSize: 15,
+                                                color: Colors.grey,
+                                                // fontWeight: FontWeight.bold
+                                              )),
                                           Text(
                                             ViewBookingScreen.isSaleBooking
                                                 ? "${dummyOrderList[index].date}"
@@ -266,7 +267,8 @@ class _ListOfOrderState extends State<ListOfOrder>
                                       Container(
                                         padding: EdgeInsets.all(4),
                                         decoration: BoxDecoration(
-                                            color: eTradeGreen,
+                                            color: Theme.of(context)
+                                                .backgroundColor,
                                             borderRadius: BorderRadius.all(
                                                 Radius.circular(5))),
                                         child: Text(
@@ -277,7 +279,7 @@ class _ListOfOrderState extends State<ListOfOrder>
                                         ),
                                       ),
                                       SizedBox(
-                                        height: 10,
+                                        height: 20,
                                       ),
                                       MaterialButton(
                                         onPressed:
@@ -348,12 +350,10 @@ class _ListOfOrderState extends State<ListOfOrder>
                                         child: Container(
                                           padding: EdgeInsets.all(8),
                                           decoration: BoxDecoration(
-                                              color: (MyApp.isDark)
-                                                  ? Colors.grey
-                                                  : Colors.grey.shade300,
+                                              color: eTradeMainColor,
                                               // border: Border.all(
                                               //     color:
-                                              //         eTradeGreen,
+                                              //         eTradeMainColor,
                                               //     width: 1),
                                               borderRadius: BorderRadius.all(
                                                   Radius.circular(5))),
@@ -362,7 +362,8 @@ class _ListOfOrderState extends State<ListOfOrder>
                                                 ? "Sale Detail"
                                                 : "Order Detail",
                                             style: TextStyle(
-                                                color: eTradeGreen,
+                                                color:
+                                                    Theme.of(context).cardColor,
                                                 // fontStyle: FontStyle.italic,
                                                 fontSize: 15),
                                           ),

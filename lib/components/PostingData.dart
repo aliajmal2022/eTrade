@@ -255,7 +255,7 @@ class _PostingDataState extends State<PostingData>
                                                       _party.length == 0) &&
                                                   !notData
                                               ? CircularProgressIndicator(
-                                                  color: eTradeGreen,
+                                                  color: eTradeMainColor,
                                                   strokeWidth: 2,
                                                 )
                                               : Text("${PostingData.cCount}"),
@@ -273,7 +273,7 @@ class _PostingDataState extends State<PostingData>
                                                       _order.length == 0) &&
                                                   !notData
                                               ? CircularProgressIndicator(
-                                                  color: eTradeGreen)
+                                                  color: eTradeMainColor)
                                               : Text("${PostingData.oCount}"),
                                         ],
                                       ),
@@ -290,7 +290,7 @@ class _PostingDataState extends State<PostingData>
                                                           0) &&
                                                   !notData
                                               ? CircularProgressIndicator(
-                                                  color: eTradeGreen)
+                                                  color: eTradeMainColor)
                                               : Text("${PostingData.odCount}"),
                                         ],
                                       ),
@@ -310,7 +310,8 @@ class _PostingDataState extends State<PostingData>
                                                   height: 12,
                                                   child:
                                                       CircularProgressIndicator(
-                                                          color: eTradeGreen))
+                                                          color:
+                                                              eTradeMainColor))
                                               : Text("${PostingData.sCount}"),
                                         ],
                                       ),
@@ -331,7 +332,8 @@ class _PostingDataState extends State<PostingData>
                                                   height: 12,
                                                   child:
                                                       CircularProgressIndicator(
-                                                          color: eTradeGreen))
+                                                          color:
+                                                              eTradeMainColor))
                                               : Text("${PostingData.sdCount}"),
                                         ],
                                       ),
@@ -351,7 +353,8 @@ class _PostingDataState extends State<PostingData>
                                                   height: 12,
                                                   child:
                                                       CircularProgressIndicator(
-                                                          color: eTradeGreen))
+                                                          color:
+                                                              eTradeMainColor))
                                               : Text("${PostingData.rCount}"),
                                         ],
                                       ),
@@ -376,14 +379,14 @@ class _PostingDataState extends State<PostingData>
                                       elevation: 2.0,
                                       padding: EdgeInsets.all(15.0),
                                       shape: CircleBorder(),
-                                      color: eTradeGreen,
+                                      color: eTradeMainColor,
                                       child: Icon(
                                         Icons.check,
                                         color: Colors.white,
                                       ),
                                     )
                                   : CircularProgressIndicator(
-                                      color: eTradeGreen),
+                                      color: eTradeMainColor),
                             ],
                           ),
                         ),
@@ -424,7 +427,7 @@ class _PostingDataState extends State<PostingData>
                                       ? "Posted Successfully"
                                       : "Posting Data",
                                   style: TextStyle(
-                                      fontSize: 25, color: eTradeGreen),
+                                      fontSize: 25, color: eTradeMainColor),
                                 ),
                               ),
                               Padding(
@@ -448,7 +451,8 @@ class _PostingDataState extends State<PostingData>
                                                   height: 12,
                                                   child:
                                                       CircularProgressIndicator(
-                                                          color: eTradeGreen))
+                                                          color:
+                                                              eTradeMainColor))
                                               : Text("${PostingData.cCount}"),
                                         ],
                                       ),
@@ -468,7 +472,8 @@ class _PostingDataState extends State<PostingData>
                                                   height: 12,
                                                   child:
                                                       CircularProgressIndicator(
-                                                          color: eTradeGreen))
+                                                          color:
+                                                              eTradeMainColor))
                                               : Text("${PostingData.oCount}"),
                                         ],
                                       ),
@@ -489,7 +494,8 @@ class _PostingDataState extends State<PostingData>
                                                   height: 12,
                                                   child:
                                                       CircularProgressIndicator(
-                                                          color: eTradeGreen))
+                                                          color:
+                                                              eTradeMainColor))
                                               : Text("${PostingData.odCount}"),
                                         ],
                                       ),
@@ -509,7 +515,8 @@ class _PostingDataState extends State<PostingData>
                                                   height: 12,
                                                   child:
                                                       CircularProgressIndicator(
-                                                          color: eTradeGreen))
+                                                          color:
+                                                              eTradeMainColor))
                                               : Text("${PostingData.sCount}"),
                                         ],
                                       ),
@@ -530,7 +537,8 @@ class _PostingDataState extends State<PostingData>
                                                   height: 12,
                                                   child:
                                                       CircularProgressIndicator(
-                                                          color: eTradeGreen))
+                                                          color:
+                                                              eTradeMainColor))
                                               : Text("${PostingData.sdCount}"),
                                         ],
                                       ),
@@ -550,7 +558,8 @@ class _PostingDataState extends State<PostingData>
                                                   height: 12,
                                                   child:
                                                       CircularProgressIndicator(
-                                                          color: eTradeGreen))
+                                                          color:
+                                                              eTradeMainColor))
                                               : Text("${PostingData.rCount}"),
                                         ],
                                       ),
@@ -575,7 +584,7 @@ class _PostingDataState extends State<PostingData>
                                       elevation: 2.0,
                                       padding: EdgeInsets.all(15.0),
                                       shape: CircleBorder(),
-                                      color: eTradeGreen,
+                                      color: eTradeMainColor,
                                       child:
                                           // Image.asset(
                                           //   'done.gif',
@@ -586,7 +595,7 @@ class _PostingDataState extends State<PostingData>
                                         color: Colors.white,
                                       ))
                                   : CircularProgressIndicator(
-                                      color: eTradeGreen),
+                                      color: eTradeMainColor),
                             ],
                           ),
                         ),

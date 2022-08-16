@@ -129,7 +129,7 @@ class _RecoveryTabBarItemState extends State<RecoveryTabBarItem>
         }),
         child: const Text(
           "Cancel",
-          style: TextStyle(color: eTradeGreen),
+          style: TextStyle(color: eTradeMainColor),
         ));
     Widget selectedButton = TextButton(
         onPressed: (() {
@@ -141,7 +141,7 @@ class _RecoveryTabBarItemState extends State<RecoveryTabBarItem>
           });
           Navigator.pop(context);
         }),
-        child: const Text("Select", style: TextStyle(color: eTradeGreen)));
+        child: const Text("Select", style: TextStyle(color: eTradeMainColor)));
     List<Widget> LOWidget = [cancelButton, selectedButton];
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
@@ -158,9 +158,9 @@ class _RecoveryTabBarItemState extends State<RecoveryTabBarItem>
         child: SfDateRangePicker(
           onSelectionChanged: _onSelectionChanged,
           selectionMode: DateRangePickerSelectionMode.range,
-          startRangeSelectionColor: eTradeGreen,
-          endRangeSelectionColor: eTradeGreen,
-          todayHighlightColor: eTradeGreen,
+          startRangeSelectionColor: eTradeMainColor,
+          endRangeSelectionColor: eTradeMainColor,
+          todayHighlightColor: eTradeMainColor,
 
           // view: ,
         ),
@@ -211,7 +211,7 @@ class _RecoveryTabBarItemState extends State<RecoveryTabBarItem>
                           ),
                           ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                  primary: eTradeGreen),
+                                  primary: eTradeMainColor),
                               onPressed: prerange == "Select Date"
                                   ? null
                                   : () async {
@@ -237,7 +237,7 @@ class _RecoveryTabBarItemState extends State<RecoveryTabBarItem>
                       ),
                     )),
                 const Divider(
-                  color: eTradeGreen,
+                  color: eTradeMainColor,
                   thickness: 2,
                   height: 50,
                 ),
@@ -256,17 +256,17 @@ class _RecoveryTabBarItemState extends State<RecoveryTabBarItem>
           },
           decoration: const InputDecoration(
             enabledBorder: OutlineInputBorder(
-              borderSide: const BorderSide(color: eTradeGreen),
+              borderSide: const BorderSide(color: eTradeMainColor),
             ),
             focusedBorder: const OutlineInputBorder(
               // borderRadius: BorderRadius.circular(20),
-              borderSide: const BorderSide(color: eTradeGreen),
+              borderSide: const BorderSide(color: eTradeMainColor),
             ),
             labelText: 'Search CustomerName',
             // labelStyle: const TextStyle(color: Colors.grey),
             suffixIcon: Icon(
               Icons.search,
-              color: eTradeGreen,
+              color: eTradeMainColor,
             ),
           ),
         ),
@@ -276,7 +276,7 @@ class _RecoveryTabBarItemState extends State<RecoveryTabBarItem>
       ),
       (widget.tabName != "Search")
           ? Divider(
-              color: eTradeGreen,
+              color: eTradeMainColor,
               thickness: 2,
               height: 50,
             )
@@ -387,12 +387,12 @@ class _RecoveryTabBarItemState extends State<RecoveryTabBarItem>
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  "RecoveryID: #${RecoveryTabBarItem.listOfRecovery[index].recoveryID}",
+                                                  "Recovery Id: ${RecoveryTabBarItem.listOfRecovery[index].recoveryID}",
                                                   style: TextStyle(
                                                       color: Colors.grey),
                                                 ),
                                                 Text(
-                                                  " ${RecoveryTabBarItem.listOfRecovery[index].party.partyName}",
+                                                  "${RecoveryTabBarItem.listOfRecovery[index].party.partyName}",
                                                   style: const TextStyle(
                                                     fontSize: 15,
                                                     fontWeight: FontWeight.bold,
@@ -408,11 +408,12 @@ class _RecoveryTabBarItemState extends State<RecoveryTabBarItem>
                                                   children: [
                                                     Text("Recovery On",
                                                         style: TextStyle(
-                                                            fontSize: 15,
-                                                            color: Colors.grey,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold)),
+                                                          fontSize: 15,
+                                                          color: Colors.grey,
+                                                          // fontWeight:
+                                                          //     FontWeight
+                                                          //         .bold
+                                                        )),
                                                     Text(
                                                       "${RecoveryTabBarItem.listOfRecovery[index].dated}",
                                                       style: TextStyle(
@@ -436,7 +437,8 @@ class _RecoveryTabBarItemState extends State<RecoveryTabBarItem>
                                                 Container(
                                                   padding: EdgeInsets.all(4),
                                                   decoration: BoxDecoration(
-                                                      color: eTradeGreen,
+                                                      color: Theme.of(context)
+                                                          .backgroundColor,
                                                       borderRadius:
                                                           BorderRadius.all(
                                                               Radius.circular(
@@ -444,9 +446,11 @@ class _RecoveryTabBarItemState extends State<RecoveryTabBarItem>
                                                   child: Text(
                                                     "Rs ${RecoveryTabBarItem.listOfRecovery[index].amount}",
                                                     style: TextStyle(
-                                                        fontStyle:
-                                                            FontStyle.italic,
-                                                        color: Colors.white),
+                                                      fontStyle:
+                                                          FontStyle.italic,
+                                                      color: ThemeData.light()
+                                                          .cardColor,
+                                                    ),
                                                   ),
                                                 ),
                                                 SizedBox(
@@ -469,13 +473,14 @@ class _RecoveryTabBarItemState extends State<RecoveryTabBarItem>
                                                   child: Container(
                                                     padding: EdgeInsets.all(8),
                                                     decoration: BoxDecoration(
-                                                        color: (MyApp.isDark)
-                                                            ? Colors.grey
-                                                            : Colors
-                                                                .grey.shade300,
+                                                        color: eTradeMainColor,
+                                                        // (MyApp.isDark)
+                                                        // ? Colors.grey
+                                                        // : Colors
+                                                        //     .grey.shade300,
                                                         // border: Border.all(
                                                         //     color:
-                                                        //         eTradeGreen,
+                                                        //         eTradeMainColor,
                                                         //     width: 1),
                                                         borderRadius:
                                                             BorderRadius.all(
@@ -484,7 +489,9 @@ class _RecoveryTabBarItemState extends State<RecoveryTabBarItem>
                                                     child: Text(
                                                       "Recovery Detail",
                                                       style: TextStyle(
-                                                          color: eTradeGreen,
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .cardColor,
                                                           fontWeight:
                                                               FontWeight.bold,
                                                           fontSize: 13),

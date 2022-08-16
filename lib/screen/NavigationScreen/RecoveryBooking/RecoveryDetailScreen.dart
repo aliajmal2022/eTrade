@@ -36,7 +36,7 @@ class _RecoveryDetailScreenState extends State<RecoveryDetailScreen> {
               bottom: Radius.circular(30),
             ),
           ),
-          backgroundColor: eTradeGreen,
+          backgroundColor: eTradeMainColor,
           toolbarHeight: 80,
           title: Text(
             'Recovery Detail',
@@ -166,7 +166,7 @@ class _RecoveryDetailScreenState extends State<RecoveryDetailScreen> {
                       ),
                       Divider(
                         thickness: 2,
-                        color: eTradeGreen,
+                        color: eTradeMainColor,
                       ),
                     ],
                   ),

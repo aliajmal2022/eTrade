@@ -158,7 +158,7 @@ class _RecoveryScreenState extends State<RecoveryScreen>
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
-          backgroundColor: eTradeGreen,
+          backgroundColor: eTradeMainColor,
           toolbarHeight: 80,
           shape: const RoundedRectangleBorder(
             borderRadius: const BorderRadius.vertical(
@@ -258,7 +258,7 @@ class _RecoveryScreenState extends State<RecoveryScreen>
                               children: [
                                 Switch(
                                   value: isCash,
-                                  activeColor: eTradeGreen,
+                                  activeColor: eTradeMainColor,
                                   onChanged: (value) async {
                                     setState(() {
                                       isCash = value;
@@ -320,16 +320,16 @@ class _RecoveryScreenState extends State<RecoveryScreen>
                                   searchBoxDecoration: InputDecoration(
                                       focusedBorder: UnderlineInputBorder(
                                         borderSide: BorderSide(
-                                          color: eTradeGreen,
+                                          color: eTradeMainColor,
                                           width: 2,
                                         ),
                                       ),
                                       suffixIcon: Icon(
                                         Icons.search,
-                                        color: eTradeGreen,
+                                        color: eTradeMainColor,
                                       ),
                                       labelStyle:
-                                          TextStyle(color: eTradeGreen)),
+                                          TextStyle(color: eTradeMainColor)),
                                   dropdownItemBuilder: (BuildContext context,
                                       Customer item, bool isSelected) {
                                     return Container(
@@ -337,7 +337,7 @@ class _RecoveryScreenState extends State<RecoveryScreen>
                                           ? null
                                           : BoxDecoration(
                                               border: Border.all(
-                                                  color: eTradeGreen),
+                                                  color: eTradeMainColor),
                                               borderRadius:
                                                   BorderRadius.circular(15),
                                               color: MyApp.isDark
@@ -390,7 +390,7 @@ class _RecoveryScreenState extends State<RecoveryScreen>
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(5)),
                                       // color: Colors.white,
-                                      color: eTradeGreen,
+                                      color: eTradeMainColor,
                                       // color: Color(0xff424242),
                                     ),
                                     child: MaterialButton(
@@ -442,7 +442,8 @@ class _RecoveryScreenState extends State<RecoveryScreen>
                               focusedBorder: OutlineInputBorder(
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(5)),
-                                  borderSide: BorderSide(color: eTradeGreen)),
+                                  borderSide:
+                                      BorderSide(color: eTradeMainColor)),
                               contentPadding: const EdgeInsets.symmetric(
                                   vertical: 13, horizontal: 20),
                               labelText: 'Enter Amount',
@@ -470,7 +471,8 @@ class _RecoveryScreenState extends State<RecoveryScreen>
                               focusedBorder: OutlineInputBorder(
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(5)),
-                                  borderSide: BorderSide(color: eTradeGreen)),
+                                  borderSide:
+                                      BorderSide(color: eTradeMainColor)),
                               contentPadding: const EdgeInsets.symmetric(
                                   vertical: 13, horizontal: 20),
                               labelText: 'Description',
@@ -570,7 +572,7 @@ class _RecoveryScreenState extends State<RecoveryScreen>
                               elevation: 20.0,
                               disabledColor: Color(0x0ff1e1e1),
                               disabledElevation: 1,
-                              color: eTradeGreen,
+                              color: eTradeMainColor,
                               shape: RoundedRectangleBorder(
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(25.0))),

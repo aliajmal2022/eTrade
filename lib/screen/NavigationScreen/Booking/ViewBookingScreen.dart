@@ -61,7 +61,7 @@ class _ViewBookingScreenState extends State<ViewBookingScreen>
       child: Scaffold(
           key: _scaffoldKey,
           appBar: AppBar(
-            backgroundColor: eTradeGreen,
+            backgroundColor: eTradeMainColor,
             toolbarHeight: 80,
             automaticallyImplyLeading: false,
             bottom: TabBar(

@@ -62,7 +62,7 @@ class _ListItemsState extends State<ListItems> {
                         leading: widget.productItems[index].Quantity == 0
                             ? null
                             : CircleAvatar(
-                                backgroundColor: eTradeGreen,
+                                backgroundColor: eTradeMainColor,
                                 // radius: 100,
                                 minRadius: 10,
                                 maxRadius: 30,

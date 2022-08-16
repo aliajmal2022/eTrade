@@ -49,7 +49,7 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
                 height: 200,
                 alignment: Alignment.centerRight,
                 decoration: BoxDecoration(
-                  color: eTradeGreen,
+                  color: eTradeMainColor,
                   borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(25),
                       bottomRight: Radius.circular(25)),
@@ -109,7 +109,7 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
                             borderSide: BorderSide(width: 30.0)),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(20)),
-                          borderSide: BorderSide(color: eTradeGreen),
+                          borderSide: BorderSide(color: eTradeMainColor),
                         ),
                         labelText: '  IP Address',
                         errorText: valid ? null : _error,
@@ -171,7 +171,7 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
                           }
                         },
                         elevation: 20.0,
-                        color: eTradeGreen,
+                        color: eTradeMainColor,
                         shape: RoundedRectangleBorder(
                             borderRadius:
                                 BorderRadius.all(Radius.circular(25.0))),

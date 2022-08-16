@@ -209,6 +209,20 @@ class _DashBoardScreenState extends State<DashBoardScreen>
     });
   }
 
+  void getWorkingDaysInMonth() {
+    DateTime now = new DateTime.now();
+    DateTime lastDayOfMonth = DateTime(now.year, now.month + 1, 0);
+    int count = 0;
+    for (int i = 1; i <= lastDayOfMonth.day; i++) {
+      var day = DateFormat('EEEE').format(lastDayOfMonth);
+      if (day != "Friday") {
+        count++;
+      }
+    }
+// print("${lastDayOfMonth.day}");
+    print("${count}");
+  }
+
   var _animationController;
   @override
   void initState() {
@@ -233,7 +247,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: eTradeGreen,
+          backgroundColor: eTradeMainColor,
           toolbarHeight: 80,
           shape: const RoundedRectangleBorder(
             borderRadius: const BorderRadius.vertical(
@@ -274,7 +288,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                     ),
                   ),
                   Switch(
-                    activeColor: eTradeGreen,
+                    activeColor: eTradeMainColor,
                     value: DashBoardScreen.isOrder,
                     onChanged: (value) async {
                       setState(() {
@@ -312,6 +326,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                   padding: EdgeInsets.all(10),
                   child: SfCartesianChart(
                     // Initialize category axis
+
                     primaryXAxis: CategoryAxis(
                       title: AxisTitle(text: "Months"),
                     ),
@@ -329,7 +344,8 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                           // Bind data source
                           dataSource: DashBoardScreen.staticMonths,
                           name: "Target",
-                          color: Color(0xff00174b),
+                          color: Colors.red,
+                          // color: Color(0xff00174b),
                           borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(15),
                               topRight: Radius.circular(15)),
@@ -344,7 +360,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                           borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(15),
                               topRight: Radius.circular(15)),
-                          color: eTradeGreen,
+                          color: Colors.green,
                           spacing: 0.1,
                           xValueMapper: (MonthOrderHistory sales, _) =>
                               sales.month,
@@ -354,10 +370,26 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                   ),
                 ),
               ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "• ",
+                    style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                        color: eTradeMainColor),
+                  ),
+                  Text(
+                    "Time gone : 45%",
+                    style: TextStyle(fontSize: 18),
+                  ),
+                ],
+              ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Divider(
-                  color: eTradeGreen,
+                  color: eTradeMainColor,
                   thickness: 2,
                   height: 50,
                 ),
@@ -389,7 +421,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                                       (DashBoardScreen.dashBoard[index].order >
                                               DashBoardScreen.dashBoard[index]
                                                   .compareOrder)
-                                          ? eTradeGreen
+                                          ? eTradeMainColor
                                           : (DashBoardScreen
                                                       .dashBoard[index].order ==
                                                   DashBoardScreen
@@ -397,7 +429,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                                                       .compareOrder)
                                               ? eTradeBlue
                                               : eTradeRed,
-                                  // color: eTradeGreen,
+                                  // color: eTradeMainColor,
                                   // color: Theme.of(context).dividerColor,
                                   blurRadius: 1.0,
                                 ),
@@ -418,7 +450,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                                       //             .dashBoard[index].order >
                                       //         DashBoardScreen
                                       //             .dashBoard[index].compareOrder)
-                                      //     ? eTradeGreen
+                                      //     ? eTradeMainColor
                                       //     : (DashBoardScreen
                                       //                 .dashBoard[index].order ==
                                       //             DashBoardScreen.dashBoard[index]
@@ -528,7 +560,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                                                     .dashBoard[index].order >
                                                 DashBoardScreen.dashBoard[index]
                                                     .compareOrder)
-                                            ? eTradeGreen
+                                            ? eTradeMainColor
                                             : (DashBoardScreen.dashBoard[index]
                                                         .order ==
                                                     DashBoardScreen
@@ -564,7 +596,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Divider(
-                  color: eTradeGreen,
+                  color: eTradeMainColor,
                   thickness: 2,
                   height: 50,
                 ),

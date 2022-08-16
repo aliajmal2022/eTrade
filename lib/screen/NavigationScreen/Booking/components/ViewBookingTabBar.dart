@@ -161,7 +161,7 @@ class _BookingTabBarItemState extends State<BookingTabBarItem>
         }),
         child: const Text(
           "Cancel",
-          style: TextStyle(color: eTradeGreen),
+          style: TextStyle(color: eTradeMainColor),
         ));
     Widget selectedButton = TextButton(
         onPressed: (() {
@@ -173,7 +173,7 @@ class _BookingTabBarItemState extends State<BookingTabBarItem>
           });
           Navigator.pop(context);
         }),
-        child: const Text("Select", style: TextStyle(color: eTradeGreen)));
+        child: const Text("Select", style: TextStyle(color: eTradeMainColor)));
     List<Widget> LOWidget = [cancelButton, selectedButton];
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
@@ -190,9 +190,9 @@ class _BookingTabBarItemState extends State<BookingTabBarItem>
         child: SfDateRangePicker(
           onSelectionChanged: _onSelectionChanged,
           selectionMode: DateRangePickerSelectionMode.range,
-          startRangeSelectionColor: eTradeGreen,
-          endRangeSelectionColor: eTradeGreen,
-          todayHighlightColor: eTradeGreen,
+          startRangeSelectionColor: eTradeMainColor,
+          endRangeSelectionColor: eTradeMainColor,
+          todayHighlightColor: eTradeMainColor,
 
           // view: ,
         ),
@@ -248,7 +248,7 @@ class _BookingTabBarItemState extends State<BookingTabBarItem>
                               ),
                               ElevatedButton(
                                   style: ElevatedButton.styleFrom(
-                                      primary: eTradeGreen),
+                                      primary: eTradeMainColor),
                                   onPressed: prerange == "Select Date"
                                       ? null
                                       : ViewBookingScreen.isSaleBooking
@@ -297,7 +297,7 @@ class _BookingTabBarItemState extends State<BookingTabBarItem>
                           ),
                         ),
                         Divider(
-                          color: eTradeGreen,
+                          color: eTradeMainColor,
                           thickness: 2,
                           height: 50,
                         )
@@ -316,17 +316,17 @@ class _BookingTabBarItemState extends State<BookingTabBarItem>
                 },
                 decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: eTradeGreen),
+                    borderSide: BorderSide(color: eTradeMainColor),
                   ),
                   focusedBorder: OutlineInputBorder(
                     // borderRadius: BorderRadius.circular(20),
-                    borderSide: BorderSide(color: eTradeGreen),
+                    borderSide: BorderSide(color: eTradeMainColor),
                   ),
                   labelText: 'Search CustomerName',
                   // labelStyle: const TextStyle(color: Colors.grey),
                   suffixIcon: Icon(
                     Icons.search,
-                    color: eTradeGreen,
+                    color: eTradeMainColor,
                   ),
                 ),
               ),
@@ -336,7 +336,7 @@ class _BookingTabBarItemState extends State<BookingTabBarItem>
             ),
             (widget.tabName != "Search")
                 ? Divider(
-                    color: eTradeGreen,
+                    color: eTradeMainColor,
                     thickness: 2,
                     height: 50,
                   )
@@ -570,13 +570,13 @@ class _BookingTabBarItemState extends State<BookingTabBarItem>
                                                 Text(
                                                   ViewBookingScreen
                                                           .isSaleBooking
-                                                      ? "SaleID: #${BookingTabBarItem.listOfItems[index].iD}"
-                                                      : "OrderID: #${BookingTabBarItem.listOfItems[index].iD}",
+                                                      ? "Sale Id: ${BookingTabBarItem.listOfItems[index].iD}"
+                                                      : "Order Id: ${BookingTabBarItem.listOfItems[index].iD}",
                                                   style: TextStyle(
                                                       color: Colors.grey),
                                                 ),
                                                 Text(
-                                                  " ${BookingTabBarItem.listOfItems[index].partyName}",
+                                                  "${BookingTabBarItem.listOfItems[index].partyName}",
                                                   style: const TextStyle(
                                                     fontSize: 15,
                                                     fontWeight: FontWeight.bold,
@@ -596,11 +596,12 @@ class _BookingTabBarItemState extends State<BookingTabBarItem>
                                                             ? "Sale On"
                                                             : "Order On",
                                                         style: TextStyle(
-                                                            fontSize: 15,
-                                                            color: Colors.grey,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold)),
+                                                          fontSize: 15,
+                                                          color: Colors.grey,
+                                                          // fontWeight:
+                                                          //     FontWeight
+                                                          //         .bold
+                                                        )),
                                                     Text(
                                                       ViewBookingScreen
                                                               .isSaleBooking
@@ -627,7 +628,10 @@ class _BookingTabBarItemState extends State<BookingTabBarItem>
                                                 Container(
                                                   padding: EdgeInsets.all(4),
                                                   decoration: BoxDecoration(
-                                                      color: eTradeGreen,
+                                                      color:
+                                                          // eTradeMainColor,
+                                                          Theme.of(context)
+                                                              .backgroundColor,
                                                       borderRadius:
                                                           BorderRadius.all(
                                                               Radius.circular(
@@ -635,12 +639,18 @@ class _BookingTabBarItemState extends State<BookingTabBarItem>
                                                   child: Text(
                                                     "${BookingTabBarItem.listOfItems[index].totalQuantity} items",
                                                     style: TextStyle(
-                                                        // fontStyle: FontStyle.italic,
-                                                        color: Colors.white),
+                                                      // fontStyle: FontStyle.italic,
+                                                      // color: Colors.white
+                                                      color: ThemeData.light()
+                                                          .cardColor,
+
+                                                      // .of(context)
+                                                      //     .cardColor,
+                                                    ),
                                                   ),
                                                 ),
                                                 SizedBox(
-                                                  height: 10,
+                                                  height: 20,
                                                 ),
                                                 MaterialButton(
                                                   onPressed:
@@ -712,16 +722,11 @@ class _BookingTabBarItemState extends State<BookingTabBarItem>
                                                   child: Container(
                                                     padding: EdgeInsets.all(8),
                                                     decoration: BoxDecoration(
-                                                        color: (MyApp.isDark)
-                                                            ? Colors.white
-                                                            // ? Color.fromARGB(
-                                                            //     255, 133, 132, 132)
-                                                            : Colors
-                                                                .grey.shade300,
-                                                        // border: Border.all(
-                                                        //     color:
-                                                        //         eTradeGreen,
-                                                        //     width: 1),
+                                                        color: eTradeMainColor,
+                                                        // (MyApp.isDark)
+                                                        //     ? Colors.white
+                                                        //     : Colors
+                                                        //         .grey.shade300,
                                                         borderRadius:
                                                             BorderRadius.all(
                                                                 Radius.circular(
@@ -732,7 +737,10 @@ class _BookingTabBarItemState extends State<BookingTabBarItem>
                                                           ? "Sale Detail"
                                                           : "Order Detail",
                                                       style: TextStyle(
-                                                          color: eTradeGreen,
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .cardColor,
+
                                                           // fontStyle: FontStyle.italic,
                                                           fontSize: 15),
                                                     ),
