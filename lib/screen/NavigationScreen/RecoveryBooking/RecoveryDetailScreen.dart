@@ -60,6 +60,7 @@ class _RecoveryDetailScreenState extends State<RecoveryDetailScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Expanded(
+                                flex: 3,
                                 child: Text(
                                   "Customer Name: ",
                                   style: TextStyle(
@@ -67,10 +68,14 @@ class _RecoveryDetailScreenState extends State<RecoveryDetailScreen> {
                                       fontWeight: FontWeight.bold),
                                 ),
                               ),
-                              Text(
-                                "${widget.selectedRecovery.party.partyName}",
-                                style: TextStyle(
-                                    fontSize: 15, fontWeight: FontWeight.bold),
+                              Expanded(
+                                flex: 3,
+                                child: Text(
+                                  "${widget.selectedRecovery.party.partyName}",
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold),
+                                ),
                               ),
                             ]),
                       ),

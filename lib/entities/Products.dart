@@ -28,7 +28,7 @@ class Product {
       _products = await SQLHelper.instance.getTable("Item", "ItemID");
     } else {
       _products = await Sql_Connection().read(
-          "SELECT replace(i.ItemID,'\\','')as ItemID,replace(i.ItemName,'\\','') as ItemName,TradePrice FROM Item AS i");
+          "SELECT replace(i.ItemID,'\\','')as ItemID,replace(i.ItemName,'\\','') as ItemName,i.TradePrice FROM Item AS i");
     }
     Product product;
     if (_products.isNotEmpty) {

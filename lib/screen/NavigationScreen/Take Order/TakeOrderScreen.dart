@@ -199,7 +199,7 @@ class _TakeOrderScreenState extends State<TakeOrderScreen>
   @override
   void initState() {
     _animationController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 500));
+        AnimationController(vsync: this, duration: Duration(milliseconds: 250));
     _animationController.forward();
     if (TakeOrderScreen.databaseExit ||
         TakeOrderScreen.isEditOrder ||
@@ -271,15 +271,18 @@ class _TakeOrderScreenState extends State<TakeOrderScreen>
                       resetCartList();
                     });
                     await TakeOrderScreen.getdataFromDb();
-                    Get.off(
-                        () => MyNavigationBar(
-                            selectedIndex: 2,
-                            editRecovery: ViewRecovery.initializer(),
-                            list: [],
-                            date: widget.date,
-                            id: widget.iD,
-                            partyName: "Search Customer"),
-                        transition: Transition.leftToRight);
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MyCustomRoute(
+                            builder: (context) => MyNavigationBar(
+                                selectedIndex: 2,
+                                editRecovery: ViewRecovery.initializer(),
+                                list: [],
+                                date: widget.date,
+                                id: widget.iD,
+                                partyName: "Search Customer"),
+                            slide: "Left"),
+                        (route) => false);
                   },
                 )
               : (TakeOrderScreen.isSaleSpot)
@@ -337,29 +340,28 @@ class _TakeOrderScreenState extends State<TakeOrderScreen>
               Expanded(
                 flex: 1,
                 child: IconButton(
-                    onPressed:
-                        (widget.getParty().partyName == "Search Customer")
-                            ? null
-                            : () {
-                                Get.off(
-                                    () => CartScreen(
-                                          selectedItems: getCartList(),
-                                          userID: MyNavigationBar.userID,
-                                          selecedCustomer: widget.getParty(),
-                                          date: (TakeOrderScreen.isEditOrder)
-                                              ? TakeOrderScreen.orderDATE
-                                              : (TakeOrderScreen.isEditSale)
-                                                  ? TakeOrderScreen.saleDATE
-                                                  : widget.date,
-                                          iD: TakeOrderScreen.isEditOrder
-                                              ? TakeOrderScreen.orderId
-                                              : (TakeOrderScreen.isEditSale)
-                                                  ? TakeOrderScreen.InvoiceID
-                                                  : widget.iD,
-                                        ),
-                                    transition: Transition.rightToLeft,
-                                    duration: Duration(milliseconds: 700));
-                              },
+                    onPressed: (widget.getParty().partyId == 0)
+                        ? null
+                        : () {
+                            Get.off(
+                                () => CartScreen(
+                                      selectedItems: getCartList(),
+                                      userID: MyNavigationBar.userID,
+                                      selecedCustomer: widget.getParty(),
+                                      date: (TakeOrderScreen.isEditOrder)
+                                          ? TakeOrderScreen.orderDATE
+                                          : (TakeOrderScreen.isEditSale)
+                                              ? TakeOrderScreen.saleDATE
+                                              : widget.date,
+                                      iD: TakeOrderScreen.isEditOrder
+                                          ? TakeOrderScreen.orderId
+                                          : (TakeOrderScreen.isEditSale)
+                                              ? TakeOrderScreen.InvoiceID
+                                              : widget.iD,
+                                    ),
+                                transition: Transition.rightToLeft,
+                                duration: Duration(milliseconds: 500));
+                          },
                     // disabledColor: Color(0xff424242),
                     disabledColor: Colors.grey,
                     color: Colors.white,

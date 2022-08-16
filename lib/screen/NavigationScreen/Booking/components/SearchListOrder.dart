@@ -107,7 +107,8 @@ class _ListOfOrderState extends State<ListOfOrder>
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => MyNavigationBar(
-                                                editRecovery: ViewRecovery.initializer(),
+                                                editRecovery:
+                                                    ViewRecovery.initializer(),
                                                 date:
                                                     dummyOrderList[index].date,
                                                 selectedIndex: 1,
@@ -206,157 +207,169 @@ class _ListOfOrderState extends State<ListOfOrder>
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      ViewBookingScreen.isSaleBooking
-                                          ? "SaleID: #${dummyOrderList[index].iD}"
-                                          : "OrderID: #${dummyOrderList[index].iD}",
-                                      style: TextStyle(color: Colors.grey),
-                                    ),
-                                    Text(
-                                      " ${dummyOrderList[index].partyName}",
-                                      style: const TextStyle(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold,
-                                        // fontStyle: FontStyle.italic,
+                                Expanded(
+                                  flex: 4,
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        ViewBookingScreen.isSaleBooking
+                                            ? "SaleID: #${dummyOrderList[index].iD}"
+                                            : "OrderID: #${dummyOrderList[index].iD}",
+                                        style: TextStyle(color: Colors.grey),
                                       ),
-                                    ),
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                            ViewBookingScreen.isSaleBooking
-                                                ? "Sale On"
-                                                : "Order On",
-                                            style: TextStyle(
-                                                fontSize: 15,
-                                                color: Colors.grey,
-                                                fontWeight: FontWeight.bold)),
-                                        Text(
-                                          ViewBookingScreen.isSaleBooking
-                                              ? "${dummyOrderList[index].date}"
-                                              : "${dummyOrderList[index].date}",
-                                          style: TextStyle(
-                                              color: Colors.grey, fontSize: 13),
+                                      Text(
+                                        " ${dummyOrderList[index].partyName}",
+                                        style: const TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold,
+                                          // fontStyle: FontStyle.italic,
                                         ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Container(
-                                      padding: EdgeInsets.all(4),
-                                      decoration: BoxDecoration(
-                                          color: eTradeGreen,
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(5))),
-                                      child: Text(
-                                        "${dummyOrderList[index].totalQuantity} items",
-                                        style: TextStyle(
-                                            fontStyle: FontStyle.italic,
-                                            color: Colors.white),
                                       ),
-                                    ),
-                                    MaterialButton(
-                                      onPressed: ViewBookingScreen.isSaleBooking
-                                          ? () async {
-                                              var saleDetail =
-                                                  await BookingTabBarItem
-                                                      .getSaleDetail(
-                                                          dummyOrderList[index]
-                                                              .iD);
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) => SaleDetailScreen(
-                                                          selectedSaleDate:
-                                                              dummyOrderList[
-                                                                      index]
-                                                                  .date,
-                                                          selectedItems:
-                                                              saleDetail,
-                                                          selecedCustomer:
-                                                              dummyOrderList[
-                                                                      index]
-                                                                  .partyName,
-                                                          fromDate:
-                                                              BookingTabBarItem
-                                                                  .getFromDate(),
-                                                          toDate:
-                                                              BookingTabBarItem
-                                                                  .getToDate(),
-                                                          saleID:
-                                                              dummyOrderList[
-                                                                      index]
-                                                                  .iD)));
-                                            }
-                                          : () async {
-                                              var orderDetail =
-                                                  await BookingTabBarItem
-                                                      .getOrderDetail(
-                                                          dummyOrderList[index]
-                                                              .iD);
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) => OrderDetailScreen(
-                                                          selectedOrdeDate:
-                                                              dummyOrderList[
-                                                                      index]
-                                                                  .date,
-                                                          selectedItems:
-                                                              orderDetail,
-                                                          selecedCustomer:
-                                                              dummyOrderList[
-                                                                      index]
-                                                                  .partyName,
-                                                          fromDate:
-                                                              BookingTabBarItem
-                                                                  .getFromDate(),
-                                                          toDate:
-                                                              BookingTabBarItem
-                                                                  .getToDate(),
-                                                          orderId:
-                                                              dummyOrderList[
-                                                                      index]
-                                                                  .iD)));
-                                            },
-                                      padding: EdgeInsets.zero,
-                                      child: Container(
-                                        padding: EdgeInsets.all(8),
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                              ViewBookingScreen.isSaleBooking
+                                                  ? "Sale On"
+                                                  : "Order On",
+                                              style: TextStyle(
+                                                  fontSize: 15,
+                                                  color: Colors.grey,
+                                                  fontWeight: FontWeight.bold)),
+                                          Text(
+                                            ViewBookingScreen.isSaleBooking
+                                                ? "${dummyOrderList[index].date}"
+                                                : "${dummyOrderList[index].date}",
+                                            style: TextStyle(
+                                                color: Colors.grey,
+                                                fontSize: 13),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 2,
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Container(
+                                        padding: EdgeInsets.all(4),
                                         decoration: BoxDecoration(
-                                            color: (MyApp.isDark)
-                                                ? Colors.grey
-                                                : Colors.grey.shade300,
-                                            // border: Border.all(
-                                            //     color:
-                                            //         eTradeGreen,
-                                            //     width: 1),
+                                            color: eTradeGreen,
                                             borderRadius: BorderRadius.all(
                                                 Radius.circular(5))),
                                         child: Text(
-                                          ViewBookingScreen.isSaleBooking
-                                              ? "Sale Detail"
-                                              : "Order Detail",
+                                          "${dummyOrderList[index].totalQuantity} items",
                                           style: TextStyle(
-                                              color: eTradeGreen,
-                                              // fontStyle: FontStyle.italic,
-                                              fontSize: 15),
+                                              fontStyle: FontStyle.italic,
+                                              color: Colors.white),
                                         ),
                                       ),
-                                    ),
-                                  ],
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      MaterialButton(
+                                        onPressed:
+                                            ViewBookingScreen.isSaleBooking
+                                                ? () async {
+                                                    var saleDetail =
+                                                        await BookingTabBarItem
+                                                            .getSaleDetail(
+                                                                dummyOrderList[
+                                                                        index]
+                                                                    .iD);
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) => SaleDetailScreen(
+                                                                selectedSaleDate:
+                                                                    dummyOrderList[
+                                                                            index]
+                                                                        .date,
+                                                                selectedItems:
+                                                                    saleDetail,
+                                                                selecedCustomer:
+                                                                    dummyOrderList[
+                                                                            index]
+                                                                        .partyName,
+                                                                fromDate:
+                                                                    BookingTabBarItem
+                                                                        .getFromDate(),
+                                                                toDate: BookingTabBarItem
+                                                                    .getToDate(),
+                                                                saleID:
+                                                                    dummyOrderList[
+                                                                            index]
+                                                                        .iD)));
+                                                  }
+                                                : () async {
+                                                    var orderDetail =
+                                                        await BookingTabBarItem
+                                                            .getOrderDetail(
+                                                                dummyOrderList[
+                                                                        index]
+                                                                    .iD);
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) => OrderDetailScreen(
+                                                                selectedOrdeDate:
+                                                                    dummyOrderList[
+                                                                            index]
+                                                                        .date,
+                                                                selectedItems:
+                                                                    orderDetail,
+                                                                selecedCustomer:
+                                                                    dummyOrderList[
+                                                                            index]
+                                                                        .partyName,
+                                                                fromDate:
+                                                                    BookingTabBarItem
+                                                                        .getFromDate(),
+                                                                toDate: BookingTabBarItem
+                                                                    .getToDate(),
+                                                                orderId:
+                                                                    dummyOrderList[
+                                                                            index]
+                                                                        .iD)));
+                                                  },
+                                        padding: EdgeInsets.zero,
+                                        child: Container(
+                                          padding: EdgeInsets.all(8),
+                                          decoration: BoxDecoration(
+                                              color: (MyApp.isDark)
+                                                  ? Colors.grey
+                                                  : Colors.grey.shade300,
+                                              // border: Border.all(
+                                              //     color:
+                                              //         eTradeGreen,
+                                              //     width: 1),
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(5))),
+                                          child: Text(
+                                            ViewBookingScreen.isSaleBooking
+                                                ? "Sale Detail"
+                                                : "Order Detail",
+                                            style: TextStyle(
+                                                color: eTradeGreen,
+                                                // fontStyle: FontStyle.italic,
+                                                fontSize: 15),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ],
                             ),

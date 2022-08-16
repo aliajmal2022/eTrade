@@ -378,109 +378,121 @@ class _RecoveryTabBarItemState extends State<RecoveryTabBarItem>
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceAround,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                "RecoveryID: #${RecoveryTabBarItem.listOfRecovery[index].recoveryID}",
-                                                style: TextStyle(
-                                                    color: Colors.grey),
-                                              ),
-                                              Text(
-                                                " ${RecoveryTabBarItem.listOfRecovery[index].party.partyName}",
-                                                style: const TextStyle(
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.bold,
-                                                  // fontStyle: FontStyle.italic,
-                                                ),
-                                              ),
-                                              Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceAround,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text("Recovery On",
-                                                      style: TextStyle(
-                                                          fontSize: 15,
-                                                          color: Colors.grey,
-                                                          fontWeight:
-                                                              FontWeight.bold)),
-                                                  Text(
-                                                    "${RecoveryTabBarItem.listOfRecovery[index].dated}",
-                                                    style: TextStyle(
-                                                        color: Colors.grey,
-                                                        fontSize: 13),
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                          Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.end,
-                                            children: [
-                                              Container(
-                                                padding: EdgeInsets.all(4),
-                                                decoration: BoxDecoration(
-                                                    color: eTradeGreen,
-                                                    borderRadius:
-                                                        BorderRadius.all(
-                                                            Radius.circular(
-                                                                5))),
-                                                child: Text(
-                                                  "Rs ${RecoveryTabBarItem.listOfRecovery[index].amount}",
+                                          Expanded(
+                                            flex: 4,
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceAround,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  "RecoveryID: #${RecoveryTabBarItem.listOfRecovery[index].recoveryID}",
                                                   style: TextStyle(
-                                                      fontStyle:
-                                                          FontStyle.italic,
-                                                      color: Colors.white),
+                                                      color: Colors.grey),
                                                 ),
-                                              ),
-                                              MaterialButton(
-                                                onPressed: () async {
-                                                  Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              RecoveryDetailScreen(
-                                                                selectedRecovery:
-                                                                    RecoveryTabBarItem
-                                                                            .listOfRecovery[
-                                                                        index],
-                                                              )));
-                                                },
-                                                padding: EdgeInsets.zero,
-                                                child: Container(
-                                                  padding: EdgeInsets.all(8),
+                                                Text(
+                                                  " ${RecoveryTabBarItem.listOfRecovery[index].party.partyName}",
+                                                  style: const TextStyle(
+                                                    fontSize: 15,
+                                                    fontWeight: FontWeight.bold,
+                                                    // fontStyle: FontStyle.italic,
+                                                  ),
+                                                ),
+                                                Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceAround,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text("Recovery On",
+                                                        style: TextStyle(
+                                                            fontSize: 15,
+                                                            color: Colors.grey,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold)),
+                                                    Text(
+                                                      "${RecoveryTabBarItem.listOfRecovery[index].dated}",
+                                                      style: TextStyle(
+                                                          color: Colors.grey,
+                                                          fontSize: 13),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Expanded(
+                                            flex: 2,
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.end,
+                                              children: [
+                                                Container(
+                                                  padding: EdgeInsets.all(4),
                                                   decoration: BoxDecoration(
-                                                      color: (MyApp.isDark)
-                                                          ? Colors.grey
-                                                          : Colors
-                                                              .grey.shade300,
-                                                      // border: Border.all(
-                                                      //     color:
-                                                      //         eTradeGreen,
-                                                      //     width: 1),
+                                                      color: eTradeGreen,
                                                       borderRadius:
                                                           BorderRadius.all(
                                                               Radius.circular(
                                                                   5))),
                                                   child: Text(
-                                                    "Recovery Detail",
+                                                    "Rs ${RecoveryTabBarItem.listOfRecovery[index].amount}",
                                                     style: TextStyle(
-                                                        color: eTradeGreen,
-                                                        // fontStyle: FontStyle.italic,
-                                                        fontSize: 15),
+                                                        fontStyle:
+                                                            FontStyle.italic,
+                                                        color: Colors.white),
                                                   ),
                                                 ),
-                                              ),
-                                            ],
+                                                SizedBox(
+                                                  height: 15,
+                                                ),
+                                                MaterialButton(
+                                                  onPressed: () async {
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                RecoveryDetailScreen(
+                                                                  selectedRecovery:
+                                                                      RecoveryTabBarItem
+                                                                              .listOfRecovery[
+                                                                          index],
+                                                                )));
+                                                  },
+                                                  padding: EdgeInsets.zero,
+                                                  child: Container(
+                                                    padding: EdgeInsets.all(8),
+                                                    decoration: BoxDecoration(
+                                                        color: (MyApp.isDark)
+                                                            ? Colors.grey
+                                                            : Colors
+                                                                .grey.shade300,
+                                                        // border: Border.all(
+                                                        //     color:
+                                                        //         eTradeGreen,
+                                                        //     width: 1),
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                                Radius.circular(
+                                                                    5))),
+                                                    child: Text(
+                                                      "Recovery Detail",
+                                                      style: TextStyle(
+                                                          color: eTradeGreen,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 13),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                         ],
                                       ),

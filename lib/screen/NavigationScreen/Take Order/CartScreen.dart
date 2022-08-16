@@ -110,7 +110,7 @@ class _CartScreenState extends State<CartScreen> {
                           partyName: "Search Customer",
                         ),
                     transition: Transition.leftToRight,
-                    duration: Duration(milliseconds: 1000));
+                    duration: Duration(milliseconds: 500));
               },
               icon: Icon(
                 Icons.arrow_back,
@@ -130,12 +130,15 @@ class _CartScreenState extends State<CartScreen> {
                     children: [
                       Container(
                         padding: const EdgeInsets.all(25.0),
-                        child: Row(
+                        child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
                               "${widget.selecedCustomer.partyName} ",
-                              style: TextStyle(fontSize: 20),
+                              style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                  color: eTradeGreen),
                             ),
                             Text(
                               "(${TakeOrderScreen.isEditOrder ? widget.date : showDateFormat.format(DateTime.now())})",
@@ -376,7 +379,8 @@ class _CartScreenState extends State<CartScreen> {
                                           TakeOrderScreen.isEditOrder = false;
                                           TakeOrderScreen.isSelected = false;
                                           resetCartList();
-                                          TakeOrderScreen.setParty(Customer.initializer());
+                                          TakeOrderScreen.setParty(
+                                              Customer.initializer());
                                           await TakeOrderScreen.getdataFromDb();
                                           controller.clear();
                                           Get.off(
@@ -412,7 +416,8 @@ class _CartScreenState extends State<CartScreen> {
                                             TakeOrderScreen.isEditSale = false;
                                             TakeOrderScreen.isSelected = false;
                                             controller.clear();
-                                            TakeOrderScreen.setParty(Customer.initializer());
+                                            TakeOrderScreen.setParty(
+                                                Customer.initializer());
                                             resetCartList();
                                           });
                                           await TakeOrderScreen.getdataFromDb();
@@ -468,7 +473,8 @@ class _CartScreenState extends State<CartScreen> {
                                               controller.clear();
                                               resetCartList();
                                               Get.off(
-                                                  MyNavigationBar.initializer(1),
+                                                  MyNavigationBar.initializer(
+                                                      1),
                                                   transition:
                                                       Transition.leftToRight,
                                                   duration: Duration(

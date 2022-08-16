@@ -155,7 +155,6 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
                                           slide: "Left",
                                           builder: (context) => LoginScreen(
                                                 ip: userIp,
-                                                fromMasterReset: false,
                                               )));
                                 }
                               } else {

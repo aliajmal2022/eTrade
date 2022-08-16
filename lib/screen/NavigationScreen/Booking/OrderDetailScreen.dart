@@ -106,6 +106,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Expanded(
+                                flex: 3,
                                 child: Text(
                                   "Customer Name: ",
                                   style: TextStyle(
@@ -113,10 +114,14 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                       fontWeight: FontWeight.bold),
                                 ),
                               ),
-                              Text(
-                                "${widget.selecedCustomer}",
-                                style: TextStyle(
-                                    fontSize: 15, fontWeight: FontWeight.bold),
+                              Expanded(
+                                flex: 3,
+                                child: Text(
+                                  "${widget.selecedCustomer}",
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold),
+                                ),
                               ),
                             ]),
                       ),

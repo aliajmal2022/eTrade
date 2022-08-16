@@ -4,7 +4,6 @@ import 'package:eTrade/components/CustomNavigator.dart';
 import 'package:eTrade/components/constants.dart';
 import 'package:eTrade/screen/AboutUs/AboutScreen.dart';
 import 'package:eTrade/screen/NavigationScreen/DashBoard/SetTarget.dart';
-import 'package:flutter_share/flutter_share.dart';
 import 'package:get/get.dart';
 import 'package:path/path.dart';
 import 'package:eTrade/components/NavigationBar.dart';
@@ -28,6 +27,7 @@ import 'package:eTrade/screen/NavigationScreen/RecoveryBooking/ViewRecoveryScree
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:sql_conn/sql_conn.dart';
 
 class MyDrawer extends StatefulWidget {
@@ -62,10 +62,23 @@ class _MyDrawerState extends State<MyDrawer>
             bool isconnected = await Sql_Connection.connect(context, ip, port);
             if (isconnected) {
               Navigator.pop(context);
-              Get.to(LoginScreen(
-                ip: ping,
-                fromMasterReset: true,
-              ));
+              showDialog(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (BuildContext context) {
+                    return Center(child: CircularProgressIndicator());
+                  });
+              Future.delayed(Duration(seconds: 2), () async {
+                await SQLHelper.resetData("Reset", false);
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MyCustomRoute(
+                        builder: (context) => ConnectionScreen(
+                              isConnectionfromdrawer: false,
+                            ),
+                        slide: "Left"),
+                    (route) => false);
+              });
             }
           } else {
             final snackBar = const SnackBar(
@@ -207,23 +220,54 @@ class _MyDrawerState extends State<MyDrawer>
                       ),
                       MaterialButton(
                           onPressed: () async {
-                            if (ping.isNotEmpty) {
-                              var strToList = ping.split(",");
-                              var ip = strToList[0];
-                              var port = strToList[1];
-                              bool isconnected = await Sql_Connection.connect(
-                                  context, ip, port);
-                              if (isconnected) {
-                                TakeOrderScreen.onLoading(context, true, false);
-                              }
-                            } else {
-                              final snackBar = const SnackBar(
-                                content: Text(
-                                    "Host unaccessible. Keep your device near to router."),
+                            bool isAvialable = await SQLHelper.isDPBeforeGet();
+                            if (isAvialable) {
+                              Widget okButton = TextButton(
+                                child: const Text("OK"),
+                                onPressed: () {
+                                  Navigator.pushAndRemoveUntil(
+                                      context,
+                                      MyCustomRoute(
+                                          builder: (context) =>
+                                              MyNavigationBar.initializer(0),
+                                          slide: "Left"),
+                                      (route) => false);
+                                },
                               );
-                              Get.off(MyNavigationBar.initializer(0));
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(snackBar);
+                              // set up the AlertDialog
+                              AlertDialog alert = AlertDialog(
+                                title: const Text(
+                                    "There is data which is not posted yet."),
+                                content: const Text("  Please post the data."),
+                                actions: [okButton],
+                              );
+                              // show the dialog
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return alert;
+                                },
+                              );
+                            } else {
+                              if (ping.isNotEmpty) {
+                                var strToList = ping.split(",");
+                                var ip = strToList[0];
+                                var port = strToList[1];
+                                bool isconnected = await Sql_Connection.connect(
+                                    context, ip, port);
+                                if (isconnected) {
+                                  await TakeOrderScreen.onLoading(
+                                      context, true, false);
+                                }
+                              } else {
+                                final snackBar = const SnackBar(
+                                  content: Text(
+                                      "Host unaccessible. Keep your device near to router."),
+                                );
+                                Get.off(MyNavigationBar.initializer(0));
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(snackBar);
+                              }
                             }
                           },
                           child: Row(
@@ -346,8 +390,8 @@ class _MyDrawerState extends State<MyDrawer>
                             () async {
                           File file = File('${SQLHelper.directory}/eTrade.db');
                           if (await file.exists()) {
-                            await FlutterShare.shareFile(
-                                title: "Etrade Database", filePath: file.path);
+                            await Share.shareFiles([(file.path)],
+                                text: "Etrade Database");
                           }
                         },
                         child: Row(

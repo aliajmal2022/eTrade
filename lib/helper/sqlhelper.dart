@@ -828,6 +828,27 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
     }
   }
 
+  static Future<bool> isDPBeforeGet() async {
+    bool isAvialable = false;
+    var list = [];
+    Database db = await instance.database;
+    list = await db.query("select PartyID FROM Party where isPosted=0");
+    // "select PartyID FROM Party where isPosted=0 limit 1");
+    if (list.isNotEmpty) return isAvialable = true;
+    list = await db.query("select OrderID FROM [Order] where isPosted=0 ");
+    if (list.isNotEmpty) return isAvialable = true;
+    if (list.isNotEmpty) return isAvialable = true;
+    list = await db.query("select OrderID FROM OrderDetail where isPosted=0 ");
+    if (list.isNotEmpty) return isAvialable = true;
+    list = await db.query("select InvoiceID FROM Sale where isPosted=0 ");
+    if (list.isNotEmpty) return isAvialable = true;
+    list = await db.query("select InvoiceID FROM SaleDetail where isPosted=0");
+    if (list.isNotEmpty) return isAvialable = true;
+    list = await db.query("select RecoveryID FROM Recovery where isPosted=0 ");
+    if (list.isNotEmpty) return isAvialable = true;
+    return isAvialable = false;
+  }
+
   static Future<void> tablenotPosted() async {
     try {
       Database db = await instance.database;

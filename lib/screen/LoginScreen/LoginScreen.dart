@@ -15,9 +15,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class LoginScreen extends StatefulWidget {
-  LoginScreen({required this.ip, required this.fromMasterReset});
+  LoginScreen({required this.ip});
   String ip;
-  bool fromMasterReset;
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
@@ -168,38 +167,24 @@ class _LoginScreenState extends State<LoginScreen> {
                                           userInp, passwd);
 
                                       if (usr.id != 0) {
-                                        if (widget.fromMasterReset) {
-                                          await SQLHelper.resetData(
-                                              "Reset", false);
-
+                                        UserSharePreferences.setId(usr.id);
+                                        UserSharePreferences.setIp(widget.ip);
+                                        UserSharePreferences.setflag(flag);
+                                        UserSharePreferences.setmode(false);
+                                        if (!SQLHelper.existDataBase) {
                                           await TakeOrderScreen.onLoading(
-                                              context, false, false);
-
-                                          UserSharePreferences.setId(usr.id);
-                                          UserSharePreferences.setIp(widget.ip);
-                                          UserSharePreferences.setflag(flag);
-                                          UserSharePreferences.setmode(false);
-                                          await DataBaseDataLoad.DataLoading();
+                                              context, false, true);
                                         } else {
-                                          UserSharePreferences.setId(usr.id);
-                                          UserSharePreferences.setIp(widget.ip);
-                                          UserSharePreferences.setflag(flag);
-                                          UserSharePreferences.setmode(false);
-                                          if (!SQLHelper.existDataBase) {
-                                            await TakeOrderScreen.onLoading(
-                                                context, false, true);
-                                          } else {
-                                            SQLHelper.existDataBase = false;
-                                            SQLHelper.restoreDB();
-                                            Navigator.pushAndRemoveUntil(
-                                                context,
-                                                MyCustomRoute(
-                                                    slide: "Left",
-                                                    builder: (context) =>
-                                                        MyNavigationBar
-                                                            .initializer(0)),
-                                                (route) => false);
-                                          }
+                                          SQLHelper.existDataBase = false;
+                                          SQLHelper.restoreDB();
+                                          Navigator.pushAndRemoveUntil(
+                                              context,
+                                              MyCustomRoute(
+                                                  slide: "Left",
+                                                  builder: (context) =>
+                                                      MyNavigationBar
+                                                          .initializer(0)),
+                                              (route) => false);
                                         }
                                       } else {
                                         setState(() {
