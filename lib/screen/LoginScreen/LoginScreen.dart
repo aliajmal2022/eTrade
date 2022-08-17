@@ -167,24 +167,42 @@ class _LoginScreenState extends State<LoginScreen> {
                                           userInp, passwd);
 
                                       if (usr.id != 0) {
-                                        UserSharePreferences.setId(usr.id);
-                                        UserSharePreferences.setIp(widget.ip);
-                                        UserSharePreferences.setflag(flag);
-                                        UserSharePreferences.setmode(false);
-                                        if (!SQLHelper.existDataBase) {
+                                        if (usr.userName == "Admin") {
+                                          await SQLHelper.backupDB();
+                                          await UserSharePreferences.setId(
+                                              usr.id);
+                                          UserSharePreferences.setisAdminOrNot(
+                                              true);
+                                          UserSharePreferences.setIp(widget.ip);
+                                          UserSharePreferences.setflag(flag);
+                                          UserSharePreferences.setmode(false);
+                                          await SQLHelper.deleteAllTable();
+                                          await SQLHelper
+                                              .createAllTableForAdmin();
                                           await TakeOrderScreen.onLoading(
                                               context, false, true);
                                         } else {
-                                          SQLHelper.existDataBase = false;
-                                          SQLHelper.restoreDB();
-                                          Navigator.pushAndRemoveUntil(
-                                              context,
-                                              MyCustomRoute(
-                                                  slide: "Left",
-                                                  builder: (context) =>
-                                                      MyNavigationBar
-                                                          .initializer(0)),
-                                              (route) => false);
+                                          UserSharePreferences.setId(usr.id);
+                                          UserSharePreferences.setisAdminOrNot(
+                                              false);
+                                          UserSharePreferences.setIp(widget.ip);
+                                          UserSharePreferences.setflag(flag);
+                                          UserSharePreferences.setmode(false);
+                                          if (!SQLHelper.existDataBase) {
+                                            await TakeOrderScreen.onLoading(
+                                                context, false, true);
+                                          } else {
+                                            SQLHelper.existDataBase = false;
+                                            SQLHelper.restoreDB();
+                                            Navigator.pushAndRemoveUntil(
+                                                context,
+                                                MyCustomRoute(
+                                                    slide: "Left",
+                                                    builder: (context) =>
+                                                        MyNavigationBar
+                                                            .initializer(0)),
+                                                (route) => false);
+                                          }
                                         }
                                       } else {
                                         setState(() {

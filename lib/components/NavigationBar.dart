@@ -5,6 +5,7 @@ import 'package:eTrade/entities/Customer.dart';
 import 'package:eTrade/entities/Edit.dart';
 import 'package:eTrade/entities/ViewRecovery.dart';
 import 'package:eTrade/screen/NavigationScreen/DashBoard/DashboardScreen.dart';
+import 'package:eTrade/screen/NavigationScreen/RecoveryBooking/ViewRecoveryScreen.dart';
 import 'package:eTrade/screen/NavigationScreen/Take%20Order/TakeOrderScreen.dart';
 import 'package:eTrade/screen/NavigationScreen/RecoveryBooking/RecoveryScreen.dart';
 import 'package:eTrade/screen/NavigationScreen/Booking/ViewBookingScreen.dart';
@@ -28,6 +29,7 @@ class MyNavigationBar extends StatefulWidget {
   ViewRecovery editRecovery;
   static int currentIndex = 0;
   static int userID = 0;
+  static bool isAdmin = false;
   static int userTarget = 0;
   changeIndex() {
     selectedIndex = 1;
@@ -59,26 +61,29 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
   @override
   void initState() {
     MyNavigationBar.userID = UserSharePreferences.getId();
+    MyNavigationBar.isAdmin = UserSharePreferences.getisAdminOrNot();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     MyNavigationBar.currentIndex = widget.selectedIndex;
-    final List<Widget> _pages = <Widget>[
-      DashBoardScreen(),
-      TakeOrderScreen(
-        list: widget.list,
-        date: widget.date,
-        partyName: widget.partyName,
-        iD: widget.id,
-      ),
-      ViewBookingScreen(),
-      RecoveryScreen(
-        recovery: widget.editRecovery,
-        userID: MyNavigationBar.userID,
-      ),
-    ];
+    final List<Widget> _pages = MyNavigationBar.isAdmin
+        ? <Widget>[DashBoardScreen(), ViewBookingScreen(), ViewRecoveryScreen()]
+        : <Widget>[
+            DashBoardScreen(),
+            TakeOrderScreen(
+              list: widget.list,
+              date: widget.date,
+              partyName: widget.partyName,
+              iD: widget.id,
+            ),
+            ViewBookingScreen(),
+            RecoveryScreen(
+              recovery: widget.editRecovery,
+              userID: MyNavigationBar.userID,
+            ),
+          ];
 
     return Scaffold(
         body: _pages[widget.selectedIndex],
@@ -97,34 +102,51 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
                 tabBackgroundColor: eTradeMainColor,
                 gap: 8,
                 padding: EdgeInsets.all(14),
-                tabs: [
-                  GButton(
-                    icon: Icons.home,
-                    text: 'Home',
-                  ),
-                  GButton(
-                    icon: Icons.edit_note_outlined,
-                    text: (TakeOrderScreen.isSaleSpot)
-                        ? 'Invoice'
-                        : (TakeOrderScreen.isEditSale)
-                            ? 'Edit Invoice'
-                            : (TakeOrderScreen.isEditOrder)
-                                ? 'Edit Order'
-                                : 'Take Order',
-                  ),
-                  GButton(
-                    icon: Icons.wysiwyg_outlined,
-                    text: (ViewBookingScreen.isSaleBooking)
-                        ? "View Invoice"
-                        : 'View Booking',
-                  ),
-                  GButton(
-                    icon: Icons.grading_outlined,
-                    text: RecoveryScreen.isEditRecovery
-                        ? "Edit Recovery"
-                        : 'Recovery',
-                  ),
-                ]),
+                tabs: MyNavigationBar.isAdmin
+                    ? [
+                        GButton(
+                          icon: Icons.home,
+                          text: 'Home',
+                        ),
+                        GButton(
+                          icon: Icons.wysiwyg_outlined,
+                          text: (ViewBookingScreen.isSaleBooking)
+                              ? "View Invoice"
+                              : 'View Booking',
+                        ),
+                        GButton(
+                          icon: Icons.home,
+                          text: 'View Recovery',
+                        ),
+                      ]
+                    : [
+                        GButton(
+                          icon: Icons.home,
+                          text: 'Home',
+                        ),
+                        GButton(
+                          icon: Icons.edit_note_outlined,
+                          text: (TakeOrderScreen.isSaleSpot)
+                              ? 'Invoice'
+                              : (TakeOrderScreen.isEditSale)
+                                  ? 'Edit Invoice'
+                                  : (TakeOrderScreen.isEditOrder)
+                                      ? 'Edit Order'
+                                      : 'Take Order',
+                        ),
+                        GButton(
+                          icon: Icons.wysiwyg_outlined,
+                          text: (ViewBookingScreen.isSaleBooking)
+                              ? "View Invoice"
+                              : 'View Booking',
+                        ),
+                        GButton(
+                          icon: Icons.grading_outlined,
+                          text: RecoveryScreen.isEditRecovery
+                              ? "Edit Recovery"
+                              : 'Recovery',
+                        ),
+                      ]),
           ),
         )
         // )

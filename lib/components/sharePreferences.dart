@@ -7,6 +7,7 @@ class UserSharePreferences {
   static const ip = "Ip Address";
   static const flag = "User Login";
   static const id = "UserId";
+  static const isAdmin = "Is Admin";
   static const mode = "Dark";
   static Future init() async => prefs = await SharedPreferences.getInstance();
   static Future setIp(String usrip) async => await prefs.setString(ip, usrip);
@@ -18,6 +19,9 @@ class UserSharePreferences {
     await prefs.setBool(mode, isDark);
   }
 
+  static Future setisAdminOrNot(bool isadmin) async =>
+      await prefs.setBool(isAdmin, isadmin);
+  static bool getisAdminOrNot() => prefs.getBool(flag);
   static bool getmode() => prefs.getBool(mode);
   static Future setId(int usrid) async => await prefs.setInt(id, usrid);
   static int getId() => prefs.getInt(id);

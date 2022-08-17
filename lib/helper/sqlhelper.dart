@@ -60,7 +60,12 @@ class SQLHelper {
       Directory folderPathForDB =
           Directory('/storage/emulated/0/eTrade_Backup/');
       if (!await folderPathForDB.exists()) await folderPathForDB.create();
-      await ourDBFile.copy('/storage/emulated/0/eTrade_Backup/eTrade.db');
+      if (MyNavigationBar.isAdmin) {
+        await ourDBFile
+            .copy('/storage/emulated/0/eTrade_Backup/eTradeAdmin.db');
+      } else {
+        await ourDBFile.copy('/storage/emulated/0/eTrade_Backup/eTradeUser.db');
+      }
     } catch (e) {
       debugPrint(e.toString());
     }
@@ -76,30 +81,45 @@ class SQLHelper {
       await Permission.storage.request();
     }
     try {
-      File savedDBFile = File('/storage/emulated/0/eTrade_Backup/eTrade.db');
+      File savedDBFile;
+      if (MyNavigationBar.isAdmin) {
+        savedDBFile = File('/storage/emulated/0/eTrade_Backup/eTradeAdmin.db');
+      } else {
+        savedDBFile = File('/storage/emulated/0/eTrade_Backup/eTradeUser.db');
+      }
       await savedDBFile.copy('$directory/eTrade.db');
     } catch (e) {
       debugPrint(e.toString());
     }
   }
 
+  static Future<void> deleteAllTable() async {
+    await deleteTable(_database, "Order");
+    await deleteTable(_database, "Order");
+    await deleteTable(_database, "OrderDetail");
+    await deleteTable(_database, "UserTarget");
+    await deleteTable(_database, "Sale");
+    await deleteTable(_database, "SaleDetail");
+    await deleteTable(_database, "Recovery");
+  }
+
   static Future<void> resetData(String action, bool isLogin) async {
     if (action == "Sync" && !isLogin) {
-      await deleteTable(_database, "Party", true);
-      await deleteTable(_database, "Item", true);
+      await deleteDataFromTable(_database, "Party", true);
+      await deleteDataFromTable(_database, "Item", true);
     } else if (action == "Sync" && isLogin) {
-      await deleteTable(_database, "Party", false);
-      await deleteTable(_database, "Item", false);
+      await deleteDataFromTable(_database, "Party", false);
+      await deleteDataFromTable(_database, "Item", false);
     } else {
-      await deleteTable(_database, "Party", false);
-      await deleteTable(_database, "Order", false);
-      await deleteTable(_database, "User", false);
-      await deleteTable(_database, "UserTarget", false);
-      await deleteTable(_database, "Order", false);
-      await deleteTable(_database, "OrderDetail", false);
-      await deleteTable(_database, "Sale", false);
-      await deleteTable(_database, "SaleDetail", false);
-      await deleteTable(_database, "Recovery", false);
+      await deleteDataFromTable(_database, "Party", false);
+      await deleteDataFromTable(_database, "Order", false);
+      await deleteDataFromTable(_database, "User", false);
+      await deleteDataFromTable(_database, "UserTarget", false);
+      await deleteDataFromTable(_database, "Order", false);
+      await deleteDataFromTable(_database, "OrderDetail", false);
+      await deleteDataFromTable(_database, "Sale", false);
+      await deleteDataFromTable(_database, "SaleDetail", false);
+      await deleteDataFromTable(_database, "Recovery", false);
     }
   }
 
@@ -206,6 +226,12 @@ CREATE TABLE UserTarget(
     };
     return await db.insert('UserTarget', data,
         conflictAlgorithm: ConflictAlgorithm.replace);
+  }
+
+  static Future<List> getNotPostedOrderDetail() async {
+    Database db = await instance.database;
+    return await db.rawQuery(
+        "SELECT * FROM OrderDetail WHERE isPosted=0 and  UserID=${MyNavigationBar.userID}");
   }
 
   static Future<void> updateUserTargetTable(UserTarget userTarget) async {
@@ -447,10 +473,10 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
-  static Future<List> getNotPostedOrderDetail() async {
+  static Future<List> getNotPostedUserTarget() async {
     Database db = await instance.database;
     return await db.rawQuery(
-        "SELECT * FROM OrderDetail WHERE isPosted=0 and  UserID=${MyNavigationBar.userID}");
+        "SELECT * FROM UserTarget WHERE isPosted=0 and  UserID=${MyNavigationBar.userID}");
   }
 
   static Future<List> getOrderDetail(int id) async {
@@ -820,22 +846,32 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
     }
   }
 
-  static Future<void> deleteTable(
+  static Future<void> deleteTable(Database database, String tableName) async {
+    try {
+      await database.execute("""
+DROP TABLE [$tableName]
+      """);
+      debugPrint("successfully deleted $tableName table");
+    } catch (e) {
+      debugPrint("ERROR ::::::   deleted $tableName table");
+    }
+  }
+
+  static Future<void> deleteDataFromTable(
       Database database, String tableName, bool isSync) async {
     try {
       if (tableName == "Party" && isSync) {
-        int id = await database.rawDelete("""
+        await database.rawDelete("""
   DELETE FROM $tableName WHERE PartyID > 2999
       """);
-        var list = instance.getTable("Party", "PartyID");
-        print(list);
       } else {
         await database.execute("""
   DELETE FROM [$tableName]
       """);
       }
-    } catch (e) {
       debugPrint("successfully deleted values from $tableName table");
+    } catch (e) {
+      debugPrint("ERROR ::::::   deleted values from $tableName table");
     }
   }
 
@@ -903,5 +939,238 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
     } catch (e) {
       debugPrint("Error During posting update");
     }
+  }
+
+  static Future<void> createAllTableForAdmin() async {
+    await createOrderTableForAdmin(_database);
+    await createUserTargetTableForAdmin(_database);
+    await createOrderDetailTableForAdmin(_database);
+    await createSaleTableForAdmin(_database);
+    await createSaleDetailTableForAdmin(_database);
+    await createRecoveryTableForAdmin(_database);
+  }
+
+  static Future<void> createUserTargetTableForAdmin(Database database) async {
+    await database.execute('''
+CREATE TABLE UserTarget(
+  ID INTEGER PRIMARY KEY NOT NULL,
+  UserID NOT NULL, 
+  January INTEGER NOT NULL,
+  February INTEGER NOT NULL,
+  March INTEGER NOT NULL,
+  April INTEGER NOT NULL,
+  May INTEGER NOT NULL,
+  June INTEGER NOT NULL,
+  July INTEGER NOT NULL,
+  August INTEGER NOT NULL,
+  September INTEGER NOT NULL,
+  October INTEGER NOT NULL,
+  November INTEGER NOT NULL,
+  December INTEGER NOT NULL
+  )
+   ''');
+    print("successfully created UserTarget table");
+  }
+
+  Future<int> createUserTargetForAdmin(UserTarget target) async {
+    Database db = await instance.database;
+    final data = {
+      'UserID': MyNavigationBar.userID,
+      'January': target.januaryTarget,
+      'February': target.februaryTarget,
+      'March': target.marchTarget,
+      'April': target.aprilTarget,
+      'May': target.mayTarget,
+      'June': target.juneTarget,
+      'July': target.julyTarget,
+      'August': target.augustTarget,
+      'September': target.septemberTarget,
+      'October': target.octoberTarget,
+      'November': target.novemberTarget,
+      'December': target.decemberTarget,
+    };
+    return await db.insert('UserTarget', data,
+        conflictAlgorithm: ConflictAlgorithm.replace);
+  }
+
+  static Future<void> createRecoveryTableForAdmin(Database database) async {
+    await database.execute('''
+CREATE TABLE Recovery(
+RecoveryID INTEGER PRIMARY KEY NOT NULL,
+PartyID INTEGER NOT NULL,
+UserID INTEGER NOT NULL,
+Amount REAL NOT NULL,
+Dated DATE NOT NULL,
+isCash BOOLEAN NOT NULL CHECK (isCash IN (0, 1)) ,
+Description TEXT,
+
+  )
+      ''');
+    print("successfully created Recovery table");
+  }
+
+  Future<int> createRecoveryitemForAdmin(Recovery recovery) async {
+    Database db = await instance.database;
+
+    final data = {
+      'RecoveryID': recovery.recoveryID,
+      'PartyID': recovery.party.partyId,
+      'UserID': recovery.userID,
+      'isCash': recovery.isCashOrCheck,
+      'Description': recovery.description,
+      'Dated': recovery.dated,
+      'Amount': recovery.amount,
+    };
+    final id = await db.insert('Recovery', data,
+        conflictAlgorithm: ConflictAlgorithm.replace);
+    return id;
+  }
+
+  static Future<void> createOrderTableForAdmin(Database database) async {
+    await database.execute('''
+CREATE TABLE [Order](
+OrderID INTEGER PRIMARY KEY NOT NULL,
+PartyID INTEGER NOT NULL,
+UserID INTEGER NOT NULL,
+TotalQuantity INTEGER NOT NULL,
+TotalValue REAL NOT NULL,
+Dated DATE NOT NULL,
+Description TEXT,
+  )
+      ''');
+    print("successfully created Order table");
+  }
+
+  Future<int> createOrderForAdmin(Order order, bool isPost) async {
+    Database db = await instance.database;
+
+    final data = {
+      'OrderID': order.orderID,
+      'PartyID': order.customer.partyId,
+      'Description': order.description,
+      'TotalQuantity': order.totalQuantity,
+      'UserID': order.userID,
+      'TotalValue': order.totalValue,
+      'Dated': order.date,
+    };
+    final id = await db.insert('Order', data,
+        conflictAlgorithm: ConflictAlgorithm.replace);
+    return id;
+  }
+
+  static Future<void> createOrderDetailTableForAdmin(Database database) async {
+    await database.execute('''
+  CREATE TABLE OrderDetail(
+	ID INTEGER PRIMARY KEY NOT NULL,
+  UserID INTEGER NOT NULL,
+	OrderID INTEGER NOT NULL,
+	ItemID TEXT NOT NULL,
+  Quantity INTEGER NOT NULL,
+  RATE REAL NOT NULL,
+  Discount REAL,
+  Bonus INTEGER,
+  TradeOffer Real,
+  Amount REAL NOT NULL,
+	Dated DATE NOT NULL,
+
+ )
+      ''');
+    print("successfully created OrderDetail table");
+  }
+
+  Future<int> createOrderDetailForAdmin(Product product, int orderID,
+      String date, bool isPost, int userID, billNo) async {
+    Database db = await instance.database;
+
+    final data = {
+      'ID': billNo,
+      'UserID': userID,
+      'OrderID': orderID,
+      'Discount': product.discount,
+      'Bonus': product.bonus,
+      'TradeOffer': product.to,
+      'ItemID': product.ID,
+      'Quantity': product.Quantity,
+      'Rate': product.Price,
+      'Amount': product.Quantity * product.Price,
+      'Dated': date,
+    };
+    return await db.insert('OrderDetail', data,
+        conflictAlgorithm: ConflictAlgorithm.replace);
+  }
+
+  static Future<void> createSaleTableForAdmin(Database database) async {
+    await database.execute('''
+CREATE TABLE Sale(
+InvoiceID INTEGER PRIMARY KEY NOT NULL,
+PartyID INTEGER NOT NULL,
+UserID INTEGER NOT NULL,
+TotalQuantity INTEGER NOT NULL,
+TotalValue REAL NOT NULL,
+Dated DATE NOT NULL,
+Description TEXT,
+isCashInvoice BOOLEAN NOT NULL CHECK (isCashInvoice IN (0, 1)) ,
+
+  )
+      ''');
+    print("successfully created Sale table");
+  }
+
+  Future<int> createSaleForAdmin(Sale sale, bool isPost) async {
+    Database db = await instance.database;
+
+    final data = {
+      'InvoiceID': sale.saleID,
+      'PartyID': sale.customer.partyId,
+      'Description': sale.description,
+      'TotalQuantity': sale.totalQuantity,
+      'UserID': sale.userID,
+      'isCashInvoice': sale.isCash,
+      'TotalValue': sale.totalValue,
+      'Dated': sale.date,
+    };
+    final id = await db.insert('Sale', data,
+        conflictAlgorithm: ConflictAlgorithm.replace);
+    return id;
+  }
+
+  static Future<void> createSaleDetailTableForAdmin(Database database) async {
+    await database.execute('''
+  CREATE TABLE SaleDetail(
+	ID INTEGER PRIMARY KEY NOT NULL,
+  InvoiceID INTEGER NOT NULL,
+	UserID INTEGER NOT NULL,
+	ItemID TEXT NOT NULL,
+  Quantity INTEGER NOT NULL,
+  RATE REAL NOT NULL,
+  Discount REAL,
+  Bonus INTEGER,
+  TradeOffer Real,
+  Amount REAL NOT NULL,
+	Dated DATE NOT NULL,
+ )
+      ''');
+    print("successfully created SaleDetail table");
+  }
+
+  Future<int> createSaleDetailForAdmin(Product product, int InvoiceID,
+      String date, bool isPost, int userID, int billNo) async {
+    Database db = await instance.database;
+
+    final data = {
+      'ID': billNo,
+      'UserID': userID,
+      'InvoiceID': InvoiceID,
+      'Discount': product.discount,
+      'Bonus': product.bonus,
+      'TradeOffer': product.to,
+      'ItemID': product.ID,
+      'Quantity': product.Quantity,
+      'Rate': product.Price,
+      'Amount': product.Quantity * product.Price,
+      'Dated': date,
+    };
+    return await db.insert('SaleDetail', data,
+        conflictAlgorithm: ConflictAlgorithm.replace);
   }
 }

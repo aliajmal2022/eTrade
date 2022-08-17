@@ -35,6 +35,7 @@ class _PostingDataState extends State<PostingData>
   List _saleDetail = [];
   List _order = [];
   List _orderDetail = [];
+  List _setTarget = [];
   int count = 0;
   List _party = [];
   bool notData = false;
@@ -46,6 +47,7 @@ class _PostingDataState extends State<PostingData>
     _party = await SQLHelper.getNotPostedParty();
     _order = await SQLHelper.getNotPostedOrder();
     _orderDetail = await SQLHelper.getNotPostedOrderDetail();
+    _setTarget = await SQLHelper.getNotPostedUserTarget();
     var strToList = widget.ping.split(",");
     var ip = strToList[0];
     var port = strToList[1];
@@ -59,9 +61,47 @@ class _PostingDataState extends State<PostingData>
           _orderDetail.isNotEmpty ||
           _party.isNotEmpty ||
           _sale.isNotEmpty ||
+          _setTarget.isNotEmpty ||
           _saleDetail.isNotEmpty ||
           _recovery.isNotEmpty) {
         try {
+          if (_setTarget.isNotEmpty) {
+            await Sql_Connection().write("""
+INSERT INTO dbo_m.SaleRapTarget
+(
+	SRID,
+	January,
+	February,
+	March,
+	April,
+	May,
+	June,
+	July,
+	August,
+	September,
+	October,
+	November,
+	December
+)
+VALUES
+(
+	${MyNavigationBar.userID},
+	${_setTarget[0]['January']},
+	${_setTarget[0]['February']},
+	${_setTarget[0]['March']},
+	${_setTarget[0]['April']},
+	${_setTarget[0]['May']},
+	${_setTarget[0]['June']},
+	${_setTarget[0]['July']},
+	${_setTarget[0]['August']},
+	${_setTarget[0]['September']},
+	${_setTarget[0]['October']},
+	${_setTarget[0]['November']},
+	${_setTarget[0]['December']}
+)
+""");
+          }
+
           if (_order.isNotEmpty) {
             for (var element in _order) {
               String date = element['Dated'];
