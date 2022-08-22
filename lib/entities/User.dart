@@ -1,3 +1,4 @@
+import 'package:eTrade/components/NavigationBar.dart';
 import 'package:eTrade/helper/Sql_Connection.dart';
 import 'package:eTrade/helper/sqlhelper.dart';
 
@@ -18,7 +19,7 @@ class User {
       _user = await SQLHelper.instance.getTable("User", "ID");
     } else {
       _user = await Sql_Connection().read(
-          'SELECT SrID AS ID,sr.SRName AS UserName,sr.[Password] FROM SaleRap AS sr WHERE ISNULL(sr.MobileAccess,0)=1');
+          'SELECT SrID AS ID,sr.SRName AS UserName,sr.[Password],sr.MobileAccess FROM SaleRap AS sr WHERE ISNULL(sr.MobileAccess,0)=1');
     }
     if (_user.isNotEmpty) {
       _user.forEach((element) {
@@ -33,6 +34,9 @@ class User {
     return _listUser;
   }
 
+  static User initializer() {
+    return User(id: 0, userName: "", password: "", monthlyTarget: 0);
+  }
   // static List<dynamic> userListdb(
   //     int _length, var _name, var _id, var _password, var _monthlyTarget) {
   //   User _user;
@@ -48,11 +52,24 @@ class User {
   //   return _listUser;
   // }
 
+  static Future<User> getUserID(String name) async {
+    List<User> userList = await User.UserList(true);
+    for (var element in userList) {
+      if (element.userName.toUpperCase() == name.toUpperCase()) {
+        return element;
+      }
+    }
+    return initializer();
+  }
+
   static Future<User> CheckExist(String userInp, String passwd) async {
     List<User> userList = await User.UserList(false);
     User usr = User(userName: "", password: "", monthlyTarget: 0, id: 0);
     for (var element in userList) {
-      if (element.userName == userInp && element.password == passwd) {
+      if (element.userName.toUpperCase() == userInp &&
+          element.password == passwd) {
+        if (element.userName.toLowerCase() == "admin")
+          MyNavigationBar.isAdmin = true;
         return element;
       }
     }

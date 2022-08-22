@@ -205,13 +205,21 @@ class _MyDrawerState extends State<MyDrawer>
                         onPressed: () async {
                           await TakeOrderScreen.forSaleInVoice();
                           ViewBookingScreen.isSaleBooking = true;
-                          Navigator.pushAndRemoveUntil(
-                              context,
-                              MyCustomRoute(
-                                  slide: "Left",
-                                  builder: (context) =>
-                                      MyNavigationBar.initializer(2)),
-                              (route) => false);
+                          MyNavigationBar.isAdmin
+                              ? Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MyCustomRoute(
+                                      slide: "Left",
+                                      builder: (context) =>
+                                          MyNavigationBar.initializer(1)),
+                                  (route) => false)
+                              : Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MyCustomRoute(
+                                      slide: "Left",
+                                      builder: (context) =>
+                                          MyNavigationBar.initializer(2)),
+                                  (route) => false);
                         },
                         child: Row(
                           children: const [
@@ -223,7 +231,7 @@ class _MyDrawerState extends State<MyDrawer>
                       MaterialButton(
                           onPressed: () async {
                             bool isAvialable = await SQLHelper.isDPBeforeGet();
-                            if (isAvialable) {
+                            if (isAvialable && !MyNavigationBar.isAdmin) {
                               Widget okButton = TextButton(
                                 child: const Text("OK"),
                                 onPressed: () {
@@ -439,6 +447,21 @@ class _MyDrawerState extends State<MyDrawer>
                       // MyNavigationBar.isAdmin?Container():
                       MaterialButton(
                         onPressed: () async {
+                          await SQLHelper.backupDB();
+                          if (MyNavigationBar.isAdmin) {
+                            MyNavigationBar.isAdmin = false;
+                            UserSharePreferences.setisAdminOrNot(false);
+                            UserSharePreferences.setflag(false);
+                          }
+                          await SQLHelper.deleteAllTableForAdmin();
+                          Navigator.pushAndRemoveUntil(
+                              context,
+                              MyCustomRoute(
+                                  builder: (context) => ConnectionScreen(
+                                        isConnectionfromdrawer: false,
+                                      ),
+                                  slide: "Left"),
+                              (route) => false);
                           // SQLHelper.tablenotPosted();
                         },
                         child: Row(

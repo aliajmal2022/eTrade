@@ -64,14 +64,14 @@ FROM dbo_m.SaleRapTarget AS srt
 !!!!!! Remarks== Description
 //Order Table Fetch Query
 SELECT 
-	s.BillNo,
-	s.SRId_Mobile,
+	o.BillNo,
+	o.SRId_Mobile,
 	[PartyID],
 	TotalQuantity,
-	s.NetAmount,
-	s.Remarks,
-	s.Dated
-FROM dbo.Sale AS s WHERE ISNULL(s.InvoiceId_Mobile,0)>0 AND ISNULL(s.IsOrder_Mobile,0)=1
+	o.NetAmount,
+	o.Remarks,
+	o.Dated
+FROM dbo.[Order] AS s WHERE ISNULL(o.InvoiceId_Mobile,0)>0 AND ISNULL(o.IsOrder_Mobile,0)=1
 
 //Order Detail Fetch Query
 SELECT 

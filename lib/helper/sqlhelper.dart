@@ -4,9 +4,11 @@ import 'package:eTrade/components/NavigationBar.dart';
 import 'package:eTrade/components/sharePreferences.dart';
 import 'package:eTrade/entities/Customer.dart';
 import 'package:eTrade/entities/Order.dart';
+import 'package:eTrade/entities/OrderDetail.dart';
 import 'package:eTrade/entities/Products.dart';
 import 'package:eTrade/entities/Recovery.dart';
 import 'package:eTrade/entities/Sale.dart';
+import 'package:eTrade/entities/SaleDetail.dart';
 import 'package:eTrade/entities/User.dart';
 import 'package:eTrade/screen/NavigationScreen/DashBoard/SetTarget.dart';
 import 'package:flutter/material.dart';
@@ -94,7 +96,18 @@ class SQLHelper {
   }
 
   static Future<void> deleteAllTable() async {
+    await deleteTable(_database, "Party");
     await deleteTable(_database, "Order");
+    await deleteTable(_database, "User");
+    await deleteTable(_database, "UserTarget");
+    await deleteTable(_database, "Item");
+    await deleteTable(_database, "OrderDetail");
+    await deleteTable(_database, "Sale");
+    await deleteTable(_database, "SaleDetail");
+    await deleteTable(_database, "Recovery");
+  }
+
+  static Future<void> deleteAllTableForAdmin() async {
     await deleteTable(_database, "Order");
     await deleteTable(_database, "OrderDetail");
     await deleteTable(_database, "UserTarget");
@@ -104,14 +117,19 @@ class SQLHelper {
   }
 
   static Future<void> resetData(String action, bool isLogin) async {
-    if (action == "Sync" && !isLogin) {
+    if (action == "Sync" && !isLogin && !MyNavigationBar.isAdmin) {
       await deleteDataFromTable(_database, "Party", true);
       await deleteDataFromTable(_database, "Item", true);
     } else if (action == "Sync" && isLogin) {
       await deleteDataFromTable(_database, "Party", false);
       await deleteDataFromTable(_database, "Item", false);
+    } else if (action == "Sync" && MyNavigationBar.isAdmin) {
+      await deleteDataFromTable(_database, "Party", false);
+      await deleteDataFromTable(_database, "Item", false);
+      await deleteDataFromTable(_database, "User", false);
     } else {
       await deleteDataFromTable(_database, "Party", false);
+      await deleteDataFromTable(_database, "Item", true);
       await deleteDataFromTable(_database, "Order", false);
       await deleteDataFromTable(_database, "User", false);
       await deleteDataFromTable(_database, "UserTarget", false);
@@ -180,6 +198,7 @@ CREATE TABLE User(
     final data = {
       'UserName': user.userName,
       'Password': user.password,
+      'ID': user.id,
     };
     return await db.insert('User', data,
         conflictAlgorithm: ConflictAlgorithm.replace);
@@ -201,7 +220,8 @@ CREATE TABLE UserTarget(
   September INTEGER NOT NULL,
   October INTEGER NOT NULL,
   November INTEGER NOT NULL,
-  December INTEGER NOT NULL
+  December INTEGER NOT NULL,
+  isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
   )
    ''');
     print("successfully created UserTarget table");
@@ -223,6 +243,7 @@ CREATE TABLE UserTarget(
       'October': target.octoberTarget,
       'November': target.novemberTarget,
       'December': target.decemberTarget,
+      'isPosted': false,
     };
     return await db.insert('UserTarget', data,
         conflictAlgorithm: ConflictAlgorithm.replace);
@@ -309,6 +330,10 @@ WHERE PartyID BETWEEN 2200 AND 2999 AND ifnull(isPosted,0)=1
     } catch (e) {
       print("error :::::::: ${e.toString()}");
     }
+  }
+
+  static getAllDataFromParty() async {
+    return await _database.rawQuery("select * from Party");
   }
 
   static Future<void> createItemTable(Database database) async {
@@ -941,6 +966,15 @@ DROP TABLE [$tableName]
     }
   }
 
+  static Future<void> createAllTableForUser() async {
+    await createUserTargetTable(_database);
+    await createOrderTable(_database);
+    await createOrderDetailTable(_database);
+    await createSaleTable(_database);
+    await createSaleDetailTable(_database);
+    await createRecoveryTable(_database);
+  }
+
   static Future<void> createAllTableForAdmin() async {
     await createOrderTableForAdmin(_database);
     await createUserTargetTableForAdmin(_database);
@@ -966,7 +1000,8 @@ CREATE TABLE UserTarget(
   September INTEGER NOT NULL,
   October INTEGER NOT NULL,
   November INTEGER NOT NULL,
-  December INTEGER NOT NULL
+  December INTEGER NOT NULL,
+isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
   )
    ''');
     print("successfully created UserTarget table");
@@ -975,7 +1010,7 @@ CREATE TABLE UserTarget(
   Future<int> createUserTargetForAdmin(UserTarget target) async {
     Database db = await instance.database;
     final data = {
-      'UserID': MyNavigationBar.userID,
+      'UserID': target.userID,
       'January': target.januaryTarget,
       'February': target.februaryTarget,
       'March': target.marchTarget,
@@ -988,9 +1023,15 @@ CREATE TABLE UserTarget(
       'October': target.octoberTarget,
       'November': target.novemberTarget,
       'December': target.decemberTarget,
+      'isPosted': false,
     };
     return await db.insert('UserTarget', data,
         conflictAlgorithm: ConflictAlgorithm.replace);
+  }
+
+  static getMonthlyTarget() async {
+    return await _database.rawQuery(
+        "select * from UserTarget where UserID=${MyNavigationBar.userID}");
   }
 
   static Future<void> createRecoveryTableForAdmin(Database database) async {
@@ -1003,6 +1044,7 @@ Amount REAL NOT NULL,
 Dated DATE NOT NULL,
 isCash BOOLEAN NOT NULL CHECK (isCash IN (0, 1)) ,
 Description TEXT,
+isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
 
   )
       ''');
@@ -1015,6 +1057,7 @@ Description TEXT,
     final data = {
       'RecoveryID': recovery.recoveryID,
       'PartyID': recovery.party.partyId,
+      'isPosted': false,
       'UserID': recovery.userID,
       'isCash': recovery.isCashOrCheck,
       'Description': recovery.description,
@@ -1036,17 +1079,19 @@ TotalQuantity INTEGER NOT NULL,
 TotalValue REAL NOT NULL,
 Dated DATE NOT NULL,
 Description TEXT,
+isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
   )
       ''');
     print("successfully created Order table");
   }
 
-  Future<int> createOrderForAdmin(Order order, bool isPost) async {
+  Future<int> createOrderForAdmin(Order order) async {
     Database db = await instance.database;
 
     final data = {
       'OrderID': order.orderID,
       'PartyID': order.customer.partyId,
+      'isPosted': false,
       'Description': order.description,
       'TotalQuantity': order.totalQuantity,
       'UserID': order.userID,
@@ -1061,7 +1106,7 @@ Description TEXT,
   static Future<void> createOrderDetailTableForAdmin(Database database) async {
     await database.execute('''
   CREATE TABLE OrderDetail(
-	ID INTEGER PRIMARY KEY NOT NULL,
+	ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
   UserID INTEGER NOT NULL,
 	OrderID INTEGER NOT NULL,
 	ItemID TEXT NOT NULL,
@@ -1072,28 +1117,27 @@ Description TEXT,
   TradeOffer Real,
   Amount REAL NOT NULL,
 	Dated DATE NOT NULL,
-
+isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
  )
       ''');
     print("successfully created OrderDetail table");
   }
 
-  Future<int> createOrderDetailForAdmin(Product product, int orderID,
-      String date, bool isPost, int userID, billNo) async {
+  Future<int> createOrderDetailForAdmin(OrderDetail orderDetail) async {
     Database db = await instance.database;
 
     final data = {
-      'ID': billNo,
-      'UserID': userID,
-      'OrderID': orderID,
-      'Discount': product.discount,
-      'Bonus': product.bonus,
-      'TradeOffer': product.to,
-      'ItemID': product.ID,
-      'Quantity': product.Quantity,
-      'Rate': product.Price,
-      'Amount': product.Quantity * product.Price,
-      'Dated': date,
+      'UserID': orderDetail.userID,
+      'OrderID': orderDetail.orderID,
+      'Discount': orderDetail.discount,
+      'Bonus': orderDetail.bonus,
+      'TradeOffer': orderDetail.to,
+      'ItemID': orderDetail.itemID,
+      'isPosted': false,
+      'Quantity': orderDetail.quantity,
+      'Rate': orderDetail.rate,
+      'Amount': orderDetail.amount,
+      'Dated': orderDetail.date,
     };
     return await db.insert('OrderDetail', data,
         conflictAlgorithm: ConflictAlgorithm.replace);
@@ -1110,13 +1154,13 @@ TotalValue REAL NOT NULL,
 Dated DATE NOT NULL,
 Description TEXT,
 isCashInvoice BOOLEAN NOT NULL CHECK (isCashInvoice IN (0, 1)) ,
-
+isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
   )
       ''');
     print("successfully created Sale table");
   }
 
-  Future<int> createSaleForAdmin(Sale sale, bool isPost) async {
+  Future<int> createSaleForAdmin(Sale sale) async {
     Database db = await instance.database;
 
     final data = {
@@ -1128,6 +1172,7 @@ isCashInvoice BOOLEAN NOT NULL CHECK (isCashInvoice IN (0, 1)) ,
       'isCashInvoice': sale.isCash,
       'TotalValue': sale.totalValue,
       'Dated': sale.date,
+      'isPosted': false,
     };
     final id = await db.insert('Sale', data,
         conflictAlgorithm: ConflictAlgorithm.replace);
@@ -1137,7 +1182,7 @@ isCashInvoice BOOLEAN NOT NULL CHECK (isCashInvoice IN (0, 1)) ,
   static Future<void> createSaleDetailTableForAdmin(Database database) async {
     await database.execute('''
   CREATE TABLE SaleDetail(
-	ID INTEGER PRIMARY KEY NOT NULL,
+	ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
   InvoiceID INTEGER NOT NULL,
 	UserID INTEGER NOT NULL,
 	ItemID TEXT NOT NULL,
@@ -1148,27 +1193,27 @@ isCashInvoice BOOLEAN NOT NULL CHECK (isCashInvoice IN (0, 1)) ,
   TradeOffer Real,
   Amount REAL NOT NULL,
 	Dated DATE NOT NULL,
+isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
  )
       ''');
     print("successfully created SaleDetail table");
   }
 
-  Future<int> createSaleDetailForAdmin(Product product, int InvoiceID,
-      String date, bool isPost, int userID, int billNo) async {
+  Future<int> createSaleDetailForAdmin(SaleDetail saleDetail) async {
     Database db = await instance.database;
 
     final data = {
-      'ID': billNo,
-      'UserID': userID,
-      'InvoiceID': InvoiceID,
-      'Discount': product.discount,
-      'Bonus': product.bonus,
-      'TradeOffer': product.to,
-      'ItemID': product.ID,
-      'Quantity': product.Quantity,
-      'Rate': product.Price,
-      'Amount': product.Quantity * product.Price,
-      'Dated': date,
+      'UserID': saleDetail.userID,
+      'InvoiceID': saleDetail.invoiceID,
+      'Discount': saleDetail.discount,
+      'Bonus': saleDetail.bonus,
+      'TradeOffer': saleDetail.to,
+      'isPosted': false,
+      'ItemID': saleDetail.itemID,
+      'Quantity': saleDetail.quantity,
+      'Rate': saleDetail.rate,
+      'Amount': saleDetail.amount,
+      'Dated': saleDetail.date,
     };
     return await db.insert('SaleDetail', data,
         conflictAlgorithm: ConflictAlgorithm.replace);

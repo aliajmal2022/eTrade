@@ -1,10 +1,20 @@
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:eTrade/components/NavigationBar.dart';
 import 'package:eTrade/components/constants.dart';
 import 'package:eTrade/components/drawer.dart';
+import 'package:eTrade/components/sharePreferences.dart';
+import 'package:eTrade/entities/Order.dart';
+import 'package:eTrade/entities/OrderDetail.dart';
 import 'package:eTrade/entities/Products.dart';
+import 'package:eTrade/entities/Recovery.dart';
 import 'package:eTrade/entities/Sale.dart';
+import 'package:eTrade/entities/SaleDetail.dart';
+import 'package:eTrade/entities/User.dart';
+import 'package:eTrade/helper/Sql_Connection.dart';
+import 'package:eTrade/helper/onldt_to_local_db.dart';
 import 'package:eTrade/helper/sqlhelper.dart';
 import 'package:eTrade/main.dart';
+import 'package:find_dropdown/find_dropdown.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -12,6 +22,7 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get_navigation/src/routes/default_transitions.dart';
 import 'package:intl/intl.dart';
+import 'package:sql_conn/sql_conn.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class DashBoardScreen extends StatefulWidget {
@@ -131,8 +142,7 @@ class DashBoardScreen extends StatefulWidget {
     int count;
     List<MonthOrderHistory> list = [];
     greatestTarget = 100000;
-    List<Map<String, dynamic>> months =
-        await SQLHelper.instance.getTable("UserTarget", "ID");
+    List<Map<String, dynamic>> months = await SQLHelper.getMonthlyTarget();
     try {
       if (months.isEmpty) {
         for (count = 0; count < staticMonthName.length; count++) {
@@ -224,9 +234,36 @@ class _DashBoardScreenState extends State<DashBoardScreen>
   }
 
   var _animationController;
+  static bool isFirstTime = false;
+  static List<String> userNameList = [];
+  static List<User> userList = [];
+  static User currentUser = User.initializer();
+  static String selected = "";
+  List<User> preloadForAdmin() {
+    userList = DataBaseDataLoad.ListOUser;
+    if (userList.isNotEmpty) {
+      userList.forEach((element) {
+        if (element.userName.toLowerCase().contains('admin')) {
+          userNameList.remove(element);
+          isFirstTime = true;
+        } else {
+          userNameList.add(element.userName);
+        }
+      });
+    }
+
+    return userList;
+  }
+
   @override
   void initState() {
     setState(() {
+      if (MyNavigationBar.isAdmin) {
+        if (!isFirstTime) {
+          preloadForAdmin();
+          // currentUser = currentUser.id == 1 ? userList[0] : currentUser;
+        }
+      }
       _animationController = AnimationController(
           vsync: this, duration: Duration(milliseconds: 100));
       _animationController.forward();
@@ -238,41 +275,115 @@ class _DashBoardScreenState extends State<DashBoardScreen>
   TooltipBehavior _tooltipBehavior = TooltipBehavior(enable: true);
   TooltipBehavior _columntooltipBehavior = TooltipBehavior(enable: true);
   @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: eTradeMainColor,
-          toolbarHeight: 80,
-          shape: const RoundedRectangleBorder(
-            borderRadius: const BorderRadius.vertical(
-              bottom: Radius.circular(30),
-            ),
-          ),
-          automaticallyImplyLeading: false,
-          leading: Builder(
-            builder: (BuildContext context) {
-              return IconButton(
-                icon: const Icon(
-                  Icons.menu,
+        appBar: MyNavigationBar.isAdmin
+            ? AppBar(
+                backgroundColor: eTradeMainColor,
+                toolbarHeight: 80,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: const BorderRadius.vertical(
+                    bottom: Radius.circular(30),
+                  ),
                 ),
-                onPressed: () {
-                  Scaffold.of(context).openDrawer();
-                },
-                tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-              );
-            },
-          ),
-          title: const Text(
-            'Home',
-            style: const TextStyle(color: Colors.white),
-          ),
-        ),
+                automaticallyImplyLeading: false,
+                leading: Builder(
+                  builder: (BuildContext context) {
+                    return IconButton(
+                      icon: const Icon(
+                        Icons.menu,
+                      ),
+                      onPressed: () {
+                        Scaffold.of(context).openDrawer();
+                      },
+                      tooltip: MaterialLocalizations.of(context)
+                          .openAppDrawerTooltip,
+                    );
+                  },
+                ),
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        'Home',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                    Expanded(
+                      child: DropdownButton2<String>(
+                        isExpanded: true,
+                        hint: Text(
+                          currentUser.userName == ""
+                              ? 'Select User'
+                              : currentUser.userName,
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Theme.of(context).hintColor,
+                          ),
+                        ),
+                        items: userNameList.map((items) {
+                          return DropdownMenuItem<String>(
+                            value: items,
+                            child: Text(
+                              items,
+                              // style:
+                              //     TextStyle(color: ThemeData.light().cardColor),
+                            ),
+                          );
+                        }).toList(),
+                        // customItemsHeight: 4,
+                        // value: currentUser.userName,
+                        onChanged: (value) async {
+                          if (value != null) {
+                            User tuser = await User.getUserID(value);
+                            setState(() {
+                              MyNavigationBar.userID = tuser.id;
+                              currentUser = tuser;
+                            });
+                            await updateData();
+                            await UserSharePreferences.setId(
+                                MyNavigationBar.userID);
+                          }
+                        },
+                        // buttonHeight: 40,
+                        // buttonWidth: 140,
+                        // itemHeight: 40,
+                        // itemPadding:
+                        //     const EdgeInsets.symmetric(horizontal: 8.0),
+                      ),
+                    )
+                  ],
+                ),
+              )
+            : AppBar(
+                backgroundColor: eTradeMainColor,
+                toolbarHeight: 80,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: const BorderRadius.vertical(
+                    bottom: Radius.circular(30),
+                  ),
+                ),
+                automaticallyImplyLeading: false,
+                leading: Builder(
+                  builder: (BuildContext context) {
+                    return IconButton(
+                      icon: const Icon(
+                        Icons.menu,
+                      ),
+                      onPressed: () {
+                        Scaffold.of(context).openDrawer();
+                      },
+                      tooltip: MaterialLocalizations.of(context)
+                          .openAppDrawerTooltip,
+                    );
+                  },
+                ),
+                title: const Text(
+                  'Home',
+                  style: const TextStyle(color: Colors.white),
+                ),
+              ),
         drawer: MyDrawer(),
         body: SingleChildScrollView(
           child: Column(

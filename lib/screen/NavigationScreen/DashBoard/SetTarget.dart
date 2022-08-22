@@ -191,19 +191,7 @@ class _SetTargetScreenState extends State<SetTargetScreen> {
           onPressed: check
               ? null
               : () async {
-                  UserTarget userTarget = UserTarget(
-                      januaryTarget: 0,
-                      februaryTarget: 0,
-                      marchTarget: 0,
-                      aprilTarget: 0,
-                      mayTarget: 0,
-                      juneTarget: 0,
-                      julyTarget: 0,
-                      augustTarget: 0,
-                      septemberTarget: 0,
-                      octoberTarget: 0,
-                      novemberTarget: 0,
-                      decemberTarget: 0);
+                  UserTarget userTarget = UserTarget.initializer();
                   userTarget.januaryTarget = targetList[0].target;
                   userTarget.februaryTarget = targetList[1].target;
                   userTarget.marchTarget = targetList[2].target;
@@ -232,6 +220,7 @@ class _SetTargetScreenState extends State<SetTargetScreen> {
 
 class UserTarget {
   UserTarget({
+    required this.userID,
     required this.januaryTarget,
     required this.februaryTarget,
     required this.marchTarget,
@@ -245,6 +234,7 @@ class UserTarget {
     required this.novemberTarget,
     required this.decemberTarget,
   });
+  int userID;
   int januaryTarget;
   int februaryTarget;
   int marchTarget;
@@ -257,4 +247,20 @@ class UserTarget {
   int octoberTarget;
   int novemberTarget;
   int decemberTarget;
+  static UserTarget initializer() {
+    return UserTarget(
+        userID: 0,
+        januaryTarget: 0,
+        februaryTarget: 0,
+        marchTarget: 0,
+        aprilTarget: 0,
+        mayTarget: 0,
+        juneTarget: 0,
+        julyTarget: 0,
+        augustTarget: 0,
+        septemberTarget: 0,
+        octoberTarget: 0,
+        novemberTarget: 0,
+        decemberTarget: 0);
+  }
 }

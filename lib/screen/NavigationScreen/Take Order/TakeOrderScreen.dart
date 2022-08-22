@@ -111,7 +111,11 @@ class TakeOrderScreen extends StatefulWidget {
     Future.delayed(const Duration(seconds: 3), () async {
       isonloading = true;
       if (resetsync) {
-        await SQLHelper.resetData("Sync", isLogin);
+        if (MyNavigationBar.isAdmin) {
+          await SQLHelper.resetData("Reset", false);
+        } else {
+          await SQLHelper.resetData("Sync", isLogin);
+        }
         await Sql_Connection.PreLoadData(true);
       } else {
         await Sql_Connection.PreLoadData(false);

@@ -22,10 +22,21 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  bool flag = false;
+  bool flag = true;
   bool valid = true;
   String userInp = "";
   String passwd = "";
+
+  @override
+  void initState() {
+    setState(() {
+      if (UserSharePreferences.getflag() != null) {
+        flag = UserSharePreferences.getflag();
+      }
+    });
+    super.initState();
+  }
+
   final _pdcontroller = TextEditingController();
   final _usrcontroller = TextEditingController();
   @override
@@ -167,33 +178,58 @@ class _LoginScreenState extends State<LoginScreen> {
                                           userInp, passwd);
 
                                       if (usr.id != 0) {
-                                        if (usr.userName == "Admin") {
-                                          await SQLHelper.backupDB();
+                                        if (usr.userName.toLowerCase() ==
+                                            "admin") {
+                                          // if (usr.userName == "Admin") {
+                                          if (!DataBaseDataLoad.isFirstTime) {
+                                            await SQLHelper.backupDB();
+                                            MyNavigationBar.isAdmin = true;
+                                            await SQLHelper
+                                                .deleteAllTableForAdmin();
+                                            await SQLHelper
+                                                .createAllTableForAdmin();
+                                          }
+
                                           await UserSharePreferences.setId(
                                               usr.id);
                                           UserSharePreferences.setisAdminOrNot(
                                               true);
                                           UserSharePreferences.setIp(widget.ip);
-                                          UserSharePreferences.setflag(flag);
+                                          UserSharePreferences.setflag(true);
                                           UserSharePreferences.setmode(false);
-                                          await SQLHelper.deleteAllTable();
-                                          await SQLHelper
-                                              .createAllTableForAdmin();
+                                          await SQLHelper.resetData(
+                                              "Sync", false);
                                           await TakeOrderScreen.onLoading(
                                               context, false, true);
                                         } else {
-                                          UserSharePreferences.setId(usr.id);
-                                          UserSharePreferences.setisAdminOrNot(
-                                              false);
-                                          UserSharePreferences.setIp(widget.ip);
-                                          UserSharePreferences.setflag(flag);
-                                          UserSharePreferences.setmode(false);
                                           if (!SQLHelper.existDataBase) {
+                                            if (!DataBaseDataLoad.isFirstTime) {
+                                              await SQLHelper
+                                                  .deleteAllTableForAdmin();
+                                              await SQLHelper.resetData(
+                                                  "Sync", false);
+                                              await SQLHelper
+                                                  .createAllTableForAdmin();
+                                            }
+                                            UserSharePreferences.setId(usr.id);
+                                            UserSharePreferences
+                                                .setisAdminOrNot(false);
+                                            UserSharePreferences.setIp(
+                                                widget.ip);
+                                            UserSharePreferences.setflag(true);
+                                            UserSharePreferences.setmode(false);
                                             await TakeOrderScreen.onLoading(
                                                 context, false, true);
                                           } else {
                                             SQLHelper.existDataBase = false;
                                             SQLHelper.restoreDB();
+                                            UserSharePreferences.setId(usr.id);
+                                            UserSharePreferences
+                                                .setisAdminOrNot(false);
+                                            UserSharePreferences.setIp(
+                                                widget.ip);
+                                            UserSharePreferences.setflag(true);
+                                            UserSharePreferences.setmode(false);
                                             Navigator.pushAndRemoveUntil(
                                                 context,
                                                 MyCustomRoute(

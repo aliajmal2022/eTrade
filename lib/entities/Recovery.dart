@@ -1,6 +1,7 @@
 import 'package:eTrade/helper/Sql_Connection.dart';
 import 'package:eTrade/entities/Customer.dart';
 import 'package:flutter/animation.dart';
+import 'package:intl/intl.dart';
 
 class Recovery {
   Recovery(
@@ -20,6 +21,37 @@ class Recovery {
   int recoveryID;
   String description;
   bool isPost;
+
+  static Future<List<Recovery>> RecoveryForAdmin(bool islocal) async {
+    var list = await Sql_Connection().read(
+            "SELECT l.RecoveryId_Mobile As RecoveryID,l.SRId_Mobile as UserID,l.PartyID ,l.Amount,l.Dated,l.Detail as Description ,1 as isCash FROM dbo.Ledger AS l WHERE ISNULL(l.SRId_Mobile,0)>0 AND l.Amount<0") ??
+        [];
+    if (list.isNotEmpty) {
+      List<Recovery> recoverylist = [];
+      var dateStore = DateFormat('yyyy-MM-dd');
+      for (var element in list) {
+        Recovery recovery = Recovery(
+            amount: 0,
+            description: "",
+            isPost: false,
+            dated: "",
+            userID: 0,
+            recoveryID: 0,
+            isCashOrCheck: false,
+            party: Customer.initializer());
+        recovery.party.partyId = element['PartyID'];
+        recovery.userID = element['UserID'];
+        recovery.amount = element['Amount'];
+        recovery.isCashOrCheck = element['isCash'];
+        recovery.description = element['Remarks'];
+        recovery.dated = dateStore.format(DateTime.parse(element['Dated']));
+        list.add(recovery);
+      }
+      return recoverylist;
+    } else {
+      return [];
+    }
+  }
 
   static List<Recovery> ViewOrderFromDb(List _order) {
     List<Recovery> _listRecoveryOrder = [];

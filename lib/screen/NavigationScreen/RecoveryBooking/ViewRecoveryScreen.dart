@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:eTrade/components/NavigationBar.dart';
 import 'package:eTrade/components/constants.dart';
+import 'package:eTrade/components/sharePreferences.dart';
 import 'package:eTrade/screen/NavigationScreen/Booking/components/SearchListOrder.dart';
 import 'package:eTrade/screen/NavigationScreen/RecoveryBooking/components/SearchListRecovery.dart';
 import 'package:eTrade/screen/NavigationScreen/RecoveryBooking/components/ViewRecoveryTabBar.dart';
@@ -39,43 +40,88 @@ class _ViewRecoveryScreenState extends State<ViewRecoveryScreen>
     final isLandscape =
         MediaQuery.of(context).orientation == Orientation.landscape;
     return SafeArea(
-        child: Scaffold(
-      appBar: AppBar(
-        backgroundColor: eTradeMainColor,
-        toolbarHeight: 80,
-        bottom: TabBar(
-          indicatorColor: Colors.white,
-          tabs: [
-            Tab(text: "All"),
-            Tab(text: "Today"),
-            Tab(text: "Yesterday"),
-            Tab(text: "Search")
-          ],
-          controller: _tcontroller,
-        ),
-        leading: IconButton(
-          onPressed: () {
-            TakeOrderScreen.isSelected = true;
-            Get.off(MyNavigationBar.initializer(0));
-          },
-          icon: Icon(
-            Icons.arrow_back,
-          ),
-        ),
-        title: const Text(
-          'View Recoveries',
-          style: const TextStyle(color: Colors.white),
-        ),
-      ),
-      body: TabBarView(
-          physics: NeverScrollableScrollPhysics(),
-          controller: _tcontroller,
-          children: [
-            RecoveryTabBarItem(tabName: "All"),
-            RecoveryTabBarItem(tabName: "Today"),
-            RecoveryTabBarItem(tabName: "Yesterday"),
-            RecoveryTabBarItem(tabName: "Search"),
-          ]),
-    ));
+        child: MyNavigationBar.isAdmin
+            ? Scaffold(
+                appBar: AppBar(
+                  backgroundColor: eTradeMainColor,
+                  toolbarHeight: 80,
+                  bottom: TabBar(
+                    indicatorColor: Colors.white,
+                    tabs: [
+                      Tab(text: "All"),
+                      Tab(text: "Today"),
+                      Tab(text: "Yesterday"),
+                      Tab(text: "Search")
+                    ],
+                    controller: _tcontroller,
+                  ),
+                  leading: Builder(
+                    builder: (BuildContext context) {
+                      return IconButton(
+                        icon: const Icon(
+                          Icons.menu,
+                        ),
+                        onPressed: () {
+                          Scaffold.of(context).openDrawer();
+                        },
+                        tooltip: MaterialLocalizations.of(context)
+                            .openAppDrawerTooltip,
+                      );
+                    },
+                  ),
+                  title: const Text(
+                    'View Recoveries',
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                ),
+                drawer: MyDrawer(),
+                body: TabBarView(
+                    physics: NeverScrollableScrollPhysics(),
+                    controller: _tcontroller,
+                    children: [
+                      RecoveryTabBarItem(tabName: "All"),
+                      RecoveryTabBarItem(tabName: "Today"),
+                      RecoveryTabBarItem(tabName: "Yesterday"),
+                      RecoveryTabBarItem(tabName: "Search"),
+                    ]),
+              )
+            : Scaffold(
+                appBar: AppBar(
+                  backgroundColor: eTradeMainColor,
+                  toolbarHeight: 80,
+                  bottom: TabBar(
+                    indicatorColor: Colors.white,
+                    tabs: [
+                      Tab(text: "All"),
+                      Tab(text: "Today"),
+                      Tab(text: "Yesterday"),
+                      Tab(text: "Search")
+                    ],
+                    controller: _tcontroller,
+                  ),
+                  leading: IconButton(
+                    onPressed: () {
+                      TakeOrderScreen.isSelected = true;
+                      Get.off(MyNavigationBar.initializer(0));
+                    },
+                    icon: Icon(
+                      Icons.arrow_back,
+                    ),
+                  ),
+                  title: const Text(
+                    'View Recoveries',
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                ),
+                body: TabBarView(
+                    physics: NeverScrollableScrollPhysics(),
+                    controller: _tcontroller,
+                    children: [
+                      RecoveryTabBarItem(tabName: "All"),
+                      RecoveryTabBarItem(tabName: "Today"),
+                      RecoveryTabBarItem(tabName: "Yesterday"),
+                      RecoveryTabBarItem(tabName: "Search"),
+                    ]),
+              ));
   }
 }

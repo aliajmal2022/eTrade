@@ -505,7 +505,6 @@ class _CartScreenState extends State<CartScreen> {
                                             var maptoListOrder =
                                                 orderRes.whereType<Map>().first;
                                             var dated = maptoListOrder['Dated'];
-                                            TakeOrderScreen.getdataFromDb();
                                             for (var element
                                                 in widget.selectedItems) {
                                               await SQLHelper.instance
@@ -516,6 +515,8 @@ class _CartScreenState extends State<CartScreen> {
                                                       isPosted,
                                                       widget.userID);
                                             }
+                                            await TakeOrderScreen
+                                                .getdataFromDb();
                                             setState(() {
                                               TakeOrderScreen.isSelected =
                                                   false;
