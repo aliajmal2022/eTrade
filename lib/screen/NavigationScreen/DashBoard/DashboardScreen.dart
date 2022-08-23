@@ -28,6 +28,8 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 class DashBoardScreen extends StatefulWidget {
   static List<DashBoard> dashBoard = [];
   static bool isOrder = true;
+  static int currentMonthTarget = 0;
+  static int currentMonthSale = 0;
   static Future<List<DashBoard>> getOrderHistory(isOrder) async {
     List<DashBoard> list = [];
     DateFormat dateFormat = DateFormat("dd-MM-yyyy");
@@ -109,6 +111,7 @@ class DashBoardScreen extends StatefulWidget {
   static List<MonthOrderHistory> staticMonths = [];
   static Future<List<MonthOrderHistory>> getMonthlyRecordDB(isOrder) async {
     List<MonthOrderHistory> list = [];
+    int currentMonth = int.parse(DateFormat('M').format(DateTime.now()));
     var months = isOrder
         ? await SQLHelper.getMonthOrderHistory()
         : await SQLHelper.getMonthSaleHistory();
@@ -116,14 +119,24 @@ class DashBoardScreen extends StatefulWidget {
     for (count = 0; count < monthName.length; count++) {
       MonthOrderHistory orderData = MonthOrderHistory(month: "", amount: 0);
       // orderData.month = element;
-      orderData.amount = months[0][monthName[count]].toDouble();
       orderData.month = (count + 1).toString();
+      orderData.amount = months[0][monthName[count]].toDouble();
+      if (currentMonth == count + 1) {
+        currentMonthSale = orderData.amount.toInt();
+        print(currentMonthSale);
+      }
+      if (months[0][monthName[count]] > greatestSale &&
+          months[0][monthName[count]] > greatest) {
+        greatestSale = orderData.amount.toInt();
+      }
       list.add(orderData);
     }
     return list;
   }
 
-  static int greatestTarget = 10000;
+  static int greatest = 10000;
+  static int greatestTarget = 0;
+  static int greatestSale = 0;
   static Future<List<MonthOrderHistory>> getMonthlyTargetDB(isOrder) async {
     List<String> staticMonthName = [
       "January",
@@ -141,8 +154,8 @@ class DashBoardScreen extends StatefulWidget {
     ];
     int count;
     List<MonthOrderHistory> list = [];
-    greatestTarget = 100000;
     List<Map<String, dynamic>> months = await SQLHelper.getMonthlyTarget();
+    int currentMonth = int.parse(DateFormat('M').format(DateTime.now()));
     try {
       if (months.isEmpty) {
         for (count = 0; count < staticMonthName.length; count++) {
@@ -159,7 +172,11 @@ class DashBoardScreen extends StatefulWidget {
               MonthOrderHistory(month: "", amount: 0);
           orderStatic.amount =
               months[0][staticMonthName[count]]!.toDouble() ?? 100000;
-          if (months[0][staticMonthName[count]] > greatestTarget) {
+          currentMonthTarget =
+              months[0][staticMonthName[currentMonth - 1]]!.toInt();
+          print(currentMonthTarget);
+          if (months[0][staticMonthName[count]] > greatestTarget &&
+              months[0][staticMonthName[count]] > greatest) {
             greatestTarget = orderStatic.amount.toInt();
           }
 
@@ -173,6 +190,7 @@ class DashBoardScreen extends StatefulWidget {
     return list;
   }
 
+  static var formatter = NumberFormat('#,###,000');
   static Future<List<Items>> getTopProduct(isOrder) async {
     List<Items> list = [];
 
@@ -180,7 +198,6 @@ class DashBoardScreen extends StatefulWidget {
         ? await SQLHelper.getTopTenProductByOrder()
         : await SQLHelper.getTopTenProductBySale();
     if (products.isNotEmpty) {
-      var formatter = NumberFormat('#,###,000');
       for (var element in products) {
         Items item = Items(productName: "", amount: "", ordered: 40);
         item.productName = element['ItemName'];
@@ -219,22 +236,43 @@ class _DashBoardScreenState extends State<DashBoardScreen>
     });
   }
 
-  void getWorkingDaysInMonth() {
+  int getWorkingDaysInMonth() {
     DateTime now = new DateTime.now();
     DateTime lastDayOfMonth = DateTime(now.year, now.month + 1, 0);
+
     int count = 0;
     for (int i = 1; i <= lastDayOfMonth.day; i++) {
-      var day = DateFormat('EEEE').format(lastDayOfMonth);
+      DateTime days = DateTime(now.year, now.month, i);
+      var day = DateFormat('EEEE').format(days);
       if (day != "Friday") {
         count++;
       }
     }
-// print("${lastDayOfMonth.day}");
-    print("${count}");
+    return count;
+  }
+
+  int timeGoneCheck() {
+    DateTime nowtime = new DateTime.now();
+    int now = int.parse(DateFormat('dd').format(nowtime));
+    int workingday = getWorkingDaysInMonth();
+    double timeGone = (now / workingday) * 100;
+    return timeGone.toInt();
+  }
+
+  acheivement() {
+    double difference = ((1 -
+                ((DashBoardScreen.currentMonthTarget -
+                        DashBoardScreen.currentMonthSale) /
+                    DashBoardScreen.currentMonthTarget)) *
+            100)
+        .roundToDouble();
+    return difference;
   }
 
   var _animationController;
-  static bool isFirstTime = false;
+  static bool isFirstTime = true;
+  static int timegone = 0;
+  static int differenceTimeGone = 0;
   static List<String> userNameList = [];
   static List<User> userList = [];
   static User currentUser = User.initializer();
@@ -242,38 +280,50 @@ class _DashBoardScreenState extends State<DashBoardScreen>
   List<User> preloadForAdmin() {
     userList = DataBaseDataLoad.ListOUser;
     if (userList.isNotEmpty) {
-      userList.forEach((element) {
+      for (var element in userList) {
         if (element.userName.toLowerCase().contains('admin')) {
           userNameList.remove(element);
-          isFirstTime = true;
+          isFirstTime = false;
         } else {
           userNameList.add(element.userName);
         }
-      });
-    }
+      }
 
-    return userList;
+      return userList;
+    }
+    return [];
   }
 
   @override
   void initState() {
     setState(() {
       if (MyNavigationBar.isAdmin) {
-        if (!isFirstTime) {
+        if (isFirstTime) {
           preloadForAdmin();
-          // currentUser = currentUser.id == 1 ? userList[0] : currentUser;
+          updateData();
+        } else {
+          updateData();
         }
+      } else {
+        updateData();
       }
       _animationController = AnimationController(
           vsync: this, duration: Duration(milliseconds: 100));
       _animationController.forward();
-      updateData();
     });
     super.initState();
   }
 
-  TooltipBehavior _tooltipBehavior = TooltipBehavior(enable: true);
-  TooltipBehavior _columntooltipBehavior = TooltipBehavior(enable: true);
+  TooltipBehavior _tooltipBehavior = TooltipBehavior(
+    enable: true,
+  );
+  TooltipBehavior _columntooltipBehavior = TooltipBehavior(
+    enable: true,
+    // builder: ((dynamic x, dynamic y, dynamic z, int a, int b) {
+    //   print("$x,$y,$z,$a,$b");
+    //   return Text('Hello');
+    // })
+  );
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -304,53 +354,83 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                 title: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    // Expanded(
+                    //   child: Text(
+                    //     'Home',
+                    //     style: TextStyle(color: Colors.white),
+                    //   ),
+                    // ),
                     Expanded(
-                      child: Text(
-                        'Home',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                    Expanded(
-                      child: DropdownButton2<String>(
-                        isExpanded: true,
-                        hint: Text(
-                          currentUser.userName == ""
-                              ? 'Select User'
-                              : currentUser.userName,
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Theme.of(context).hintColor,
-                          ),
-                        ),
-                        items: userNameList.map((items) {
-                          return DropdownMenuItem<String>(
-                            value: items,
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton2<String>(
+                          isExpanded: true,
+                          buttonPadding: EdgeInsets.symmetric(horizontal: 8),
+                          dropdownDecoration: BoxDecoration(
+                              color: Theme.of(context).scaffoldBackgroundColor,
+                              border: Border.all(
+                                color:
+                                    Theme.of(context).scaffoldBackgroundColor,
+                              ),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20))),
+                          buttonDecoration: BoxDecoration(
+                              color: Theme.of(context).scaffoldBackgroundColor,
+                              border: Border.all(
+                                color:
+                                    Theme.of(context).scaffoldBackgroundColor,
+                              ),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20))),
+                          hint: Center(
                             child: Text(
-                              items,
-                              // style:
-                              //     TextStyle(color: ThemeData.light().cardColor),
+                              currentUser.userName == ""
+                                  ? 'Select User'
+                                  : currentUser.userName,
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Theme.of(context).hintColor,
+                              ),
                             ),
-                          );
-                        }).toList(),
-                        // customItemsHeight: 4,
-                        // value: currentUser.userName,
-                        onChanged: (value) async {
-                          if (value != null) {
-                            User tuser = await User.getUserID(value);
-                            setState(() {
-                              MyNavigationBar.userID = tuser.id;
-                              currentUser = tuser;
-                            });
-                            await updateData();
-                            await UserSharePreferences.setId(
-                                MyNavigationBar.userID);
-                          }
-                        },
-                        // buttonHeight: 40,
-                        // buttonWidth: 140,
-                        // itemHeight: 40,
-                        // itemPadding:
-                        //     const EdgeInsets.symmetric(horizontal: 8.0),
+                          ),
+                          items: userNameList.map((items) {
+                            return DropdownMenuItem<String>(
+                              value: items,
+                              child: Container(
+                                width: double.infinity,
+                                height: double.infinity,
+                                padding: EdgeInsets.all(8),
+                                child: Center(
+                                  child: Text(
+                                    items,
+                                    // style:
+                                    //     TextStyle(color: ThemeData.light().cardColor),
+                                  ),
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                          // customItemsHeight: 4,
+                          // value: currentUser.userName,
+                          onChanged: (value) async {
+                            if (value != null) {
+                              User tuser = await User.getUserID(value);
+                              setState(() {
+                                DashBoardScreen.currentMonthSale = 0;
+                                DashBoardScreen.currentMonthTarget = 0;
+                                MyNavigationBar.userID = tuser.id;
+                                currentUser = tuser;
+                              });
+                              await updateData();
+                              await UserSharePreferences.setId(
+                                  MyNavigationBar.userID);
+                            }
+                          },
+                          buttonHeight: 40,
+                          // buttonWidth: 140,
+                          // itemHeight: 40,
+                          // itemPadding:
+                          //     const EdgeInsets.symmetric(horizontal: 8.0),
+                        ),
                       ),
                     )
                   ],
@@ -444,7 +524,15 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                     primaryYAxis: NumericAxis(
                       title: AxisTitle(text: "Value"),
                       minimum: 0,
-                      maximum: DashBoardScreen.greatestTarget.toDouble(),
+                      maximum: (DashBoardScreen.greatest >
+                                  DashBoardScreen.greatestSale ||
+                              DashBoardScreen.greatest >
+                                  DashBoardScreen.greatestTarget)
+                          ? DashBoardScreen.greatest.toDouble()
+                          : (DashBoardScreen.greatestSale >
+                                  DashBoardScreen.greatestTarget)
+                              ? DashBoardScreen.greatestSale.toDouble()
+                              : DashBoardScreen.greatestTarget.toDouble(),
                     ),
                     // ),
                     tooltipBehavior: _columntooltipBehavior,
@@ -472,7 +560,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                               topLeft: Radius.circular(15),
                               topRight: Radius.circular(15)),
                           color: Colors.green,
-                          spacing: 0.1,
+                          spacing: 0.2,
                           xValueMapper: (MonthOrderHistory sales, _) =>
                               sales.month,
                           yValueMapper: (MonthOrderHistory sales, _) =>
@@ -482,18 +570,42 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                 ),
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Text(
-                    "• ",
-                    style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                        color: eTradeMainColor),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "• ",
+                        style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                            color: eTradeMainColor),
+                      ),
+                      Text(
+                        "Time gone : ${timeGoneCheck()}%",
+                        style: TextStyle(fontSize: 15),
+                      ),
+                    ],
                   ),
-                  Text(
-                    "Time gone : 45%",
-                    style: TextStyle(fontSize: 18),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "• ",
+                        style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                            color: eTradeMainColor),
+                      ),
+                      Text(
+                        "Acheivement: ${acheivement()}%",
+                        style: TextStyle(fontSize: 15),
+                      ),
+                      Icon(timeGoneCheck() < acheivement()
+                          ? Icons.arrow_upward
+                          : Icons.arrow_downward)
+                    ],
                   ),
                 ],
               ),
@@ -557,17 +669,6 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                                     Icon(
                                       Icons.edit_calendar,
                                       size: 40,
-                                      // color: (DashBoardScreen
-                                      //             .dashBoard[index].order >
-                                      //         DashBoardScreen
-                                      //             .dashBoard[index].compareOrder)
-                                      //     ? eTradeMainColor
-                                      //     : (DashBoardScreen
-                                      //                 .dashBoard[index].order ==
-                                      //             DashBoardScreen.dashBoard[index]
-                                      //                 .compareOrder)
-                                      //         ? eTradeBlue
-                                      //         : eTradeRed,
                                     ),
                                     Text(
                                       "${DashBoardScreen.dashBoard[index].time}",

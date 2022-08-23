@@ -67,6 +67,9 @@ class _PostingDataState extends State<PostingData>
         try {
           if (_setTarget.isNotEmpty) {
             await Sql_Connection().write("""
+DELETE FROM dbo_m.SaleRapTarget WHERE SRID=${MyNavigationBar.userID}
+""");
+            await Sql_Connection().write("""
 INSERT INTO dbo_m.SaleRapTarget
 (
 	SRID,

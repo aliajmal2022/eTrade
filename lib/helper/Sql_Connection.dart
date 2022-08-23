@@ -98,32 +98,39 @@ class Sql_Connection {
         List<Order> LOOrder = [];
         List<OrderDetail> LOOrderDetail = [];
         List<Sale> LOSale = [];
+        List<UserTarget> LOUserTarget = [];
         List<SaleDetail> LOSaleDetail = [];
         List<Recovery> LORecovey = [];
-        UserTarget userTarget = UserTarget.initializer();
-        var userTargetList =
+        List userTargetList =
             await Sql_Connection().read("Select * from dbo_m.SaleRapTarget") ??
                 [];
         if (userTargetList.isNotEmpty) {
-          userTarget.userID = userTargetList[0]['SRID'];
-          userTarget.januaryTarget = userTargetList[0]['January'];
-          userTarget.februaryTarget = userTargetList[0]['February'];
-          userTarget.marchTarget = userTargetList[0]['March'];
-          userTarget.aprilTarget = userTargetList[0]['April'];
-          userTarget.mayTarget = userTargetList[0]['May'];
-          userTarget.juneTarget = userTargetList[0]['June'];
-          userTarget.julyTarget = userTargetList[0]['July'];
-          userTarget.augustTarget = userTargetList[0]['August'];
-          userTarget.septemberTarget = userTargetList[0]['September'];
-          userTarget.octoberTarget = userTargetList[0]['October'];
-          userTarget.novemberTarget = userTargetList[0]['November'];
-          userTarget.decemberTarget = userTargetList[0]['December'];
+          for (int i = 0; i < userTargetList.length; i++) {
+            UserTarget userTarget = UserTarget.initializer();
+            userTarget.userID = userTargetList[i]['SRID'];
+            userTarget.januaryTarget = userTargetList[i]['January'];
+            userTarget.februaryTarget = userTargetList[i]['February'];
+            userTarget.marchTarget = userTargetList[i]['March'];
+            userTarget.aprilTarget = userTargetList[i]['April'];
+            userTarget.mayTarget = userTargetList[i]['May'];
+            userTarget.juneTarget = userTargetList[i]['June'];
+            userTarget.julyTarget = userTargetList[i]['July'];
+            userTarget.augustTarget = userTargetList[i]['August'];
+            userTarget.septemberTarget = userTargetList[i]['September'];
+            userTarget.octoberTarget = userTargetList[i]['October'];
+            userTarget.novemberTarget = userTargetList[i]['November'];
+            userTarget.decemberTarget = userTargetList[i]['December'];
+            LOUserTarget.add(userTarget);
+          }
         }
         LOOrder = await Order.OrderForAdmin(false);
         LOOrderDetail = await OrderDetail.OrderDetailForAdmin(false);
         LOSale = await Sale.SaleForAdmin(false);
         LOSaleDetail = await SaleDetail.SaleDetailForAdmin(false);
         LORecovey = await Recovery.RecoveryForAdmin(false);
+        LOUserTarget.forEach((element) async {
+          await SQLHelper.instance.createUserTargetForAdmin(element);
+        });
 
         LOOrder.forEach((element) async {
           await SQLHelper.instance.createOrderForAdmin(element);
@@ -140,7 +147,6 @@ class Sql_Connection {
         LORecovey.forEach((element) async {
           await SQLHelper.instance.createRecoveryitemForAdmin(element);
         });
-        await SQLHelper.instance.createUserTargetForAdmin(userTarget);
       }
       await SQLHelper.deleteDataDuringSync(MyNavigationBar.userID);
     }
