@@ -206,6 +206,7 @@ class _NewUsrAddLocalDBState extends State<NewUsrAddLocalDB> {
                                       Customer nCustomer = Customer(
                                           address: address,
                                           partyIdMobile: id,
+                                          balance: 0,
                                           userId: MyNavigationBar.userID,
                                           partyId: id,
                                           partyName: InpName,

@@ -175,6 +175,7 @@ class _TakeOrderScreenState extends State<TakeOrderScreen>
         });
         var selectedParty = Customer(
             userId: 0,
+            balance: 0,
             discount: 0,
             partyIdMobile: 0,
             partyId: 0,

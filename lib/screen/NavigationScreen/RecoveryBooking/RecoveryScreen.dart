@@ -9,6 +9,7 @@ import 'package:eTrade/entities/Customer.dart';
 import 'package:eTrade/entities/Recovery.dart';
 import 'package:eTrade/entities/ViewRecovery.dart';
 import 'package:eTrade/main.dart';
+import 'package:eTrade/screen/NavigationScreen/RecoveryBooking/CustomerBalance.dart';
 import 'package:eTrade/screen/NavigationScreen/RecoveryBooking/ViewRecoveryScreen.dart';
 import 'package:find_dropdown/find_dropdown.dart';
 import 'package:flutter/cupertino.dart';
@@ -94,16 +95,6 @@ class _RecoveryScreenState extends State<RecoveryScreen>
 
   String _groupValue = "Cash";
   static bool isCash = true;
-  // var _animationController;
-  //                     SlideTransition(
-  //                         position: Tween<Offset>(
-  //                                 begin: Offset(1, 0), end: Offset(0, 0))
-  //                             .animate(_animationController),
-  //                         child: FadeTransition(
-  //                           opacity: _animationController,
-  //   _animationController =
-  //       AnimationController(vsync: this, duration: Duration(milliseconds: 900));
-  //   _animationController.forward();
   @override
   void initState() {
     _animationController = AnimationController(
@@ -128,6 +119,11 @@ class _RecoveryScreenState extends State<RecoveryScreen>
             amount = double.parse(RecoveryScreen.amountcontroller.text);
             description = RecoveryScreen.descriptioncontroller.text;
           }
+        } else if (CustomerBalanceScreen.isCustomerBalance) {
+          widget.setParty(widget.recovery.party);
+          RecoveryScreen.amountcontroller.text =
+              widget.recovery.amount.toString();
+          amount = double.parse(RecoveryScreen.amountcontroller.text);
         } else {
           widget.setParty(RecoveryScreen.tcustomer);
           if (RecoveryScreen.amountcontroller.text.isNotEmpty &&
@@ -184,25 +180,46 @@ class _RecoveryScreenState extends State<RecoveryScreen>
                         transition: Transition.leftToRight);
                   },
                 )
-              : Builder(
-                  builder: (BuildContext context) {
-                    return IconButton(
-                      icon: const Icon(
-                        Icons.menu,
-                      ),
-                      onPressed: () {
-                        MyDrawer.isopen = true;
-                        // dispose();
-                        MyNavigationBar.currentIndex = 1;
-                        Get.off(MyNavigationBar.initializer(2));
-
-                        Scaffold.of(context).openDrawer();
+              : CustomerBalanceScreen.isCustomerBalance
+                  ? IconButton(
+                      icon: Icon(Icons.close),
+                      onPressed: () async {
+                        setState(() {
+                          CustomerBalanceScreen.isCustomerBalance = false;
+                          RecoveryScreen.tcustomer = Customer.initializer();
+                          widget.setParty(Customer.initializer());
+                          RecoveryScreen.amountcontroller.clear();
+                          RecoveryScreen.descriptioncontroller.clear();
+                          amount = 0;
+                          description = "";
+                        });
+                        Navigator.pushAndRemoveUntil(
+                            context,
+                            MyCustomRoute(
+                                builder: (context) => CustomerBalanceScreen(),
+                                slide: "Left"),
+                            (route) => false);
                       },
-                      tooltip: MaterialLocalizations.of(context)
-                          .openAppDrawerTooltip,
-                    );
-                  },
-                ),
+                    )
+                  : Builder(
+                      builder: (BuildContext context) {
+                        return IconButton(
+                          icon: const Icon(
+                            Icons.menu,
+                          ),
+                          onPressed: () {
+                            MyDrawer.isopen = true;
+                            // dispose();
+                            MyNavigationBar.currentIndex = 1;
+                            Get.off(MyNavigationBar.initializer(2));
+
+                            Scaffold.of(context).openDrawer();
+                          },
+                          tooltip: MaterialLocalizations.of(context)
+                              .openAppDrawerTooltip,
+                        );
+                      },
+                    ),
           title: Text(
             RecoveryScreen.isEditRecovery ? "Edit Recovery" : 'Recovery',
             style: const TextStyle(color: Colors.white),
@@ -484,8 +501,7 @@ class _RecoveryScreenState extends State<RecoveryScreen>
                           MaterialButton(
                               onPressed: (widget.getParty().partyName ==
                                           "Search Customer" ||
-                                      amount == 0 ||
-                                      description == "")
+                                      amount == 0)
                                   ? null
                                   : RecoveryScreen.isEditRecovery
                                       ? () async {
@@ -535,6 +551,8 @@ class _RecoveryScreenState extends State<RecoveryScreen>
                                                       widget.getParty().partyId,
                                                   userId:
                                                       widget.getParty().userId,
+                                                  balance:
+                                                      widget.getParty().balance,
                                                   discount: widget
                                                       .getParty()
                                                       .discount,

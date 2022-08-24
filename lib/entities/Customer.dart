@@ -6,6 +6,7 @@ class Customer {
   Customer({
     required this.partyId,
     required this.discount,
+    required this.balance,
     required this.partyName,
     required this.partyIdMobile,
     required this.userId,
@@ -15,6 +16,7 @@ class Customer {
   int partyId;
   int userId;
   int partyIdMobile;
+  double balance;
   String address;
   String partyName = "Search Customer";
   bool match = false;
@@ -24,6 +26,7 @@ class Customer {
         partyId: 0,
         partyName: "",
         discount: 0,
+        balance: 0,
         address: "",
         userId: 0);
   }
@@ -52,8 +55,15 @@ class Customer {
       _party = await SQLHelper.getAllDataFromParty();
       // SQLHelper.instance.getTable("Party", "PartyID");
     } else {
-      _party = await Sql_Connection().read(
-          "SELECT p.PartyID,replace(p.PartyName,'\\','') as PartyName,p.Discount,replace(p.Address,'\\','') as Address,isnull(p.PartyID_Mobile,0)as PartyID_Mobile  FROM Party AS p WHERE p.AccTypeID=6");
+      _party = await Sql_Connection().read('''
+SELECT p.PartyID,replace(p.PartyName,'\\','') as PartyName,p.Discount,replace(p.Address,'\\','') as Address,
+isnull(p.PartyID_Mobile,0)as PartyID_Mobile,ISNULL(lb.Balance,0) AS Balance  FROM Party AS p
+LEFT JOIN
+(SELECT l.PartyID,SUM(l.Amount) AS Balance FROM Ledger AS l WHERE left(l.PartyID,2)=22
+ GROUP BY l.PartyID) AS lb
+ON p.PartyID=lb.PartyID
+WHERE p.AccTypeID=6
+''');
     }
     if (_party.isNotEmpty) {
       _party.forEach((element) {
@@ -62,6 +72,7 @@ class Customer {
         _customer.partyIdMobile = element['PartyID_Mobile'] ?? 0;
         _customer.partyName = element['PartyName'];
         _customer.discount = element['Discount'];
+        _customer.balance = element['Balance'];
         _customer.address = element['Address'].toString();
 
         _listProduct.add(_customer);

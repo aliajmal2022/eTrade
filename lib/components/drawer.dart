@@ -4,6 +4,7 @@ import 'package:eTrade/components/CustomNavigator.dart';
 import 'package:eTrade/components/constants.dart';
 import 'package:eTrade/screen/AboutUs/AboutScreen.dart';
 import 'package:eTrade/screen/NavigationScreen/DashBoard/SetTarget.dart';
+import 'package:eTrade/screen/NavigationScreen/RecoveryBooking/CustomerBalance.dart';
 import 'package:get/get.dart';
 import 'package:path/path.dart';
 import 'package:eTrade/components/NavigationBar.dart';
@@ -290,6 +291,23 @@ class _MyDrawerState extends State<MyDrawer>
                           child: Row(
                             children: const [
                               Icon(Icons.lock_reset),
+                              Text("Customer Balance")
+                            ],
+                          ),
+                          onPressed: () async {
+                            // Get.off(() => CustomerBalanceScreen());
+                            Navigator.pushAndRemoveUntil(
+                                context,
+                                MyCustomRoute(
+                                    builder: (context) =>
+                                        CustomerBalanceScreen(),
+                                    slide: "Left"),
+                                (route) => false);
+                          }),
+                      MaterialButton(
+                          child: Row(
+                            children: const [
+                              Icon(Icons.lock_reset),
                               Text("Master Reset")
                             ],
                           ),
@@ -447,6 +465,7 @@ class _MyDrawerState extends State<MyDrawer>
                       // MyNavigationBar.isAdmin?Container():
                       MaterialButton(
                         onPressed: () async {
+                          // await SQLHelper.backupDB();
                           await SQLHelper.backupDB();
                           if (MyNavigationBar.isAdmin) {
                             MyNavigationBar.isAdmin = false;
@@ -462,7 +481,7 @@ class _MyDrawerState extends State<MyDrawer>
                                       ),
                                   slide: "Left"),
                               (route) => false);
-                          // SQLHelper.tablenotPosted();
+                          SQLHelper.tablenotPosted();
                         },
                         child: Row(
                           children: const [

@@ -95,6 +95,27 @@ class SQLHelper {
     }
   }
 
+  static deleteDB() async {
+    var status = await Permission.manageExternalStorage.status;
+    if (!status.isGranted) {
+      await Permission.manageExternalStorage.request();
+    }
+    var status1 = await Permission.storage.status;
+    if (!status1.isGranted) {
+      await Permission.storage.request();
+    }
+    try {
+      File saveduserDBFile =
+          File('/storage/emulated/0/eTrade_Backup/eTradeAdmin.db');
+      File savedadminDBFile =
+          File('/storage/emulated/0/eTrade_Backup/eTradeUser.db');
+      await savedadminDBFile.delete();
+      await saveduserDBFile.delete();
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
+
   static Future<void> deleteAllTable() async {
     await deleteTable(_database, "Party");
     await deleteTable(_database, "Order");
@@ -208,7 +229,7 @@ CREATE TABLE User(
     await database.execute('''
 CREATE TABLE UserTarget(
   ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-  UserID NOT NULL, 
+  UserID INTEGER NOT NULL, 
   January INTEGER NOT NULL,
   February INTEGER NOT NULL,
   March INTEGER NOT NULL,
@@ -273,6 +294,7 @@ CREATE TABLE UserTarget(
 	UserID INTEGER NOT NULL,
 	PartyName TEXT NOT NULL,
   Discount REAL,
+  Balance REAL,
   isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1)),
   Address TEXT
  )
@@ -288,6 +310,7 @@ CREATE TABLE UserTarget(
       'PartyID': customer.partyId,
       'PartyName': customer.partyName,
       'Discount': customer.discount,
+      'Balance': customer.balance,
       'PartyID_Mobile': customer.partyIdMobile,
       'UserID': customer.userId,
       'isPosted': isPosted,
@@ -988,7 +1011,7 @@ DROP TABLE [$tableName]
     await database.execute('''
 CREATE TABLE UserTarget(
   ID INTEGER PRIMARY KEY NOT NULL,
-  UserID NOT NULL, 
+  UserID INTEGER NOT NULL, 
   January INTEGER NOT NULL,
   February INTEGER NOT NULL,
   March INTEGER NOT NULL,

@@ -159,6 +159,8 @@ class DashBoardScreen extends StatefulWidget {
     try {
       if (months.isEmpty) {
         for (count = 0; count < staticMonthName.length; count++) {
+          currentMonthTarget =
+              months[0][staticMonthName[currentMonth - 1]]!.toInt() ?? 0;
           MonthOrderHistory orderStatic =
               MonthOrderHistory(month: "", amount: 0);
           orderStatic.amount = 0;
@@ -167,14 +169,13 @@ class DashBoardScreen extends StatefulWidget {
           list.add(orderStatic);
         }
       } else {
+        currentMonthTarget =
+            months[0][staticMonthName[currentMonth - 1]]!.toInt();
         for (count = 0; count < staticMonthName.length; count++) {
           MonthOrderHistory orderStatic =
               MonthOrderHistory(month: "", amount: 0);
           orderStatic.amount =
-              months[0][staticMonthName[count]]!.toDouble() ?? 100000;
-          currentMonthTarget =
-              months[0][staticMonthName[currentMonth - 1]]!.toInt();
-          print(currentMonthTarget);
+              months[0][staticMonthName[count]]!.toDouble() ?? 0;
           if (months[0][staticMonthName[count]] > greatestTarget &&
               months[0][staticMonthName[count]] > greatest) {
             greatestTarget = orderStatic.amount.toInt();
@@ -236,12 +237,11 @@ class _DashBoardScreenState extends State<DashBoardScreen>
     });
   }
 
-  int getWorkingDaysInMonth() {
-    DateTime now = new DateTime.now();
-    DateTime lastDayOfMonth = DateTime(now.year, now.month + 1, 0);
+  int getWorkingDaysInMonth(DateTime date) {
+    DateTime now = DateTime.now();
 
     int count = 0;
-    for (int i = 1; i <= lastDayOfMonth.day; i++) {
+    for (int i = 1; i <= date.day; i++) {
       DateTime days = DateTime(now.year, now.month, i);
       var day = DateFormat('EEEE').format(days);
       if (day != "Friday") {
@@ -252,10 +252,12 @@ class _DashBoardScreenState extends State<DashBoardScreen>
   }
 
   int timeGoneCheck() {
-    DateTime nowtime = new DateTime.now();
-    int now = int.parse(DateFormat('dd').format(nowtime));
-    int workingday = getWorkingDaysInMonth();
-    double timeGone = (now / workingday) * 100;
+    DateTime now = DateTime.now();
+    int todaydate =
+        getWorkingDaysInMonth(DateTime.now().subtract(Duration(days: 1)));
+    int workingday =
+        getWorkingDaysInMonth(DateTime(now.year, now.month + 1, 0));
+    double timeGone = (todaydate / workingday) * 100;
     return timeGone.toInt();
   }
 
@@ -319,10 +321,6 @@ class _DashBoardScreenState extends State<DashBoardScreen>
   );
   TooltipBehavior _columntooltipBehavior = TooltipBehavior(
     enable: true,
-    // builder: ((dynamic x, dynamic y, dynamic z, int a, int b) {
-    //   print("$x,$y,$z,$a,$b");
-    //   return Text('Hello');
-    // })
   );
   @override
   Widget build(BuildContext context) {
@@ -354,12 +352,6 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                 title: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    // Expanded(
-                    //   child: Text(
-                    //     'Home',
-                    //     style: TextStyle(color: Colors.white),
-                    //   ),
-                    // ),
                     Expanded(
                       child: DropdownButtonHideUnderline(
                         child: DropdownButton2<String>(
@@ -409,8 +401,6 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                               ),
                             );
                           }).toList(),
-                          // customItemsHeight: 4,
-                          // value: currentUser.userName,
                           onChanged: (value) async {
                             if (value != null) {
                               User tuser = await User.getUserID(value);
@@ -426,10 +416,6 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                             }
                           },
                           buttonHeight: 40,
-                          // buttonWidth: 140,
-                          // itemHeight: 40,
-                          // itemPadding:
-                          //     const EdgeInsets.symmetric(horizontal: 8.0),
                         ),
                       ),
                     )
@@ -483,6 +469,8 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                     value: DashBoardScreen.isOrder,
                     onChanged: (value) async {
                       setState(() {
+                        DashBoardScreen.currentMonthSale = 0;
+                        DashBoardScreen.currentMonthTarget = 0;
                         DashBoardScreen.isOrder = value;
                       });
                       DashBoardScreen.dashBoard =
@@ -537,21 +525,23 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                     // ),
                     tooltipBehavior: _columntooltipBehavior,
                     margin: EdgeInsets.all(0),
-
                     series: <ColumnSeries<MonthOrderHistory, String>>[
                       ColumnSeries<MonthOrderHistory, String>(
                           // Bind data source
                           dataSource: DashBoardScreen.staticMonths,
                           name: "Target",
                           color: Colors.red,
-                          // color: Color(0xff00174b),
                           borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(15),
                               topRight: Radius.circular(15)),
                           xValueMapper: (MonthOrderHistory sales, _) =>
                               sales.month,
-                          yValueMapper: (MonthOrderHistory sales, _) =>
-                              sales.amount),
+                          yValueMapper: (MonthOrderHistory sales, _) {
+                            // return double.parse(
+                            // DashBoardScreen.formatter.format(sales.amount));
+
+                            return sales.amount;
+                          }),
                       ColumnSeries<MonthOrderHistory, String>(
                           // Bind data source
                           dataSource: DashBoardScreen.monthlyList,
