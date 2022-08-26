@@ -66,9 +66,7 @@ class _MyAppState extends State<MyApp> {
             themeMode: currentMode,
             home: (!isexist)
                 ? ConnectionScreen(isConnectionfromdrawer: false)
-                : (SQLHelper.existDataBase)
-                    ? ConnectionScreen(isConnectionfromdrawer: false)
-                    : MySplashScreen(),
+                : MySplashScreen(),
           );
         });
   }

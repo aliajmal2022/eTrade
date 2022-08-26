@@ -51,7 +51,77 @@ class _MyDrawerState extends State<MyDrawer>
     super.initState();
   }
 
-  showAlertDialog(BuildContext context) {
+  showRestoreAlertDialog(BuildContext context) {
+    // set up the button
+    Widget progressButton = TextButton(
+        child: const Text("OK"),
+        onPressed: () async {
+          await SQLHelper.restoreDB();
+          Navigator.pushAndRemoveUntil(
+              context,
+              MyCustomRoute(
+                  slide: "Left",
+                  builder: (context) => MyNavigationBar.initializer(0)),
+              (route) => false);
+        });
+    Widget cancelButton = TextButton(
+      child: const Text("Cancel"),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+    // set up the AlertDialog
+    List<Widget> LOWidget = [cancelButton, progressButton];
+    AlertDialog alert = AlertDialog(
+      title: const Text("Restore Database."),
+      content: const Text("  Do you want to proceed?"),
+      actions: LOWidget,
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  showBackupAlertDialog(BuildContext context) {
+    // set up the button
+    Widget progressButton = TextButton(
+        child: const Text("OK"),
+        onPressed: () async {
+          await SQLHelper.backupDB();
+          Navigator.pushAndRemoveUntil(
+              context,
+              MyCustomRoute(
+                  slide: "Left",
+                  builder: (context) => MyNavigationBar.initializer(0)),
+              (route) => false);
+        });
+    Widget cancelButton = TextButton(
+      child: const Text("Cancel"),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+    // set up the AlertDialog
+    List<Widget> LOWidget = [cancelButton, progressButton];
+    AlertDialog alert = AlertDialog(
+      title: const Text("Backup Database."),
+      content: const Text("  Do you want to proceed?"),
+      actions: LOWidget,
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  showMasterResetAlertDialog(BuildContext context) {
     // set up the button
     Widget progressButton = TextButton(
         child: const Text("OK"),
@@ -182,6 +252,27 @@ class _MyDrawerState extends State<MyDrawer>
                       MyNavigationBar.isAdmin
                           ? Container()
                           : MaterialButton(
+                              onPressed: () {
+                                TakeOrderScreen.isEditOrder = false;
+                                TakeOrderScreen.isEditSale = false;
+                                TakeOrderScreen.isSaleSpot = false;
+                                TakeOrderScreen.isSelected = false;
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            MyNavigationBar.initializer(1)));
+                              },
+                              child: Row(
+                                children: const [
+                                  Icon(Icons.bookmark),
+                                  Text("Order Booking")
+                                ],
+                              ),
+                            ),
+                      MyNavigationBar.isAdmin
+                          ? Container()
+                          : MaterialButton(
                               onPressed: () async {
                                 await TakeOrderScreen.forSaleInVoice();
                                 TakeOrderScreen.isSaleSpot = true;
@@ -229,6 +320,44 @@ class _MyDrawerState extends State<MyDrawer>
                           ],
                         ),
                       ),
+                      MyNavigationBar.isAdmin
+                          ? Container()
+                          : MaterialButton(
+                              child: Row(
+                                children: const [
+                                  Icon(Icons.lock_reset),
+                                  Text("Customer Balance")
+                                ],
+                              ),
+                              onPressed: () async {
+                                // Get.off(() => CustomerBalanceScreen());
+                                Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MyCustomRoute(
+                                        builder: (context) =>
+                                            CustomerBalanceScreen(),
+                                        slide: "Left"),
+                                    (route) => false);
+                              }),
+                      MyNavigationBar.isAdmin
+                          ? Container()
+                          : MaterialButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                                Navigator.push(
+                                    context,
+                                    MyCustomRoute(
+                                        slide: "Left",
+                                        builder: (context) =>
+                                            ViewRecoveryScreen()));
+                              },
+                              child: Row(
+                                children: const [
+                                  Icon(Icons.price_change_outlined),
+                                  Text("View Recovery")
+                                ],
+                              ),
+                            ),
                       MaterialButton(
                           onPressed: () async {
                             bool isAvialable = await SQLHelper.isDPBeforeGet();
@@ -287,33 +416,33 @@ class _MyDrawerState extends State<MyDrawer>
                               Text("Get Data")
                             ],
                           )),
-                      MaterialButton(
-                          child: Row(
-                            children: const [
-                              Icon(Icons.lock_reset),
-                              Text("Customer Balance")
-                            ],
-                          ),
-                          onPressed: () async {
-                            // Get.off(() => CustomerBalanceScreen());
-                            Navigator.pushAndRemoveUntil(
-                                context,
-                                MyCustomRoute(
-                                    builder: (context) =>
-                                        CustomerBalanceScreen(),
-                                    slide: "Left"),
-                                (route) => false);
-                          }),
-                      MaterialButton(
-                          child: Row(
-                            children: const [
-                              Icon(Icons.lock_reset),
-                              Text("Master Reset")
-                            ],
-                          ),
-                          onPressed: () async {
-                            await showAlertDialog(context);
-                          }),
+                      MyNavigationBar.isAdmin
+                          ? Container()
+                          : MaterialButton(
+                              onPressed: () async {
+                                Get.to(PostingData(ping: ping));
+                              },
+                              child: Row(
+                                children: const [
+                                  Icon(Icons.arrow_upward),
+                                  Text("Post Data")
+                                ],
+                              ),
+                            ),
+                      MyNavigationBar.isAdmin
+                          ? Container()
+                          : MaterialButton(
+                              onPressed: () async {
+                                Get.to(() => SetTargetScreen(),
+                                    transition: Transition.leftToRight);
+                              },
+                              child: Row(
+                                children: const [
+                                  Icon(Icons.exit_to_app),
+                                  Text("Set Target")
+                                ],
+                              ),
+                            ),
                       MaterialButton(
                         onPressed: () {
                           Navigator.push(
@@ -330,50 +459,9 @@ class _MyDrawerState extends State<MyDrawer>
                           ],
                         ),
                       ),
-                      MyNavigationBar.isAdmin
-                          ? Container()
-                          : MaterialButton(
-                              onPressed: () {
-                                TakeOrderScreen.isEditOrder = false;
-                                TakeOrderScreen.isEditSale = false;
-                                TakeOrderScreen.isSaleSpot = false;
-                                TakeOrderScreen.isSelected = false;
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            MyNavigationBar.initializer(1)));
-                              },
-                              child: Row(
-                                children: const [
-                                  Icon(Icons.bookmark),
-                                  Text("Order Booking")
-                                ],
-                              ),
-                            ),
-                      MyNavigationBar.isAdmin
-                          ? Container()
-                          : MaterialButton(
-                              onPressed: () async {
-                                Get.to(PostingData(ping: ping));
-                              },
-                              child: Row(
-                                children: const [
-                                  Icon(Icons.arrow_upward),
-                                  Text("Post Data")
-                                ],
-                              ),
-                            ),
                       MaterialButton(
                         onPressed: () async {
-                          await SQLHelper.backupDB();
-                          Navigator.pushAndRemoveUntil(
-                              context,
-                              MyCustomRoute(
-                                  slide: "Left",
-                                  builder: (context) =>
-                                      MyNavigationBar.initializer(0)),
-                              (route) => false);
+                          showBackupAlertDialog(context);
                         },
                         child: Row(
                           children: const [
@@ -384,14 +472,7 @@ class _MyDrawerState extends State<MyDrawer>
                       ),
                       MaterialButton(
                         onPressed: () async {
-                          await SQLHelper.restoreDB();
-                          Navigator.pushAndRemoveUntil(
-                              context,
-                              MyCustomRoute(
-                                  slide: "Left",
-                                  builder: (context) =>
-                                      MyNavigationBar.initializer(0)),
-                              (route) => false);
+                          showRestoreAlertDialog(context);
                         },
                         child: Row(
                           children: const [
@@ -400,25 +481,6 @@ class _MyDrawerState extends State<MyDrawer>
                           ],
                         ),
                       ),
-                      MyNavigationBar.isAdmin
-                          ? Container()
-                          : MaterialButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                                Navigator.push(
-                                    context,
-                                    MyCustomRoute(
-                                        slide: "Left",
-                                        builder: (context) =>
-                                            ViewRecoveryScreen()));
-                              },
-                              child: Row(
-                                children: const [
-                                  Icon(Icons.price_change_outlined),
-                                  Text("View Recovery")
-                                ],
-                              ),
-                            ),
                       MaterialButton(
                         onPressed:
                             // null,
@@ -436,20 +498,16 @@ class _MyDrawerState extends State<MyDrawer>
                           ],
                         ),
                       ),
-                      MyNavigationBar.isAdmin
-                          ? Container()
-                          : MaterialButton(
-                              onPressed: () async {
-                                Get.to(() => SetTargetScreen(),
-                                    transition: Transition.leftToRight);
-                              },
-                              child: Row(
-                                children: const [
-                                  Icon(Icons.exit_to_app),
-                                  Text("Set Target")
-                                ],
-                              ),
-                            ),
+                      MaterialButton(
+                          child: Row(
+                            children: const [
+                              Icon(Icons.lock_reset),
+                              Text("Master Reset")
+                            ],
+                          ),
+                          onPressed: () async {
+                            await showMasterResetAlertDialog(context);
+                          }),
                       MaterialButton(
                         onPressed: () async {
                           Get.to(() => AboutScreen(),

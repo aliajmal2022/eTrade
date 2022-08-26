@@ -177,27 +177,27 @@ class SQLHelper {
       await Permission.storage.request();
     }
     try {
-      File savedDBFile = File('/storage/emulated/0/eTrade_Backup/eTrade.db');
-      if (await savedDBFile.exists()) {
-        await savedDBFile.copy('$directory/eTrade.db');
-        UserSharePreferences.setmode(false);
-        existDataBase = true;
+      // File savedDBFile = File('/storage/emulated/0/eTrade_Backup/eTrade.db');
+      // if (await savedDBFile.exists()) {
+      //   await savedDBFile.copy('$directory/eTrade.db');
+      //   UserSharePreferences.setmode(false);
+      //   existDataBase = true;
 
-        return await checkDBExit();
-      } else {
-        return await openDatabase(path, version: _dbversion,
-            onOpen: (Database database) async {
-          await createPartyTable(database);
-          await createItemTable(database);
-          await createUserTable(database);
-          await createUserTargetTable(database);
-          await createOrderTable(database);
-          await createOrderDetailTable(database);
-          await createSaleTable(database);
-          await createSaleDetailTable(database);
-          await createRecoveryTable(database);
-        });
-      }
+      //   return await checkDBExit();
+      // } else {
+      return await openDatabase(path, version: _dbversion,
+          onOpen: (Database database) async {
+        await createPartyTable(database);
+        await createItemTable(database);
+        await createUserTable(database);
+        await createUserTargetTable(database);
+        await createOrderTable(database);
+        await createOrderDetailTable(database);
+        await createSaleTable(database);
+        await createSaleDetailTable(database);
+        await createRecoveryTable(database);
+      });
+      // }
     } catch (e) {
       debugPrint(e.toString());
     }

@@ -134,7 +134,7 @@ class _ListOfRecoveryState extends State<ListOfRecovery>
                                                       BorderRadius.all(
                                                           Radius.circular(5))),
                                               child: Text(
-                                                "Rs ${dummyOrderList[index].amount}",
+                                                "Rs ${formatter.format(dummyOrderList[index].amount)} ",
                                                 style: TextStyle(
                                                   fontStyle: FontStyle.italic,
                                                   color: ThemeData.light()
@@ -224,60 +224,85 @@ class _ListOfRecoveryState extends State<ListOfRecovery>
                                                         partyName: "",
                                                       )));
                                         })),
-                                        backgroundColor:
-                                            const Color(0xFF21B7CA),
+                                        backgroundColor: Colors.blue,
                                         foregroundColor: Colors.white,
                                         icon: Icons.edit,
                                         label: 'Edit',
                                       ),
                                       SlidableAction(
-                                        onPressed: (((context) async {
-                                          await SQLHelper.deleteItem(
-                                              "Recovery",
-                                              "RecoveryID",
-                                              dummyOrderList[index].recoveryID);
+                                        onPressed: ((context) async {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                                  content: Text(
+                                                      "Really want to detele"),
+                                                  action: SnackBarAction(
+                                                      label: "Delete",
+                                                      onPressed: () async {
+                                                        await SQLHelper
+                                                            .deleteItem(
+                                                                "Recovery",
+                                                                "RecoveryID",
+                                                                dummyOrderList[
+                                                                        index]
+                                                                    .recoveryID);
 
-                                          var _recovery;
-                                          DateFormat dateFormat =
-                                              DateFormat('dd-MM-yyyy');
-                                          if (widget.tabName == "Search") {
-                                            _recovery = await SQLHelper
-                                                .getFromToRecovery(
-                                                    RecoveryTabBarItem
-                                                        .getFromDate(),
-                                                    RecoveryTabBarItem
-                                                        .getToDate());
-                                          } else if (widget.tabName ==
-                                              "Today") {
-                                            String todayDate = dateFormat
-                                                .format(DateTime.now());
-                                            _recovery = await SQLHelper
-                                                .getSpecificRecovery(todayDate);
-                                          } else if (widget.tabName ==
-                                              "Yesterday") {
-                                            String yesterdayDate = dateFormat
-                                                .format(DateTime.now().subtract(
-                                                    Duration(days: 1)));
-                                            _recovery = await SQLHelper
-                                                .getSpecificRecovery(
-                                                    yesterdayDate);
-                                          } else {
-                                            _recovery = await SQLHelper
-                                                .getAllRecovery();
-                                          }
-                                          setState(() {
-                                            RecoveryTabBarItem.listOfRecovery =
-                                                ViewRecovery.ViewRecoveryFromDb(
-                                                    _recovery);
-                                            if (RecoveryTabBarItem
-                                                .listOfRecovery.isNotEmpty) {
-                                              CheckList(RecoveryTabBarItem
-                                                  .listOfRecovery);
-                                            }
-                                          });
-                                        })),
-                                        backgroundColor:
-                                            const Color(0xFFFE4A49),
+                                                        var _recovery;
+                                                        DateFormat dateFormat =
+                                                            DateFormat(
+                                                                'dd-MM-yyyy');
+                                                        if (widget.tabName ==
+                                                            "Search") {
+                                                          _recovery = await SQLHelper
+                                                              .getFromToRecovery(
+                                                                  RecoveryTabBarItem
+                                                                      .getFromDate(),
+                                                                  RecoveryTabBarItem
+                                                                      .getToDate());
+                                                        } else if (widget
+                                                                .tabName ==
+                                                            "Today") {
+                                                          String todayDate =
+                                                              dateFormat.format(
+                                                                  DateTime
+                                                                      .now());
+                                                          _recovery = await SQLHelper
+                                                              .getSpecificRecovery(
+                                                                  todayDate);
+                                                        } else if (widget
+                                                                .tabName ==
+                                                            "Yesterday") {
+                                                          String yesterdayDate =
+                                                              dateFormat.format(DateTime
+                                                                      .now()
+                                                                  .subtract(
+                                                                      Duration(
+                                                                          days:
+                                                                              1)));
+                                                          _recovery = await SQLHelper
+                                                              .getSpecificRecovery(
+                                                                  yesterdayDate);
+                                                        } else {
+                                                          _recovery =
+                                                              await SQLHelper
+                                                                  .getAllRecovery();
+                                                        }
+                                                        setState(() {
+                                                          RecoveryTabBarItem
+                                                                  .listOfRecovery =
+                                                              ViewRecovery
+                                                                  .ViewRecoveryFromDb(
+                                                                      _recovery);
+                                                          if (RecoveryTabBarItem
+                                                              .listOfRecovery
+                                                              .isNotEmpty) {
+                                                            CheckList(
+                                                                RecoveryTabBarItem
+                                                                    .listOfRecovery);
+                                                          }
+                                                        });
+                                                      })));
+                                        }),
+                                        backgroundColor: Colors.red,
                                         foregroundColor: Colors.white,
                                         icon: Icons.delete,
                                         label: 'Delete',
@@ -368,7 +393,7 @@ class _ListOfRecoveryState extends State<ListOfRecovery>
                                                                       .circular(
                                                                           5))),
                                                       child: Text(
-                                                        "Rs ${dummyOrderList[index].amount}",
+                                                        "Rs ${formatter.format(dummyOrderList[index].amount)}",
                                                         style: TextStyle(
                                                           fontStyle:
                                                               FontStyle.italic,

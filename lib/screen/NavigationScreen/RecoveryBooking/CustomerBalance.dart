@@ -18,7 +18,6 @@ class CustomerBalanceScreen extends StatefulWidget {
 class _CustomerBalanceScreenState extends State<CustomerBalanceScreen> {
   TextEditingController controller = TextEditingController();
   String searchString = "";
-  static var formatter = NumberFormat('#,###,000');
   ScrollController scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {

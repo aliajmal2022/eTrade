@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:eTrade/components/CustomNavigator.dart';
 import 'package:eTrade/components/NavigationBar.dart';
 import 'package:eTrade/components/constants.dart';
-import 'package:eTrade/screen/NavigationScreen/Booking/components/SearchListOrder.dart';
+import 'package:eTrade/screen/NavigationScreen/Booking/components/SearchListViewBooking.dart';
 import 'package:eTrade/screen/NavigationScreen/RecoveryBooking/components/SearchListRecovery.dart';
 import 'package:eTrade/components/drawer.dart';
 import 'package:eTrade/helper/sqlhelper.dart';
@@ -370,7 +370,7 @@ class _RecoveryTabBarItemState extends State<RecoveryTabBarItem>
                                                               Radius.circular(
                                                                   5))),
                                                   child: Text(
-                                                    "Rs ${RecoveryTabBarItem.listOfRecovery[index].amount}",
+                                                    "Rs ${formatter.format(RecoveryTabBarItem.listOfRecovery[index].amount)}",
                                                     style: TextStyle(
                                                       fontStyle:
                                                           FontStyle.italic,
@@ -461,56 +461,75 @@ class _RecoveryTabBarItemState extends State<RecoveryTabBarItem>
                                                             partyName: "",
                                                             id: 0)));
                                           })),
-                                          backgroundColor:
-                                              const Color(0xFF21B7CA),
+                                          backgroundColor: Colors.blue,
                                           foregroundColor: Colors.white,
                                           icon: Icons.edit,
                                           label: 'Edit',
                                         ),
                                         SlidableAction(
-                                          onPressed: (((context) async {
-                                            await SQLHelper.deleteItem(
-                                                "Recovery",
-                                                "RecoveryID",
-                                                RecoveryTabBarItem
-                                                    .listOfRecovery[index]
-                                                    .recoveryID);
-                                            if (widget.tabName == "Search") {
-                                              _recovery = await SQLHelper
-                                                  .getFromToRecovery(
-                                                      RecoveryTabBarItem
-                                                          .getFromDate(),
-                                                      RecoveryTabBarItem
-                                                          .getToDate());
-                                            } else if (widget.tabName ==
-                                                "Today") {
-                                              String todayDate = dateFormat
-                                                  .format(DateTime.now());
-                                              _recovery = await SQLHelper
-                                                  .getSpecificRecovery(
-                                                      todayDate);
-                                            } else if (widget.tabName ==
-                                                "Yesterday") {
-                                              String yesterdayDate =
-                                                  dateFormat.format(
-                                                      DateTime.now().subtract(
-                                                          Duration(days: 1)));
-                                              _recovery = await SQLHelper
-                                                  .getSpecificRecovery(
-                                                      yesterdayDate);
-                                            } else {
-                                              _recovery = await SQLHelper
-                                                  .getAllRecovery();
-                                            }
-                                            RecoveryTabBarItem.listOfRecovery =
-                                                ViewRecovery.ViewRecoveryFromDb(
-                                                    _recovery);
-                                            setState(() {
-                                              RecoveryTabBarItem.listOfRecovery;
-                                            });
-                                          })),
-                                          backgroundColor:
-                                              const Color(0xFFFE4A49),
+                                          onPressed: ((context) async {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(SnackBar(
+                                                    content: Text(
+                                                        "Really want to detele"),
+                                                    action: SnackBarAction(
+                                                        label: "Delete",
+                                                        onPressed: () async {
+                                                          await SQLHelper.deleteItem(
+                                                              "Recovery",
+                                                              "RecoveryID",
+                                                              RecoveryTabBarItem
+                                                                  .listOfRecovery[
+                                                                      index]
+                                                                  .recoveryID);
+                                                          if (widget.tabName ==
+                                                              "Search") {
+                                                            _recovery = await SQLHelper.getFromToRecovery(
+                                                                RecoveryTabBarItem
+                                                                    .getFromDate(),
+                                                                RecoveryTabBarItem
+                                                                    .getToDate());
+                                                          } else if (widget
+                                                                  .tabName ==
+                                                              "Today") {
+                                                            String todayDate =
+                                                                dateFormat.format(
+                                                                    DateTime
+                                                                        .now());
+                                                            _recovery = await SQLHelper
+                                                                .getSpecificRecovery(
+                                                                    todayDate);
+                                                          } else if (widget
+                                                                  .tabName ==
+                                                              "Yesterday") {
+                                                            String
+                                                                yesterdayDate =
+                                                                dateFormat.format(DateTime
+                                                                        .now()
+                                                                    .subtract(
+                                                                        Duration(
+                                                                            days:
+                                                                                1)));
+                                                            _recovery = await SQLHelper
+                                                                .getSpecificRecovery(
+                                                                    yesterdayDate);
+                                                          } else {
+                                                            _recovery =
+                                                                await SQLHelper
+                                                                    .getAllRecovery();
+                                                          }
+                                                          RecoveryTabBarItem
+                                                                  .listOfRecovery =
+                                                              ViewRecovery
+                                                                  .ViewRecoveryFromDb(
+                                                                      _recovery);
+                                                          setState(() {
+                                                            RecoveryTabBarItem
+                                                                .listOfRecovery;
+                                                          });
+                                                        })));
+                                          }),
+                                          backgroundColor: Colors.red,
                                           foregroundColor: Colors.white,
                                           icon: Icons.delete,
                                           label: 'Delete',
@@ -603,7 +622,7 @@ class _RecoveryTabBarItemState extends State<RecoveryTabBarItem>
                                                                         .circular(
                                                                             5))),
                                                         child: Text(
-                                                          "Rs ${RecoveryTabBarItem.listOfRecovery[index].amount}",
+                                                          "Rs ${formatter.format(RecoveryTabBarItem.listOfRecovery[index].amount)} ",
                                                           style: TextStyle(
                                                             fontStyle: FontStyle
                                                                 .italic,

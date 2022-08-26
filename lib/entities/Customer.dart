@@ -59,7 +59,7 @@ class Customer {
 SELECT p.PartyID,replace(p.PartyName,'\\','') as PartyName,p.Discount,replace(p.Address,'\\','') as Address,
 isnull(p.PartyID_Mobile,0)as PartyID_Mobile,ISNULL(lb.Balance,0) AS Balance  FROM Party AS p
 LEFT JOIN
-(SELECT l.PartyID,SUM(l.Amount) AS Balance FROM Ledger AS l WHERE left(l.PartyID,2)=22
+(SELECT l.PartyID,SUM(l.Amount) AS Balance FROM Ledger AS l WHERE l.PartyID between 22000 and 29999
  GROUP BY l.PartyID) AS lb
 ON p.PartyID=lb.PartyID
 WHERE p.AccTypeID=6

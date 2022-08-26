@@ -320,108 +320,160 @@ class _ListOfOrderState extends State<ListOfOrder>
                                                                 .partyName,
                                                       )));
                                         })),
-                                  backgroundColor: Color(0xFF21B7CA),
+                                  backgroundColor: Colors.blue,
                                   foregroundColor: Colors.white,
                                   icon: Icons.edit,
                                   label: 'Edit',
                                 ),
                                 SlidableAction(
-                                  backgroundColor: const Color(0xFFFE4A49),
+                                  backgroundColor: Colors.red,
                                   foregroundColor: Colors.white,
                                   icon: Icons.delete,
                                   label: 'delete',
-                                  onPressed: ((ViewBookingScreen.isSaleBooking
-                                      ? (context) async {
-                                          await SQLHelper.deleteItem(
-                                              "Sale",
-                                              "InvoiceID",
-                                              dummyOrderList[index].iD);
+                                  onPressed: ((context) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                            content:
+                                                Text("Really want to detele"),
+                                            action: SnackBarAction(
+                                                label: "Delete",
+                                                onPressed:
+                                                    ViewBookingScreen
+                                                            .isSaleBooking
+                                                        ? () async {
+                                                            await SQLHelper
+                                                                .deleteItem(
+                                                                    "Sale",
+                                                                    "InvoiceID",
+                                                                    dummyOrderList[
+                                                                            index]
+                                                                        .iD);
 
-                                          await SQLHelper.deleteItem(
-                                              "SaleDetail",
-                                              "InvoiceID",
-                                              dummyOrderList[index].iD);
+                                                            await SQLHelper
+                                                                .deleteItem(
+                                                                    "SaleDetail",
+                                                                    "InvoiceID",
+                                                                    dummyOrderList[
+                                                                            index]
+                                                                        .iD);
 
-                                          if (widget.tabName == "Search") {
-                                            _item = await SQLHelper
-                                                .getFromToViewSale(
-                                                    BookingTabBarItem
-                                                        .getFromDate(),
-                                                    BookingTabBarItem
-                                                        .getToDate());
-                                          } else if (widget.tabName ==
-                                              "Today") {
-                                            String todayDate = dateFormat
-                                                .format(DateTime.now());
-                                            _item = await SQLHelper
-                                                .getSpecificViewSale(todayDate);
-                                          } else if (widget.tabName ==
-                                              "Yesterday") {
-                                            String yesterdayDate = dateFormat
-                                                .format(DateTime.now().subtract(
-                                                    Duration(days: 1)));
-                                            _item = await SQLHelper
-                                                .getSpecificViewSale(
-                                                    yesterdayDate);
-                                          } else {
-                                            _item = await SQLHelper
-                                                .getAllViewSale();
-                                          }
-                                          setState(() {
-                                            dummyOrderList =
-                                                ViewBooking.ViewOrderFromDb(
-                                                    _item);
-                                          });
-                                          DashBoardScreen.dashBoard =
-                                              await DashBoardScreen
-                                                  .getOrderHistory(false);
-                                        }
-                                      : (context) async {
-                                          await SQLHelper.deleteItem(
-                                              "Order",
-                                              "OrderID",
-                                              dummyOrderList[index].iD);
+                                                            if (widget
+                                                                    .tabName ==
+                                                                "Search") {
+                                                              _item = await SQLHelper.getFromToViewSale(
+                                                                  BookingTabBarItem
+                                                                      .getFromDate(),
+                                                                  BookingTabBarItem
+                                                                      .getToDate());
+                                                            } else if (widget
+                                                                    .tabName ==
+                                                                "Today") {
+                                                              String todayDate =
+                                                                  dateFormat.format(
+                                                                      DateTime
+                                                                          .now());
+                                                              _item = await SQLHelper
+                                                                  .getSpecificViewSale(
+                                                                      todayDate);
+                                                            } else if (widget
+                                                                    .tabName ==
+                                                                "Yesterday") {
+                                                              String
+                                                                  yesterdayDate =
+                                                                  dateFormat.format(DateTime
+                                                                          .now()
+                                                                      .subtract(
+                                                                          Duration(
+                                                                              days: 1)));
+                                                              _item = await SQLHelper
+                                                                  .getSpecificViewSale(
+                                                                      yesterdayDate);
+                                                            } else {
+                                                              _item = await SQLHelper
+                                                                  .getAllViewSale();
+                                                            }
+                                                            setState(() {
+                                                              BookingTabBarItem
+                                                                      .listOfItems =
+                                                                  ViewBooking
+                                                                      .ViewSaleFromDb(
+                                                                          _item);
 
-                                          await SQLHelper.deleteItem(
-                                              "OrderDetail",
-                                              "OrderID",
-                                              dummyOrderList[index].iD);
+                                                              build(context);
+                                                            });
+                                                            DashBoardScreen
+                                                                    .dashBoard =
+                                                                await DashBoardScreen
+                                                                    .getOrderHistory(
+                                                                        false);
+                                                          }
+                                                        : () async {
+                                                            await SQLHelper
+                                                                .deleteItem(
+                                                                    "Order",
+                                                                    "OrderID",
+                                                                    dummyOrderList[
+                                                                            index]
+                                                                        .iD);
 
-                                          if (widget.tabName == "Search") {
-                                            _item = await SQLHelper
-                                                .getFromToViewOrder(
-                                                    BookingTabBarItem
-                                                        .getFromDate(),
-                                                    BookingTabBarItem
-                                                        .getToDate());
-                                          } else if (widget.tabName ==
-                                              "Today") {
-                                            String todayDate = dateFormat
-                                                .format(DateTime.now());
-                                            _item = await SQLHelper
-                                                .getSpecificViewOrder(
-                                                    todayDate);
-                                          } else if (widget.tabName ==
-                                              "Yesterday") {
-                                            String yesterdayDate = dateFormat
-                                                .format(DateTime.now().subtract(
-                                                    Duration(days: 1)));
-                                            _item = await SQLHelper
-                                                .getSpecificViewOrder(
-                                                    yesterdayDate);
-                                          } else {
-                                            _item = await SQLHelper
-                                                .getAllViewOrder();
-                                          }
-                                          setState(() {
-                                            dummyOrderList =
-                                                ViewBooking.ViewOrderFromDb(
-                                                    _item);
-                                          });
-                                          DashBoardScreen.dashBoard =
-                                              await DashBoardScreen
-                                                  .getOrderHistory(true);
-                                        })),
+                                                            await SQLHelper.deleteItem(
+                                                                "OrderDetail",
+                                                                "OrderID",
+                                                                dummyOrderList[
+                                                                        index]
+                                                                    .iD);
+
+                                                            if (widget
+                                                                    .tabName ==
+                                                                "Search") {
+                                                              _item = await SQLHelper.getFromToViewOrder(
+                                                                  BookingTabBarItem
+                                                                      .getFromDate(),
+                                                                  BookingTabBarItem
+                                                                      .getToDate());
+                                                            } else if (widget
+                                                                    .tabName ==
+                                                                "Today") {
+                                                              String todayDate =
+                                                                  dateFormat.format(
+                                                                      DateTime
+                                                                          .now());
+                                                              _item = await SQLHelper
+                                                                  .getSpecificViewOrder(
+                                                                      todayDate);
+                                                            } else if (widget
+                                                                    .tabName ==
+                                                                "Yesterday") {
+                                                              String
+                                                                  yesterdayDate =
+                                                                  dateFormat.format(DateTime
+                                                                          .now()
+                                                                      .subtract(
+                                                                          Duration(
+                                                                              days: 1)));
+                                                              _item = await SQLHelper
+                                                                  .getSpecificViewOrder(
+                                                                      yesterdayDate);
+                                                            } else {
+                                                              _item = await SQLHelper
+                                                                  .getAllViewOrder();
+                                                            }
+                                                            setState(() {
+                                                              BookingTabBarItem
+                                                                      .listOfItems =
+                                                                  ViewBooking
+                                                                      .ViewOrderFromDb(
+                                                                          _item);
+
+                                                              build(context);
+                                                            });
+                                                            DashBoardScreen
+                                                                    .dashBoard =
+                                                                await DashBoardScreen
+                                                                    .getOrderHistory(
+                                                                        true);
+                                                          })));
+                                  }),
                                 ),
                               ]),
                           child: Padding(

@@ -506,8 +506,8 @@ class _RecoveryScreenState extends State<RecoveryScreen>
                                   : RecoveryScreen.isEditRecovery
                                       ? () async {
                                           final snackBar = const SnackBar(
-                                            content:
-                                                Text("Recovery is update."),
+                                            content: Text(
+                                                "Recovery has been updated."),
                                           );
                                           await SQLHelper.updateRecoveryTable(
                                               widget.recovery.recoveryID,
@@ -536,7 +536,8 @@ class _RecoveryScreenState extends State<RecoveryScreen>
                                         }
                                       : () async {
                                           var snackBar = const SnackBar(
-                                            content: Text("Recovery is Saved."),
+                                            content: Text(
+                                                "Recovery has been Saved."),
                                           );
                                           Recovery recovery = Recovery(
                                               amount: amount,
@@ -571,10 +572,14 @@ class _RecoveryScreenState extends State<RecoveryScreen>
                                                 .clear();
                                             RecoveryScreen.descriptioncontroller
                                                 .clear();
-                                            widget.setParty(
-                                                Customer.initializer());
-                                            RecoveryScreen.tcustomer =
-                                                Customer.initializer();
+                                            setState(() {
+                                              CustomerBalanceScreen
+                                                  .isCustomerBalance = false;
+                                              widget.setParty(
+                                                  Customer.initializer());
+                                              RecoveryScreen.tcustomer =
+                                                  Customer.initializer();
+                                            });
                                           });
                                           Navigator.pushAndRemoveUntil(
                                               context,

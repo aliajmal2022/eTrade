@@ -17,7 +17,6 @@ searchCustomerBalance(String search, BuildContext context) {
       dummyCustomerList.add(element);
     }
   }
-  var formatter = NumberFormat('#,###,000');
   return (dummyCustomerList.isEmpty)
       ? Center(child: Text("Not Found"))
       : ListView.builder(

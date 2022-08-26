@@ -202,43 +202,22 @@ class _LoginScreenState extends State<LoginScreen> {
                                           await TakeOrderScreen.onLoading(
                                               context, false, true);
                                         } else {
-                                          if (!SQLHelper.existDataBase) {
-                                            if (!DataBaseDataLoad.isFirstTime) {
-                                              await SQLHelper
-                                                  .deleteAllTableForAdmin();
-                                              await SQLHelper.resetData(
-                                                  "Sync", false);
-                                              await SQLHelper
-                                                  .createAllTableForAdmin();
-                                            }
-                                            UserSharePreferences.setId(usr.id);
-                                            UserSharePreferences
-                                                .setisAdminOrNot(false);
-                                            UserSharePreferences.setIp(
-                                                widget.ip);
-                                            UserSharePreferences.setflag(true);
-                                            UserSharePreferences.setmode(false);
-                                            await TakeOrderScreen.onLoading(
-                                                context, false, true);
-                                          } else {
-                                            SQLHelper.existDataBase = false;
-                                            SQLHelper.restoreDB();
-                                            UserSharePreferences.setId(usr.id);
-                                            UserSharePreferences
-                                                .setisAdminOrNot(false);
-                                            UserSharePreferences.setIp(
-                                                widget.ip);
-                                            UserSharePreferences.setflag(true);
-                                            UserSharePreferences.setmode(false);
-                                            Navigator.pushAndRemoveUntil(
-                                                context,
-                                                MyCustomRoute(
-                                                    slide: "Left",
-                                                    builder: (context) =>
-                                                        MyNavigationBar
-                                                            .initializer(0)),
-                                                (route) => false);
+                                          if (!DataBaseDataLoad.isFirstTime) {
+                                            await SQLHelper
+                                                .deleteAllTableForAdmin();
+                                            await SQLHelper.resetData(
+                                                "Sync", false);
+                                            await SQLHelper
+                                                .createAllTableForAdmin();
                                           }
+                                          UserSharePreferences.setId(usr.id);
+                                          UserSharePreferences.setisAdminOrNot(
+                                              false);
+                                          UserSharePreferences.setIp(widget.ip);
+                                          UserSharePreferences.setflag(true);
+                                          UserSharePreferences.setmode(false);
+                                          await TakeOrderScreen.onLoading(
+                                              context, false, true);
                                         }
                                       } else {
                                         setState(() {

@@ -191,7 +191,6 @@ class DashBoardScreen extends StatefulWidget {
     return list;
   }
 
-  static var formatter = NumberFormat('#,###,000');
   static Future<List<Items>> getTopProduct(isOrder) async {
     List<Items> list = [];
 

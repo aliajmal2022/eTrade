@@ -30,7 +30,6 @@ class _ListItemsState extends State<ListItems> {
   bool match = false;
 
   @override
-  @override
   Widget build(BuildContext context) {
     return widget.searchedInput == ""
         ? ListView.builder(
@@ -41,7 +40,6 @@ class _ListItemsState extends State<ListItems> {
                   widget.productItems[index].Quantity = element.Quantity;
                 }
               }
-
               return SlideTransition(
                   position:
                       Tween<Offset>(begin: Offset(0, 1), end: Offset(0, 0))

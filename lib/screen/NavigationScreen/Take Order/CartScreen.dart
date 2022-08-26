@@ -1,3 +1,4 @@
+import 'package:eTrade/components/CustomNavigator.dart';
 import 'package:eTrade/components/constants.dart';
 import 'package:eTrade/entities/Edit.dart';
 import 'package:eTrade/screen/NavigationScreen/DashBoard/DashboardScreen.dart';
@@ -100,17 +101,19 @@ class _CartScreenState extends State<CartScreen> {
             leading: IconButton(
               onPressed: () {
                 TakeOrderScreen.isSelected = true;
-                Get.off(
-                    () => MyNavigationBar(
-                          editRecovery: ViewRecovery.initializer(),
-                          selectedIndex: 1,
-                          list: [],
-                          date: widget.date,
-                          id: widget.iD,
-                          partyName: "Search Customer",
-                        ),
-                    transition: Transition.leftToRight,
-                    duration: Duration(milliseconds: 500));
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MyCustomRoute(
+                        builder: (context) => MyNavigationBar(
+                              editRecovery: ViewRecovery.initializer(),
+                              selectedIndex: 1,
+                              list: [],
+                              date: widget.date,
+                              id: widget.iD,
+                              partyName: "Search Customer",
+                            ),
+                        slide: "Right"),
+                    (route) => false);
               },
               icon: Icon(
                 Icons.arrow_back,
@@ -223,7 +226,7 @@ class _CartScreenState extends State<CartScreen> {
                                       style: TextStyle(fontSize: 13),
                                     ),
                                     Text(
-                                      "Value: ${widget.selectedItems[index].Price * widget.selectedItems[index].Quantity}",
+                                      "Value: ${formatter.format(widget.selectedItems[index].Price * widget.selectedItems[index].Quantity)}",
                                       style: TextStyle(fontSize: 13),
                                     ),
                                   ],
@@ -333,7 +336,7 @@ class _CartScreenState extends State<CartScreen> {
                                         ),
                                       ),
                                       Text(
-                                        "Total Value: $totalAmount",
+                                        "Total Value: ${formatter.format(totalAmount)}",
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           // color: Colors.white

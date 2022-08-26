@@ -202,7 +202,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                 style: TextStyle(fontSize: 13),
                               ),
                               Text(
-                                "Value: ${widget.selectedItems[index].quantity * widget.selectedItems[index].rate}",
+                                "Value: ${formatter.format(widget.selectedItems[index].quantity * widget.selectedItems[index].rate)}",
                                 style: TextStyle(fontSize: 13),
                               ),
                             ],
@@ -259,7 +259,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                 ),
                               ),
                               Text(
-                                "Total Value: $totalAmount",
+                                "Total Value: ${formatter.format(totalAmount)}",
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   // color: Colors.white
