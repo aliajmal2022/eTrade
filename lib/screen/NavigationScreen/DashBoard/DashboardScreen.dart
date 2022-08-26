@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:eTrade/components/NavigationBar.dart';
 import 'package:eTrade/components/constants.dart';
@@ -206,7 +208,7 @@ class DashBoardScreen extends StatefulWidget {
         list.add(item);
       }
     } else {
-      list.add(Items(productName: "Nothing Order", amount: "", ordered: 1));
+      list.add(Items(productName: "Nothing Ordered", amount: "", ordered: 1));
     }
     return list;
   }
@@ -239,6 +241,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
   int getWorkingDaysInMonth(DateTime date) {
     DateTime now = DateTime.now();
 
+    print(DateTime(now.year, now.month - 1, now.day));
     int count = 0;
     for (int i = 1; i <= date.day; i++) {
       DateTime days = DateTime(now.year, now.month, i);
@@ -410,6 +413,9 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                                 currentUser = tuser;
                               });
                               await updateData();
+
+                              UserSharePreferences.setName(
+                                  currentUser.userName.toUpperCase());
                               await UserSharePreferences.setId(
                                   MyNavigationBar.userID);
                             }
@@ -812,7 +818,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                 ),
               ),
               Container(
-                height: 300,
+                height: 500,
                 width: double.infinity,
                 child: SfCircularChart(
                   tooltipBehavior: _tooltipBehavior,
@@ -828,18 +834,20 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                         yValueMapper: (Items? data, _) => data?.ordered)
                   ],
                   legend: Legend(
-                      // isResponsive: true,
+                      shouldAlwaysShowScrollbar: true,
+                      alignment: ChartAlignment.center,
+                      isResponsive: true,
                       legendItemBuilder:
                           ((legendText, series, point, seriesIndex) {
-                        return Padding(
-                          padding: const EdgeInsets.all(3.0),
+                        return Container(
+                          padding: EdgeInsets.all(3.0),
                           child: Text(
                             "${DashBoardScreen.itemdata[seriesIndex].ordered} - $legendText  (${DashBoardScreen.itemdata[seriesIndex].amount})",
                           ),
                         );
                       }),
                       isVisible: true,
-                      position: LegendPosition.top,
+                      position: LegendPosition.bottom,
                       overflowMode: LegendItemOverflowMode.wrap),
                 ),
               ),

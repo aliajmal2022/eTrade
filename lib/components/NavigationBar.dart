@@ -29,6 +29,7 @@ class MyNavigationBar extends StatefulWidget {
   ViewRecovery editRecovery;
   static int currentIndex = 0;
   static int userID = 0;
+  static String userName = "";
   static bool isAdmin = false;
   static int userTarget = 0;
   changeIndex() {
@@ -61,6 +62,7 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
   @override
   void initState() {
     MyNavigationBar.userID = UserSharePreferences.getId();
+    MyNavigationBar.userName = UserSharePreferences.getName();
     MyNavigationBar.isAdmin = UserSharePreferences.getisAdminOrNot();
     super.initState();
   }
@@ -69,7 +71,17 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
   Widget build(BuildContext context) {
     MyNavigationBar.currentIndex = widget.selectedIndex;
     final List<Widget> _pages = MyNavigationBar.isAdmin
-        ? <Widget>[DashBoardScreen(), ViewBookingScreen(), ViewRecoveryScreen()]
+        ? <Widget>[
+            DashBoardScreen(),
+            TakeOrderScreen(
+              list: widget.list,
+              date: widget.date,
+              partyName: widget.partyName,
+              iD: widget.id,
+            ),
+            ViewBookingScreen(),
+            ViewRecoveryScreen()
+          ]
         : <Widget>[
             DashBoardScreen(),
             TakeOrderScreen(
@@ -107,6 +119,10 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
                         GButton(
                           icon: Icons.home,
                           text: 'Home',
+                        ),
+                        GButton(
+                          icon: Icons.edit_note_outlined,
+                          text: 'Take Order',
                         ),
                         GButton(
                           icon: Icons.wysiwyg_outlined,

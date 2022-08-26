@@ -57,7 +57,7 @@ class Customer {
     } else {
       _party = await Sql_Connection().read('''
 SELECT p.PartyID,replace(p.PartyName,'\\','') as PartyName,p.Discount,replace(p.Address,'\\','') as Address,
-isnull(p.PartyID_Mobile,0)as PartyID_Mobile,ISNULL(lb.Balance,0) AS Balance  FROM Party AS p
+isnull(p.PartyID_Mobile,0)as PartyID_Mobile,convert(decimal(18,3),ISNULL(lb.Balance,0)) AS Balance  FROM Party AS p
 LEFT JOIN
 (SELECT l.PartyID,SUM(l.Amount) AS Balance FROM Ledger AS l WHERE l.PartyID between 22000 and 29999
  GROUP BY l.PartyID) AS lb
@@ -66,7 +66,7 @@ WHERE p.AccTypeID=6
 ''');
     }
     if (_party.isNotEmpty) {
-      _party.forEach((element) {
+      for (var element in _party) {
         Customer _customer = initializer();
         _customer.partyId = element['PartyID'];
         _customer.partyIdMobile = element['PartyID_Mobile'] ?? 0;
@@ -76,7 +76,7 @@ WHERE p.AccTypeID=6
         _customer.address = element['Address'].toString();
 
         _listProduct.add(_customer);
-      });
+      }
     }
     return _listProduct;
   }

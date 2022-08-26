@@ -149,6 +149,7 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
                                   UserSharePreferences.setIp(userIp);
                                   Get.to(MyNavigationBar.initializer(0));
                                 } else {
+                                  await UserSharePreferences.setAdmin();
                                   Navigator.push(
                                       context,
                                       MyCustomRoute(

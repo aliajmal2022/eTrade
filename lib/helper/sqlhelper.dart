@@ -788,6 +788,7 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
     var splitDate = date.split('-');
     date = '${splitDate[2]}-${splitDate[1]}-${splitDate[0]}';
     var order;
+    DateTime now = DateTime.now();
     try {
       if (name == "Week") {
         order = await db.rawQuery(
@@ -797,10 +798,17 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
             "SELECT count(s.InvoiceID) FROM Sale as s WHERE s.Dated BETWEEN  DATETIME('$date','-13 day') and DATETIME('$date','-6 day') and  s.UserID=${MyNavigationBar.userID}");
       } else if (name == "Month") {
         order = await db.rawQuery(
-            "SELECT count(s.InvoiceID) FROM Sale as s WHERE s.Dated BETWEEN  DATETIME('$date','-1 month') and DATETIME('$date','localtime') and  s.UserID=${MyNavigationBar.userID}");
+            "SELECT count(s.InvoiceID) FROM Sale as s WHERE s.Dated BETWEEN  DATETIME('$date','${DateTime(now.year, now.month, 1)}') and DATETIME('$date','localtime') and  s.UserID=${MyNavigationBar.userID}");
       } else if (name == "PMonth") {
-        order = await db.rawQuery(
-            "SELECT count(s.InvoiceID) FROM Sale as s WHERE s.Dated BETWEEN  DATETIME('$date','-2 month') and DATETIME('$date','-1 month') and  s.UserID=${MyNavigationBar.userID}");
+        var lastDate = DateTime(now.year, now.month + 1, 0);
+        var currentDate = DateTime(now.year, now.month - 1, 0);
+        if (lastDate == currentDate) {
+          order = await db.rawQuery(
+              "SELECT count(s.InvoiceID) FROM Sale as s WHERE s.Dated BETWEEN  DATETIME('$date','${DateTime(now.year, now.month - 1, 1)}') and DATETIME('$date','${DateTime(now.year, now.month - 1, now.day)}') and  s.UserID=${MyNavigationBar.userID}");
+        } else {
+          order = await db.rawQuery(
+              "SELECT count(s.InvoiceID) FROM Sale as s WHERE s.Dated BETWEEN  DATETIME('$date','${DateTime(now.year, now.month - 1, 1)}') and DATETIME('$date','${DateTime(now.year, now.month - 1, now.day)}') and  s.UserID=${MyNavigationBar.userID}");
+        }
       } else if (name == "Year") {
         order = await db.rawQuery(
             "SELECT count(s.InvoiceID) FROM Sale as s WHERE s.Dated BETWEEN  DATETIME('$date','-1 year') and DATETIME('$date','localtime') and s.UserID=${MyNavigationBar.userID}");

@@ -145,7 +145,7 @@ class _MyDrawerState extends State<MyDrawer>
                     context,
                     MyCustomRoute(
                         builder: (context) => ConnectionScreen(
-                              isConnectionfromdrawer: false,
+                              isConnectionfromdrawer: true,
                             ),
                         slide: "Left"),
                     (route) => false);
@@ -192,13 +192,39 @@ class _MyDrawerState extends State<MyDrawer>
           FadeTransition(
             opacity: _animationController,
             child: DrawerHeader(
-                child: CircleAvatar(
-                    backgroundColor: Color(0xfffafafa),
-                    child: Image.asset(
-                      "images/logo.png",
-                      fit: BoxFit.cover,
-                      width: 200,
-                    ))),
+                child: Column(
+              children: [
+                Expanded(
+                  flex: 5,
+                  child: CircleAvatar(
+                      backgroundColor: Color(0xfffafafa),
+                      maxRadius: 200,
+                      child: Image.asset(
+                        "images/logo.png",
+                        fit: BoxFit.cover,
+                        // width: 100,
+                        // height: 200,
+                      )),
+                ),
+                Expanded(
+                    flex: 1,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "User Name : ",
+                          style: TextStyle(
+                              fontSize: 15, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          MyNavigationBar.userName,
+                          style: TextStyle(
+                              fontSize: 15, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ))
+              ],
+            )),
           ),
           Divider(
             thickness: 1,
@@ -249,27 +275,29 @@ class _MyDrawerState extends State<MyDrawer>
                           ],
                         ),
                       ),
-                      MyNavigationBar.isAdmin
-                          ? Container()
-                          : MaterialButton(
-                              onPressed: () {
-                                TakeOrderScreen.isEditOrder = false;
-                                TakeOrderScreen.isEditSale = false;
-                                TakeOrderScreen.isSaleSpot = false;
-                                TakeOrderScreen.isSelected = false;
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            MyNavigationBar.initializer(1)));
-                              },
-                              child: Row(
-                                children: const [
-                                  Icon(Icons.bookmark),
-                                  Text("Order Booking")
-                                ],
-                              ),
-                            ),
+                      // MyNavigationBar.isAdmin
+                      //     ? Container()
+                      // :
+
+                      MaterialButton(
+                        onPressed: () {
+                          TakeOrderScreen.isEditOrder = false;
+                          TakeOrderScreen.isEditSale = false;
+                          TakeOrderScreen.isSaleSpot = false;
+                          TakeOrderScreen.isSelected = false;
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      MyNavigationBar.initializer(1)));
+                        },
+                        child: Row(
+                          children: const [
+                            Icon(Icons.bookmark),
+                            Text("Order Booking")
+                          ],
+                        ),
+                      ),
                       MyNavigationBar.isAdmin
                           ? Container()
                           : MaterialButton(
@@ -429,7 +457,7 @@ class _MyDrawerState extends State<MyDrawer>
                                 ],
                               ),
                             ),
-                      MyNavigationBar.isAdmin
+                      !MyNavigationBar.isAdmin
                           ? Container()
                           : MaterialButton(
                               onPressed: () async {
@@ -535,7 +563,7 @@ class _MyDrawerState extends State<MyDrawer>
                               context,
                               MyCustomRoute(
                                   builder: (context) => ConnectionScreen(
-                                        isConnectionfromdrawer: false,
+                                        isConnectionfromdrawer: true,
                                       ),
                                   slide: "Left"),
                               (route) => false);

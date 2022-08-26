@@ -321,23 +321,23 @@ VALUES
                                         ],
                                       ),
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(4.0),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text("Total OrderDetail Posted: "),
-                                          (PostingData.odCount == 0 ||
-                                                      _orderDetail.length ==
-                                                          0) &&
-                                                  !notData
-                                              ? CircularProgressIndicator(
-                                                  color: eTradeMainColor)
-                                              : Text("${PostingData.odCount}"),
-                                        ],
-                                      ),
-                                    ),
+                                    // Padding(
+                                    //   padding: const EdgeInsets.all(4.0),
+                                    //   child: Row(
+                                    //     mainAxisAlignment:
+                                    //         MainAxisAlignment.spaceBetween,
+                                    //     children: [
+                                    //       Text("Total OrderDetail Posted: "),
+                                    //       (PostingData.odCount == 0 ||
+                                    //                   _orderDetail.length ==
+                                    //                       0) &&
+                                    //               !notData
+                                    //           ? CircularProgressIndicator(
+                                    //               color: eTradeMainColor)
+                                    //           : Text("${PostingData.odCount}"),
+                                    //     ],
+                                    //   ),
+                                    // ),
                                     Padding(
                                       padding: const EdgeInsets.all(4.0),
                                       child: Row(
@@ -359,28 +359,28 @@ VALUES
                                         ],
                                       ),
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(4.0),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text("Total SaleDetail Posted: "),
-                                          (PostingData.sdCount == 0 ||
-                                                      _saleDetail.length ==
-                                                          0) &&
-                                                  !notData
-                                              ? SizedBox(
-                                                  width: 12,
-                                                  height: 12,
-                                                  child:
-                                                      CircularProgressIndicator(
-                                                          color:
-                                                              eTradeMainColor))
-                                              : Text("${PostingData.sdCount}"),
-                                        ],
-                                      ),
-                                    ),
+                                    // Padding(
+                                    //   padding: const EdgeInsets.all(4.0),
+                                    //   child: Row(
+                                    //     mainAxisAlignment:
+                                    //         MainAxisAlignment.spaceBetween,
+                                    //     children: [
+                                    //       Text("Total SaleDetail Posted: "),
+                                    //       (PostingData.sdCount == 0 ||
+                                    //                   _saleDetail.length ==
+                                    //                       0) &&
+                                    //               !notData
+                                    //           ? SizedBox(
+                                    //               width: 12,
+                                    //               height: 12,
+                                    //               child:
+                                    //                   CircularProgressIndicator(
+                                    //                       color:
+                                    //                           eTradeMainColor))
+                                    //           : Text("${PostingData.sdCount}"),
+                                    //     ],
+                                    //   ),
+                                    // ),
                                     Padding(
                                       padding: const EdgeInsets.all(4.0),
                                       child: Row(

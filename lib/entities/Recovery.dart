@@ -29,7 +29,7 @@ class Recovery {
     if (list.isNotEmpty) {
       List<Recovery> recoverylist = [];
       var dateStore = DateFormat('yyyy-MM-dd');
-      for (var element in list) {
+      list.forEach((element) {
         Recovery recovery = Recovery(
             amount: 0,
             description: "",
@@ -42,11 +42,16 @@ class Recovery {
         recovery.party.partyId = element['PartyID'];
         recovery.userID = element['UserID'];
         recovery.amount = element['Amount'];
-        recovery.isCashOrCheck = element['isCash'];
-        recovery.description = element['Remarks'];
+        recovery.isCashOrCheck = element['isCash'] == 0
+            ? false
+            : element['isCash'] == false
+                ? false
+                : true;
+        recovery.description =
+            element['Remarks'] == null ? "" : element['Remarks'];
         recovery.dated = dateStore.format(DateTime.parse(element['Dated']));
-        list.add(recovery);
-      }
+        recoverylist.add(recovery);
+      });
       return recoverylist;
     } else {
       return [];

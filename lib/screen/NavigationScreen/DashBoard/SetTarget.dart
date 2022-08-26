@@ -1,3 +1,4 @@
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:eTrade/components/NavigationBar.dart';
 import 'package:eTrade/components/constants.dart';
 import 'package:eTrade/entities/Customer.dart';
@@ -128,7 +129,68 @@ class _SetTargetScreenState extends State<SetTargetScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Set Target'),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('Set Target'),
+              Expanded(
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton2<String>(
+                    isExpanded: true,
+                    buttonPadding: EdgeInsets.symmetric(horizontal: 8),
+                    dropdownDecoration: BoxDecoration(
+                        color: Theme.of(context).scaffoldBackgroundColor,
+                        border: Border.all(
+                          color: Theme.of(context).scaffoldBackgroundColor,
+                        ),
+                        borderRadius: BorderRadius.all(Radius.circular(20))),
+                    buttonDecoration: BoxDecoration(
+                        color: Theme.of(context).scaffoldBackgroundColor,
+                        border: Border.all(
+                          color: Theme.of(context).scaffoldBackgroundColor,
+                        ),
+                        borderRadius: BorderRadius.all(Radius.circular(20))),
+                    hint: Center(
+                      child: Text(
+                        currentUser.userName == ""
+                            ? 'Select User'
+                            : currentUser.userName,
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Theme.of(context).hintColor,
+                        ),
+                      ),
+                    ),
+                    items: userNameList.map((items) {
+                      return DropdownMenuItem<String>(
+                        value: items,
+                        child: Container(
+                          width: double.infinity,
+                          height: double.infinity,
+                          padding: EdgeInsets.all(8),
+                          child: Center(
+                            child: Text(
+                              items,
+                              // style:
+                              //     TextStyle(color: ThemeData.light().cardColor),
+                            ),
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                    onChanged: (value) async {
+                      if (value != null) {
+                        User tuser = await User.getUserID(value);
+
+                        currentUser = tuser;
+                      }
+                    },
+                    buttonHeight: 40,
+                  ),
+                ),
+              )
+            ],
+          ),
           backgroundColor: eTradeMainColor,
         ),
         body: ListView.builder(

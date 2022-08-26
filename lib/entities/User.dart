@@ -68,8 +68,6 @@ class User {
     for (var element in userList) {
       if (element.userName.toUpperCase() == userInp &&
           element.password == passwd) {
-        if (element.userName.toLowerCase() == "admin")
-          MyNavigationBar.isAdmin = true;
         return element;
       }
     }

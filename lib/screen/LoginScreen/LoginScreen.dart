@@ -24,6 +24,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   bool flag = true;
   bool valid = true;
+  bool isHide = true;
   String userInp = "";
   String passwd = "";
 
@@ -137,7 +138,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           height: 20,
                         ),
                         TextFormField(
-                          obscureText: true,
+                          obscureText: isHide,
                           controller: _pdcontroller,
                           onChanged: (value) {
                             setState(() {
@@ -145,17 +146,31 @@ class _LoginScreenState extends State<LoginScreen> {
                             });
                           },
                           decoration: InputDecoration(
-                            border: OutlineInputBorder(
+                              border: OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20)),
+                                  borderSide: BorderSide(width: 30.0)),
+                              focusedBorder: OutlineInputBorder(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(20)),
-                                borderSide: BorderSide(width: 30.0)),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20)),
-                              borderSide: BorderSide(color: eTradeMainColor),
-                            ),
-                            labelText: 'Password',
-                          ),
+                                borderSide: BorderSide(color: eTradeMainColor),
+                              ),
+                              labelText: 'Password',
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  Icons.remove_red_eye,
+                                  color: isHide ? Colors.grey : Colors.black,
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    if (isHide) {
+                                      isHide = false;
+                                    } else {
+                                      isHide = true;
+                                    }
+                                  });
+                                },
+                              )),
                         ),
                         SizedBox(
                           height: 20,
@@ -174,12 +189,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                         });
                                     Future.delayed(Duration(seconds: 2),
                                         () async {
-                                      User usr = await User.CheckExist(
-                                          userInp, passwd);
-
-                                      if (usr.id != 0) {
-                                        if (usr.userName.toLowerCase() ==
+if (.userName.toLowerCase() ==
                                             "admin") {
+                                          MyNavigationBar.isAdmin = true;
                                           // if (usr.userName == "Admin") {
                                           if (!DataBaseDataLoad.isFirstTime) {
                                             await SQLHelper.backupDB();
@@ -195,13 +207,20 @@ class _LoginScreenState extends State<LoginScreen> {
                                           UserSharePreferences.setisAdminOrNot(
                                               true);
                                           UserSharePreferences.setIp(widget.ip);
+                                          UserSharePreferences.setName(
+                                              usr.userName.toUpperCase());
                                           UserSharePreferences.setflag(true);
                                           UserSharePreferences.setmode(false);
                                           await SQLHelper.resetData(
                                               "Sync", false);
                                           await TakeOrderScreen.onLoading(
                                               context, false, true);
-                                        } else {
+                                        }
+                                      User usr = await User.CheckExist(
+                                          userInp, passwd);
+
+                                      if (usr.id != 0) {
+                                         else {
                                           if (!DataBaseDataLoad.isFirstTime) {
                                             await SQLHelper
                                                 .deleteAllTableForAdmin();
@@ -214,6 +233,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                           UserSharePreferences.setisAdminOrNot(
                                               false);
                                           UserSharePreferences.setIp(widget.ip);
+                                          UserSharePreferences.setName(
+                                              usr.userName.toUpperCase());
                                           UserSharePreferences.setflag(true);
                                           UserSharePreferences.setmode(false);
                                           await TakeOrderScreen.onLoading(
