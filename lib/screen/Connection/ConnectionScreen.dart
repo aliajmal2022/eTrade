@@ -6,6 +6,7 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:eTrade/components/CustomNavigator.dart';
 import 'package:eTrade/components/NavigationBar.dart';
 import 'package:eTrade/components/constants.dart';
+import 'package:eTrade/components/drawer.dart';
 import 'package:eTrade/helper/Sql_Connection.dart';
 import 'package:eTrade/components/sharePreferences.dart';
 import 'package:eTrade/entities/Customer.dart';
@@ -17,6 +18,7 @@ import 'package:get/get.dart';
 class ConnectionScreen extends StatefulWidget {
   ConnectionScreen({required this.isConnectionfromdrawer});
   bool isConnectionfromdrawer;
+  static bool isLocal = true;
   @override
   State<ConnectionScreen> createState() => _ConnectionScreenState();
 }
@@ -27,10 +29,12 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
   bool indRun = true;
   final _error = "Please Enter Correct Ip or Near to the Router";
   bool valid = true;
+  bool islocal = true;
   @override
   void initState() {
     setState(() {
       if (widget.isConnectionfromdrawer) {
+        islocal = ConnectionScreen.isLocal;
         _controller.text = UserSharePreferences.getIp();
       }
     });
@@ -84,6 +88,33 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
             ),
             SizedBox(
               height: 50,
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        ConnectionScreen.isLocal
+                            ? "Local DataBase"
+                            : "Online DataBase",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                  Switch(
+                    value: islocal,
+                    onChanged: (value) async {
+                      setState(() {
+                        islocal = value;
+                        ConnectionScreen.isLocal = islocal;
+                      });
+                    },
+                  ),
+                ],
+              ),
             ),
             Expanded(
               flex: 3,
@@ -145,8 +176,9 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
                                   _controller.clear();
                                   Navigator.pop(context);
                                 });
-                                if (widget.isConnectionfromdrawer) {
+                                if (MyDrawer.makeConnection) {
                                   UserSharePreferences.setIp(userIp);
+                                  MyDrawer.makeConnection = false;
                                   Get.to(MyNavigationBar.initializer(0));
                                 } else {
                                   await UserSharePreferences.setAdmin();

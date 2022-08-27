@@ -177,7 +177,7 @@ class DashBoardScreen extends StatefulWidget {
           MonthOrderHistory orderStatic =
               MonthOrderHistory(month: "", amount: 0);
           orderStatic.amount =
-              months[0][staticMonthName[count]]!.toDouble() ?? 0;
+              months[0][staticMonthName[count]].toDouble() ?? 0;
           if (months[0][staticMonthName[count]] > greatestTarget &&
               months[0][staticMonthName[count]] > greatest) {
             greatestTarget = orderStatic.amount.toInt();
@@ -220,22 +220,24 @@ class DashBoardScreen extends StatefulWidget {
 class _DashBoardScreenState extends State<DashBoardScreen>
     with TickerProviderStateMixin {
   updateData() async {
-    await DashBoardScreen.getMonthlyTargetDB(DashBoardScreen.isOrder);
-    DashBoardScreen.dashBoard =
-        await DashBoardScreen.getOrderHistory(DashBoardScreen.isOrder);
-    DashBoardScreen.itemdata =
-        await DashBoardScreen.getTopProduct(DashBoardScreen.isOrder);
-    DashBoardScreen.monthlyList =
-        await DashBoardScreen.getMonthlyRecordDB(DashBoardScreen.isOrder);
-    DashBoardScreen.staticMonths =
-        await DashBoardScreen.getMonthlyTargetDB(DashBoardScreen.isOrder);
+    if (currentUser.userName != "" || !MyNavigationBar.isAdmin) {
+      await DashBoardScreen.getMonthlyTargetDB(DashBoardScreen.isOrder);
+      DashBoardScreen.dashBoard =
+          await DashBoardScreen.getOrderHistory(DashBoardScreen.isOrder);
+      DashBoardScreen.itemdata =
+          await DashBoardScreen.getTopProduct(DashBoardScreen.isOrder);
+      DashBoardScreen.monthlyList =
+          await DashBoardScreen.getMonthlyRecordDB(DashBoardScreen.isOrder);
+      DashBoardScreen.staticMonths =
+          await DashBoardScreen.getMonthlyTargetDB(DashBoardScreen.isOrder);
 
-    setState(() {
-      DashBoardScreen.itemdata;
-      DashBoardScreen.dashBoard;
-      DashBoardScreen.monthlyList;
-      DashBoardScreen.staticMonths;
-    });
+      setState(() {
+        DashBoardScreen.itemdata;
+        DashBoardScreen.dashBoard;
+        DashBoardScreen.monthlyList;
+        DashBoardScreen.staticMonths;
+      });
+    }
   }
 
   int getWorkingDaysInMonth(DateTime date) {
@@ -473,29 +475,32 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                     activeColor: eTradeMainColor,
                     value: DashBoardScreen.isOrder,
                     onChanged: (value) async {
-                      setState(() {
-                        DashBoardScreen.currentMonthSale = 0;
-                        DashBoardScreen.currentMonthTarget = 0;
-                        DashBoardScreen.isOrder = value;
-                      });
-                      DashBoardScreen.dashBoard =
-                          await DashBoardScreen.getOrderHistory(
-                              DashBoardScreen.isOrder);
-                      DashBoardScreen.itemdata =
-                          await DashBoardScreen.getTopProduct(
-                              DashBoardScreen.isOrder);
-                      DashBoardScreen.monthlyList =
-                          await DashBoardScreen.getMonthlyRecordDB(
-                              DashBoardScreen.isOrder);
-                      DashBoardScreen.staticMonths =
-                          await DashBoardScreen.getMonthlyTargetDB(
-                              DashBoardScreen.isOrder);
-                      setState(() {
-                        DashBoardScreen.monthlyList;
-                        DashBoardScreen.staticMonths;
-                        DashBoardScreen.itemdata;
-                        DashBoardScreen.dashBoard;
-                      });
+                      if (currentUser.userName != "" ||
+                          !MyNavigationBar.isAdmin) {
+                        setState(() {
+                          DashBoardScreen.currentMonthSale = 0;
+                          DashBoardScreen.currentMonthTarget = 0;
+                          DashBoardScreen.isOrder = value;
+                        });
+                        DashBoardScreen.dashBoard =
+                            await DashBoardScreen.getOrderHistory(
+                                DashBoardScreen.isOrder);
+                        DashBoardScreen.itemdata =
+                            await DashBoardScreen.getTopProduct(
+                                DashBoardScreen.isOrder);
+                        DashBoardScreen.monthlyList =
+                            await DashBoardScreen.getMonthlyRecordDB(
+                                DashBoardScreen.isOrder);
+                        DashBoardScreen.staticMonths =
+                            await DashBoardScreen.getMonthlyTargetDB(
+                                DashBoardScreen.isOrder);
+                        setState(() {
+                          DashBoardScreen.monthlyList;
+                          DashBoardScreen.staticMonths;
+                          DashBoardScreen.itemdata;
+                          DashBoardScreen.dashBoard;
+                        });
+                      }
                     },
                   ),
                 ],
@@ -518,7 +523,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                       title: AxisTitle(text: "Value"),
                       minimum: 0,
                       maximum: (DashBoardScreen.greatest >
-                                  DashBoardScreen.greatestSale ||
+                                  DashBoardScreen.greatestSale &&
                               DashBoardScreen.greatest >
                                   DashBoardScreen.greatestTarget)
                           ? DashBoardScreen.greatest.toDouble()

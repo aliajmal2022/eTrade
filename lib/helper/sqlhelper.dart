@@ -12,6 +12,7 @@ import 'package:eTrade/entities/SaleDetail.dart';
 import 'package:eTrade/entities/User.dart';
 import 'package:eTrade/screen/NavigationScreen/DashBoard/SetTarget.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:sqflite/sqflite.dart';
@@ -89,7 +90,9 @@ class SQLHelper {
       } else {
         savedDBFile = File('/storage/emulated/0/eTrade_Backup/eTradeUser.db');
       }
-      await savedDBFile.copy('$directory/eTrade.db');
+      // if (await savedDBFile.exists()) {
+      // await savedDBFile.copy('$directory/eTrade.db');
+      // }
     } catch (e) {
       debugPrint(e.toString());
     }
@@ -248,10 +251,10 @@ CREATE TABLE UserTarget(
     print("successfully created UserTarget table");
   }
 
-  Future<int> createUserTarget(UserTarget target) async {
+  Future<int> createUserTarget(UserTarget target, int usrID) async {
     Database db = await instance.database;
     final data = {
-      'UserID': MyNavigationBar.userID,
+      'UserID': usrID,
       'January': target.januaryTarget,
       'February': target.februaryTarget,
       'March': target.marchTarget,
@@ -276,11 +279,12 @@ CREATE TABLE UserTarget(
         "SELECT * FROM OrderDetail WHERE isPosted=0 and  UserID=${MyNavigationBar.userID}");
   }
 
-  static Future<void> updateUserTargetTable(UserTarget userTarget) async {
+  static Future<void> updateUserTargetTable(
+      UserTarget userTarget, int userID) async {
     Database db = await instance.database;
     try {
       await db.execute(
-          "UPDATE [UserTarget] SET January=${userTarget.januaryTarget} , February=${userTarget.februaryTarget},March=${userTarget.marchTarget},April=${userTarget.aprilTarget},May=${userTarget.mayTarget},June=${userTarget.juneTarget},July=${userTarget.julyTarget},August=${userTarget.augustTarget},September=${userTarget.septemberTarget},October=${userTarget.octoberTarget},November=${userTarget.novemberTarget},December=${userTarget.decemberTarget} WHERE ID = 1");
+          "UPDATE [UserTarget] SET January=${userTarget.januaryTarget} , February=${userTarget.februaryTarget},March=${userTarget.marchTarget},April=${userTarget.aprilTarget},May=${userTarget.mayTarget},June=${userTarget.juneTarget},July=${userTarget.julyTarget},August=${userTarget.augustTarget},September=${userTarget.septemberTarget},October=${userTarget.octoberTarget},November=${userTarget.novemberTarget},December=${userTarget.decemberTarget} WHERE UserID = $userID");
     } catch (e) {
       debugPrint('Target is not update');
     }
@@ -519,6 +523,12 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
     };
     return await db.insert('OrderDetail', data,
         conflictAlgorithm: ConflictAlgorithm.replace);
+  }
+
+  static Future<List> getUserTarget(int userID) async {
+    Database db = await instance.database;
+    return await db
+        .rawQuery("SELECT * FROM UserTarget WHERE   UserID=${userID}");
   }
 
   static Future<List> getNotPostedUserTarget() async {
@@ -789,6 +799,14 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
     date = '${splitDate[2]}-${splitDate[1]}-${splitDate[0]}';
     var order;
     DateTime now = DateTime.now();
+    var lastDateofMonth = DateTime(now.year, now.month + 1, 0);
+    var lastDateofPMonth = DateTime(now.year, now.month, 0);
+    var firstDateofMonth =
+        DateFormat("yyyy-MM-dd").format(DateTime(now.year, now.month, 1));
+    var firstDateofPMonth =
+        DateFormat("yyyy-MM-dd").format(DateTime(now.year, now.month - 1, 1));
+    var sameDateOfPMonth = DateFormat("yyyy-MM-dd")
+        .format(DateTime(now.year, now.month - 1, now.day));
     try {
       if (name == "Week") {
         order = await db.rawQuery(
@@ -798,16 +816,16 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
             "SELECT count(s.InvoiceID) FROM Sale as s WHERE s.Dated BETWEEN  DATETIME('$date','-13 day') and DATETIME('$date','-6 day') and  s.UserID=${MyNavigationBar.userID}");
       } else if (name == "Month") {
         order = await db.rawQuery(
-            "SELECT count(s.InvoiceID) FROM Sale as s WHERE s.Dated BETWEEN  DATETIME('$date','${DateTime(now.year, now.month, 1)}') and DATETIME('$date','localtime') and  s.UserID=${MyNavigationBar.userID}");
+            "SELECT count(s.InvoiceID) FROM Sale as s WHERE s.Dated BETWEEN  '$firstDateofMonth' and '$date' and  s.UserID=${MyNavigationBar.userID}");
       } else if (name == "PMonth") {
-        var lastDate = DateTime(now.year, now.month + 1, 0);
-        var currentDate = DateTime(now.year, now.month - 1, 0);
-        if (lastDate == currentDate) {
+        if (now.day == lastDateofMonth.day &&
+            lastDateofMonth.day != lastDateofPMonth.day) {
+          String lastDate = DateFormat("yyyy-MM-dd").format(lastDateofPMonth);
           order = await db.rawQuery(
-              "SELECT count(s.InvoiceID) FROM Sale as s WHERE s.Dated BETWEEN  DATETIME('$date','${DateTime(now.year, now.month - 1, 1)}') and DATETIME('$date','${DateTime(now.year, now.month - 1, now.day)}') and  s.UserID=${MyNavigationBar.userID}");
+              "SELECT count(s.InvoiceID) FROM Sale as s WHERE s.Dated BETWEEN  '$firstDateofPMonth' and '$lastDate' and  s.UserID=${MyNavigationBar.userID}");
         } else {
           order = await db.rawQuery(
-              "SELECT count(s.InvoiceID) FROM Sale as s WHERE s.Dated BETWEEN  DATETIME('$date','${DateTime(now.year, now.month - 1, 1)}') and DATETIME('$date','${DateTime(now.year, now.month - 1, now.day)}') and  s.UserID=${MyNavigationBar.userID}");
+              "SELECT count(s.InvoiceID) FROM Sale as s WHERE s.Dated BETWEEN  '$firstDateofPMonth' and '$sameDateOfPMonth' and  s.UserID=${MyNavigationBar.userID}");
         }
       } else if (name == "Year") {
         order = await db.rawQuery(
@@ -838,6 +856,15 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
     var splitDate = date.split('-');
     date = '${splitDate[2]}-${splitDate[1]}-${splitDate[0]}';
     var order;
+    DateTime now = DateTime.now();
+    var lastDateofMonth = DateTime(now.year, now.month + 1, 0);
+    var lastDateofPMonth = DateTime(now.year, now.month, 0);
+    var firstDateofMonth =
+        DateFormat("yyyy-MM-dd").format(DateTime(now.year, now.month, 1));
+    var firstDateofPMonth =
+        DateFormat("yyyy-MM-dd").format(DateTime(now.year, now.month - 1, 1));
+    var sameDateOfPMonth = DateFormat("yyyy-MM-dd")
+        .format(DateTime(now.year, now.month - 1, now.day));
     try {
       if (name == "Week") {
         order = await db.rawQuery(
@@ -847,10 +874,17 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
             "SELECT count(o.OrderID) FROM [Order] as o WHERE o.Dated BETWEEN  DATETIME('$date','-13 day') and DATETIME('$date','-6 day') and  o.UserID=${MyNavigationBar.userID}");
       } else if (name == "Month") {
         order = await db.rawQuery(
-            "SELECT count(o.OrderID) FROM [Order] as o WHERE o.Dated BETWEEN  DATETIME('$date','-1 month') and DATETIME('$date','localtime') and  o.UserID=${MyNavigationBar.userID}");
+            "SELECT count(o.OrderID) FROM [Order] as o WHERE o.Dated BETWEEN  '$firstDateofMonth' and '$date' and  o.UserID=${MyNavigationBar.userID}");
       } else if (name == "PMonth") {
-        order = await db.rawQuery(
-            "SELECT count(o.OrderID) FROM [Order] as o WHERE o.Dated BETWEEN  DATETIME('$date','-2 month') and DATETIME('$date','-1 month') and  o.UserID=${MyNavigationBar.userID}");
+        if (now.day == lastDateofMonth.day &&
+            lastDateofMonth.day != lastDateofPMonth.day) {
+          String lastDate = DateFormat("yyyy-MM-dd").format(lastDateofPMonth);
+          order = await db.rawQuery(
+              "SELECT count(o.OrderID) FROM [Order] as o WHERE o.Dated BETWEEN  '$firstDateofPMonth' and '$lastDate' and  o.UserID=${MyNavigationBar.userID}");
+        } else {
+          order = await db.rawQuery(
+              "SELECT count(o.OrderID) FROM [Order] as o WHERE o.Dated BETWEEN  '$firstDateofPMonth' and '$sameDateOfPMonth' and  o.UserID=${MyNavigationBar.userID}");
+        }
       } else if (name == "Year") {
         order = await db.rawQuery(
             "SELECT count(o.OrderID) FROM [Order] as o WHERE o.Dated BETWEEN  DATETIME('$date','-1 year') and DATETIME('$date','localtime') and  o.UserID=${MyNavigationBar.userID}");

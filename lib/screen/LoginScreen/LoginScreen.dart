@@ -189,38 +189,42 @@ class _LoginScreenState extends State<LoginScreen> {
                                         });
                                     Future.delayed(Duration(seconds: 2),
                                         () async {
-if (.userName.toLowerCase() ==
-                                            "admin") {
+                                      User usr = User(
+                                          userName: "ADMIN",
+                                          password: "ALLAH",
+                                          id: 0,
+                                          monthlyTarget: 0);
+                                      if (UserSharePreferences.isAdminOrNot(
+                                          usr)) {
+                                        MyNavigationBar.isAdmin = true;
+                                        // if (usr.userName == "Admin") {
+                                        if (!DataBaseDataLoad.isFirstTime) {
+                                          await SQLHelper.backupDB();
                                           MyNavigationBar.isAdmin = true;
-                                          // if (usr.userName == "Admin") {
-                                          if (!DataBaseDataLoad.isFirstTime) {
-                                            await SQLHelper.backupDB();
-                                            MyNavigationBar.isAdmin = true;
-                                            await SQLHelper
-                                                .deleteAllTableForAdmin();
-                                            await SQLHelper
-                                                .createAllTableForAdmin();
-                                          }
-
-                                          await UserSharePreferences.setId(
-                                              usr.id);
-                                          UserSharePreferences.setisAdminOrNot(
-                                              true);
-                                          UserSharePreferences.setIp(widget.ip);
-                                          UserSharePreferences.setName(
-                                              usr.userName.toUpperCase());
-                                          UserSharePreferences.setflag(true);
-                                          UserSharePreferences.setmode(false);
-                                          await SQLHelper.resetData(
-                                              "Sync", false);
-                                          await TakeOrderScreen.onLoading(
-                                              context, false, true);
+                                          await SQLHelper
+                                              .deleteAllTableForAdmin();
+                                          await SQLHelper
+                                              .createAllTableForAdmin();
                                         }
-                                      User usr = await User.CheckExist(
-                                          userInp, passwd);
 
-                                      if (usr.id != 0) {
-                                         else {
+                                        await UserSharePreferences.setId(
+                                            usr.id);
+                                        UserSharePreferences.setisAdminOrNot(
+                                            true);
+                                        UserSharePreferences.setIp(widget.ip);
+                                        UserSharePreferences.setName(
+                                            usr.userName.toUpperCase());
+                                        UserSharePreferences.setflag(true);
+                                        UserSharePreferences.setmode(false);
+                                        await SQLHelper.resetData(
+                                            "Sync", false);
+                                        await TakeOrderScreen.onLoading(
+                                            context, false, true);
+                                      } else {
+                                        usr = await User.CheckExist(
+                                            userInp, passwd);
+
+                                        if (usr.id != 0) {
                                           if (!DataBaseDataLoad.isFirstTime) {
                                             await SQLHelper
                                                 .deleteAllTableForAdmin();
@@ -239,12 +243,12 @@ if (.userName.toLowerCase() ==
                                           UserSharePreferences.setmode(false);
                                           await TakeOrderScreen.onLoading(
                                               context, false, true);
+                                        } else {
+                                          setState(() {
+                                            valid = false;
+                                            Navigator.pop(context);
+                                          });
                                         }
-                                      } else {
-                                        setState(() {
-                                          valid = false;
-                                          Navigator.pop(context);
-                                        });
                                       }
                                     });
                                   },

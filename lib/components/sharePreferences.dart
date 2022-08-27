@@ -1,5 +1,6 @@
 // ignore_for_file: unused_field
 
+import 'package:eTrade/entities/User.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserSharePreferences {
@@ -17,8 +18,9 @@ class UserSharePreferences {
     await setAdminPassword();
   }
 
-  static bool isAdminOrNot(String name, String pass) {
-    return (getAdminName() == name && getAdminPassword() == pass)
+  static bool isAdminOrNot(User user) {
+    return (getAdminName() == user.userName &&
+            getAdminPassword() == user.password)
         ? true
         : false;
   }

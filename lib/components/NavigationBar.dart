@@ -71,17 +71,7 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
   Widget build(BuildContext context) {
     MyNavigationBar.currentIndex = widget.selectedIndex;
     final List<Widget> _pages = MyNavigationBar.isAdmin
-        ? <Widget>[
-            DashBoardScreen(),
-            TakeOrderScreen(
-              list: widget.list,
-              date: widget.date,
-              partyName: widget.partyName,
-              iD: widget.id,
-            ),
-            ViewBookingScreen(),
-            ViewRecoveryScreen()
-          ]
+        ? <Widget>[DashBoardScreen(), ViewBookingScreen(), ViewRecoveryScreen()]
         : <Widget>[
             DashBoardScreen(),
             TakeOrderScreen(
@@ -119,10 +109,6 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
                         GButton(
                           icon: Icons.home,
                           text: 'Home',
-                        ),
-                        GButton(
-                          icon: Icons.edit_note_outlined,
-                          text: 'Take Order',
                         ),
                         GButton(
                           icon: Icons.wysiwyg_outlined,

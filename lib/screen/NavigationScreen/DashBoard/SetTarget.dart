@@ -4,6 +4,8 @@ import 'package:eTrade/components/constants.dart';
 import 'package:eTrade/entities/Customer.dart';
 import 'package:eTrade/entities/User.dart';
 import 'package:eTrade/entities/ViewRecovery.dart';
+import 'package:eTrade/helper/Sql_Connection.dart';
+import 'package:eTrade/helper/onldt_to_local_db.dart';
 import 'package:eTrade/helper/sqlhelper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -14,6 +16,8 @@ import 'package:get/get.dart';
 
 class SetTargetScreen extends StatefulWidget {
   static bool isTargetDataAvailable = false;
+  SetTargetScreen({required this.ping});
+  String ping;
   @override
   State<SetTargetScreen> createState() => _SetTargetScreenState();
 }
@@ -29,6 +33,8 @@ class SetTarget {
 }
 
 class _SetTargetScreenState extends State<SetTargetScreen> {
+  User currentUser = User.initializer();
+  static List<String> userNameList = [];
   List<SetTarget> targetList = [
     SetTarget(
         monthName: "January", target: 0, controller: TextEditingController()),
@@ -54,6 +60,21 @@ class _SetTargetScreenState extends State<SetTargetScreen> {
     SetTarget(
         monthName: "December", target: 0, controller: TextEditingController()),
   ];
+  static List<User> userList = [];
+  static bool isFirstTime = true;
+  List<User> preloadForAdmin() {
+    userList = DataBaseDataLoad.ListOUser;
+    if (userList.isNotEmpty) {
+      isFirstTime = false;
+      for (var element in userList) {
+        if (!element.userName.toLowerCase().contains('admin')) {
+          userNameList.add(element.userName);
+        }
+      }
+      return userList;
+    }
+    return [];
+  }
 
   PreLoadDataBase() async {
     List<String> staticMonthName = [
@@ -72,32 +93,44 @@ class _SetTargetScreenState extends State<SetTargetScreen> {
     ];
     int count;
     List<SetTarget> list = [];
-    var months = await SQLHelper.instance.getTable("UserTarget", "ID");
-
-    setState(() {
-      if (months.isNotEmpty) {
-        SetTargetScreen.isTargetDataAvailable = true;
-        int count;
-        targetList.clear();
-        for (count = 0; count < staticMonthName.length; count++) {
-          SetTarget setTarget = SetTarget(
-              controller: TextEditingController(), monthName: "", target: 0);
-          setTarget.target = months[0][staticMonthName[count]];
-          setTarget.monthName = staticMonthName[count];
-          setTarget.controller.text = setTarget.target.toString();
-          // orderStatic.month = element;
-          targetList.add(setTarget);
-        }
-      } else {
-        SetTargetScreen.isTargetDataAvailable = false;
+    var months = currentUser.userName != ""
+        ? await SQLHelper.getNotPostedUserTarget()
+        : [];
+    if (months.isNotEmpty) {
+      targetList.clear();
+      int count;
+      SetTargetScreen.isTargetDataAvailable = true;
+      for (count = 0; count < staticMonthName.length; count++) {
+        SetTarget setTarget = SetTarget(
+            controller: TextEditingController(), monthName: "", target: 0);
+        setTarget.target = months[0][staticMonthName[count]];
+        setTarget.monthName = staticMonthName[count];
+        setTarget.controller.text = setTarget.target.toString();
+        // orderStatic.month = element;
+        targetList.add(setTarget);
       }
-    });
+    } else {
+      targetList.clear();
+      SetTargetScreen.isTargetDataAvailable = false;
+
+      for (count = 0; count < staticMonthName.length; count++) {
+        SetTarget setTarget = SetTarget(
+            controller: TextEditingController(), monthName: "", target: 0);
+        setTarget.target = 0;
+        setTarget.monthName = staticMonthName[count];
+        setTarget.controller.text = setTarget.target.toString();
+        // orderStatic.month = element;
+        targetList.add(setTarget);
+      }
+    }
   }
 
   @override
   void initState() {
     setState(() {
-      PreLoadDataBase();
+      if (isFirstTime && MyNavigationBar.isAdmin) {
+        preloadForAdmin();
+      }
     });
     super.initState();
   }
@@ -132,7 +165,7 @@ class _SetTargetScreenState extends State<SetTargetScreen> {
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Set Target'),
+              Expanded(child: Text('Set Target')),
               Expanded(
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton2<String>(
@@ -153,7 +186,7 @@ class _SetTargetScreenState extends State<SetTargetScreen> {
                     hint: Center(
                       child: Text(
                         currentUser.userName == ""
-                            ? 'Select User'
+                            ? 'Select SR'
                             : currentUser.userName,
                         style: TextStyle(
                           fontSize: 14,
@@ -181,8 +214,11 @@ class _SetTargetScreenState extends State<SetTargetScreen> {
                     onChanged: (value) async {
                       if (value != null) {
                         User tuser = await User.getUserID(value);
-
-                        currentUser = tuser;
+                        setState(() {
+                          currentUser = tuser;
+                          MyNavigationBar.userID = tuser.id;
+                        });
+                        await PreLoadDataBase();
                       }
                     },
                     buttonHeight: 40,
@@ -215,17 +251,20 @@ class _SetTargetScreenState extends State<SetTargetScreen> {
                             autofocus: true,
                             keyboardType: TextInputType.number,
                             controller: targetList[index].controller,
-                            onChanged: (value) {
-                              setState(() {
-                                if (value.isNotEmpty) {
-                                  targetList[index].target = int.parse(value);
-                                  CheckAnyOneEmpty(targetList);
-                                } else {
-                                  targetList[index].target = 0;
-                                  check = true;
-                                }
-                              });
-                            },
+                            onChanged: currentUser.userName == ""
+                                ? null
+                                : (value) {
+                                    setState(() {
+                                      if (value.isNotEmpty) {
+                                        targetList[index].target =
+                                            int.parse(value);
+                                        CheckAnyOneEmpty(targetList);
+                                      } else {
+                                        targetList[index].target = 0;
+                                        check = true;
+                                      }
+                                    });
+                                  },
                             decoration: InputDecoration(
                               border: const OutlineInputBorder(
                                   borderSide: BorderSide(width: 20.0)),
@@ -266,9 +305,59 @@ class _SetTargetScreenState extends State<SetTargetScreen> {
                   userTarget.octoberTarget = targetList[9].target;
                   userTarget.novemberTarget = targetList[10].target;
                   userTarget.decemberTarget = targetList[11].target;
+
                   SetTargetScreen.isTargetDataAvailable
-                      ? await SQLHelper.updateUserTargetTable(userTarget)
-                      : await SQLHelper.instance.createUserTarget(userTarget);
+                      ? await SQLHelper.updateUserTargetTable(
+                          userTarget, currentUser.id)
+                      : await SQLHelper.instance
+                          .createUserTarget(userTarget, currentUser.id);
+                  try {
+                    var strToList = widget.ping.split(",");
+                    var ip = strToList[0];
+                    var port = strToList[1];
+                    bool isconnected =
+                        await Sql_Connection.connect(context, ip, port);
+                    if (isconnected) {
+                      await Sql_Connection().write("""
+DELETE FROM dbo_m.SaleRapTarget WHERE SRID=${currentUser.id}
+""");
+                      await Sql_Connection().write("""
+INSERT INTO dbo_m.SaleRapTarget
+(
+	SRID,
+	January,
+	February,
+	March,
+	April,
+	May,
+	June,
+	July,
+	August,
+	September,
+	October,
+	November,
+	December
+)
+VALUES
+(
+	${currentUser.id},
+	${userTarget.januaryTarget},
+	${userTarget.februaryTarget},
+	${userTarget.marchTarget},
+	${userTarget.aprilTarget},
+	${userTarget.mayTarget},
+	${userTarget.juneTarget},
+	${userTarget.julyTarget},
+	${userTarget.augustTarget},
+	${userTarget.septemberTarget},
+	${userTarget.octoberTarget},
+	${userTarget.novemberTarget},
+	${userTarget.decemberTarget})
+""");
+                    }
+                  } catch (e) {
+                    debugPrint("error :::::   $e");
+                  }
 
                   Get.off(MyNavigationBar.initializer(0),
                       transition: Transition.rightToLeft);

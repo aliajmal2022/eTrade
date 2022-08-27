@@ -14,6 +14,7 @@ import 'package:eTrade/helper/sqlhelper.dart';
 import 'package:eTrade/entities/Customer.dart';
 import 'package:eTrade/entities/Products.dart';
 import 'package:eTrade/entities/User.dart';
+import 'package:eTrade/screen/Connection/ConnectionScreen.dart';
 import 'package:eTrade/screen/NavigationScreen/Booking/SaleDetailScreen.dart';
 import 'package:eTrade/screen/NavigationScreen/DashBoard/SetTarget.dart';
 import 'package:eTrade/screen/NavigationScreen/Take Order/TakeOrderScreen.dart';
@@ -32,15 +33,21 @@ class Sql_Connection {
     // ip: "92.53.240.78,1433"
     debugPrint("Connecting...");
     try {
-      await SqlConn.connect(
-          ip: ip,
-          port: port,
-          // databaseName: "7495_ePharma",
-          // username: "7495_ePharmaUser",
-          // password: "ePharma@1234");
-      databaseName: "AGENBAKE2021",
-      username: "sa",
-      password: "exapp");
+      if (ConnectionScreen.isLocal) {
+        await SqlConn.connect(
+            ip: ip,
+            port: port,
+            databaseName: "AGENBAKE2021",
+            username: "sa",
+            password: "exapp");
+      } else {
+        await SqlConn.connect(
+            ip: ip,
+            port: port,
+            databaseName: "7495_ePharma",
+            username: "7495_ePharmaUser",
+            password: "ePharma@1234");
+      }
 
       isConnect = true;
       debugPrint("Connected!");

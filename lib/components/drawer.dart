@@ -33,6 +33,7 @@ import 'package:sql_conn/sql_conn.dart';
 
 class MyDrawer extends StatefulWidget {
   static bool isopen = false;
+  static bool makeConnection = false;
   @override
   State<MyDrawer> createState() => _MyDrawerState();
 }
@@ -195,17 +196,18 @@ class _MyDrawerState extends State<MyDrawer>
                 child: Column(
               children: [
                 Expanded(
-                  flex: 5,
-                  child: CircleAvatar(
-                      backgroundColor: Color(0xfffafafa),
-                      maxRadius: 200,
-                      child: Image.asset(
-                        "images/logo.png",
-                        fit: BoxFit.cover,
-                        // width: 100,
-                        // height: 200,
-                      )),
-                ),
+                    flex: 5,
+                    child: Image.asset(
+                      "images/logo.png",
+                      fit: BoxFit.cover,
+                      width: 300,
+                    )
+                    // CircleAvatar(
+                    // // backgroundColor: Color(0xfffafafa),
+                    // backgroundColor: eTradeMainColor,
+                    // maxRadius: 200,
+                    // child: ),
+                    ),
                 Expanded(
                     flex: 1,
                     child: Row(
@@ -214,12 +216,16 @@ class _MyDrawerState extends State<MyDrawer>
                         Text(
                           "User Name : ",
                           style: TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.bold),
+                              color: eTradeMainColor,
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold),
                         ),
                         Text(
                           MyNavigationBar.userName,
                           style: TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.bold),
+                              color: eTradeMainColor,
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold),
                         ),
                       ],
                     ))
@@ -230,356 +236,350 @@ class _MyDrawerState extends State<MyDrawer>
             thickness: 1,
             color: eTradeMainColor,
           ),
-          Padding(
-              padding: const EdgeInsets.all(20),
+          Container(
+              // padding: const EdgeInsets.all(2),
               child: SlideTransition(
-                position: Tween<Offset>(begin: Offset(-1, 0), end: Offset(0, 0))
-                    .animate(_animationController),
-                child: FadeTransition(
-                  opacity: _animationController,
-                  child: Column(
-                    //                 addBoolToSF() async {
-                    // }
+            position: Tween<Offset>(begin: Offset(-1, 0), end: Offset(0, 0))
+                .animate(_animationController),
+            child: FadeTransition(
+              opacity: _animationController,
+              child: Column(
+                //                 addBoolToSF() async {
+                // }
 
-                    children: [
-                      Padding(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 0, horizontal: 20),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
                           children: [
-                            Row(
-                              children: [
-                                Icon(Icons.nightlight_outlined),
-                                Text(
-                                  "Dark Mode",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                              ],
-                            ),
-                            Switch(
-                              value: isSwitched,
-                              onChanged: (value) async {
-                                setState(() {
-                                  isSwitched = value;
-                                  MyApp.isDark = isSwitched;
-                                  MyApp.themeNotifier.value =
-                                      (MyApp.themeNotifier.value ==
-                                              ThemeMode.light)
-                                          ? ThemeMode.dark
-                                          : ThemeMode.light;
-                                });
-                                await UserSharePreferences.setmode(isSwitched);
-                              },
+                            Icon(Icons.nightlight_outlined),
+                            Text(
+                              "Dark Mode",
+                              style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                           ],
                         ),
-                      ),
-                      // MyNavigationBar.isAdmin
-                      //     ? Container()
-                      // :
-
-                      MaterialButton(
-                        onPressed: () {
-                          TakeOrderScreen.isEditOrder = false;
-                          TakeOrderScreen.isEditSale = false;
-                          TakeOrderScreen.isSaleSpot = false;
-                          TakeOrderScreen.isSelected = false;
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      MyNavigationBar.initializer(1)));
-                        },
-                        child: Row(
-                          children: const [
-                            Icon(Icons.bookmark),
-                            Text("Order Booking")
-                          ],
+                        Switch(
+                          value: isSwitched,
+                          onChanged: (value) async {
+                            setState(() {
+                              isSwitched = value;
+                              MyApp.isDark = isSwitched;
+                              MyApp.themeNotifier.value =
+                                  (MyApp.themeNotifier.value == ThemeMode.light)
+                                      ? ThemeMode.dark
+                                      : ThemeMode.light;
+                            });
+                            await UserSharePreferences.setmode(isSwitched);
+                          },
                         ),
-                      ),
-                      MyNavigationBar.isAdmin
-                          ? Container()
-                          : MaterialButton(
-                              onPressed: () async {
-                                await TakeOrderScreen.forSaleInVoice();
-                                TakeOrderScreen.isSaleSpot = true;
-                                TakeOrderScreen.isEditOrder = false;
-                                TakeOrderScreen.isSelected = false;
-                                Navigator.pushAndRemoveUntil(
-                                    context,
-                                    MyCustomRoute(
-                                        slide: "Left",
-                                        builder: (context) =>
-                                            MyNavigationBar.initializer(1)),
-                                    (route) => false);
-                              },
-                              child: Row(
-                                children: const [
-                                  Icon(Icons.bookmark),
-                                  Text("Spot Sale")
-                                ],
-                              ),
-                            ),
-                      MaterialButton(
-                        onPressed: () async {
-                          await TakeOrderScreen.forSaleInVoice();
-                          ViewBookingScreen.isSaleBooking = true;
-                          MyNavigationBar.isAdmin
-                              ? Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MyCustomRoute(
-                                      slide: "Left",
-                                      builder: (context) =>
-                                          MyNavigationBar.initializer(1)),
-                                  (route) => false)
-                              : Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MyCustomRoute(
-                                      slide: "Left",
-                                      builder: (context) =>
-                                          MyNavigationBar.initializer(2)),
-                                  (route) => false);
-                        },
-                        child: Row(
-                          children: const [
-                            Icon(Icons.bookmark),
-                            Text("View Sales")
-                          ],
-                        ),
-                      ),
-                      MyNavigationBar.isAdmin
-                          ? Container()
-                          : MaterialButton(
-                              child: Row(
-                                children: const [
-                                  Icon(Icons.lock_reset),
-                                  Text("Customer Balance")
-                                ],
-                              ),
-                              onPressed: () async {
-                                // Get.off(() => CustomerBalanceScreen());
-                                Navigator.pushAndRemoveUntil(
-                                    context,
-                                    MyCustomRoute(
-                                        builder: (context) =>
-                                            CustomerBalanceScreen(),
-                                        slide: "Left"),
-                                    (route) => false);
-                              }),
-                      MyNavigationBar.isAdmin
-                          ? Container()
-                          : MaterialButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                                Navigator.push(
-                                    context,
-                                    MyCustomRoute(
-                                        slide: "Left",
-                                        builder: (context) =>
-                                            ViewRecoveryScreen()));
-                              },
-                              child: Row(
-                                children: const [
-                                  Icon(Icons.price_change_outlined),
-                                  Text("View Recovery")
-                                ],
-                              ),
-                            ),
-                      MaterialButton(
-                          onPressed: () async {
-                            bool isAvialable = await SQLHelper.isDPBeforeGet();
-                            if (isAvialable && !MyNavigationBar.isAdmin) {
-                              Widget okButton = TextButton(
-                                child: const Text("OK"),
-                                onPressed: () {
-                                  Navigator.pushAndRemoveUntil(
-                                      context,
-                                      MyCustomRoute(
-                                          builder: (context) =>
-                                              MyNavigationBar.initializer(0),
-                                          slide: "Left"),
-                                      (route) => false);
-                                },
-                              );
-                              // set up the AlertDialog
-                              AlertDialog alert = AlertDialog(
-                                title: const Text("Alert!"),
-                                content: const Text(
-                                    "Please post the data to proceed."),
-                                actions: [okButton],
-                              );
-                              // show the dialog
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return alert;
-                                },
-                              );
-                            } else {
-                              if (ping.isNotEmpty) {
-                                var strToList = ping.split(",");
-                                var ip = strToList[0];
-                                var port = strToList[1];
-                                bool isconnected = await Sql_Connection.connect(
-                                    context, ip, port);
-                                if (isconnected) {
-                                  await TakeOrderScreen.onLoading(
-                                      context, true, false);
-                                }
-                              } else {
-                                final snackBar = const SnackBar(
-                                  content: Text(
-                                      "Host unaccessible. Keep your device near to router."),
-                                );
-                                Get.off(MyNavigationBar.initializer(0));
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(snackBar);
-                              }
-                            }
+                      ],
+                    ),
+                  ),
+                  MyNavigationBar.isAdmin
+                      ? Container()
+                      : MaterialButton(
+                          onPressed: () {
+                            TakeOrderScreen.isEditOrder = false;
+                            TakeOrderScreen.isEditSale = false;
+                            TakeOrderScreen.isSaleSpot = false;
+                            TakeOrderScreen.isSelected = false;
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        MyNavigationBar.initializer(1)));
                           },
                           child: Row(
                             children: const [
-                              Icon(Icons.arrow_downward),
-                              Text("Get Data")
+                              Icon(Icons.bookmark),
+                              Text("Order Booking")
                             ],
-                          )),
+                          ),
+                        ),
+                  MyNavigationBar.isAdmin
+                      ? Container()
+                      : MaterialButton(
+                          onPressed: () async {
+                            await TakeOrderScreen.forSaleInVoice();
+                            TakeOrderScreen.isSaleSpot = true;
+                            TakeOrderScreen.isEditOrder = false;
+                            TakeOrderScreen.isSelected = false;
+                            Navigator.pushAndRemoveUntil(
+                                context,
+                                MyCustomRoute(
+                                    slide: "Left",
+                                    builder: (context) =>
+                                        MyNavigationBar.initializer(1)),
+                                (route) => false);
+                          },
+                          child: Row(
+                            children: const [
+                              Icon(Icons.bookmark),
+                              Text("Spot Sale")
+                            ],
+                          ),
+                        ),
+                  MaterialButton(
+                    onPressed: () async {
+                      await TakeOrderScreen.forSaleInVoice();
+                      ViewBookingScreen.isSaleBooking = true;
                       MyNavigationBar.isAdmin
-                          ? Container()
-                          : MaterialButton(
-                              onPressed: () async {
-                                Get.to(PostingData(ping: ping));
-                              },
-                              child: Row(
-                                children: const [
-                                  Icon(Icons.arrow_upward),
-                                  Text("Post Data")
-                                ],
-                              ),
-                            ),
-                      !MyNavigationBar.isAdmin
-                          ? Container()
-                          : MaterialButton(
-                              onPressed: () async {
-                                Get.to(() => SetTargetScreen(),
-                                    transition: Transition.leftToRight);
-                              },
-                              child: Row(
-                                children: const [
-                                  Icon(Icons.exit_to_app),
-                                  Text("Set Target")
-                                ],
-                              ),
-                            ),
-                      MaterialButton(
-                        onPressed: () {
-                          Navigator.push(
+                          ? Navigator.pushAndRemoveUntil(
                               context,
-                              MaterialPageRoute(
-                                  builder: (context) => ConnectionScreen(
-                                        isConnectionfromdrawer: true,
-                                      )));
-                        },
-                        child: Row(
-                          children: const [
-                            Icon(Icons.cable_outlined),
-                            Text("Make Connection")
-                          ],
-                        ),
-                      ),
-                      MaterialButton(
-                        onPressed: () async {
-                          showBackupAlertDialog(context);
-                        },
-                        child: Row(
-                          children: const [
-                            Icon(Icons.backup),
-                            Text("Backup Data")
-                          ],
-                        ),
-                      ),
-                      MaterialButton(
-                        onPressed: () async {
-                          showRestoreAlertDialog(context);
-                        },
-                        child: Row(
-                          children: const [
-                            Icon(Icons.restore),
-                            Text("Restore Data")
-                          ],
-                        ),
-                      ),
-                      MaterialButton(
-                        onPressed:
-                            // null,
-                            () async {
-                          File file = File('${SQLHelper.directory}/eTrade.db');
-                          if (await file.exists()) {
-                            await Share.shareFiles([(file.path)],
-                                text: "Etrade Database");
-                          }
-                        },
-                        child: Row(
-                          children: const [
-                            Icon(Icons.share),
-                            Text("Share DataBase")
-                          ],
-                        ),
-                      ),
-                      MaterialButton(
+                              MyCustomRoute(
+                                  slide: "Left",
+                                  builder: (context) =>
+                                      MyNavigationBar.initializer(1)),
+                              (route) => false)
+                          : Navigator.pushAndRemoveUntil(
+                              context,
+                              MyCustomRoute(
+                                  slide: "Left",
+                                  builder: (context) =>
+                                      MyNavigationBar.initializer(2)),
+                              (route) => false);
+                    },
+                    child: Row(
+                      children: const [
+                        Icon(Icons.bookmark),
+                        Text("View Sales")
+                      ],
+                    ),
+                  ),
+                  MyNavigationBar.isAdmin
+                      ? Container()
+                      : MaterialButton(
                           child: Row(
                             children: const [
                               Icon(Icons.lock_reset),
-                              Text("Master Reset")
+                              Text("Customer Balance")
                             ],
                           ),
                           onPressed: () async {
-                            await showMasterResetAlertDialog(context);
+                            // Get.off(() => CustomerBalanceScreen());
+                            Navigator.pushAndRemoveUntil(
+                                context,
+                                MyCustomRoute(
+                                    builder: (context) =>
+                                        CustomerBalanceScreen(),
+                                    slide: "Left"),
+                                (route) => false);
                           }),
-                      MaterialButton(
-                        onPressed: () async {
-                          Get.to(() => AboutScreen(),
-                              transition: Transition.leftToRight);
-                        },
-                        child: Row(
-                          children: const [
-                            Icon(Icons.info_outline),
-                            Text("About Us")
-                          ],
+                  MyNavigationBar.isAdmin
+                      ? Container()
+                      : MaterialButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                            Navigator.push(
+                                context,
+                                MyCustomRoute(
+                                    slide: "Left",
+                                    builder: (context) =>
+                                        ViewRecoveryScreen()));
+                          },
+                          child: Row(
+                            children: const [
+                              Icon(Icons.price_change_outlined),
+                              Text("View Recovery")
+                            ],
+                          ),
                         ),
-                      ),
-                      // MyNavigationBar.isAdmin?Container():
-                      MaterialButton(
-                        onPressed: () async {
-                          // await SQLHelper.backupDB();
-                          await SQLHelper.backupDB();
-                          if (MyNavigationBar.isAdmin) {
-                            MyNavigationBar.isAdmin = false;
-                            UserSharePreferences.setisAdminOrNot(false);
-                            UserSharePreferences.setflag(false);
+                  MaterialButton(
+                      onPressed: () async {
+                        bool isAvialable = await SQLHelper.isDPBeforeGet();
+                        if (isAvialable && !MyNavigationBar.isAdmin) {
+                          Widget okButton = TextButton(
+                            child: const Text("OK"),
+                            onPressed: () {
+                              Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MyCustomRoute(
+                                      builder: (context) =>
+                                          MyNavigationBar.initializer(0),
+                                      slide: "Left"),
+                                  (route) => false);
+                            },
+                          );
+                          // set up the AlertDialog
+                          AlertDialog alert = AlertDialog(
+                            title: const Text("Alert!"),
+                            content:
+                                const Text("Please post the data to proceed."),
+                            actions: [okButton],
+                          );
+                          // show the dialog
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return alert;
+                            },
+                          );
+                        } else {
+                          if (ping.isNotEmpty) {
+                            var strToList = ping.split(",");
+                            var ip = strToList[0];
+                            var port = strToList[1];
+                            bool isconnected =
+                                await Sql_Connection.connect(context, ip, port);
+                            if (isconnected) {
+                              await TakeOrderScreen.onLoading(
+                                  context, true, false);
+                            }
+                          } else {
+                            final snackBar = const SnackBar(
+                              content: Text(
+                                  "Host unaccessible. Keep your device near to router."),
+                            );
+                            Get.off(MyNavigationBar.initializer(0));
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar);
                           }
-                          await SQLHelper.deleteAllTableForAdmin();
-                          Navigator.pushAndRemoveUntil(
-                              context,
-                              MyCustomRoute(
-                                  builder: (context) => ConnectionScreen(
-                                        isConnectionfromdrawer: true,
-                                      ),
-                                  slide: "Left"),
-                              (route) => false);
-                          SQLHelper.tablenotPosted();
-                        },
-                        child: Row(
-                          children: const [
-                            Icon(Icons.exit_to_app),
-                            Text("Logout")
-                          ],
+                        }
+                      },
+                      child: Row(
+                        children: const [
+                          Icon(Icons.arrow_downward),
+                          Text("Get Data")
+                        ],
+                      )),
+                  MyNavigationBar.isAdmin
+                      ? Container()
+                      : MaterialButton(
+                          onPressed: () async {
+                            Get.to(PostingData(ping: ping));
+                          },
+                          child: Row(
+                            children: const [
+                              Icon(Icons.arrow_upward),
+                              Text("Post Data")
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                  !MyNavigationBar.isAdmin
+                      ? Container()
+                      : MaterialButton(
+                          onPressed: () async {
+                            Get.to(
+                                () => SetTargetScreen(
+                                      ping: ping,
+                                    ),
+                                transition: Transition.leftToRight);
+                          },
+                          child: Row(
+                            children: const [
+                              Icon(Icons.exit_to_app),
+                              Text("Set Target")
+                            ],
+                          ),
+                        ),
+                  MaterialButton(
+                    onPressed: () {
+                      MyDrawer.makeConnection = true;
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ConnectionScreen(
+                                    isConnectionfromdrawer: true,
+                                  )));
+                    },
+                    child: Row(
+                      children: const [
+                        Icon(Icons.cable_outlined),
+                        Text("Make Connection")
+                      ],
+                    ),
                   ),
-                ),
-              )),
+                  MaterialButton(
+                    onPressed: () async {
+                      showBackupAlertDialog(context);
+                    },
+                    child: Row(
+                      children: const [Icon(Icons.backup), Text("Backup Data")],
+                    ),
+                  ),
+                  MaterialButton(
+                    onPressed: () async {
+                      showRestoreAlertDialog(context);
+                    },
+                    child: Row(
+                      children: const [
+                        Icon(Icons.restore),
+                        Text("Restore Data")
+                      ],
+                    ),
+                  ),
+                  MaterialButton(
+                    onPressed:
+                        // null,
+                        () async {
+                      File file = File('${SQLHelper.directory}/eTrade.db');
+                      if (await file.exists()) {
+                        await Share.shareFiles([(file.path)],
+                            text: "Etrade Database");
+                      }
+                    },
+                    child: Row(
+                      children: const [
+                        Icon(Icons.share),
+                        Text("Share DataBase")
+                      ],
+                    ),
+                  ),
+                  MaterialButton(
+                      child: Row(
+                        children: const [
+                          Icon(Icons.lock_reset),
+                          Text("Master Reset")
+                        ],
+                      ),
+                      onPressed: () async {
+                        await showMasterResetAlertDialog(context);
+                      }),
+                  MaterialButton(
+                    onPressed: () async {
+                      Get.to(() => AboutScreen(),
+                          transition: Transition.leftToRight);
+                    },
+                    child: Row(
+                      children: const [
+                        Icon(Icons.info_outline),
+                        Text("About Us")
+                      ],
+                    ),
+                  ),
+                  // MyNavigationBar.isAdmin?Container():
+                  MaterialButton(
+                    onPressed: () async {
+                      // await SQLHelper.backupDB();
+                      await SQLHelper.backupDB();
+                      if (MyNavigationBar.isAdmin) {
+                        MyNavigationBar.isAdmin = false;
+                        UserSharePreferences.setisAdminOrNot(false);
+                        UserSharePreferences.setflag(false);
+                      }
+                      await SQLHelper.deleteAllTableForAdmin();
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MyCustomRoute(
+                              builder: (context) => ConnectionScreen(
+                                    isConnectionfromdrawer: true,
+                                  ),
+                              slide: "Left"),
+                          (route) => false);
+                      // SQLHelper.tablenotPosted();
+                    },
+                    child: Row(
+                      children: const [Icon(Icons.exit_to_app), Text("Logout")],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          )),
         ],
       ),
     );
