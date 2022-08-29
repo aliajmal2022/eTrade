@@ -1,9 +1,9 @@
-import 'package:eTrade/entities/Order.dart';
-import 'package:eTrade/helper/Sql_Connection.dart';
-import 'package:eTrade/helper/sqlhelper.dart';
-import 'package:eTrade/entities/Customer.dart';
-import 'package:eTrade/entities/Products.dart';
-import 'package:eTrade/screen/NavigationScreen/Booking/ViewBookingScreen.dart';
+import 'package:etrade/entities/Order.dart';
+import 'package:etrade/helper/Sql_Connection.dart';
+import 'package:etrade/helper/sqlhelper.dart';
+import 'package:etrade/entities/Customer.dart';
+import 'package:etrade/entities/Products.dart';
+import 'package:etrade/screen/NavigationScreen/Booking/ViewBookingScreen.dart';
 import 'package:intl/intl.dart';
 
 class OrderDetail {

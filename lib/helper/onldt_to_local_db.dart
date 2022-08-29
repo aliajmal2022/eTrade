@@ -1,6 +1,8 @@
-import 'package:eTrade/entities/Customer.dart';
-import 'package:eTrade/entities/Products.dart';
-import 'package:eTrade/entities/User.dart';
+import 'package:etrade/components/NavigationBar.dart';
+import 'package:etrade/entities/Customer.dart';
+import 'package:etrade/entities/Products.dart';
+import 'package:etrade/entities/User.dart';
+import 'package:etrade/screen/NavigationScreen/DashBoard/SetTarget.dart';
 
 class DataBaseDataLoad {
   static bool isFirstTime = false;
@@ -13,7 +15,6 @@ class DataBaseDataLoad {
       ListOProduct = await Product.ProductLOdb(true);
       ListOCustomer = await Customer.CustomerLOdb(true);
       PartiesName = Customer.customerList(ListOCustomer);
-
       ListOUser = await User.UserList(true);
     } catch (e) {
       isFirstTime = true;

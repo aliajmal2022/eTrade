@@ -1,18 +1,18 @@
 import 'dart:math';
 
-import 'package:eTrade/components/CustomNavigator.dart';
-import 'package:eTrade/components/NavigationBar.dart';
-import 'package:eTrade/components/constants.dart';
-import 'package:eTrade/screen/NavigationScreen/Booking/components/SearchListViewBooking.dart';
-import 'package:eTrade/screen/NavigationScreen/Booking/components/ViewBookingTabBar.dart';
-import 'package:eTrade/components/drawer.dart';
-import 'package:eTrade/helper/sqlhelper.dart';
-import 'package:eTrade/entities/Customer.dart';
-import 'package:eTrade/entities/Edit.dart';
-import 'package:eTrade/entities/ViewBooking.dart';
-import 'package:eTrade/entities/ViewRecovery.dart';
-import 'package:eTrade/screen/NavigationScreen/Take%20Order/TakeOrderScreen.dart';
-import 'package:eTrade/screen/NavigationScreen/Booking/OrderDetailScreen.dart';
+import 'package:etrade/components/CustomNavigator.dart';
+import 'package:etrade/components/NavigationBar.dart';
+import 'package:etrade/components/constants.dart';
+import 'package:etrade/screen/NavigationScreen/Booking/components/SearchListViewBooking.dart';
+import 'package:etrade/screen/NavigationScreen/Booking/components/ViewBookingTabBar.dart';
+import 'package:etrade/components/drawer.dart';
+import 'package:etrade/helper/sqlhelper.dart';
+import 'package:etrade/entities/Customer.dart';
+import 'package:etrade/entities/Edit.dart';
+import 'package:etrade/entities/ViewBooking.dart';
+import 'package:etrade/entities/ViewRecovery.dart';
+import 'package:etrade/screen/NavigationScreen/Take%20Order/TakeOrderScreen.dart';
+import 'package:etrade/screen/NavigationScreen/Booking/OrderDetailScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -61,7 +61,7 @@ class _ViewBookingScreenState extends State<ViewBookingScreen>
       child: Scaffold(
           key: _scaffoldKey,
           appBar: AppBar(
-            backgroundColor: eTradeMainColor,
+            backgroundColor: etradeMainColor,
             toolbarHeight: 80,
             automaticallyImplyLeading: false,
             bottom: TabBar(

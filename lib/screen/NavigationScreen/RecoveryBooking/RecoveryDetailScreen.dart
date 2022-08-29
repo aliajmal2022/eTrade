@@ -1,14 +1,14 @@
 import 'package:dart_ping/dart_ping.dart';
-import 'package:eTrade/components/constants.dart';
-import 'package:eTrade/screen/NavigationScreen/Take%20Order/components/AddItemModelSheet.dart';
-import 'package:eTrade/components/NavigationBar.dart';
-import 'package:eTrade/helper/sqlhelper.dart';
-import 'package:eTrade/entities/Customer.dart';
-import 'package:eTrade/entities/Order.dart';
-import 'package:eTrade/entities/Products.dart';
-import 'package:eTrade/entities/ViewBooking.dart';
-import 'package:eTrade/entities/ViewRecovery.dart';
-import 'package:eTrade/screen/NavigationScreen/Booking/ViewBookingScreen.dart';
+import 'package:etrade/components/constants.dart';
+import 'package:etrade/screen/NavigationScreen/Take%20Order/components/AddItemModelSheet.dart';
+import 'package:etrade/components/NavigationBar.dart';
+import 'package:etrade/helper/sqlhelper.dart';
+import 'package:etrade/entities/Customer.dart';
+import 'package:etrade/entities/Order.dart';
+import 'package:etrade/entities/Products.dart';
+import 'package:etrade/entities/ViewBooking.dart';
+import 'package:etrade/entities/ViewRecovery.dart';
+import 'package:etrade/screen/NavigationScreen/Booking/ViewBookingScreen.dart';
 import "package:flutter/material.dart";
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -36,7 +36,7 @@ class _RecoveryDetailScreenState extends State<RecoveryDetailScreen> {
               bottom: Radius.circular(30),
             ),
           ),
-          backgroundColor: eTradeMainColor,
+          backgroundColor: etradeMainColor,
           toolbarHeight: 80,
           title: Text(
             'Recovery Detail',
@@ -166,7 +166,7 @@ class _RecoveryDetailScreenState extends State<RecoveryDetailScreen> {
                       ),
                       Divider(
                         thickness: 2,
-                        color: eTradeMainColor,
+                        color: etradeMainColor,
                       ),
                     ],
                   ),

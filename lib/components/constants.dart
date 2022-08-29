@@ -2,11 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-// const Color eTradeMainColor = Color(0xff00620b);
-// const Color eTradeMainColor = Color(0xff00BBFF);
-const Color eTradeMainColor = Colors.blue;
-const Color eTradeRed = Color(0xffde0000);
-const Color eTradeBlue = Color(0xff00174b);
+// const Color etradeMainColor = Color(0xff00620b);
+// const Color etradeMainColor = Color(0xff00BBFF);
+const Color etradeMainColor = Colors.blue;
+const Color etradeRed = Color(0xffde0000);
+const Color etradeBlue = Color(0xff00174b);
 
 final formatter = NumberFormat('#,###,000');
 

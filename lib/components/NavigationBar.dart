@@ -1,14 +1,14 @@
-import 'package:eTrade/components/constants.dart';
-import 'package:eTrade/components/drawer.dart';
-import 'package:eTrade/components/sharePreferences.dart';
-import 'package:eTrade/entities/Customer.dart';
-import 'package:eTrade/entities/Edit.dart';
-import 'package:eTrade/entities/ViewRecovery.dart';
-import 'package:eTrade/screen/NavigationScreen/DashBoard/DashboardScreen.dart';
-import 'package:eTrade/screen/NavigationScreen/RecoveryBooking/ViewRecoveryScreen.dart';
-import 'package:eTrade/screen/NavigationScreen/Take%20Order/TakeOrderScreen.dart';
-import 'package:eTrade/screen/NavigationScreen/RecoveryBooking/RecoveryScreen.dart';
-import 'package:eTrade/screen/NavigationScreen/Booking/ViewBookingScreen.dart';
+import 'package:etrade/components/constants.dart';
+import 'package:etrade/components/drawer.dart';
+import 'package:etrade/components/sharePreferences.dart';
+import 'package:etrade/entities/Customer.dart';
+import 'package:etrade/entities/Edit.dart';
+import 'package:etrade/entities/ViewRecovery.dart';
+import 'package:etrade/screen/NavigationScreen/DashBoard/DashboardScreen.dart';
+import 'package:etrade/screen/NavigationScreen/RecoveryBooking/ViewRecoveryScreen.dart';
+import 'package:etrade/screen/NavigationScreen/Take%20Order/TakeOrderScreen.dart';
+import 'package:etrade/screen/NavigationScreen/RecoveryBooking/RecoveryScreen.dart';
+import 'package:etrade/screen/NavigationScreen/Booking/ViewBookingScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
@@ -94,14 +94,14 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
           child: Container(
             decoration: BoxDecoration(
                 border: Border(
-              top: BorderSide(width: 1.5, color: eTradeMainColor),
+              top: BorderSide(width: 1.5, color: etradeMainColor),
             )),
             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
             child: GNav(
                 selectedIndex: MyNavigationBar.currentIndex,
                 onTabChange: _onItemTapped,
                 activeColor: Colors.white,
-                tabBackgroundColor: eTradeMainColor,
+                tabBackgroundColor: etradeMainColor,
                 gap: 8,
                 padding: EdgeInsets.all(14),
                 tabs: MyNavigationBar.isAdmin

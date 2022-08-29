@@ -1,24 +1,23 @@
 import 'dart:convert';
-import 'dart:ffi';
 import 'dart:io';
 import 'package:dart_ping/dart_ping.dart';
-import 'package:eTrade/components/NavigationBar.dart';
-import 'package:eTrade/components/sharePreferences.dart';
-import 'package:eTrade/entities/Order.dart';
-import 'package:eTrade/entities/OrderDetail.dart';
-import 'package:eTrade/entities/Recovery.dart';
-import 'package:eTrade/entities/Sale.dart';
-import 'package:eTrade/entities/SaleDetail.dart';
-import 'package:eTrade/helper/onldt_to_local_db.dart';
-import 'package:eTrade/helper/sqlhelper.dart';
-import 'package:eTrade/entities/Customer.dart';
-import 'package:eTrade/entities/Products.dart';
-import 'package:eTrade/entities/User.dart';
-import 'package:eTrade/screen/Connection/ConnectionScreen.dart';
-import 'package:eTrade/screen/NavigationScreen/Booking/SaleDetailScreen.dart';
-import 'package:eTrade/screen/NavigationScreen/DashBoard/SetTarget.dart';
-import 'package:eTrade/screen/NavigationScreen/Take Order/TakeOrderScreen.dart';
-import 'package:eTrade/screen/NavigationScreen/RecoveryBooking/RecoveryScreen.dart';
+import 'package:etrade/components/NavigationBar.dart';
+import 'package:etrade/components/sharePreferences.dart';
+import 'package:etrade/entities/Order.dart';
+import 'package:etrade/entities/OrderDetail.dart';
+import 'package:etrade/entities/Recovery.dart';
+import 'package:etrade/entities/Sale.dart';
+import 'package:etrade/entities/SaleDetail.dart';
+import 'package:etrade/helper/onldt_to_local_db.dart';
+import 'package:etrade/helper/sqlhelper.dart';
+import 'package:etrade/entities/Customer.dart';
+import 'package:etrade/entities/Products.dart';
+import 'package:etrade/entities/User.dart';
+import 'package:etrade/screen/Connection/ConnectionScreen.dart';
+import 'package:etrade/screen/NavigationScreen/Booking/SaleDetailScreen.dart';
+import 'package:etrade/screen/NavigationScreen/DashBoard/SetTarget.dart';
+import 'package:etrade/screen/NavigationScreen/Take Order/TakeOrderScreen.dart';
+import 'package:etrade/screen/NavigationScreen/RecoveryBooking/RecoveryScreen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -101,43 +100,26 @@ class Sql_Connection {
           await SQLHelper.instance.createItem(element);
         });
       }
+      if (!MyNavigationBar.isAdmin) {
+        UserTarget userTarget = await UserTarget.getUserTarget();
+        await SQLHelper.instance.createUserTargetForAdmin(userTarget);
+      } else {
+        List<UserTarget> LOUserTarget = await UserTarget.getListUserTarget();
+        LOUserTarget.forEach((element) async {
+          await SQLHelper.instance.createUserTargetForAdmin(element);
+        });
+      }
       if (MyNavigationBar.isAdmin) {
         List<Order> LOOrder = [];
         List<OrderDetail> LOOrderDetail = [];
         List<Sale> LOSale = [];
-        List<UserTarget> LOUserTarget = [];
         List<SaleDetail> LOSaleDetail = [];
         List<Recovery> LORecovey = [];
-        List userTargetList =
-            await Sql_Connection().read("Select * from dbo_m.SaleRapTarget") ??
-                [];
-        if (userTargetList.isNotEmpty) {
-          for (int i = 0; i < userTargetList.length; i++) {
-            UserTarget userTarget = UserTarget.initializer();
-            userTarget.userID = userTargetList[i]['SRID'];
-            userTarget.januaryTarget = userTargetList[i]['January'];
-            userTarget.februaryTarget = userTargetList[i]['February'];
-            userTarget.marchTarget = userTargetList[i]['March'];
-            userTarget.aprilTarget = userTargetList[i]['April'];
-            userTarget.mayTarget = userTargetList[i]['May'];
-            userTarget.juneTarget = userTargetList[i]['June'];
-            userTarget.julyTarget = userTargetList[i]['July'];
-            userTarget.augustTarget = userTargetList[i]['August'];
-            userTarget.septemberTarget = userTargetList[i]['September'];
-            userTarget.octoberTarget = userTargetList[i]['October'];
-            userTarget.novemberTarget = userTargetList[i]['November'];
-            userTarget.decemberTarget = userTargetList[i]['December'];
-            LOUserTarget.add(userTarget);
-          }
-        }
         LOOrder = await Order.OrderForAdmin(false);
         LOOrderDetail = await OrderDetail.OrderDetailForAdmin(false);
         LOSale = await Sale.SaleForAdmin(false);
         LOSaleDetail = await SaleDetail.SaleDetailForAdmin(false);
         LORecovey = await Recovery.RecoveryForAdmin(false);
-        LOUserTarget.forEach((element) async {
-          await SQLHelper.instance.createUserTargetForAdmin(element);
-        });
 
         LOOrder.forEach((element) async {
           await SQLHelper.instance.createOrderForAdmin(element);

@@ -1,10 +1,10 @@
-import 'package:eTrade/components/NavigationBar.dart';
-import 'package:eTrade/components/constants.dart';
-import 'package:eTrade/components/sharePreferences.dart';
-import 'package:eTrade/helper/sqlhelper.dart';
-import 'package:eTrade/screen/Connection/ConnectionScreen.dart';
-import 'package:eTrade/screen/NavigationScreen/Take%20Order/TakeOrderScreen.dart';
-import 'package:eTrade/screen/SplashScreen/SplashScreen.dart';
+import 'package:etrade/components/NavigationBar.dart';
+import 'package:etrade/components/constants.dart';
+import 'package:etrade/components/sharePreferences.dart';
+import 'package:etrade/helper/sqlhelper.dart';
+import 'package:etrade/screen/Connection/ConnectionScreen.dart';
+import 'package:etrade/screen/NavigationScreen/Take%20Order/TakeOrderScreen.dart';
+import 'package:etrade/screen/SplashScreen/SplashScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'dart:core';
@@ -54,13 +54,13 @@ class _MyAppState extends State<MyApp> {
         valueListenable: MyApp.themeNotifier,
         builder: (context, ThemeMode currentMode, __) {
           return GetMaterialApp(
-            title: 'eTrade',
+            title: 'etrade',
             debugShowCheckedModeBanner: false,
             theme: ThemeData(fontFamily: 'NunitoSans'),
             darkTheme: ThemeData(
                 textSelectionTheme: TextSelectionThemeData(
-                    cursorColor: eTradeMainColor,
-                    selectionColor: eTradeMainColor),
+                    cursorColor: etradeMainColor,
+                    selectionColor: etradeMainColor),
                 brightness: Brightness.dark,
                 fontFamily: 'NunitoSans'),
             themeMode: currentMode,

@@ -1,10 +1,10 @@
-import 'package:eTrade/components/CustomNavigator.dart';
-import 'package:eTrade/components/NavigationBar.dart';
-import 'package:eTrade/components/constants.dart';
-import 'package:eTrade/entities/Customer.dart';
-import 'package:eTrade/entities/ViewRecovery.dart';
-import 'package:eTrade/helper/onldt_to_local_db.dart';
-import 'package:eTrade/screen/NavigationScreen/RecoveryBooking/CustomerBalance.dart';
+import 'package:etrade/components/CustomNavigator.dart';
+import 'package:etrade/components/NavigationBar.dart';
+import 'package:etrade/components/constants.dart';
+import 'package:etrade/entities/Customer.dart';
+import 'package:etrade/entities/ViewRecovery.dart';
+import 'package:etrade/helper/onldt_to_local_db.dart';
+import 'package:etrade/screen/NavigationScreen/RecoveryBooking/CustomerBalance.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';

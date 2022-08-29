@@ -1,9 +1,9 @@
-import 'package:eTrade/components/CustomNavigator.dart';
-import 'package:eTrade/components/NavigationBar.dart';
-import 'package:eTrade/components/constants.dart';
-import 'package:eTrade/entities/ViewRecovery.dart';
-import 'package:eTrade/helper/onldt_to_local_db.dart';
-import 'package:eTrade/screen/NavigationScreen/RecoveryBooking/searchCustomerBalance.dart';
+import 'package:etrade/components/CustomNavigator.dart';
+import 'package:etrade/components/NavigationBar.dart';
+import 'package:etrade/components/constants.dart';
+import 'package:etrade/entities/ViewRecovery.dart';
+import 'package:etrade/helper/onldt_to_local_db.dart';
+import 'package:etrade/screen/NavigationScreen/RecoveryBooking/searchCustomerBalance.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -39,7 +39,7 @@ class _CustomerBalanceScreenState extends State<CustomerBalanceScreen> {
                       },
                       icon: Icon(
                         Icons.arrow_back,
-                        color: eTradeMainColor,
+                        color: etradeMainColor,
                       ),
                     ),
                     // Expanded(child: Text('Customer Balance')),
@@ -57,18 +57,18 @@ class _CustomerBalanceScreenState extends State<CustomerBalanceScreen> {
                               contentPadding: EdgeInsets.symmetric(
                                   vertical: 13, horizontal: 20),
                               enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: eTradeMainColor),
+                                borderSide: BorderSide(color: etradeMainColor),
                               ),
                               focusedBorder: OutlineInputBorder(
                                 // borderRadius: BorderRadius.circular(20),
-                                borderSide: BorderSide(color: eTradeMainColor),
+                                borderSide: BorderSide(color: etradeMainColor),
                               ),
                               labelText: 'Search Customer',
-                              // labelStyle: TextStyle(color: eTradeMainColor),
+                              // labelStyle: TextStyle(color: etradeMainColor),
                               suffixIcon: Icon(
                                 Icons.search,
                                 // color:
-                                //  eTradeMainColor,
+                                //  etradeMainColor,
                               ),
                             ),
                           )),
@@ -88,7 +88,7 @@ class _CustomerBalanceScreenState extends State<CustomerBalanceScreen> {
                                 style: TextStyle(
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold,
-                                    color: eTradeMainColor),
+                                    color: etradeMainColor),
                               )),
                           Expanded(
                               flex: 1,
@@ -97,13 +97,13 @@ class _CustomerBalanceScreenState extends State<CustomerBalanceScreen> {
                                       style: TextStyle(
                                           fontSize: 15,
                                           fontWeight: FontWeight.bold,
-                                          color: eTradeMainColor)))),
+                                          color: etradeMainColor)))),
                           Expanded(flex: 1, child: Center(child: Text(''))),
                         ],
                       ),
                     ),
                     Divider(
-                      color: eTradeMainColor,
+                      color: etradeMainColor,
                       thickness: 1.5,
                       height: 10,
                     ),
@@ -127,7 +127,7 @@ class _CustomerBalanceScreenState extends State<CustomerBalanceScreen> {
               //             style: TextStyle(
               //                 fontSize: 15,
               //                 fontWeight: FontWeight.bold,
-              //                 color: eTradeMainColor),
+              //                 color: etradeMainColor),
               //           )),
               //       Expanded(
               //           flex: 1,
@@ -136,13 +136,13 @@ class _CustomerBalanceScreenState extends State<CustomerBalanceScreen> {
               //                   style: TextStyle(
               //                       fontSize: 15,
               //                       fontWeight: FontWeight.bold,
-              //                       color: eTradeMainColor)))),
+              //                       color: etradeMainColor)))),
               //       Expanded(flex: 1, child: Center(child: Text(''))),
               //     ],
               //   ),
               // ),
               // Divider(
-              //   color: eTradeMainColor,
+              //   color: etradeMainColor,
               //   thickness: 1.5,
               //   height: 10,
               // ),

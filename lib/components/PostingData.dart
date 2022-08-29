@@ -1,13 +1,12 @@
-import 'dart:ffi';
 
-import 'package:eTrade/components/CustomNavigator.dart';
-import 'package:eTrade/components/NavigationBar.dart';
-import 'package:eTrade/components/constants.dart';
-import 'package:eTrade/components/drawer.dart';
-import 'package:eTrade/entities/Customer.dart';
-import 'package:eTrade/entities/ViewRecovery.dart';
-import 'package:eTrade/helper/Sql_Connection.dart';
-import 'package:eTrade/helper/sqlhelper.dart';
+import 'package:etrade/components/CustomNavigator.dart';
+import 'package:etrade/components/NavigationBar.dart';
+import 'package:etrade/components/constants.dart';
+import 'package:etrade/components/drawer.dart';
+import 'package:etrade/entities/Customer.dart';
+import 'package:etrade/entities/ViewRecovery.dart';
+import 'package:etrade/helper/Sql_Connection.dart';
+import 'package:etrade/helper/sqlhelper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sql_conn/sql_conn.dart';
@@ -47,7 +46,7 @@ class _PostingDataState extends State<PostingData>
     _party = await SQLHelper.getNotPostedParty();
     _order = await SQLHelper.getNotPostedOrder();
     _orderDetail = await SQLHelper.getNotPostedOrderDetail();
-    _setTarget = await SQLHelper.getNotPostedUserTarget();
+    // _setTarget = await SQLHelper.getNotPostedUserTarget();
     var strToList = widget.ping.split(",");
     var ip = strToList[0];
     var port = strToList[1];
@@ -65,45 +64,45 @@ class _PostingDataState extends State<PostingData>
           _saleDetail.isNotEmpty ||
           _recovery.isNotEmpty) {
         try {
-          if (_setTarget.isNotEmpty) {
-            await Sql_Connection().write("""
-DELETE FROM dbo_m.SaleRapTarget WHERE SRID=${MyNavigationBar.userID}
-""");
-            await Sql_Connection().write("""
-INSERT INTO dbo_m.SaleRapTarget
-(
-	SRID,
-	January,
-	February,
-	March,
-	April,
-	May,
-	June,
-	July,
-	August,
-	September,
-	October,
-	November,
-	December
-)
-VALUES
-(
-	${MyNavigationBar.userID},
-	${_setTarget[0]['January']},
-	${_setTarget[0]['February']},
-	${_setTarget[0]['March']},
-	${_setTarget[0]['April']},
-	${_setTarget[0]['May']},
-	${_setTarget[0]['June']},
-	${_setTarget[0]['July']},
-	${_setTarget[0]['August']},
-	${_setTarget[0]['September']},
-	${_setTarget[0]['October']},
-	${_setTarget[0]['November']},
-	${_setTarget[0]['December']}
-)
-""");
-          }
+//           if (_setTarget.isNotEmpty) {
+//             await Sql_Connection().write("""
+// DELETE FROM dbo_m.SaleRapTarget WHERE SRID=${MyNavigationBar.userID}
+// """);
+//             await Sql_Connection().write("""
+// INSERT INTO dbo_m.SaleRapTarget
+// (
+// 	SRID,
+// 	January,
+// 	February,
+// 	March,
+// 	April,
+// 	May,
+// 	June,
+// 	July,
+// 	August,
+// 	September,
+// 	October,
+// 	November,
+// 	December
+// )
+// VALUES
+// (
+// 	${MyNavigationBar.userID},
+// 	${_setTarget[0]['January']},
+// 	${_setTarget[0]['February']},
+// 	${_setTarget[0]['March']},
+// 	${_setTarget[0]['April']},
+// 	${_setTarget[0]['May']},
+// 	${_setTarget[0]['June']},
+// 	${_setTarget[0]['July']},
+// 	${_setTarget[0]['August']},
+// 	${_setTarget[0]['September']},
+// 	${_setTarget[0]['October']},
+// 	${_setTarget[0]['November']},
+// 	${_setTarget[0]['December']}
+// )
+// """);
+//           }
 
           if (_order.isNotEmpty) {
             for (var element in _order) {
@@ -298,7 +297,7 @@ VALUES
                                                       _party.length == 0) &&
                                                   !notData
                                               ? CircularProgressIndicator(
-                                                  color: eTradeMainColor,
+                                                  color: etradeMainColor,
                                                   strokeWidth: 2,
                                                 )
                                               : Text("${PostingData.cCount}"),
@@ -316,7 +315,7 @@ VALUES
                                                       _order.length == 0) &&
                                                   !notData
                                               ? CircularProgressIndicator(
-                                                  color: eTradeMainColor)
+                                                  color: etradeMainColor)
                                               : Text("${PostingData.oCount}"),
                                         ],
                                       ),
@@ -333,7 +332,7 @@ VALUES
                                     //                       0) &&
                                     //               !notData
                                     //           ? CircularProgressIndicator(
-                                    //               color: eTradeMainColor)
+                                    //               color: etradeMainColor)
                                     //           : Text("${PostingData.odCount}"),
                                     //     ],
                                     //   ),
@@ -354,7 +353,7 @@ VALUES
                                                   child:
                                                       CircularProgressIndicator(
                                                           color:
-                                                              eTradeMainColor))
+                                                              etradeMainColor))
                                               : Text("${PostingData.sCount}"),
                                         ],
                                       ),
@@ -376,7 +375,7 @@ VALUES
                                     //               child:
                                     //                   CircularProgressIndicator(
                                     //                       color:
-                                    //                           eTradeMainColor))
+                                    //                           etradeMainColor))
                                     //           : Text("${PostingData.sdCount}"),
                                     //     ],
                                     //   ),
@@ -397,7 +396,7 @@ VALUES
                                                   child:
                                                       CircularProgressIndicator(
                                                           color:
-                                                              eTradeMainColor))
+                                                              etradeMainColor))
                                               : Text("${PostingData.rCount}"),
                                         ],
                                       ),
@@ -422,14 +421,14 @@ VALUES
                                       elevation: 2.0,
                                       padding: EdgeInsets.all(15.0),
                                       shape: CircleBorder(),
-                                      color: eTradeMainColor,
+                                      color: etradeMainColor,
                                       child: Icon(
                                         Icons.check,
                                         color: Colors.white,
                                       ),
                                     )
                                   : CircularProgressIndicator(
-                                      color: eTradeMainColor),
+                                      color: etradeMainColor),
                             ],
                           ),
                         ),
@@ -470,7 +469,7 @@ VALUES
                                       ? "Posted Successfully"
                                       : "Posting Data",
                                   style: TextStyle(
-                                      fontSize: 25, color: eTradeMainColor),
+                                      fontSize: 25, color: etradeMainColor),
                                 ),
                               ),
                               Padding(
@@ -495,7 +494,7 @@ VALUES
                                                   child:
                                                       CircularProgressIndicator(
                                                           color:
-                                                              eTradeMainColor))
+                                                              etradeMainColor))
                                               : Text("${PostingData.cCount}"),
                                         ],
                                       ),
@@ -516,7 +515,7 @@ VALUES
                                                   child:
                                                       CircularProgressIndicator(
                                                           color:
-                                                              eTradeMainColor))
+                                                              etradeMainColor))
                                               : Text("${PostingData.oCount}"),
                                         ],
                                       ),
@@ -538,7 +537,7 @@ VALUES
                                                   child:
                                                       CircularProgressIndicator(
                                                           color:
-                                                              eTradeMainColor))
+                                                              etradeMainColor))
                                               : Text("${PostingData.odCount}"),
                                         ],
                                       ),
@@ -559,7 +558,7 @@ VALUES
                                                   child:
                                                       CircularProgressIndicator(
                                                           color:
-                                                              eTradeMainColor))
+                                                              etradeMainColor))
                                               : Text("${PostingData.sCount}"),
                                         ],
                                       ),
@@ -581,7 +580,7 @@ VALUES
                                                   child:
                                                       CircularProgressIndicator(
                                                           color:
-                                                              eTradeMainColor))
+                                                              etradeMainColor))
                                               : Text("${PostingData.sdCount}"),
                                         ],
                                       ),
@@ -602,7 +601,7 @@ VALUES
                                                   child:
                                                       CircularProgressIndicator(
                                                           color:
-                                                              eTradeMainColor))
+                                                              etradeMainColor))
                                               : Text("${PostingData.rCount}"),
                                         ],
                                       ),
@@ -627,7 +626,7 @@ VALUES
                                       elevation: 2.0,
                                       padding: EdgeInsets.all(15.0),
                                       shape: CircleBorder(),
-                                      color: eTradeMainColor,
+                                      color: etradeMainColor,
                                       child:
                                           // Image.asset(
                                           //   'done.gif',
@@ -638,7 +637,7 @@ VALUES
                                         color: Colors.white,
                                       ))
                                   : CircularProgressIndicator(
-                                      color: eTradeMainColor),
+                                      color: etradeMainColor),
                             ],
                           ),
                         ),

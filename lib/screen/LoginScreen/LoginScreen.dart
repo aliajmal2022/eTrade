@@ -1,16 +1,16 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:eTrade/components/CustomNavigator.dart';
-import 'package:eTrade/components/NavigationBar.dart';
-import 'package:eTrade/components/constants.dart';
-import 'package:eTrade/entities/Customer.dart';
-import 'package:eTrade/entities/ViewRecovery.dart';
-import 'package:eTrade/helper/onldt_to_local_db.dart';
-import 'package:eTrade/components/sharePreferences.dart';
-import 'package:eTrade/helper/sqlhelper.dart';
-import 'package:eTrade/entities/User.dart';
-import 'package:eTrade/screen/NavigationScreen/Take%20Order/TakeOrderScreen.dart';
+import 'package:etrade/components/CustomNavigator.dart';
+import 'package:etrade/components/NavigationBar.dart';
+import 'package:etrade/components/constants.dart';
+import 'package:etrade/entities/Customer.dart';
+import 'package:etrade/entities/ViewRecovery.dart';
+import 'package:etrade/helper/onldt_to_local_db.dart';
+import 'package:etrade/components/sharePreferences.dart';
+import 'package:etrade/helper/sqlhelper.dart';
+import 'package:etrade/entities/User.dart';
+import 'package:etrade/screen/NavigationScreen/Take%20Order/TakeOrderScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -52,7 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 200,
                 alignment: Alignment.centerRight,
                 decoration: BoxDecoration(
-                  color: eTradeMainColor,
+                  color: etradeMainColor,
                   borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(25),
                       bottomRight: Radius.circular(25)),
@@ -129,7 +129,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             focusedBorder: OutlineInputBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(20)),
-                              borderSide: BorderSide(color: eTradeMainColor),
+                              borderSide: BorderSide(color: etradeMainColor),
                             ),
                             labelText: 'Username',
                           ),
@@ -153,7 +153,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               focusedBorder: OutlineInputBorder(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(20)),
-                                borderSide: BorderSide(color: eTradeMainColor),
+                                borderSide: BorderSide(color: etradeMainColor),
                               ),
                               labelText: 'Password',
                               suffixIcon: IconButton(
@@ -190,8 +190,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                     Future.delayed(Duration(seconds: 2),
                                         () async {
                                       User usr = User(
-                                          userName: "ADMIN",
-                                          password: "ALLAH",
+                                          userName: userInp,
+                                          password: passwd,
                                           id: 0,
                                           monthlyTarget: 0);
                                       if (UserSharePreferences.isAdminOrNot(
@@ -225,6 +225,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                             userInp, passwd);
 
                                         if (usr.id != 0) {
+                                          if (!MyNavigationBar.isAdmin) {
+                                            MyNavigationBar.userID = usr.id;
+                                          }
                                           if (!DataBaseDataLoad.isFirstTime) {
                                             await SQLHelper
                                                 .deleteAllTableForAdmin();
@@ -255,7 +258,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             elevation: 20.0,
                             disabledColor: Colors.grey,
                             // disabledColor: Color(0x0ff1e1e1),
-                            color: eTradeMainColor,
+                            color: etradeMainColor,
                             shape: RoundedRectangleBorder(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(25.0))),

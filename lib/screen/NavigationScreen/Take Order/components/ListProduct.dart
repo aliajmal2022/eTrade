@@ -1,9 +1,9 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:eTrade/components/constants.dart';
-import 'package:eTrade/screen/NavigationScreen/Take%20Order/components/AddItemModelSheet.dart';
-import 'package:eTrade/screen/NavigationScreen/Take%20Order/components/SearchListProduct.dart';
-import 'package:eTrade/entities/Products.dart';
+import 'package:etrade/components/constants.dart';
+import 'package:etrade/screen/NavigationScreen/Take%20Order/components/AddItemModelSheet.dart';
+import 'package:etrade/screen/NavigationScreen/Take%20Order/components/SearchListProduct.dart';
+import 'package:etrade/entities/Products.dart';
 import 'package:flutter/material.dart';
 
 class ListItems extends StatefulWidget {
@@ -60,7 +60,7 @@ class _ListItemsState extends State<ListItems> {
                         leading: widget.productItems[index].Quantity == 0
                             ? null
                             : CircleAvatar(
-                                backgroundColor: eTradeMainColor,
+                                backgroundColor: etradeMainColor,
                                 // radius: 100,
                                 minRadius: 10,
                                 maxRadius: 30,

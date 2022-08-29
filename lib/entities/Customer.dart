@@ -1,6 +1,6 @@
-import 'package:eTrade/helper/Sql_Connection.dart';
-import 'package:eTrade/helper/onldt_to_local_db.dart';
-import 'package:eTrade/helper/sqlhelper.dart';
+import 'package:etrade/helper/Sql_Connection.dart';
+import 'package:etrade/helper/onldt_to_local_db.dart';
+import 'package:etrade/helper/sqlhelper.dart';
 
 class Customer {
   Customer({

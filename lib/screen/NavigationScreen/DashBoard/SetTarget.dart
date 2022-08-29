@@ -1,12 +1,12 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
-import 'package:eTrade/components/NavigationBar.dart';
-import 'package:eTrade/components/constants.dart';
-import 'package:eTrade/entities/Customer.dart';
-import 'package:eTrade/entities/User.dart';
-import 'package:eTrade/entities/ViewRecovery.dart';
-import 'package:eTrade/helper/Sql_Connection.dart';
-import 'package:eTrade/helper/onldt_to_local_db.dart';
-import 'package:eTrade/helper/sqlhelper.dart';
+import 'package:etrade/components/NavigationBar.dart';
+import 'package:etrade/components/constants.dart';
+import 'package:etrade/entities/Customer.dart';
+import 'package:etrade/entities/User.dart';
+import 'package:etrade/entities/ViewRecovery.dart';
+import 'package:etrade/helper/Sql_Connection.dart';
+import 'package:etrade/helper/onldt_to_local_db.dart';
+import 'package:etrade/helper/sqlhelper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -227,7 +227,7 @@ class _SetTargetScreenState extends State<SetTargetScreen> {
               )
             ],
           ),
-          backgroundColor: eTradeMainColor,
+          backgroundColor: etradeMainColor,
         ),
         body: ListView.builder(
           itemBuilder: (context, index) {
@@ -248,7 +248,7 @@ class _SetTargetScreenState extends State<SetTargetScreen> {
                           width: 100,
                           // padding: EdgeInsets.all(5),
                           child: TextField(
-                            autofocus: true,
+                            // autofocus: true,
                             keyboardType: TextInputType.number,
                             controller: targetList[index].controller,
                             onChanged: currentUser.userName == ""
@@ -270,10 +270,10 @@ class _SetTargetScreenState extends State<SetTargetScreen> {
                                   borderSide: BorderSide(width: 20.0)),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
-                                borderSide: BorderSide(color: eTradeMainColor),
+                                borderSide: BorderSide(color: etradeMainColor),
                               ),
                               labelText: 'Set Target',
-                              labelStyle: TextStyle(color: eTradeMainColor),
+                              labelStyle: TextStyle(color: etradeMainColor),
                             ),
                           ),
                         ),
@@ -288,7 +288,7 @@ class _SetTargetScreenState extends State<SetTargetScreen> {
           scrollDirection: Axis.vertical,
         ),
         floatingActionButton: FloatingActionButton(
-          backgroundColor: check ? Colors.green.shade100 : eTradeMainColor,
+          backgroundColor: check ? Colors.green.shade100 : etradeMainColor,
           onPressed: check
               ? null
               : () async {
@@ -359,7 +359,7 @@ VALUES
                     debugPrint("error :::::   $e");
                   }
 
-                  Get.off(MyNavigationBar.initializer(0),
+                  Get.off(() => MyNavigationBar.initializer(0),
                       transition: Transition.rightToLeft);
                 },
           child: Icon(
@@ -413,5 +413,54 @@ class UserTarget {
         octoberTarget: 0,
         novemberTarget: 0,
         decemberTarget: 0);
+  }
+
+  static Future<UserTarget> getUserTarget() async {
+    List userTargetList = await Sql_Connection().read(
+            "Select * from dbo_m.SaleRapTarget where SRID=${MyNavigationBar.userID}") ??
+        [];
+    UserTarget userTarget = UserTarget.initializer();
+    if (userTargetList.isNotEmpty) {
+      userTarget.userID = userTargetList[0]['SRID'];
+      userTarget.januaryTarget = userTargetList[0]['January'];
+      userTarget.februaryTarget = userTargetList[0]['February'];
+      userTarget.marchTarget = userTargetList[0]['March'];
+      userTarget.aprilTarget = userTargetList[0]['April'];
+      userTarget.mayTarget = userTargetList[0]['May'];
+      userTarget.juneTarget = userTargetList[0]['June'];
+      userTarget.julyTarget = userTargetList[0]['July'];
+      userTarget.augustTarget = userTargetList[0]['August'];
+      userTarget.septemberTarget = userTargetList[0]['September'];
+      userTarget.octoberTarget = userTargetList[0]['October'];
+      userTarget.novemberTarget = userTargetList[0]['November'];
+      userTarget.decemberTarget = userTargetList[0]['December'];
+    }
+    return userTarget;
+  }
+
+  static Future<List<UserTarget>> getListUserTarget() async {
+    List<UserTarget> lOUserTarget = [];
+    List userTargetList =
+        await Sql_Connection().read("Select * from dbo_m.SaleRapTarget") ?? [];
+    if (userTargetList.isNotEmpty) {
+      for (int i = 0; i < userTargetList.length; i++) {
+        UserTarget userTarget = UserTarget.initializer();
+        userTarget.userID = userTargetList[i]['SRID'];
+        userTarget.januaryTarget = userTargetList[i]['January'];
+        userTarget.februaryTarget = userTargetList[i]['February'];
+        userTarget.marchTarget = userTargetList[i]['March'];
+        userTarget.aprilTarget = userTargetList[i]['April'];
+        userTarget.mayTarget = userTargetList[i]['May'];
+        userTarget.juneTarget = userTargetList[i]['June'];
+        userTarget.julyTarget = userTargetList[i]['July'];
+        userTarget.augustTarget = userTargetList[i]['August'];
+        userTarget.septemberTarget = userTargetList[i]['September'];
+        userTarget.octoberTarget = userTargetList[i]['October'];
+        userTarget.novemberTarget = userTargetList[i]['November'];
+        userTarget.decemberTarget = userTargetList[i]['December'];
+        lOUserTarget.add(userTarget);
+      }
+    }
+    return lOUserTarget;
   }
 }

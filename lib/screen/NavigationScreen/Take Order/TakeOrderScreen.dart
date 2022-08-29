@@ -1,29 +1,28 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'dart:async';
-import 'dart:ffi';
 import 'dart:io';
 
 // import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:eTrade/components/CustomNavigator.dart';
-import 'package:eTrade/components/constants.dart';
-import 'package:eTrade/main.dart';
-import 'package:eTrade/screen/NavigationScreen/DashBoard/DashboardScreen.dart';
-import 'package:eTrade/screen/NavigationScreen/Take%20Order/components/AddItemModelSheet.dart';
-import 'package:eTrade/screen/NavigationScreen/Take%20Order/components/ListProduct.dart';
-import 'package:eTrade/components/NavigationBar.dart';
-import 'package:eTrade/components/NewCustomer.dart';
-import 'package:eTrade/helper/Sql_Connection.dart';
-import 'package:eTrade/components/drawer.dart';
-import 'package:eTrade/helper/onldt_to_local_db.dart';
-import 'package:eTrade/helper/sqlhelper.dart';
-import 'package:eTrade/entities/Customer.dart';
-import 'package:eTrade/entities/Edit.dart';
-import 'package:eTrade/entities/Products.dart';
-import 'package:eTrade/entities/ViewRecovery.dart';
-import 'package:eTrade/screen/NavigationScreen/Take%20Order/CartScreen.dart';
-import 'package:eTrade/screen/LoginScreen/LoginScreen.dart';
-import 'package:eTrade/screen/NavigationScreen/Booking/ViewBookingScreen.dart';
+import 'package:etrade/components/CustomNavigator.dart';
+import 'package:etrade/components/constants.dart';
+import 'package:etrade/main.dart';
+import 'package:etrade/screen/NavigationScreen/DashBoard/DashboardScreen.dart';
+import 'package:etrade/screen/NavigationScreen/Take%20Order/components/AddItemModelSheet.dart';
+import 'package:etrade/screen/NavigationScreen/Take%20Order/components/ListProduct.dart';
+import 'package:etrade/components/NavigationBar.dart';
+import 'package:etrade/components/NewCustomer.dart';
+import 'package:etrade/helper/Sql_Connection.dart';
+import 'package:etrade/components/drawer.dart';
+import 'package:etrade/helper/onldt_to_local_db.dart';
+import 'package:etrade/helper/sqlhelper.dart';
+import 'package:etrade/entities/Customer.dart';
+import 'package:etrade/entities/Edit.dart';
+import 'package:etrade/entities/Products.dart';
+import 'package:etrade/entities/ViewRecovery.dart';
+import 'package:etrade/screen/NavigationScreen/Take%20Order/CartScreen.dart';
+import 'package:etrade/screen/LoginScreen/LoginScreen.dart';
+import 'package:etrade/screen/NavigationScreen/Booking/ViewBookingScreen.dart';
 import 'package:find_dropdown/find_dropdown.dart';
 import 'package:flutter/foundation.dart';
 import "package:flutter/material.dart";
@@ -252,7 +251,7 @@ class _TakeOrderScreenState extends State<TakeOrderScreen>
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: eTradeMainColor,
+          backgroundColor: etradeMainColor,
           toolbarHeight: 80,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(
@@ -438,16 +437,16 @@ class _TakeOrderScreenState extends State<TakeOrderScreen>
                                       searchBoxDecoration: InputDecoration(
                                           focusedBorder: UnderlineInputBorder(
                                             borderSide: BorderSide(
-                                              color: eTradeMainColor,
+                                              color: etradeMainColor,
                                               width: 2,
                                             ),
                                           ),
                                           suffixIcon: Icon(
                                             Icons.search,
-                                            color: eTradeMainColor,
+                                            color: etradeMainColor,
                                           ),
                                           labelStyle: TextStyle(
-                                              color: eTradeMainColor)),
+                                              color: etradeMainColor)),
                                       dropdownItemBuilder:
                                           (BuildContext context, Customer item,
                                               bool isSelected) {
@@ -456,7 +455,7 @@ class _TakeOrderScreenState extends State<TakeOrderScreen>
                                               ? null
                                               : BoxDecoration(
                                                   border: Border.all(
-                                                      color: eTradeMainColor),
+                                                      color: etradeMainColor),
                                                   borderRadius:
                                                       BorderRadius.circular(5),
                                                   color: MyApp.isDark
@@ -512,7 +511,7 @@ class _TakeOrderScreenState extends State<TakeOrderScreen>
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(2)),
                                           // color: Colors.white,
-                                          color: eTradeMainColor,
+                                          color: etradeMainColor,
                                           // color: Color(0xff424242),
                                         ),
                                         child: MaterialButton(
@@ -576,18 +575,18 @@ class _TakeOrderScreenState extends State<TakeOrderScreen>
                                         vertical: 13, horizontal: 20),
                                     enabledBorder: OutlineInputBorder(
                                       borderSide:
-                                          BorderSide(color: eTradeMainColor),
+                                          BorderSide(color: etradeMainColor),
                                     ),
                                     focusedBorder: OutlineInputBorder(
                                       // borderRadius: BorderRadius.circular(20),
                                       borderSide:
-                                          BorderSide(color: eTradeMainColor),
+                                          BorderSide(color: etradeMainColor),
                                     ),
                                     labelText: 'Search Product',
-                                    // labelStyle: TextStyle(color: eTradeMainColor),
+                                    // labelStyle: TextStyle(color: etradeMainColor),
                                     suffixIcon: Icon(
                                       Icons.search,
-                                      color: eTradeMainColor,
+                                      color: etradeMainColor,
                                     ),
                                   ),
                                 ),
@@ -615,14 +614,14 @@ class _TakeOrderScreenState extends State<TakeOrderScreen>
                                       child: Text(
                                         "Clear List",
                                         style:
-                                            TextStyle(color: eTradeMainColor),
+                                            TextStyle(color: etradeMainColor),
                                       )),
                                 ),
                               ),
                             ),
                           ),
                           Divider(
-                            color: eTradeMainColor,
+                            color: etradeMainColor,
                             thickness: 2,
                             height: 10,
                           ),

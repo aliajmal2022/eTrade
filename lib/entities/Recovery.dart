@@ -1,5 +1,5 @@
-import 'package:eTrade/helper/Sql_Connection.dart';
-import 'package:eTrade/entities/Customer.dart';
+import 'package:etrade/helper/Sql_Connection.dart';
+import 'package:etrade/entities/Customer.dart';
 import 'package:flutter/animation.dart';
 import 'package:intl/intl.dart';
 

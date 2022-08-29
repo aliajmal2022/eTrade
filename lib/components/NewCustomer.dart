@@ -1,12 +1,12 @@
-import 'package:eTrade/components/CustomNavigator.dart';
-import 'package:eTrade/components/NavigationBar.dart';
-import 'package:eTrade/components/constants.dart';
-import 'package:eTrade/helper/onldt_to_local_db.dart';
-import 'package:eTrade/helper/sqlhelper.dart';
-import 'package:eTrade/entities/Customer.dart';
-import 'package:eTrade/entities/Recovery.dart';
-import 'package:eTrade/entities/ViewRecovery.dart';
-import 'package:eTrade/screen/NavigationScreen/Take%20Order/TakeOrderScreen.dart';
+import 'package:etrade/components/CustomNavigator.dart';
+import 'package:etrade/components/NavigationBar.dart';
+import 'package:etrade/components/constants.dart';
+import 'package:etrade/helper/onldt_to_local_db.dart';
+import 'package:etrade/helper/sqlhelper.dart';
+import 'package:etrade/entities/Customer.dart';
+import 'package:etrade/entities/Recovery.dart';
+import 'package:etrade/entities/ViewRecovery.dart';
+import 'package:etrade/screen/NavigationScreen/Take%20Order/TakeOrderScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -94,10 +94,10 @@ class _NewUsrAddLocalDBState extends State<NewUsrAddLocalDB> {
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
                                     borderSide:
-                                        BorderSide(color: eTradeMainColor),
+                                        BorderSide(color: etradeMainColor),
                                   ),
                                   labelText: 'Enter Customer Name',
-                                  labelStyle: TextStyle(color: eTradeMainColor),
+                                  labelStyle: TextStyle(color: etradeMainColor),
                                   errorText: msg
                                       ? null
                                       : "The Customer is already exist.",
@@ -129,10 +129,10 @@ class _NewUsrAddLocalDBState extends State<NewUsrAddLocalDB> {
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
                                     borderSide: const BorderSide(
-                                        color: eTradeMainColor),
+                                        color: etradeMainColor),
                                   ),
                                   labelText: 'Enter Discount',
-                                  labelStyle: TextStyle(color: eTradeMainColor),
+                                  labelStyle: TextStyle(color: etradeMainColor),
                                 ),
                               ),
                             ),
@@ -160,11 +160,11 @@ class _NewUsrAddLocalDBState extends State<NewUsrAddLocalDB> {
                                     focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
                                       borderSide: const BorderSide(
-                                          color: eTradeMainColor),
+                                          color: etradeMainColor),
                                     ),
                                     labelText: 'Address',
                                     labelStyle:
-                                        TextStyle(color: eTradeMainColor),
+                                        TextStyle(color: etradeMainColor),
                                   ),
                                 ),
                               ),
@@ -242,7 +242,7 @@ class _NewUsrAddLocalDBState extends State<NewUsrAddLocalDB> {
                                   });
                                 },
                           // elevation: 20.0,
-                          color: eTradeMainColor,
+                          color: etradeMainColor,
                           shape: RoundedRectangleBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(25.0))),

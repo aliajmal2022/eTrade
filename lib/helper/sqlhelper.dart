@@ -1,16 +1,16 @@
 import 'dart:io';
 
-import 'package:eTrade/components/NavigationBar.dart';
-import 'package:eTrade/components/sharePreferences.dart';
-import 'package:eTrade/entities/Customer.dart';
-import 'package:eTrade/entities/Order.dart';
-import 'package:eTrade/entities/OrderDetail.dart';
-import 'package:eTrade/entities/Products.dart';
-import 'package:eTrade/entities/Recovery.dart';
-import 'package:eTrade/entities/Sale.dart';
-import 'package:eTrade/entities/SaleDetail.dart';
-import 'package:eTrade/entities/User.dart';
-import 'package:eTrade/screen/NavigationScreen/DashBoard/SetTarget.dart';
+import 'package:etrade/components/NavigationBar.dart';
+import 'package:etrade/components/sharePreferences.dart';
+import 'package:etrade/entities/Customer.dart';
+import 'package:etrade/entities/Order.dart';
+import 'package:etrade/entities/OrderDetail.dart';
+import 'package:etrade/entities/Products.dart';
+import 'package:etrade/entities/Recovery.dart';
+import 'package:etrade/entities/Sale.dart';
+import 'package:etrade/entities/SaleDetail.dart';
+import 'package:etrade/entities/User.dart';
+import 'package:etrade/screen/NavigationScreen/DashBoard/SetTarget.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
@@ -21,7 +21,7 @@ import 'package:path/path.dart';
 class SQLHelper {
   SQLHelper._privateConstructor();
   static final SQLHelper instance = SQLHelper._privateConstructor();
-  static const _dbname = "eTrade.db";
+  static const _dbname = "etrade.db";
   static const _dbversion = 1;
   static var _database;
   static var isExit = false;
@@ -59,15 +59,15 @@ class SQLHelper {
       await Permission.storage.request();
     }
     try {
-      File ourDBFile = File('$directory/eTrade.db');
+      File ourDBFile = File('$directory/etrade.db');
       Directory folderPathForDB =
-          Directory('/storage/emulated/0/eTrade_Backup/');
+          Directory('/storage/emulated/0/etrade_Backup/');
       if (!await folderPathForDB.exists()) await folderPathForDB.create();
       if (MyNavigationBar.isAdmin) {
         await ourDBFile
-            .copy('/storage/emulated/0/eTrade_Backup/eTradeAdmin.db');
+            .copy('/storage/emulated/0/etrade_Backup/etradeAdmin.db');
       } else {
-        await ourDBFile.copy('/storage/emulated/0/eTrade_Backup/eTradeUser.db');
+        await ourDBFile.copy('/storage/emulated/0/etrade_Backup/etradeUser.db');
       }
     } catch (e) {
       debugPrint(e.toString());
@@ -86,12 +86,12 @@ class SQLHelper {
     try {
       File savedDBFile;
       if (MyNavigationBar.isAdmin) {
-        savedDBFile = File('/storage/emulated/0/eTrade_Backup/eTradeAdmin.db');
+        savedDBFile = File('/storage/emulated/0/etrade_Backup/etradeAdmin.db');
       } else {
-        savedDBFile = File('/storage/emulated/0/eTrade_Backup/eTradeUser.db');
+        savedDBFile = File('/storage/emulated/0/etrade_Backup/etradeUser.db');
       }
       // if (await savedDBFile.exists()) {
-      // await savedDBFile.copy('$directory/eTrade.db');
+      // await savedDBFile.copy('$directory/etrade.db');
       // }
     } catch (e) {
       debugPrint(e.toString());
@@ -109,9 +109,9 @@ class SQLHelper {
     }
     try {
       File saveduserDBFile =
-          File('/storage/emulated/0/eTrade_Backup/eTradeAdmin.db');
+          File('/storage/emulated/0/etrade_Backup/etradeAdmin.db');
       File savedadminDBFile =
-          File('/storage/emulated/0/eTrade_Backup/eTradeUser.db');
+          File('/storage/emulated/0/etrade_Backup/etradeUser.db');
       await savedadminDBFile.delete();
       await saveduserDBFile.delete();
     } catch (e) {
@@ -138,20 +138,28 @@ class SQLHelper {
     await deleteTable(_database, "Sale");
     await deleteTable(_database, "SaleDetail");
     await deleteTable(_database, "Recovery");
+    await deleteTable(_database, "OrderExecution");
+    await deleteTable(_database, "OrderDetailExecution");
+    await deleteTable(_database, "RecoveryExecution");
   }
 
   static Future<void> resetData(String action, bool isLogin) async {
     if (action == "Sync" && !isLogin && !MyNavigationBar.isAdmin) {
       await deleteDataFromTable(_database, "Party", true);
       await deleteDataFromTable(_database, "Item", true);
+      await deleteDataFromTable(_database, "UserTarget", false);
     } else if (action == "Sync" && isLogin) {
       await deleteDataFromTable(_database, "Party", false);
       await deleteDataFromTable(_database, "Item", false);
-    } else if (action == "Sync" && MyNavigationBar.isAdmin) {
-      await deleteDataFromTable(_database, "Party", false);
-      await deleteDataFromTable(_database, "Item", false);
-      await deleteDataFromTable(_database, "User", false);
-    } else {
+      await deleteDataFromTable(_database, "UserTarget", false);
+    }
+    //  else if (action == "Sync" && MyNavigationBar.isAdmin) {
+    //   await deleteDataFromTable(_database, "Party", false);
+    //   await deleteDataFromTable(_database, "Item", false);
+    //   await deleteDataFromTable(_database, "User", false);
+    //   await deleteDataFromTable(_database, "UserTarget", false);
+    // }
+    else {
       await deleteDataFromTable(_database, "Party", false);
       await deleteDataFromTable(_database, "Item", true);
       await deleteDataFromTable(_database, "Order", false);
@@ -180,9 +188,9 @@ class SQLHelper {
       await Permission.storage.request();
     }
     try {
-      // File savedDBFile = File('/storage/emulated/0/eTrade_Backup/eTrade.db');
+      // File savedDBFile = File('/storage/emulated/0/etrade_Backup/etrade.db');
       // if (await savedDBFile.exists()) {
-      //   await savedDBFile.copy('$directory/eTrade.db');
+      //   await savedDBFile.copy('$directory/etrade.db');
       //   UserSharePreferences.setmode(false);
       //   existDataBase = true;
 
@@ -1047,6 +1055,9 @@ DROP TABLE [$tableName]
     await createSaleTableForAdmin(_database);
     await createSaleDetailTableForAdmin(_database);
     await createRecoveryTableForAdmin(_database);
+    await createOrderExecutionTableForAdmin(_database);
+    await createOrderDetailExecutionTableForAdmin(_database);
+    await createRecoveryExecutionTableForAdmin(_database);
   }
 
   static Future<void> createUserTargetTableForAdmin(Database database) async {
@@ -1097,6 +1108,119 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
   static getMonthlyTarget() async {
     return await _database.rawQuery(
         "select * from UserTarget where UserID=${MyNavigationBar.userID}");
+  }
+
+  static Future<void> createRecoveryExecutionTableForAdmin(
+      Database database) async {
+    await database.execute('''
+CREATE TABLE RecoveryExecution(
+RecoveryID INTEGER PRIMARY KEY NOT NULL,
+PartyID INTEGER NOT NULL,
+UserID INTEGER NOT NULL,
+Amount REAL NOT NULL,
+Dated DATE NOT NULL,
+isCash BOOLEAN NOT NULL CHECK (isCash IN (0, 1)) ,
+Description TEXT,
+isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
+
+  )
+      ''');
+    print("successfully created RecoveryExection table");
+  }
+
+  Future<int> createRecoveryExecutionitemForAdmin(Recovery recovery) async {
+    Database db = await instance.database;
+
+    final data = {
+      'RecoveryID': recovery.recoveryID,
+      'PartyID': recovery.party.partyId,
+      'isPosted': false,
+      'UserID': recovery.userID,
+      'isCash': recovery.isCashOrCheck,
+      'Description': recovery.description,
+      'Dated': recovery.dated,
+      'Amount': recovery.amount,
+    };
+    final id = await db.insert('RecoveryExecution', data,
+        conflictAlgorithm: ConflictAlgorithm.replace);
+    return id;
+  }
+
+  static Future<void> createOrderExecutionTableForAdmin(
+      Database database) async {
+    await database.execute('''
+CREATE TABLE OrderExecution(
+OrderID INTEGER PRIMARY KEY NOT NULL,
+PartyID INTEGER NOT NULL,
+UserID INTEGER NOT NULL,
+TotalQuantity INTEGER NOT NULL,
+TotalValue REAL NOT NULL,
+Dated DATE NOT NULL,
+Description TEXT,
+isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
+  )
+      ''');
+    print("successfully created OrderExecution table");
+  }
+
+  Future<int> createOrderExecutionForAdmin(Order order) async {
+    Database db = await instance.database;
+
+    final data = {
+      'OrderID': order.orderID,
+      'PartyID': order.customer.partyId,
+      'isPosted': false,
+      'Description': order.description,
+      'TotalQuantity': order.totalQuantity,
+      'UserID': order.userID,
+      'TotalValue': order.totalValue,
+      'Dated': order.date,
+    };
+    final id = await db.insert('OrderExecution', data,
+        conflictAlgorithm: ConflictAlgorithm.replace);
+    return id;
+  }
+
+  static Future<void> createOrderDetailExecutionTableForAdmin(
+      Database database) async {
+    await database.execute('''
+  CREATE TABLE OrderDetailExecution(
+	ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+  UserID INTEGER NOT NULL,
+	OrderID INTEGER NOT NULL,
+	ItemID TEXT NOT NULL,
+  Quantity INTEGER NOT NULL,
+  RATE REAL NOT NULL,
+  Discount REAL,
+  Bonus INTEGER,
+  TradeOffer Real,
+  Amount REAL NOT NULL,
+	Dated DATE NOT NULL,
+isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
+ )
+      ''');
+    print("successfully created OrderDetailExecution table");
+  }
+
+  Future<int> createOrderDetailExecutionForAdmin(
+      OrderDetail orderDetail) async {
+    Database db = await instance.database;
+
+    final data = {
+      'UserID': orderDetail.userID,
+      'OrderID': orderDetail.orderID,
+      'Discount': orderDetail.discount,
+      'Bonus': orderDetail.bonus,
+      'TradeOffer': orderDetail.to,
+      'ItemID': orderDetail.itemID,
+      'isPosted': false,
+      'Quantity': orderDetail.quantity,
+      'Rate': orderDetail.rate,
+      'Amount': orderDetail.amount,
+      'Dated': orderDetail.date,
+    };
+    return await db.insert('OrderDetailExecution', data,
+        conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
   static Future<void> createRecoveryTableForAdmin(Database database) async {

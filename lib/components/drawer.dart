@@ -1,30 +1,30 @@
 import 'dart:io';
 
-import 'package:eTrade/components/CustomNavigator.dart';
-import 'package:eTrade/components/constants.dart';
-import 'package:eTrade/screen/AboutUs/AboutScreen.dart';
-import 'package:eTrade/screen/NavigationScreen/DashBoard/SetTarget.dart';
-import 'package:eTrade/screen/NavigationScreen/RecoveryBooking/CustomerBalance.dart';
+import 'package:etrade/components/CustomNavigator.dart';
+import 'package:etrade/components/constants.dart';
+import 'package:etrade/screen/AboutUs/AboutScreen.dart';
+import 'package:etrade/screen/NavigationScreen/DashBoard/SetTarget.dart';
+import 'package:etrade/screen/NavigationScreen/RecoveryBooking/CustomerBalance.dart';
 import 'package:get/get.dart';
 import 'package:path/path.dart';
-import 'package:eTrade/components/NavigationBar.dart';
+import 'package:etrade/components/NavigationBar.dart';
 import 'package:date_format/date_format.dart';
-import 'package:eTrade/components/PostingData.dart';
-import 'package:eTrade/helper/Sql_Connection.dart';
-import 'package:eTrade/components/sharePreferences.dart';
-import 'package:eTrade/helper/onldt_to_local_db.dart';
-import 'package:eTrade/helper/sqlhelper.dart';
-import 'package:eTrade/entities/Customer.dart';
-import 'package:eTrade/entities/ViewRecovery.dart';
-import 'package:eTrade/main.dart';
-import 'package:eTrade/screen/Connection/ConnectionScreen.dart';
+import 'package:etrade/components/PostingData.dart';
+import 'package:etrade/helper/Sql_Connection.dart';
+import 'package:etrade/components/sharePreferences.dart';
+import 'package:etrade/helper/onldt_to_local_db.dart';
+import 'package:etrade/helper/sqlhelper.dart';
+import 'package:etrade/entities/Customer.dart';
+import 'package:etrade/entities/ViewRecovery.dart';
+import 'package:etrade/main.dart';
+import 'package:etrade/screen/Connection/ConnectionScreen.dart';
 
-import 'package:eTrade/screen/NavigationScreen/Take%20Order/TakeOrderScreen.dart';
-import 'package:eTrade/screen/LoginScreen/LoginScreen.dart';
-import 'package:eTrade/screen/NavigationScreen/RecoveryBooking/RecoveryScreen.dart';
-import 'package:eTrade/screen/SplashScreen/SplashScreen.dart';
-import 'package:eTrade/screen/NavigationScreen/Booking/ViewBookingScreen.dart';
-import 'package:eTrade/screen/NavigationScreen/RecoveryBooking/ViewRecoveryScreen.dart';
+import 'package:etrade/screen/NavigationScreen/Take%20Order/TakeOrderScreen.dart';
+import 'package:etrade/screen/LoginScreen/LoginScreen.dart';
+import 'package:etrade/screen/NavigationScreen/RecoveryBooking/RecoveryScreen.dart';
+import 'package:etrade/screen/SplashScreen/SplashScreen.dart';
+import 'package:etrade/screen/NavigationScreen/Booking/ViewBookingScreen.dart';
+import 'package:etrade/screen/NavigationScreen/RecoveryBooking/ViewRecoveryScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -204,7 +204,7 @@ class _MyDrawerState extends State<MyDrawer>
                     )
                     // CircleAvatar(
                     // // backgroundColor: Color(0xfffafafa),
-                    // backgroundColor: eTradeMainColor,
+                    // backgroundColor: etradeMainColor,
                     // maxRadius: 200,
                     // child: ),
                     ),
@@ -216,14 +216,16 @@ class _MyDrawerState extends State<MyDrawer>
                         Text(
                           "User Name : ",
                           style: TextStyle(
-                              color: eTradeMainColor,
+                              color: etradeMainColor,
                               fontSize: 15,
                               fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          MyNavigationBar.userName,
+                          MyNavigationBar.userName == ""
+                              ? "Admin"
+                              : MyNavigationBar.userName,
                           style: TextStyle(
-                              color: eTradeMainColor,
+                              color: etradeMainColor,
                               fontSize: 15,
                               fontWeight: FontWeight.bold),
                         ),
@@ -232,10 +234,10 @@ class _MyDrawerState extends State<MyDrawer>
               ],
             )),
           ),
-          Divider(
-            thickness: 1,
-            color: eTradeMainColor,
-          ),
+          // Divider(
+          //   thickness: 1,
+          //   color: etradeMainColor,
+          // ),
           Container(
               // padding: const EdgeInsets.all(2),
               child: SlideTransition(
@@ -516,10 +518,10 @@ class _MyDrawerState extends State<MyDrawer>
                     onPressed:
                         // null,
                         () async {
-                      File file = File('${SQLHelper.directory}/eTrade.db');
+                      File file = File('${SQLHelper.directory}/etrade.db');
                       if (await file.exists()) {
                         await Share.shareFiles([(file.path)],
-                            text: "Etrade Database");
+                            text: "etrade Database");
                       }
                     },
                     child: Row(

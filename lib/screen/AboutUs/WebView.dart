@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:eTrade/components/constants.dart';
+import 'package:etrade/components/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
@@ -29,7 +29,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
     return Scaffold(
         appBar: AppBar(
           title: Text("About Us"),
-          backgroundColor: eTradeMainColor,
+          backgroundColor: etradeMainColor,
         ),
         body: Column(
           children: [
@@ -37,7 +37,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
                 ? SizedBox(
                     height: 3,
                     child: LinearProgressIndicator(
-                      color: eTradeMainColor,
+                      color: etradeMainColor,
                       value: webProgress,
                       backgroundColor: Colors.white,
                     ),

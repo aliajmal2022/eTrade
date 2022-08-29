@@ -1,4 +1,4 @@
-import 'package:eTrade/helper/Sql_Connection.dart';
+import 'package:etrade/helper/Sql_Connection.dart';
 
 class Edit {
   Edit(

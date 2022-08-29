@@ -1,18 +1,18 @@
-import 'package:eTrade/components/CustomNavigator.dart';
-import 'package:eTrade/components/constants.dart';
-import 'package:eTrade/entities/Edit.dart';
-import 'package:eTrade/screen/NavigationScreen/DashBoard/DashboardScreen.dart';
-import 'package:eTrade/screen/NavigationScreen/Take%20Order/components/AddItemModelSheet.dart';
+import 'package:etrade/components/CustomNavigator.dart';
+import 'package:etrade/components/constants.dart';
+import 'package:etrade/entities/Edit.dart';
+import 'package:etrade/screen/NavigationScreen/DashBoard/DashboardScreen.dart';
+import 'package:etrade/screen/NavigationScreen/Take%20Order/components/AddItemModelSheet.dart';
 
-import 'package:eTrade/components/NavigationBar.dart';
-import 'package:eTrade/helper/sqlhelper.dart';
-import 'package:eTrade/entities/Customer.dart';
-import 'package:eTrade/entities/Order.dart';
-import 'package:eTrade/entities/Products.dart';
-import 'package:eTrade/entities/Sale.dart';
-import 'package:eTrade/entities/ViewRecovery.dart';
-import 'package:eTrade/main.dart';
-import 'package:eTrade/screen/NavigationScreen/Take%20Order/TakeOrderScreen.dart';
+import 'package:etrade/components/NavigationBar.dart';
+import 'package:etrade/helper/sqlhelper.dart';
+import 'package:etrade/entities/Customer.dart';
+import 'package:etrade/entities/Order.dart';
+import 'package:etrade/entities/Products.dart';
+import 'package:etrade/entities/Sale.dart';
+import 'package:etrade/entities/ViewRecovery.dart';
+import 'package:etrade/main.dart';
+import 'package:etrade/screen/NavigationScreen/Take%20Order/TakeOrderScreen.dart';
 import "package:flutter/material.dart";
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -96,7 +96,7 @@ class _CartScreenState extends State<CartScreen> {
                 bottom: Radius.circular(30),
               ),
             ),
-            backgroundColor: eTradeMainColor,
+            backgroundColor: etradeMainColor,
             toolbarHeight: 80,
             leading: IconButton(
               onPressed: () {
@@ -141,7 +141,7 @@ class _CartScreenState extends State<CartScreen> {
                               style: TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold,
-                                  color: eTradeMainColor),
+                                  color: etradeMainColor),
                             ),
                             Text(
                               "(${TakeOrderScreen.isEditOrder ? widget.date : showDateFormat.format(DateTime.now())})",
@@ -160,7 +160,7 @@ class _CartScreenState extends State<CartScreen> {
                                 children: [
                                   Switch(
                                     value: isCash,
-                                    activeColor: eTradeMainColor,
+                                    activeColor: etradeMainColor,
                                     onChanged: (value) async {
                                       setState(() {
                                         isCash = value;
@@ -269,7 +269,7 @@ class _CartScreenState extends State<CartScreen> {
                           ? Color(0xff424242)
                           : Colors.grey.shade100,
                       border: Border(
-                        top: BorderSide(color: eTradeMainColor, width: 4),
+                        top: BorderSide(color: etradeMainColor, width: 4),
                       )),
                   height: (isLandscape) ? 170 : 220.0,
                   width: double.infinity,
@@ -304,14 +304,14 @@ class _CartScreenState extends State<CartScreen> {
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
                                   borderSide:
-                                      BorderSide(color: eTradeMainColor),
+                                      BorderSide(color: etradeMainColor),
                                 ),
                                 disabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
                                   borderSide: BorderSide(color: Colors.grey),
                                 ),
                                 labelText: 'Description',
-                                // labelStyle: TextStyle(color: eTradeMainColor),
+                                // labelStyle: TextStyle(color: etradeMainColor),
                               ),
                             ),
                           ),
@@ -539,7 +539,7 @@ class _CartScreenState extends State<CartScreen> {
                                           },
                             minWidth: double.infinity,
                             height: 40,
-                            color: eTradeMainColor,
+                            color: etradeMainColor,
                             child: Text(
                               TakeOrderScreen.isEditOrder
                                   ? "Update Order"

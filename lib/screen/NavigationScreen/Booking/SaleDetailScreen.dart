@@ -1,15 +1,15 @@
 import 'package:dart_ping/dart_ping.dart';
-import 'package:eTrade/components/constants.dart';
-import 'package:eTrade/screen/NavigationScreen/Take%20Order/components/AddItemModelSheet.dart';
-import 'package:eTrade/components/NavigationBar.dart';
-import 'package:eTrade/helper/sqlhelper.dart';
-import 'package:eTrade/entities/Customer.dart';
-import 'package:eTrade/entities/Edit.dart';
-import 'package:eTrade/entities/Order.dart';
-import 'package:eTrade/entities/Products.dart';
-import 'package:eTrade/entities/ViewBooking.dart';
-import 'package:eTrade/main.dart';
-import 'package:eTrade/screen/NavigationScreen/Booking/ViewBookingScreen.dart';
+import 'package:etrade/components/constants.dart';
+import 'package:etrade/screen/NavigationScreen/Take%20Order/components/AddItemModelSheet.dart';
+import 'package:etrade/components/NavigationBar.dart';
+import 'package:etrade/helper/sqlhelper.dart';
+import 'package:etrade/entities/Customer.dart';
+import 'package:etrade/entities/Edit.dart';
+import 'package:etrade/entities/Order.dart';
+import 'package:etrade/entities/Products.dart';
+import 'package:etrade/entities/ViewBooking.dart';
+import 'package:etrade/main.dart';
+import 'package:etrade/screen/NavigationScreen/Booking/ViewBookingScreen.dart';
 import "package:flutter/material.dart";
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -82,7 +82,7 @@ class _SaleDetailScreenState extends State<SaleDetailScreen> {
               bottom: Radius.circular(30),
             ),
           ),
-          backgroundColor: eTradeMainColor,
+          backgroundColor: etradeMainColor,
           toolbarHeight: 80,
           title: Text(
             'Invoice Detail',
@@ -167,7 +167,7 @@ class _SaleDetailScreenState extends State<SaleDetailScreen> {
                 ),
                 Divider(
                   thickness: 2,
-                  color: eTradeMainColor,
+                  color: etradeMainColor,
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
@@ -232,7 +232,7 @@ class _SaleDetailScreenState extends State<SaleDetailScreen> {
                         ? Color(0xff424242)
                         : Colors.grey.shade100,
                     border: Border(
-                      top: BorderSide(color: eTradeMainColor, width: 4),
+                      top: BorderSide(color: etradeMainColor, width: 4),
                     )),
                 height: 80,
                 width: double.infinity,

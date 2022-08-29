@@ -3,15 +3,15 @@
 import 'dart:math';
 
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:eTrade/components/CustomNavigator.dart';
-import 'package:eTrade/components/NavigationBar.dart';
-import 'package:eTrade/components/constants.dart';
-import 'package:eTrade/components/drawer.dart';
-import 'package:eTrade/helper/Sql_Connection.dart';
-import 'package:eTrade/components/sharePreferences.dart';
-import 'package:eTrade/entities/Customer.dart';
-import 'package:eTrade/entities/ViewRecovery.dart';
-import 'package:eTrade/screen/LoginScreen/LoginScreen.dart';
+import 'package:etrade/components/CustomNavigator.dart';
+import 'package:etrade/components/NavigationBar.dart';
+import 'package:etrade/components/constants.dart';
+import 'package:etrade/components/drawer.dart';
+import 'package:etrade/helper/Sql_Connection.dart';
+import 'package:etrade/components/sharePreferences.dart';
+import 'package:etrade/entities/Customer.dart';
+import 'package:etrade/entities/ViewRecovery.dart';
+import 'package:etrade/screen/LoginScreen/LoginScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -36,6 +36,7 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
       if (widget.isConnectionfromdrawer) {
         islocal = ConnectionScreen.isLocal;
         _controller.text = UserSharePreferences.getIp();
+        userIp = _controller.text;
       }
     });
     super.initState();
@@ -53,7 +54,7 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
                 height: 200,
                 alignment: Alignment.centerRight,
                 decoration: BoxDecoration(
-                  color: eTradeMainColor,
+                  color: etradeMainColor,
                   borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(25),
                       bottomRight: Radius.circular(25)),
@@ -140,7 +141,7 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
                             borderSide: BorderSide(width: 30.0)),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(20)),
-                          borderSide: BorderSide(color: eTradeMainColor),
+                          borderSide: BorderSide(color: etradeMainColor),
                         ),
                         labelText: '  IP Address',
                         errorText: valid ? null : _error,
@@ -204,7 +205,7 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
                           }
                         },
                         elevation: 20.0,
-                        color: eTradeMainColor,
+                        color: etradeMainColor,
                         shape: RoundedRectangleBorder(
                             borderRadius:
                                 BorderRadius.all(Radius.circular(25.0))),

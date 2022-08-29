@@ -1,5 +1,5 @@
-import 'package:eTrade/screen/NavigationScreen/Take%20Order/components/AddItemModelSheet.dart';
-import 'package:eTrade/entities/Products.dart';
+import 'package:etrade/screen/NavigationScreen/Take%20Order/components/AddItemModelSheet.dart';
+import 'package:etrade/entities/Products.dart';
 import 'package:flutter/material.dart';
 
 SearchListProduct(BuildContext context, List<Product> product, String matchItem,

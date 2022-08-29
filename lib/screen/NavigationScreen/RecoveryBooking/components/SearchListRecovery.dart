@@ -1,15 +1,15 @@
-import 'package:eTrade/components/CustomNavigator.dart';
-import 'package:eTrade/components/NavigationBar.dart';
-import 'package:eTrade/components/constants.dart';
-import 'package:eTrade/screen/NavigationScreen/RecoveryBooking/components/ViewRecoveryTabBar.dart';
-import 'package:eTrade/helper/sqlhelper.dart';
-import 'package:eTrade/entities/ViewBooking.dart';
-import 'package:eTrade/entities/ViewRecovery.dart';
-import 'package:eTrade/main.dart';
-import 'package:eTrade/screen/NavigationScreen/Take%20Order/TakeOrderScreen.dart';
-import 'package:eTrade/screen/NavigationScreen/RecoveryBooking/RecoveryScreen.dart';
-import 'package:eTrade/screen/NavigationScreen/RecoveryBooking/RecoveryDetailScreen.dart';
-import 'package:eTrade/screen/NavigationScreen/Booking/OrderDetailScreen.dart';
+import 'package:etrade/components/CustomNavigator.dart';
+import 'package:etrade/components/NavigationBar.dart';
+import 'package:etrade/components/constants.dart';
+import 'package:etrade/screen/NavigationScreen/RecoveryBooking/components/ViewRecoveryTabBar.dart';
+import 'package:etrade/helper/sqlhelper.dart';
+import 'package:etrade/entities/ViewBooking.dart';
+import 'package:etrade/entities/ViewRecovery.dart';
+import 'package:etrade/main.dart';
+import 'package:etrade/screen/NavigationScreen/Take%20Order/TakeOrderScreen.dart';
+import 'package:etrade/screen/NavigationScreen/RecoveryBooking/RecoveryScreen.dart';
+import 'package:etrade/screen/NavigationScreen/RecoveryBooking/RecoveryDetailScreen.dart';
+import 'package:etrade/screen/NavigationScreen/Booking/OrderDetailScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
@@ -162,14 +162,14 @@ class _ListOfRecoveryState extends State<ListOfRecovery>
                                               child: Container(
                                                 padding: EdgeInsets.all(8),
                                                 decoration: BoxDecoration(
-                                                    color: eTradeMainColor,
+                                                    color: etradeMainColor,
                                                     // (MyApp.isDark)
                                                     // ? Colors.grey
                                                     // : Colors
                                                     //     .grey.shade300,
                                                     // border: Border.all(
                                                     //     color:
-                                                    //         eTradeMainColor,
+                                                    //         etradeMainColor,
                                                     //     width: 1),
                                                     borderRadius:
                                                         BorderRadius.all(
@@ -425,14 +425,14 @@ class _ListOfRecoveryState extends State<ListOfRecovery>
                                                         decoration:
                                                             BoxDecoration(
                                                                 color:
-                                                                    eTradeMainColor,
+                                                                    etradeMainColor,
                                                                 // (MyApp.isDark)
                                                                 // ? Colors.grey
                                                                 // : Colors
                                                                 //     .grey.shade300,
                                                                 // border: Border.all(
                                                                 //     color:
-                                                                //         eTradeMainColor,
+                                                                //         etradeMainColor,
                                                                 //     width: 1),
                                                                 borderRadius: BorderRadius
                                                                     .all(Radius

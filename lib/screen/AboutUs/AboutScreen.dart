@@ -1,5 +1,5 @@
-import 'package:eTrade/components/constants.dart';
-import 'package:eTrade/screen/AboutUs/WebView.dart';
+import 'package:etrade/components/constants.dart';
+import 'package:etrade/screen/AboutUs/WebView.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
@@ -26,7 +26,7 @@ class _AboutScreenState extends State<AboutScreen> {
       subtitle: "support@exapp.pk",
       icon: Icon(
         Icons.mail,
-        color: eTradeMainColor,
+        color: etradeMainColor,
       ),
     ),
     About(
@@ -34,7 +34,7 @@ class _AboutScreenState extends State<AboutScreen> {
       subtitle: "+923040636454",
       icon: Icon(
         Icons.phone,
-        color: eTradeMainColor,
+        color: etradeMainColor,
       ),
     ),
     About(
@@ -42,7 +42,7 @@ class _AboutScreenState extends State<AboutScreen> {
       subtitle: "facebook.com/automatingbiz",
       icon: Icon(
         Icons.facebook,
-        color: eTradeMainColor,
+        color: etradeMainColor,
       ),
     ),
     About(
@@ -50,7 +50,7 @@ class _AboutScreenState extends State<AboutScreen> {
       subtitle: "twitter.com/e_xapp",
       icon: Icon(
         Icons.business_center_outlined,
-        color: eTradeMainColor,
+        color: etradeMainColor,
       ),
     ),
     About(
@@ -58,14 +58,14 @@ class _AboutScreenState extends State<AboutScreen> {
         subtitle: "https://www.linkedin.com/company/exapp-pvt-ltd",
         icon: Icon(
           Icons.linked_camera_outlined,
-          color: eTradeMainColor,
+          color: etradeMainColor,
         )),
     About(
       title: "Official Website",
       subtitle: "www.exapp.pk",
       icon: Icon(
         Icons.web,
-        color: eTradeMainColor,
+        color: etradeMainColor,
       ),
     ),
   ];
@@ -74,7 +74,7 @@ class _AboutScreenState extends State<AboutScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text("About Us"),
-        backgroundColor: eTradeMainColor,
+        backgroundColor: etradeMainColor,
       ),
       body: SingleChildScrollView(
         child: Container(

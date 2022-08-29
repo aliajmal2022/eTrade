@@ -1,8 +1,8 @@
-import 'package:eTrade/components/NavigationBar.dart';
-import 'package:eTrade/entities/Customer.dart';
-import 'package:eTrade/entities/ViewRecovery.dart';
-import 'package:eTrade/main.dart';
-import 'package:eTrade/screen/NavigationScreen/DashBoard/DashboardScreen.dart';
+import 'package:etrade/components/NavigationBar.dart';
+import 'package:etrade/entities/Customer.dart';
+import 'package:etrade/entities/ViewRecovery.dart';
+import 'package:etrade/main.dart';
+import 'package:etrade/screen/NavigationScreen/DashBoard/DashboardScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

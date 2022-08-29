@@ -1,17 +1,17 @@
-import 'package:eTrade/components/NavigationBar.dart';
-import 'package:eTrade/components/constants.dart';
-import 'package:eTrade/screen/NavigationScreen/Booking/components/ViewBookingTabBar.dart';
-import 'package:eTrade/helper/sqlhelper.dart';
-import 'package:eTrade/entities/Customer.dart';
-import 'package:eTrade/entities/ViewBooking.dart';
-import 'package:eTrade/entities/ViewRecovery.dart';
-import 'package:eTrade/main.dart';
-import 'package:eTrade/screen/NavigationScreen/Booking/SaleDetailScreen.dart';
-import 'package:eTrade/screen/NavigationScreen/DashBoard/DashboardScreen.dart';
-import 'package:eTrade/screen/NavigationScreen/Take%20Order/TakeOrderScreen.dart';
-import 'package:eTrade/screen/NavigationScreen/Booking/OrderDetailScreen.dart';
-import 'package:eTrade/screen/NavigationScreen/Booking/ViewBookingScreen.dart';
-import 'package:eTrade/screen/NavigationScreen/Take%20Order/components/AddItemModelSheet.dart';
+import 'package:etrade/components/NavigationBar.dart';
+import 'package:etrade/components/constants.dart';
+import 'package:etrade/screen/NavigationScreen/Booking/components/ViewBookingTabBar.dart';
+import 'package:etrade/helper/sqlhelper.dart';
+import 'package:etrade/entities/Customer.dart';
+import 'package:etrade/entities/ViewBooking.dart';
+import 'package:etrade/entities/ViewRecovery.dart';
+import 'package:etrade/main.dart';
+import 'package:etrade/screen/NavigationScreen/Booking/SaleDetailScreen.dart';
+import 'package:etrade/screen/NavigationScreen/DashBoard/DashboardScreen.dart';
+import 'package:etrade/screen/NavigationScreen/Take%20Order/TakeOrderScreen.dart';
+import 'package:etrade/screen/NavigationScreen/Booking/OrderDetailScreen.dart';
+import 'package:etrade/screen/NavigationScreen/Booking/ViewBookingScreen.dart';
+import 'package:etrade/screen/NavigationScreen/Take%20Order/components/AddItemModelSheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
@@ -216,10 +216,10 @@ class _ListOfOrderState extends State<ListOfOrder>
                                             child: Container(
                                               padding: EdgeInsets.all(8),
                                               decoration: BoxDecoration(
-                                                  color: eTradeMainColor,
+                                                  color: etradeMainColor,
                                                   // border: Border.all(
                                                   //     color:
-                                                  //         eTradeMainColor,
+                                                  //         etradeMainColor,
                                                   //     width: 1),
                                                   borderRadius:
                                                       BorderRadius.all(
@@ -625,10 +625,10 @@ class _ListOfOrderState extends State<ListOfOrder>
                                             child: Container(
                                               padding: EdgeInsets.all(8),
                                               decoration: BoxDecoration(
-                                                  color: eTradeMainColor,
+                                                  color: etradeMainColor,
                                                   // border: Border.all(
                                                   //     color:
-                                                  //         eTradeMainColor,
+                                                  //         etradeMainColor,
                                                   //     width: 1),
                                                   borderRadius:
                                                       BorderRadius.all(

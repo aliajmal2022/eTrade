@@ -1,22 +1,22 @@
 import 'dart:math';
 
-import 'package:eTrade/components/CustomNavigator.dart';
-import 'package:eTrade/components/NavigationBar.dart';
-import 'package:eTrade/components/constants.dart';
-import 'package:eTrade/screen/NavigationScreen/Booking/components/SearchListViewBooking.dart';
-import 'package:eTrade/screen/NavigationScreen/RecoveryBooking/components/SearchListRecovery.dart';
-import 'package:eTrade/components/drawer.dart';
-import 'package:eTrade/helper/sqlhelper.dart';
-import 'package:eTrade/entities/Customer.dart';
-import 'package:eTrade/entities/Edit.dart';
-import 'package:eTrade/entities/Recovery.dart';
-import 'package:eTrade/entities/ViewBooking.dart';
-import 'package:eTrade/entities/ViewRecovery.dart';
-import 'package:eTrade/main.dart';
-import 'package:eTrade/screen/NavigationScreen/Take%20Order/TakeOrderScreen.dart';
-import 'package:eTrade/screen/NavigationScreen/RecoveryBooking/RecoveryScreen.dart';
-import 'package:eTrade/screen/NavigationScreen/Booking/OrderDetailScreen.dart';
-import 'package:eTrade/screen/NavigationScreen/RecoveryBooking/RecoveryDetailScreen.dart';
+import 'package:etrade/components/CustomNavigator.dart';
+import 'package:etrade/components/NavigationBar.dart';
+import 'package:etrade/components/constants.dart';
+import 'package:etrade/screen/NavigationScreen/Booking/components/SearchListViewBooking.dart';
+import 'package:etrade/screen/NavigationScreen/RecoveryBooking/components/SearchListRecovery.dart';
+import 'package:etrade/components/drawer.dart';
+import 'package:etrade/helper/sqlhelper.dart';
+import 'package:etrade/entities/Customer.dart';
+import 'package:etrade/entities/Edit.dart';
+import 'package:etrade/entities/Recovery.dart';
+import 'package:etrade/entities/ViewBooking.dart';
+import 'package:etrade/entities/ViewRecovery.dart';
+import 'package:etrade/main.dart';
+import 'package:etrade/screen/NavigationScreen/Take%20Order/TakeOrderScreen.dart';
+import 'package:etrade/screen/NavigationScreen/RecoveryBooking/RecoveryScreen.dart';
+import 'package:etrade/screen/NavigationScreen/Booking/OrderDetailScreen.dart';
+import 'package:etrade/screen/NavigationScreen/RecoveryBooking/RecoveryDetailScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -129,7 +129,7 @@ class _RecoveryTabBarItemState extends State<RecoveryTabBarItem>
         }),
         child: const Text(
           "Cancel",
-          style: TextStyle(color: eTradeMainColor),
+          style: TextStyle(color: etradeMainColor),
         ));
     Widget selectedButton = TextButton(
         onPressed: (() {
@@ -141,7 +141,7 @@ class _RecoveryTabBarItemState extends State<RecoveryTabBarItem>
           });
           Navigator.pop(context);
         }),
-        child: const Text("Select", style: TextStyle(color: eTradeMainColor)));
+        child: const Text("Select", style: TextStyle(color: etradeMainColor)));
     List<Widget> LOWidget = [cancelButton, selectedButton];
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
@@ -158,9 +158,9 @@ class _RecoveryTabBarItemState extends State<RecoveryTabBarItem>
         child: SfDateRangePicker(
           onSelectionChanged: _onSelectionChanged,
           selectionMode: DateRangePickerSelectionMode.range,
-          startRangeSelectionColor: eTradeMainColor,
-          endRangeSelectionColor: eTradeMainColor,
-          todayHighlightColor: eTradeMainColor,
+          startRangeSelectionColor: etradeMainColor,
+          endRangeSelectionColor: etradeMainColor,
+          todayHighlightColor: etradeMainColor,
 
           // view: ,
         ),
@@ -211,7 +211,7 @@ class _RecoveryTabBarItemState extends State<RecoveryTabBarItem>
                           ),
                           ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                  primary: eTradeMainColor),
+                                  primary: etradeMainColor),
                               onPressed: prerange == "Select Date"
                                   ? null
                                   : () async {
@@ -232,12 +232,12 @@ class _RecoveryTabBarItemState extends State<RecoveryTabBarItem>
                                         }
                                       });
                                     },
-                              child: const Text('Get Date'))
+                              child: const Text('Get Data'))
                         ],
                       ),
                     )),
                 const Divider(
-                  color: eTradeMainColor,
+                  color: etradeMainColor,
                   thickness: 2,
                   height: 50,
                 ),
@@ -256,17 +256,17 @@ class _RecoveryTabBarItemState extends State<RecoveryTabBarItem>
           },
           decoration: const InputDecoration(
             enabledBorder: OutlineInputBorder(
-              borderSide: const BorderSide(color: eTradeMainColor),
+              borderSide: const BorderSide(color: etradeMainColor),
             ),
             focusedBorder: const OutlineInputBorder(
               // borderRadius: BorderRadius.circular(20),
-              borderSide: const BorderSide(color: eTradeMainColor),
+              borderSide: const BorderSide(color: etradeMainColor),
             ),
             labelText: 'Search CustomerName',
             // labelStyle: const TextStyle(color: Colors.grey),
             suffixIcon: Icon(
               Icons.search,
-              color: eTradeMainColor,
+              color: etradeMainColor,
             ),
           ),
         ),
@@ -276,7 +276,7 @@ class _RecoveryTabBarItemState extends State<RecoveryTabBarItem>
       ),
       (widget.tabName != "Search")
           ? Divider(
-              color: eTradeMainColor,
+              color: etradeMainColor,
               thickness: 2,
               height: 50,
             )
@@ -399,14 +399,14 @@ class _RecoveryTabBarItemState extends State<RecoveryTabBarItem>
                                                   child: Container(
                                                     padding: EdgeInsets.all(8),
                                                     decoration: BoxDecoration(
-                                                        color: eTradeMainColor,
+                                                        color: etradeMainColor,
                                                         // (MyApp.isDark)
                                                         // ? Colors.grey
                                                         // : Colors
                                                         //     .grey.shade300,
                                                         // border: Border.all(
                                                         //     color:
-                                                        //         eTradeMainColor,
+                                                        //         etradeMainColor,
                                                         //     width: 1),
                                                         borderRadius:
                                                             BorderRadius.all(
@@ -653,14 +653,14 @@ class _RecoveryTabBarItemState extends State<RecoveryTabBarItem>
                                                           padding:
                                                               EdgeInsets.all(8),
                                                           decoration: BoxDecoration(
-                                                              color: eTradeMainColor,
+                                                              color: etradeMainColor,
                                                               // (MyApp.isDark)
                                                               // ? Colors.grey
                                                               // : Colors
                                                               //     .grey.shade300,
                                                               // border: Border.all(
                                                               //     color:
-                                                              //         eTradeMainColor,
+                                                              //         etradeMainColor,
                                                               //     width: 1),
                                                               borderRadius: BorderRadius.all(Radius.circular(5))),
                                                           child: Text(

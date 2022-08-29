@@ -1,21 +1,19 @@
-import 'dart:ffi';
-
 import 'package:dropdown_button2/dropdown_button2.dart';
-import 'package:eTrade/components/NavigationBar.dart';
-import 'package:eTrade/components/constants.dart';
-import 'package:eTrade/components/drawer.dart';
-import 'package:eTrade/components/sharePreferences.dart';
-import 'package:eTrade/entities/Order.dart';
-import 'package:eTrade/entities/OrderDetail.dart';
-import 'package:eTrade/entities/Products.dart';
-import 'package:eTrade/entities/Recovery.dart';
-import 'package:eTrade/entities/Sale.dart';
-import 'package:eTrade/entities/SaleDetail.dart';
-import 'package:eTrade/entities/User.dart';
-import 'package:eTrade/helper/Sql_Connection.dart';
-import 'package:eTrade/helper/onldt_to_local_db.dart';
-import 'package:eTrade/helper/sqlhelper.dart';
-import 'package:eTrade/main.dart';
+import 'package:etrade/components/NavigationBar.dart';
+import 'package:etrade/components/constants.dart';
+import 'package:etrade/components/drawer.dart';
+import 'package:etrade/components/sharePreferences.dart';
+import 'package:etrade/entities/Order.dart';
+import 'package:etrade/entities/OrderDetail.dart';
+import 'package:etrade/entities/Products.dart';
+import 'package:etrade/entities/Recovery.dart';
+import 'package:etrade/entities/Sale.dart';
+import 'package:etrade/entities/SaleDetail.dart';
+import 'package:etrade/entities/User.dart';
+import 'package:etrade/helper/Sql_Connection.dart';
+import 'package:etrade/helper/onldt_to_local_db.dart';
+import 'package:etrade/helper/sqlhelper.dart';
+import 'package:etrade/main.dart';
 import 'package:find_dropdown/find_dropdown.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +24,7 @@ import 'package:get/get_navigation/src/routes/default_transitions.dart';
 import 'package:intl/intl.dart';
 import 'package:sql_conn/sql_conn.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class DashBoardScreen extends StatefulWidget {
   static List<DashBoard> dashBoard = [];
@@ -220,8 +219,7 @@ class DashBoardScreen extends StatefulWidget {
 class _DashBoardScreenState extends State<DashBoardScreen>
     with TickerProviderStateMixin {
   updateData() async {
-    if (currentUser.userName != "" || !MyNavigationBar.isAdmin) {
-      await DashBoardScreen.getMonthlyTargetDB(DashBoardScreen.isOrder);
+    if ((currentUser.userName != "") || !MyNavigationBar.isAdmin) {
       DashBoardScreen.dashBoard =
           await DashBoardScreen.getOrderHistory(DashBoardScreen.isOrder);
       DashBoardScreen.itemdata =
@@ -303,6 +301,8 @@ class _DashBoardScreenState extends State<DashBoardScreen>
   @override
   void initState() {
     setState(() {
+      prerange = '$startedDate/$weekendDate';
+      range = prerange;
       if (MyNavigationBar.isAdmin) {
         if (isFirstTime) {
           preloadForAdmin();
@@ -320,6 +320,72 @@ class _DashBoardScreenState extends State<DashBoardScreen>
     super.initState();
   }
 
+  void _onSelectionChanged(DateRangePickerSelectionChangedArgs args) {
+    // setState(() {
+    if (args.value is PickerDateRange) {
+      range = '${DateFormat('dd-MM-yyyy').format(args.value.startDate)}/'
+          '${DateFormat('dd-MM-yyyy').format(args.value.endDate ?? args.value.startDate)}';
+    }
+  }
+
+  void datePickerBox() {
+    Widget cancelButton = TextButton(
+        onPressed: (() {
+          Navigator.pop(context);
+        }),
+        child: const Text(
+          "Cancel",
+          style: TextStyle(color: etradeMainColor),
+        ));
+    Widget selectedButton = TextButton(
+        onPressed: (() {
+          setState(() {
+            prerange = range;
+            var splitDate = prerange.split('/');
+            // RecoveryTabBarItem.setFromDate(splitDate[0]);
+            // RecoveryTabBarItem.setToDate(splitDate[1]);
+          });
+          Navigator.pop(context);
+        }),
+        child: const Text("Select", style: TextStyle(color: etradeMainColor)));
+    List<Widget> LOWidget = [cancelButton, selectedButton];
+    var height = MediaQuery.of(context).size.height;
+    var width = MediaQuery.of(context).size.width;
+    final isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
+    Widget selectDateDialog = AlertDialog(
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(const Radius.circular(10.0))),
+      actions: LOWidget,
+      title: const Text("Select Date"),
+      content: Container(
+        height: (isLandscape) ? height : height / 3,
+        width: (isLandscape) ? width / 2.5 : width / 4,
+        child: SfDateRangePicker(
+          onSelectionChanged: _onSelectionChanged,
+          selectionMode: DateRangePickerSelectionMode.range,
+          startRangeSelectionColor: etradeMainColor,
+          endRangeSelectionColor: etradeMainColor,
+          todayHighlightColor: etradeMainColor,
+
+          // view: ,
+        ),
+      ),
+    );
+    showDialog(
+        context: context,
+        builder: (context) {
+          return selectDateDialog;
+        });
+  }
+
+  String prerange = 'Select Date';
+  String range = 'Select Date';
+  String startedDate = DateFormat('dd-MM-yyyy')
+      .format(DateTime.now().subtract(Duration(days: 6)));
+  String weekendDate = DateFormat('dd-MM-yyyy').format(DateTime.now());
+  String _groupValue = "Booking";
+  String isExeOrBook = '';
   TooltipBehavior _tooltipBehavior = TooltipBehavior(
     enable: true,
   );
@@ -331,7 +397,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
     return Scaffold(
         appBar: MyNavigationBar.isAdmin
             ? AppBar(
-                backgroundColor: eTradeMainColor,
+                backgroundColor: etradeMainColor,
                 toolbarHeight: 80,
                 shape: const RoundedRectangleBorder(
                   borderRadius: const BorderRadius.vertical(
@@ -430,7 +496,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                 ),
               )
             : AppBar(
-                backgroundColor: eTradeMainColor,
+                backgroundColor: etradeMainColor,
                 toolbarHeight: 80,
                 shape: const RoundedRectangleBorder(
                   borderRadius: const BorderRadius.vertical(
@@ -461,6 +527,81 @@ class _DashBoardScreenState extends State<DashBoardScreen>
         body: SingleChildScrollView(
           child: Column(
             children: [
+              MyNavigationBar.isAdmin
+                  ? Column(
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                              child: RadioListTile(
+                                value: "Booking",
+                                contentPadding: EdgeInsets.symmetric(
+                                    horizontal: 30, vertical: 10),
+                                groupValue: _groupValue,
+                                title: Text("Booking"),
+                                onChanged: (newValue) => setState(
+                                    () => _groupValue = newValue.toString()),
+                                activeColor: etradeMainColor,
+                                selected: false,
+                              ),
+                            ),
+                            Expanded(
+                              child: RadioListTile(
+                                contentPadding: EdgeInsets.all(0),
+                                value: "Execution",
+                                groupValue: _groupValue,
+                                title: Text("Execution"),
+                                onChanged: (newValue) => setState(
+                                    () => _groupValue = newValue.toString()),
+                                activeColor: etradeMainColor,
+                                selected: false,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Flexible(
+                              child: OutlinedButton(
+                                  style: OutlinedButton.styleFrom(
+                                      side: BorderSide(
+                                          color: Colors.grey, width: 1)),
+                                  onPressed: (() {
+                                    datePickerBox();
+                                  }),
+                                  child: Text(
+                                    "${prerange}",
+                                    style: TextStyle(
+                                        fontSize: 19,
+                                        color: (MyApp.isDark)
+                                            ? Colors.white
+                                            : Colors.black,
+                                        fontWeight: FontWeight.normal),
+                                  )),
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    primary: etradeMainColor),
+                                onPressed: () async {},
+                                child: Text('Get Data'))
+                          ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Divider(
+                            color: etradeMainColor,
+                            thickness: 2,
+                            height: 50,
+                          ),
+                        ),
+                      ],
+                    )
+                  : Container(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -472,7 +613,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                     ),
                   ),
                   Switch(
-                    activeColor: eTradeMainColor,
+                    activeColor: etradeMainColor,
                     value: DashBoardScreen.isOrder,
                     onChanged: (value) async {
                       if (currentUser.userName != "" ||
@@ -482,24 +623,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                           DashBoardScreen.currentMonthTarget = 0;
                           DashBoardScreen.isOrder = value;
                         });
-                        DashBoardScreen.dashBoard =
-                            await DashBoardScreen.getOrderHistory(
-                                DashBoardScreen.isOrder);
-                        DashBoardScreen.itemdata =
-                            await DashBoardScreen.getTopProduct(
-                                DashBoardScreen.isOrder);
-                        DashBoardScreen.monthlyList =
-                            await DashBoardScreen.getMonthlyRecordDB(
-                                DashBoardScreen.isOrder);
-                        DashBoardScreen.staticMonths =
-                            await DashBoardScreen.getMonthlyTargetDB(
-                                DashBoardScreen.isOrder);
-                        setState(() {
-                          DashBoardScreen.monthlyList;
-                          DashBoardScreen.staticMonths;
-                          DashBoardScreen.itemdata;
-                          DashBoardScreen.dashBoard;
-                        });
+                        updateData();
                       }
                     },
                   ),
@@ -580,7 +704,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                         style: TextStyle(
                             fontSize: 25,
                             fontWeight: FontWeight.bold,
-                            color: eTradeMainColor),
+                            color: etradeMainColor),
                       ),
                       Text(
                         "Time gone : ${timeGoneCheck()}%",
@@ -596,7 +720,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                         style: TextStyle(
                             fontSize: 25,
                             fontWeight: FontWeight.bold,
-                            color: eTradeMainColor),
+                            color: etradeMainColor),
                       ),
                       Text(
                         "Acheivement: ${acheivement()}%",
@@ -612,7 +736,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Divider(
-                  color: eTradeMainColor,
+                  color: etradeMainColor,
                   thickness: 2,
                   height: 50,
                 ),
@@ -644,15 +768,15 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                                       (DashBoardScreen.dashBoard[index].order >
                                               DashBoardScreen.dashBoard[index]
                                                   .compareOrder)
-                                          ? eTradeMainColor
+                                          ? etradeMainColor
                                           : (DashBoardScreen
                                                       .dashBoard[index].order ==
                                                   DashBoardScreen
                                                       .dashBoard[index]
                                                       .compareOrder)
-                                              ? eTradeBlue
-                                              : eTradeRed,
-                                  // color: eTradeMainColor,
+                                              ? etradeBlue
+                                              : etradeRed,
+                                  // color: etradeMainColor,
                                   // color: Theme.of(context).dividerColor,
                                   blurRadius: 1.0,
                                 ),
@@ -772,14 +896,14 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                                                     .dashBoard[index].order >
                                                 DashBoardScreen.dashBoard[index]
                                                     .compareOrder)
-                                            ? eTradeMainColor
+                                            ? etradeMainColor
                                             : (DashBoardScreen.dashBoard[index]
                                                         .order ==
                                                     DashBoardScreen
                                                         .dashBoard[index]
                                                         .compareOrder)
-                                                ? eTradeBlue
-                                                : eTradeRed,
+                                                ? etradeBlue
+                                                : etradeRed,
                                       ))
                                   : Expanded(
                                       flex: 2,
@@ -808,7 +932,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Divider(
-                  color: eTradeMainColor,
+                  color: etradeMainColor,
                   thickness: 2,
                   height: 50,
                 ),

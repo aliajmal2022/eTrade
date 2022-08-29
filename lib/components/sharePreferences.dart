@@ -1,6 +1,6 @@
 // ignore_for_file: unused_field
 
-import 'package:eTrade/entities/User.dart';
+import 'package:etrade/entities/User.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserSharePreferences {

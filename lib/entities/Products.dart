@@ -1,7 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
-import 'package:eTrade/helper/Sql_Connection.dart';
-import 'package:eTrade/helper/sqlhelper.dart';
+import 'package:etrade/helper/Sql_Connection.dart';
+import 'package:etrade/helper/sqlhelper.dart';
 
 class Product {
   Product(

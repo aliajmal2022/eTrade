@@ -1,16 +1,16 @@
-import 'package:eTrade/components/CustomNavigator.dart';
-import 'package:eTrade/components/NavigationBar.dart';
-import 'package:eTrade/components/NewCustomer.dart';
-import 'package:eTrade/components/constants.dart';
-import 'package:eTrade/components/drawer.dart';
-import 'package:eTrade/helper/onldt_to_local_db.dart';
-import 'package:eTrade/helper/sqlhelper.dart';
-import 'package:eTrade/entities/Customer.dart';
-import 'package:eTrade/entities/Recovery.dart';
-import 'package:eTrade/entities/ViewRecovery.dart';
-import 'package:eTrade/main.dart';
-import 'package:eTrade/screen/NavigationScreen/RecoveryBooking/CustomerBalance.dart';
-import 'package:eTrade/screen/NavigationScreen/RecoveryBooking/ViewRecoveryScreen.dart';
+import 'package:etrade/components/CustomNavigator.dart';
+import 'package:etrade/components/NavigationBar.dart';
+import 'package:etrade/components/NewCustomer.dart';
+import 'package:etrade/components/constants.dart';
+import 'package:etrade/components/drawer.dart';
+import 'package:etrade/helper/onldt_to_local_db.dart';
+import 'package:etrade/helper/sqlhelper.dart';
+import 'package:etrade/entities/Customer.dart';
+import 'package:etrade/entities/Recovery.dart';
+import 'package:etrade/entities/ViewRecovery.dart';
+import 'package:etrade/main.dart';
+import 'package:etrade/screen/NavigationScreen/RecoveryBooking/CustomerBalance.dart';
+import 'package:etrade/screen/NavigationScreen/RecoveryBooking/ViewRecoveryScreen.dart';
 import 'package:find_dropdown/find_dropdown.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -154,7 +154,7 @@ class _RecoveryScreenState extends State<RecoveryScreen>
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
-          backgroundColor: eTradeMainColor,
+          backgroundColor: etradeMainColor,
           toolbarHeight: 80,
           shape: const RoundedRectangleBorder(
             borderRadius: const BorderRadius.vertical(
@@ -275,7 +275,7 @@ class _RecoveryScreenState extends State<RecoveryScreen>
                               children: [
                                 Switch(
                                   value: isCash,
-                                  activeColor: eTradeMainColor,
+                                  activeColor: etradeMainColor,
                                   onChanged: (value) async {
                                     setState(() {
                                       isCash = value;
@@ -337,16 +337,16 @@ class _RecoveryScreenState extends State<RecoveryScreen>
                                   searchBoxDecoration: InputDecoration(
                                       focusedBorder: UnderlineInputBorder(
                                         borderSide: BorderSide(
-                                          color: eTradeMainColor,
+                                          color: etradeMainColor,
                                           width: 2,
                                         ),
                                       ),
                                       suffixIcon: Icon(
                                         Icons.search,
-                                        color: eTradeMainColor,
+                                        color: etradeMainColor,
                                       ),
                                       labelStyle:
-                                          TextStyle(color: eTradeMainColor)),
+                                          TextStyle(color: etradeMainColor)),
                                   dropdownItemBuilder: (BuildContext context,
                                       Customer item, bool isSelected) {
                                     return Container(
@@ -354,7 +354,7 @@ class _RecoveryScreenState extends State<RecoveryScreen>
                                           ? null
                                           : BoxDecoration(
                                               border: Border.all(
-                                                  color: eTradeMainColor),
+                                                  color: etradeMainColor),
                                               borderRadius:
                                                   BorderRadius.circular(15),
                                               color: MyApp.isDark
@@ -407,7 +407,7 @@ class _RecoveryScreenState extends State<RecoveryScreen>
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(5)),
                                       // color: Colors.white,
-                                      color: eTradeMainColor,
+                                      color: etradeMainColor,
                                       // color: Color(0xff424242),
                                     ),
                                     child: MaterialButton(
@@ -460,7 +460,7 @@ class _RecoveryScreenState extends State<RecoveryScreen>
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(5)),
                                   borderSide:
-                                      BorderSide(color: eTradeMainColor)),
+                                      BorderSide(color: etradeMainColor)),
                               contentPadding: const EdgeInsets.symmetric(
                                   vertical: 13, horizontal: 20),
                               labelText: 'Enter Amount',
@@ -489,7 +489,7 @@ class _RecoveryScreenState extends State<RecoveryScreen>
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(5)),
                                   borderSide:
-                                      BorderSide(color: eTradeMainColor)),
+                                      BorderSide(color: etradeMainColor)),
                               contentPadding: const EdgeInsets.symmetric(
                                   vertical: 13, horizontal: 20),
                               labelText: 'Description',
@@ -595,7 +595,7 @@ class _RecoveryScreenState extends State<RecoveryScreen>
                               elevation: 20.0,
                               disabledColor: Color(0x0ff1e1e1),
                               disabledElevation: 1,
-                              color: eTradeMainColor,
+                              color: etradeMainColor,
                               shape: RoundedRectangleBorder(
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(25.0))),
