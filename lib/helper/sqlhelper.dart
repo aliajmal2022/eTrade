@@ -162,7 +162,6 @@ class SQLHelper {
     else {
       await deleteDataFromTable(_database, "Party", false);
       await deleteDataFromTable(_database, "Item", true);
-      await deleteDataFromTable(_database, "Order", false);
       await deleteDataFromTable(_database, "User", false);
       await deleteDataFromTable(_database, "UserTarget", false);
       await deleteDataFromTable(_database, "Order", false);
@@ -170,6 +169,11 @@ class SQLHelper {
       await deleteDataFromTable(_database, "Sale", false);
       await deleteDataFromTable(_database, "SaleDetail", false);
       await deleteDataFromTable(_database, "Recovery", false);
+      if (MyNavigationBar.isAdmin) {
+        await deleteDataFromTable(_database, "RecoveryExecution", false);
+        await deleteDataFromTable(_database, "OrderExecution", false);
+        await deleteDataFromTable(_database, "OrderDetailExecution", false);
+      }
     }
   }
 
@@ -398,7 +402,7 @@ WHERE PartyID BETWEEN 2200 AND 2999 AND ifnull(isPosted,0)=1
   static Future<void> createOrderTable(Database database) async {
     await database.execute('''
 CREATE TABLE [Order](
-OrderID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+OrderID TEXT PRIMARY KEY NOT NULL,
 PartyID INTEGER NOT NULL,
 UserID INTEGER NOT NULL,
 TotalQuantity INTEGER NOT NULL,
@@ -419,6 +423,7 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
       'Description': order.description,
       'TotalQuantity': order.totalQuantity,
       'UserID': order.userID,
+      'OrderID': order.orderID,
       'TotalValue': order.totalValue,
       'Dated': order.date,
       'isPosted': isPost,
@@ -483,7 +488,7 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
     Database db = await instance.database;
     try {
       await db.execute(
-          "UPDATE [Order] SET TotalQuantity = 	(SELECT Sum(Quantity) FROM OrderDetail as od WHERE  od.OrderID=$id), TotalValue= (SELECT Sum(Amount) FROM OrderDetail as od WHERE  od.OrderID=$id),Description='$description',PartyID=$partyID WHERE OrderID=$id  and  UserID=${MyNavigationBar.userID}"
+          "UPDATE [Order] SET TotalQuantity = 	(SELECT Sum(Quantity) FROM OrderDetail as od WHERE  od.OrderID='$id'), TotalValue= (SELECT Sum(Amount) FROM OrderDetail as od WHERE  od.OrderID='$id'),Description='$description',PartyID=$partyID WHERE OrderID='$id'  and  UserID=${MyNavigationBar.userID}"
 
           // "UPDATE [Order] SET  PartyID=$partyID,Description='$description',TotalQuantity = (SELECT Sum(Quantity) FROM OrderDetail , [Order] as o WHERE o.OrderID = OrderDetail.OrderID and o.OrderID=$id),TotalValue=(SELECT Sum(Amount) FROM OrderDetail , [Order] as o WHERE o.OrderID = OrderDetail.OrderID and o.OrderID=$id) WHERE [Order].OrderID=$id"
           );
@@ -496,8 +501,8 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
     await database.execute('''
   CREATE TABLE OrderDetail(
 	ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-  UserID INTEGER NOT NULL,
-	OrderID INTEGER NOT NULL,
+  UserID NOT NULL,
+	OrderID TEXT NOT NULL,
 	ItemID TEXT NOT NULL,
   Quantity INTEGER NOT NULL,
   RATE REAL NOT NULL,
@@ -548,7 +553,7 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
   static Future<List> getOrderDetail(int id) async {
     Database db = await instance.database;
     var ListOrder = await db.rawQuery(
-        "SELECT i.ItemName, od.Bonus,od.Discount,od.TradeOffer,od.Quantity,od.Rate,od.Amount,i.itemID,o.Description FROM OrderDetail as od LEFT JOIN Item AS i ON i.ItemID = od.ItemID LEFT JOIN [Order] AS o ON o.OrderID=od.OrderID WHERE od.OrderID=$id and  od.UserID=${MyNavigationBar.userID}");
+        "SELECT i.ItemName, od.Bonus,od.Discount,od.TradeOffer,od.Quantity,od.Rate,od.Amount,i.itemID,o.Description FROM OrderDetail as od LEFT JOIN Item AS i ON i.ItemID = od.ItemID LEFT JOIN [Order] AS o ON o.OrderID=od.OrderID WHERE od.OrderID='$id' and  od.UserID=${MyNavigationBar.userID}");
 
     return ListOrder;
   }
@@ -556,7 +561,7 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
   static Future<void> createSaleTable(Database database) async {
     await database.execute('''
 CREATE TABLE Sale(
-InvoiceID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+InvoiceID TEXT PRIMARY KEY NOT NULL,
 PartyID INTEGER NOT NULL,
 UserID INTEGER NOT NULL,
 TotalQuantity INTEGER NOT NULL,
@@ -578,6 +583,7 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
       'Description': sale.description,
       'TotalQuantity': sale.totalQuantity,
       'UserID': sale.userID,
+      'InvoiceID': sale.saleID,
       'isCashInvoice': sale.isCash,
       'TotalValue': sale.totalValue,
       'Dated': sale.date,
@@ -644,7 +650,7 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
     Database db = await instance.database;
     try {
       await db.execute(
-          "UPDATE Sale SET TotalQuantity = 	(SELECT Sum(sd.Quantity) FROM SaleDetail as sd WHERE  sd.InvoiceID=$id), TotalValue= (SELECT Sum(sd.Amount) FROM SaleDetail as sd WHERE  sd.InvoiceID=$id),Description='$description',PartyID=$partyID,isCashInvoice='$iscash' WHERE InvoiceID=$id and  UserID=${MyNavigationBar.userID}"
+          "UPDATE Sale SET TotalQuantity = 	(SELECT Sum(sd.Quantity) FROM SaleDetail as sd WHERE  sd.InvoiceID='$id'), TotalValue= (SELECT Sum(sd.Amount) FROM SaleDetail as sd WHERE  sd.InvoiceID='$id'),Description='$description',PartyID=$partyID,isCashInvoice='$iscash' WHERE InvoiceID='$id' and  UserID=${MyNavigationBar.userID}"
 
           // "UPDATE [Order] SET  PartyID=$partyID,Description='$description',TotalQuantity = (SELECT Sum(Quantity) FROM OrderDetail , [Order] as o WHERE o.OrderID = OrderDetail.OrderID and o.OrderID=$id),TotalValue=(SELECT Sum(Amount) FROM OrderDetail , [Order] as o WHERE o.OrderID = OrderDetail.OrderID and o.OrderID=$id) WHERE [Order].OrderID=$id"
           );
@@ -657,7 +663,7 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
     await database.execute('''
   CREATE TABLE SaleDetail(
 	ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-  InvoiceID INTEGER NOT NULL,
+  InvoiceID TEXT NOT NULL,
 	UserID INTEGER NOT NULL,
 	ItemID TEXT NOT NULL,
   Quantity INTEGER NOT NULL,
@@ -703,7 +709,7 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
   static Future<List> getSaleDetail(int id) async {
     Database db = await instance.database;
     var ListOrder = await db.rawQuery(
-        "SELECT i.ItemName,sd.Bonus,sd.Discount,sd.TradeOffer,sd.Quantity,sd.Rate,sd.Amount,i.itemID,s.Description,s.isCashInvoice FROM SaleDetail as sd LEFT JOIN Item AS i ON i.ItemID = sd.ItemID LEFT JOIN Sale AS s ON sd.InvoiceID=s.InvoiceID WHERE sd.InvoiceID=$id and sd.UserID=${MyNavigationBar.userID}");
+        "SELECT i.ItemName,sd.Bonus,sd.Discount,sd.TradeOffer,sd.Quantity,sd.Rate,sd.Amount,i.itemID,s.Description,s.isCashInvoice FROM SaleDetail as sd LEFT JOIN Item AS i ON i.ItemID = sd.ItemID LEFT JOIN Sale AS s ON sd.InvoiceID=s.InvoiceID WHERE sd.InvoiceID='$id' and sd.UserID=${MyNavigationBar.userID}");
 
     return ListOrder;
   }
@@ -711,7 +717,7 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
   static Future<void> createRecoveryTable(Database database) async {
     await database.execute('''
 CREATE TABLE Recovery(
-RecoveryID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+RecoveryID TEXT PRIMARY KEY NOT NULL,
 PartyID INTEGER NOT NULL,
 UserID INTEGER NOT NULL,
 Amount REAL NOT NULL,
@@ -730,6 +736,7 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
     final data = {
       'PartyID': recovery.party.partyId,
       'UserID': recovery.userID,
+      'RecoveryID': recovery.recoveryID,
       'isCash': recovery.isCashOrCheck,
       'Description': recovery.description,
       'Dated': recovery.dated,
@@ -783,7 +790,7 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
     int iscash = isCash ? 1 : 0;
     try {
       await db.execute(
-          "UPDATE Recovery SET Amount=$amount, PartyID=$partyID,isCash=$iscash,Description='$description' WHERE RecoveryID=$id  and  UserID=${MyNavigationBar.userID}");
+          "UPDATE Recovery SET Amount=$amount, PartyID=$partyID,isCash=$iscash,Description='$description' WHERE RecoveryID='$id'  and  UserID=${MyNavigationBar.userID}");
     } catch (e) {
       debugPrint(e.toString());
     }
@@ -1114,7 +1121,7 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
       Database database) async {
     await database.execute('''
 CREATE TABLE RecoveryExecution(
-RecoveryID INTEGER PRIMARY KEY NOT NULL,
+RecoveryID TEXT PRIMARY KEY NOT NULL,
 PartyID INTEGER NOT NULL,
 UserID INTEGER NOT NULL,
 Amount REAL NOT NULL,
@@ -1150,7 +1157,7 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
       Database database) async {
     await database.execute('''
 CREATE TABLE OrderExecution(
-OrderID INTEGER PRIMARY KEY NOT NULL,
+OrderID TEXT PRIMARY KEY NOT NULL,
 PartyID INTEGER NOT NULL,
 UserID INTEGER NOT NULL,
 TotalQuantity INTEGER NOT NULL,
@@ -1187,7 +1194,7 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
   CREATE TABLE OrderDetailExecution(
 	ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
   UserID INTEGER NOT NULL,
-	OrderID INTEGER NOT NULL,
+	OrderID TEXT NOT NULL,
 	ItemID TEXT NOT NULL,
   Quantity INTEGER NOT NULL,
   RATE REAL NOT NULL,
@@ -1226,7 +1233,7 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
   static Future<void> createRecoveryTableForAdmin(Database database) async {
     await database.execute('''
 CREATE TABLE Recovery(
-RecoveryID INTEGER PRIMARY KEY NOT NULL,
+RecoveryID TEXT PRIMARY KEY NOT NULL,
 PartyID INTEGER NOT NULL,
 UserID INTEGER NOT NULL,
 Amount REAL NOT NULL,
@@ -1261,7 +1268,7 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
   static Future<void> createOrderTableForAdmin(Database database) async {
     await database.execute('''
 CREATE TABLE [Order](
-OrderID INTEGER PRIMARY KEY NOT NULL,
+OrderID TEXT PRIMARY KEY NOT NULL,
 PartyID INTEGER NOT NULL,
 UserID INTEGER NOT NULL,
 TotalQuantity INTEGER NOT NULL,
@@ -1297,7 +1304,7 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
   CREATE TABLE OrderDetail(
 	ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
   UserID INTEGER NOT NULL,
-	OrderID INTEGER NOT NULL,
+	OrderID TEXT NOT NULL,
 	ItemID TEXT NOT NULL,
   Quantity INTEGER NOT NULL,
   RATE REAL NOT NULL,
@@ -1335,7 +1342,7 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
   static Future<void> createSaleTableForAdmin(Database database) async {
     await database.execute('''
 CREATE TABLE Sale(
-InvoiceID INTEGER PRIMARY KEY NOT NULL,
+InvoiceID TEXT PRIMARY KEY NOT NULL,
 PartyID INTEGER NOT NULL,
 UserID INTEGER NOT NULL,
 TotalQuantity INTEGER NOT NULL,
@@ -1372,7 +1379,7 @@ isPosted BOOLEAN NOT NULL CHECK (isPosted IN (0, 1))
     await database.execute('''
   CREATE TABLE SaleDetail(
 	ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-  InvoiceID INTEGER NOT NULL,
+  InvoiceID TEXT NOT NULL,
 	UserID INTEGER NOT NULL,
 	ItemID TEXT NOT NULL,
   Quantity INTEGER NOT NULL,

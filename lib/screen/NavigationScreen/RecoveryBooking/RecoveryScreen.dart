@@ -541,7 +541,9 @@ class _RecoveryScreenState extends State<RecoveryScreen>
                                           );
                                           Recovery recovery = Recovery(
                                               amount: amount,
-                                              recoveryID: 0,
+                                              recoveryID: int.parse(
+                                                  DateFormat('ddMMyyhhmmss')
+                                                      .format(DateTime.now())),
                                               isCashOrCheck: isCash,
                                               userID: widget.userID,
                                               dated: storedateFormat

@@ -25,7 +25,7 @@ class ViewBooking {
         viewOrder.date = element['Dated'];
         viewOrder.totalQuantity = element['TotalQuantity'];
         viewOrder.partyName = element['PartyName'];
-        viewOrder.iD = element['InvoiceID'];
+        viewOrder.iD = int.parse(element['InvoiceID']);
         _listOrderView.add(viewOrder);
       });
     }
@@ -41,7 +41,7 @@ class ViewBooking {
         viewOrder.date = element['Dated'];
         viewOrder.totalQuantity = element['TotalQuantity'];
         viewOrder.partyName = element['PartyName'];
-        viewOrder.iD = element['OrderID'];
+        viewOrder.iD = int.parse(element['OrderID']);
         _listOrderView.add(viewOrder);
       });
     }

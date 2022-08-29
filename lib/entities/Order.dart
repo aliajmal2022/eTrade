@@ -36,7 +36,7 @@ class Order {
             description: "");
         order.customer.partyId = element['PartyID'];
         order.totalQuantity = element['TotalQuantity'].toInt();
-        order.orderID = element['OrderID'];
+        order.orderID = int.parse(element['OrderID']);
         order.userID = element['UserID'];
         order.totalValue = element['NetAmount'];
         order.description = element['Remarks'];

@@ -36,7 +36,7 @@ class ViewRecovery {
         recovery.party.partyName = element['PartyName'];
         recovery.party.partyId = element['PartyID'];
         recovery.amount = element['Amount'];
-        recovery.recoveryID = element['RecoveryID'];
+        recovery.recoveryID = int.parse(element['RecoveryID']);
         recovery.description = element['Description'];
         recovery.dated = element['Dated'];
         isCash = element['isCash'];

@@ -547,7 +547,9 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                             ),
                             Expanded(
                               child: RadioListTile(
-                                contentPadding: EdgeInsets.all(0),
+                                contentPadding: EdgeInsets.symmetric(
+                                    horizontal: 30, vertical: 10),
+                                // contentPadding: EdgeInsets.all(0),
                                 value: "Execution",
                                 groupValue: _groupValue,
                                 title: Text("Execution"),

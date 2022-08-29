@@ -40,7 +40,7 @@ class Sale {
             description: "");
         sale.customer.partyId = element['PartyID'];
         sale.totalQuantity = element['TotalQuantity'].toInt();
-        sale.saleID = element['InvoiceID'];
+        sale.saleID = int.parse(element['InvoiceID']);
         sale.userID = element['UserID'];
         sale.totalValue = element['NetAmount'];
         sale.description = element['Remarks'];

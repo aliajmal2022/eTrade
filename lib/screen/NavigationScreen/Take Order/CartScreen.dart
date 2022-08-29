@@ -65,7 +65,7 @@ class _CartScreenState extends State<CartScreen> {
   bool isCash = TakeOrderScreen.isSaleSpot ? true : false;
   double totalDiscount = 0;
   double totalAmount = 0;
-
+  int nowtime = int.parse(DateFormat('ddMMyyhhmmss').format(DateTime.now()));
   int totalQuantity = 0;
   @override
   void initState() {
@@ -440,7 +440,7 @@ class _CartScreenState extends State<CartScreen> {
                                               userID: widget.userID,
                                               isCash: isCash,
                                               totalQuantity: totalQuantity,
-                                              saleID: 0,
+                                              saleID: nowtime,
                                               totalValue: totalAmount,
                                               date: storedateFormat
                                                   .format(DateTime.now()),
@@ -457,17 +457,17 @@ class _CartScreenState extends State<CartScreen> {
                                             var maptoListOrder =
                                                 saleRes.whereType<Map>().first;
                                             var dated = maptoListOrder['Dated'];
-                                            TakeOrderScreen.getdataFromDb();
                                             for (var element
                                                 in widget.selectedItems) {
                                               await SQLHelper.instance
                                                   .createSaleDetail(
                                                       element,
-                                                      saleID,
+                                                      nowtime,
                                                       dated,
                                                       isPosted,
                                                       widget.userID);
                                             }
+                                            TakeOrderScreen.getdataFromDb();
                                             setState(() {
                                               TakeOrderScreen.isordered = true;
                                               TakeOrderScreen.isSelected =
@@ -490,7 +490,7 @@ class _CartScreenState extends State<CartScreen> {
                                               customer: widget.selecedCustomer,
                                               userID: widget.userID,
                                               totalQuantity: totalQuantity,
-                                              orderID: 0,
+                                              orderID: nowtime,
                                               totalValue: totalAmount,
                                               date: storedateFormat
                                                   .format(DateTime.now()),
@@ -513,7 +513,7 @@ class _CartScreenState extends State<CartScreen> {
                                               await SQLHelper.instance
                                                   .createOrderDetail(
                                                       element,
-                                                      orderId,
+                                                      nowtime,
                                                       dated,
                                                       isPosted,
                                                       widget.userID);
