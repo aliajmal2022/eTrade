@@ -5,6 +5,7 @@ import 'package:etrade/components/constants.dart';
 import 'package:etrade/screen/AboutUs/AboutScreen.dart';
 import 'package:etrade/screen/NavigationScreen/DashBoard/SetTarget.dart';
 import 'package:etrade/screen/NavigationScreen/RecoveryBooking/CustomerBalance.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:path/path.dart';
 import 'package:etrade/components/NavigationBar.dart';
@@ -181,6 +182,17 @@ class _MyDrawerState extends State<MyDrawer>
         return alert;
       },
     );
+  }
+
+  toastOfDev() {
+    return Fluttertoast.showToast(
+        msg: "Developed by c.l_ali",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: etradeMainColor,
+        textColor: Colors.white,
+        fontSize: 16.0);
   }
 
   bool isSwitched = MyApp.isDark;
@@ -542,6 +554,7 @@ class _MyDrawerState extends State<MyDrawer>
                         await showMasterResetAlertDialog(context);
                       }),
                   MaterialButton(
+                    onLongPress: toastOfDev,
                     onPressed: () async {
                       Get.to(() => AboutScreen(),
                           transition: Transition.leftToRight);

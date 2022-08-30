@@ -88,7 +88,7 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
               ),
             ),
             SizedBox(
-              height: 50,
+              height: 40,
             ),
             Padding(
               padding: EdgeInsets.symmetric(vertical: 0, horizontal: 20),
@@ -148,7 +148,7 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
                       ),
                     ),
                     SizedBox(
-                      height: 20,
+                      height: 10,
                     ),
                     MaterialButton(
                         disabledElevation: 10.0,

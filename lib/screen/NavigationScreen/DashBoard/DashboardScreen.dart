@@ -14,6 +14,8 @@ import 'package:etrade/helper/Sql_Connection.dart';
 import 'package:etrade/helper/onldt_to_local_db.dart';
 import 'package:etrade/helper/sqlhelper.dart';
 import 'package:etrade/main.dart';
+import 'package:etrade/screen/Connection/ConnectionScreen.dart';
+import 'package:etrade/screen/NavigationScreen/DashBoard/adminData.dart';
 import 'package:find_dropdown/find_dropdown.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -212,6 +214,7 @@ class DashBoardScreen extends StatefulWidget {
     return list;
   }
 
+  static bool isExecution = false;
   @override
   State<DashBoardScreen> createState() => _DashBoardScreenState();
 }
@@ -285,13 +288,9 @@ class _DashBoardScreenState extends State<DashBoardScreen>
     userList = DataBaseDataLoad.ListOUser;
     if (userList.isNotEmpty) {
       for (var element in userList) {
-        if (element.userName.toLowerCase().contains('admin')) {
-          userNameList.remove(element);
-          isFirstTime = false;
-        } else {
-          userNameList.add(element.userName);
-        }
+        userNameList.add(element.userName);
       }
+      isFirstTime = false;
 
       return userList;
     }
@@ -341,7 +340,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
         onPressed: (() {
           setState(() {
             prerange = range;
-            var splitDate = prerange.split('/');
+            // var splitDate = prerange.split('/');
             // RecoveryTabBarItem.setFromDate(splitDate[0]);
             // RecoveryTabBarItem.setToDate(splitDate[1]);
           });
@@ -384,7 +383,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
   String startedDate = DateFormat('dd-MM-yyyy')
       .format(DateTime.now().subtract(Duration(days: 6)));
   String weekendDate = DateFormat('dd-MM-yyyy').format(DateTime.now());
-  String _groupValue = "Booking";
+  static String _groupValue = "Booking";
   String isExeOrBook = '';
   TooltipBehavior _tooltipBehavior = TooltipBehavior(
     enable: true,
@@ -539,8 +538,12 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                                     horizontal: 30, vertical: 10),
                                 groupValue: _groupValue,
                                 title: Text("Booking"),
-                                onChanged: (newValue) => setState(
-                                    () => _groupValue = newValue.toString()),
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    _groupValue = newValue.toString();
+                                    DashBoardScreen.isExecution = false;
+                                  });
+                                },
                                 activeColor: etradeMainColor,
                                 selected: false,
                               ),
@@ -553,8 +556,12 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                                 value: "Execution",
                                 groupValue: _groupValue,
                                 title: Text("Execution"),
-                                onChanged: (newValue) => setState(
-                                    () => _groupValue = newValue.toString()),
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    _groupValue = newValue.toString();
+                                    DashBoardScreen.isExecution = true;
+                                  });
+                                },
                                 activeColor: etradeMainColor,
                                 selected: false,
                               ),
@@ -589,7 +596,51 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                             ElevatedButton(
                                 style: ElevatedButton.styleFrom(
                                     primary: etradeMainColor),
-                                onPressed: () async {},
+                                onPressed: () async {
+                                  showDialog(
+                                      context: context,
+                                      barrierDismissible: false,
+                                      builder: (BuildContext context) {
+                                        return Center(
+                                            child: CircularProgressIndicator());
+                                      });
+
+                                  Future.delayed(const Duration(seconds: 3),
+                                      () async {
+                                    var split = prerange.split('/');
+                                    String start = DateFormat('yyyy/MM/dd')
+                                        .format(DateFormat('dd-MM-yyyy')
+                                            .parse(split[0]));
+                                    String end = DateFormat('yyyy/MM/dd')
+                                        .format(DateFormat('dd-MM-yyyy')
+                                            .parse(split[1]));
+                                    String domain =
+                                        UserSharePreferences.getIp();
+                                    split = domain.split(',');
+                                    String ip = split[0];
+                                    String port = split[1];
+                                    ConnectionScreen.isLocal = false;
+                                    bool isConnected =
+                                        await Sql_Connection.connect(
+                                            context, ip, port);
+                                    if (isConnected) {
+                                      if (_groupValue == "Booking") {
+                                        DashBoardScreen.isExecution = false;
+                                        await AdminData.deleteBooking(
+                                            start, end);
+                                        await AdminData.getBookingData(
+                                            start, end);
+                                      } else {
+                                        DashBoardScreen.isExecution = true;
+                                        await AdminData.deleteBooking(
+                                            start, end);
+                                        await AdminData.getExecutionData(
+                                            start, end);
+                                      }
+                                      Navigator.pop(context);
+                                    }
+                                  });
+                                },
                                 child: Text('Get Data'))
                           ],
                         ),

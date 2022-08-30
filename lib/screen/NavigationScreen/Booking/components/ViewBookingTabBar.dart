@@ -373,10 +373,12 @@ class _BookingTabBarItemState extends State<BookingTabBarItem>
                                                     CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
-                                                    ViewBookingScreen
-                                                            .isSaleBooking
-                                                        ? "Sale Id: ${BookingTabBarItem.listOfItems[index].iD}"
-                                                        : "Order Id: ${BookingTabBarItem.listOfItems[index].iD}",
+                                                  "Serial No: ${index+1}",
+                                                    // ViewBookingScreen
+
+                                                    //         .isSaleBooking
+                                                    //     ? "Sale Id: ${BookingTabBarItem.listOfItems[index].iD}"
+                                                    //     : "Order Id: ${BookingTabBarItem.listOfItems[index].iD}",
                                                     style: TextStyle(
                                                         color: Colors.grey),
                                                   ),

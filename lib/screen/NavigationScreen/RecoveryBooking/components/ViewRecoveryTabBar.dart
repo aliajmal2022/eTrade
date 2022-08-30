@@ -313,7 +313,7 @@ class _RecoveryTabBarItemState extends State<RecoveryTabBarItem>
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  "Recovery Id: ${RecoveryTabBarItem.listOfRecovery[index].recoveryID}",
+                                                  "Serial No: ${index+1}",
                                                   style: TextStyle(
                                                       color: Colors.grey),
                                                 ),

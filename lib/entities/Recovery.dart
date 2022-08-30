@@ -22,9 +22,56 @@ class Recovery {
   String description;
   bool isPost;
 
-  static Future<List<Recovery>> RecoveryForAdmin(bool islocal) async {
+  static Future<List<Recovery>> RecoveryForAdmin(
+      String start, String end) async {
+    var list = await Sql_Connection().read("""
+SELECT 
+	l.RecoveryID,
+	l.UserId,
+	l.PartyID,
+	l.Amount,
+	l.Dated,
+	l.[Description],
+	l.Dated
+FROM dbo_m.[Recovery] AS l
+WHERE CONVERT(DATE,l.Dated) BETWEEN '$start' AND '$end'
+""") ?? [];
+    if (list.isNotEmpty) {
+      List<Recovery> recoverylist = [];
+      var dateStore = DateFormat('yyyy-MM-dd');
+      list.forEach((element) {
+        Recovery recovery = Recovery(
+            amount: 0,
+            description: "",
+            isPost: false,
+            dated: "",
+            userID: 0,
+            recoveryID: 0,
+            isCashOrCheck: false,
+            party: Customer.initializer());
+        recovery.party.partyId = element['PartyID'];
+        recovery.userID = element['UserId'] ?? 0;
+        recovery.amount = element['Amount'];
+        recovery.isCashOrCheck = element['isCash'] == 0
+            ? false
+            : element['isCash'] == false
+                ? false
+                : true;
+        recovery.description =
+            element['Remarks'] == null ? "" : element['Remarks'];
+        recovery.dated = dateStore.format(DateTime.parse(element['Dated']));
+        recoverylist.add(recovery);
+      });
+      return recoverylist;
+    } else {
+      return [];
+    }
+  }
+
+  static Future<List<Recovery>> ExecutionForAdmin(
+      String start, String end) async {
     var list = await Sql_Connection().read(
-            "SELECT l.RecoveryId_Mobile As RecoveryID,l.SRId_Mobile as UserID,l.PartyID ,l.Amount,l.Dated,l.Detail as Description ,1 as isCash FROM dbo.Ledger AS l WHERE ISNULL(l.SRId_Mobile,0)>0 AND l.Amount<0") ??
+            "SELECT l.RecoveryId_Mobile As RecoveryID,l.SRId_Mobile as UserID,l.PartyID ,l.Amount,l.Dated,l.Detail as Description ,1 as isCash FROM dbo.Ledger AS l WHERE ISNULL(l.SRId_Mobile,0)>0 AND l.Amount<0  AND convert(date,l.Dated) BETWEEN '$start' and '$end'") ??
         [];
     if (list.isNotEmpty) {
       List<Recovery> recoverylist = [];

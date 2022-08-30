@@ -80,7 +80,7 @@ class _ListOfRecoveryState extends State<ListOfRecovery>
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              "Recovery Id: ${dummyOrderList[index].recoveryID}",
+                                              "Serial No: ${index + 1}",
                                               style:
                                                   TextStyle(color: Colors.grey),
                                             ),

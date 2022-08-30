@@ -109,34 +109,6 @@ class Sql_Connection {
           await SQLHelper.instance.createUserTargetForAdmin(element);
         });
       }
-      if (MyNavigationBar.isAdmin) {
-        List<Order> LOOrder = [];
-        List<OrderDetail> LOOrderDetail = [];
-        List<Sale> LOSale = [];
-        List<SaleDetail> LOSaleDetail = [];
-        List<Recovery> LORecovey = [];
-        LOOrder = await Order.OrderForAdmin(false);
-        LOOrderDetail = await OrderDetail.OrderDetailForAdmin(false);
-        LOSale = await Sale.SaleForAdmin(false);
-        LOSaleDetail = await SaleDetail.SaleDetailForAdmin(false);
-        LORecovey = await Recovery.RecoveryForAdmin(false);
-
-        LOOrder.forEach((element) async {
-          await SQLHelper.instance.createOrderForAdmin(element);
-        });
-        LOOrderDetail.forEach((element) async {
-          await SQLHelper.instance.createOrderDetailForAdmin(element);
-        });
-        LOSale.forEach((element) async {
-          await SQLHelper.instance.createSaleForAdmin(element);
-        });
-        LOSaleDetail.forEach((element) async {
-          await SQLHelper.instance.createSaleDetailForAdmin(element);
-        });
-        LORecovey.forEach((element) async {
-          await SQLHelper.instance.createRecoveryitemForAdmin(element);
-        });
-      }
       await SQLHelper.deleteDataDuringSync(MyNavigationBar.userID);
     }
   }
