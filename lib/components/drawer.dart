@@ -233,7 +233,7 @@ class _MyDrawerState extends State<MyDrawer>
                               fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          MyNavigationBar.userName == ""
+                          MyNavigationBar.isAdmin
                               ? "Admin"
                               : MyNavigationBar.userName,
                           style: TextStyle(

@@ -13,6 +13,7 @@ class UserSharePreferences {
   static const adminName = "AdminName";
   static const adminPassword = "Password";
   static const mode = "Dark";
+  static const islocal = "islocal";
   static Future setAdmin() async {
     await setAdminName();
     await setAdminPassword();
@@ -45,6 +46,9 @@ class UserSharePreferences {
     await prefs.setBool(mode, isDark);
   }
 
+  static Future setislocal(bool isLocal) async =>
+      await prefs.setBool(islocal, isLocal);
+  static bool getislocal() => prefs.getBool(islocal) ?? false;
   static Future setisAdminOrNot(bool isadmin) async =>
       await prefs.setBool(isAdmin, isadmin);
   static bool getisAdminOrNot() => prefs.getBool(isAdmin) ?? false;

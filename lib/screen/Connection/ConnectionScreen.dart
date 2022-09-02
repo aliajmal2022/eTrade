@@ -177,6 +177,7 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
                                   _controller.clear();
                                   Navigator.pop(context);
                                 });
+                                await UserSharePreferences.setislocal(islocal);
                                 if (MyDrawer.makeConnection) {
                                   UserSharePreferences.setIp(userIp);
                                   MyDrawer.makeConnection = false;

@@ -51,24 +51,25 @@ class SQLHelper {
   }
 
   static backupDB() async {
-    var status = await Permission.manageExternalStorage.status;
-    if (!status.isGranted) {
-      await Permission.manageExternalStorage.request();
-    }
-    var status1 = await Permission.storage.status;
-    if (!status1.isGranted) {
-      await Permission.storage.request();
-    }
+    // var status = await Permission.manageExternalStorage.status;
+    // if (!status.isGranted) {
+    //   await Permission.manageExternalStorage.request();
+    // }
+    // var status1 = await Permission.storage.status;
+    // if (!status1.isGranted) {
+    //   await Permission.storage.request();
+    // }
     try {
       File ourDBFile = File('$directory/etrade.db');
       Directory folderPathForDB =
-          Directory('/storage/emulated/0/etrade_Backup/');
+          Directory('/storage/emulated/0/Download/etrade_Backup/');
       if (!await folderPathForDB.exists()) await folderPathForDB.create();
       if (MyNavigationBar.isAdmin) {
         await ourDBFile
-            .copy('/storage/emulated/0/etrade_Backup/etradeAdmin.db');
+            .copy('/storage/emulated/0/Download/etrade_Backup/etradeAdmin.db');
       } else {
-        await ourDBFile.copy('/storage/emulated/0/etrade_Backup/etradeUser.db');
+        await ourDBFile
+            .copy('/storage/emulated/0/Download/etrade_Backup/etradeUser.db');
       }
     } catch (e) {
       debugPrint(e.toString());
@@ -76,24 +77,24 @@ class SQLHelper {
   }
 
   static restoreDB() async {
-    var status = await Permission.manageExternalStorage.status;
-    if (!status.isGranted) {
-      await Permission.manageExternalStorage.request();
-    }
-    var status1 = await Permission.storage.status;
-    if (!status1.isGranted) {
-      await Permission.storage.request();
-    }
+    // var status = await Permission.manageExternalStorage.status;
+    // if (!status.isGranted) {
+    //   await Permission.manageExternalStorage.request();
+    // }
+    // var status1 = await Permission.storage.status;
+    // if (!status1.isGranted) {
+    //   await Permission.storage.request();
+    // }
     try {
       File savedDBFile;
       if (MyNavigationBar.isAdmin) {
-        savedDBFile = File('/storage/emulated/0/etrade_Backup/etradeAdmin.db');
+        savedDBFile =
+            File('/storage/emulated/0/Download/etrade_Backup/etradeAdmin.db');
       } else {
-        savedDBFile = File('/storage/emulated/0/etrade_Backup/etradeUser.db');
+        savedDBFile =
+            File('/storage/emulated/0/Download/etrade_Backup/etradeUser.db');
       }
-      // if (await savedDBFile.exists()) {
-      // await savedDBFile.copy('$directory/etrade.db');
-      // }
+      await savedDBFile.copy('$directory/etrade.db');
     } catch (e) {
       debugPrint(e.toString());
     }
@@ -110,9 +111,9 @@ class SQLHelper {
     }
     try {
       File saveduserDBFile =
-          File('/storage/emulated/0/etrade_Backup/etradeAdmin.db');
+          File('/storage/emulated/0/Download/etrade_Backup/etradeAdmin.db');
       File savedadminDBFile =
-          File('/storage/emulated/0/etrade_Backup/etradeUser.db');
+          File('/storage/emulated/0/Download/etrade_Backup/etradeUser.db');
       await savedadminDBFile.delete();
       await saveduserDBFile.delete();
     } catch (e) {

@@ -11,7 +11,7 @@ class SaleDetail {
   double rate;
   double amount;
   int userID;
-  int invoiceID;
+  String invoiceID;
 
   double discount;
   int bonus;
@@ -41,7 +41,7 @@ class SaleDetail {
         SaleDetail saleDetail = SaleDetail(
             id: 0,
             quantity: 0,
-            invoiceID: 0,
+            invoiceID: "",
             userID: 0,
             rate: 0,
             to: 0,
@@ -51,7 +51,7 @@ class SaleDetail {
             amount: 0,
             itemID: "");
         saleDetail.quantity = element['Quantity'].toInt();
-        saleDetail.invoiceID = element['InvoiceID'];
+        saleDetail.invoiceID = element['InvoiceID'].toString();
         saleDetail.userID = element['UserID'];
         saleDetail.itemID = element['ItemID'].toString();
         saleDetail.amount = element['Amount'];
@@ -91,7 +91,7 @@ WHERE CONVERT(DATE,d.Dated) BETWEEN '$start' AND '$end'
         SaleDetail saleDetail = SaleDetail(
             id: 0,
             quantity: 0,
-            invoiceID: 0,
+            invoiceID: "",
             userID: 0,
             rate: 0,
             to: 0,
@@ -101,14 +101,15 @@ WHERE CONVERT(DATE,d.Dated) BETWEEN '$start' AND '$end'
             amount: 0,
             itemID: "");
         saleDetail.quantity = element['Quantity'].toInt();
-        saleDetail.invoiceID = element['InvoiceID'];
-        saleDetail.userID = element['UserID'];
+        saleDetail.invoiceID = element['InvoiceID'].toString();
+        saleDetail.userID = element['UserId'];
         saleDetail.itemID = element['ItemID'].toString();
         saleDetail.amount = element['Amount'];
         saleDetail.rate = element['Rate'];
-        saleDetail.discount = element['Discount'];
-        saleDetail.bonus = element['Bonus'].toInt();
-        saleDetail.to = element['TradeOffer'];
+        saleDetail.discount = element['Discount'] ?? 0;
+        saleDetail.bonus =
+            element['Bonus'] == null ? 0 : element['Bonus'].toInt();
+        saleDetail.to = element['TradeOffer'] ?? 0;
         saleDetail.date = dateStore.format(DateTime.parse(element['Dated']));
         saleDetailList.add(saleDetail);
       });

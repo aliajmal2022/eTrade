@@ -31,7 +31,9 @@ class MyNavigationBar extends StatefulWidget {
   static int userID = 0;
   static String userName = "";
   static bool isAdmin = false;
+  static bool islocal = false;
   static int userTarget = 0;
+  static String ip = "";
   changeIndex() {
     selectedIndex = 1;
   }
@@ -62,8 +64,10 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
   @override
   void initState() {
     MyNavigationBar.userID = UserSharePreferences.getId();
+    MyNavigationBar.ip = UserSharePreferences.getIp();
     MyNavigationBar.userName = UserSharePreferences.getName();
     MyNavigationBar.isAdmin = UserSharePreferences.getisAdminOrNot();
+    MyNavigationBar.islocal = UserSharePreferences.getislocal();
     super.initState();
   }
 

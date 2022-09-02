@@ -494,9 +494,10 @@ class _ListOfOrderState extends State<ListOfOrder>
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            ViewBookingScreen.isSaleBooking
-                                                ? "Sale Id: ${dummyOrderList[index].iD}"
-                                                : "Order Id: ${dummyOrderList[index].iD}",
+                                            "Serial No: ${index + 1}",
+                                            // ViewBookingScreen.isSaleBooking
+                                            //     ? "Sale Id: ${dummyOrderList[index].iD}"
+                                            //     : "Order Id: ${dummyOrderList[index].iD}",
                                             style:
                                                 TextStyle(color: Colors.grey),
                                           ),

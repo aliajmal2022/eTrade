@@ -88,19 +88,22 @@ class _LoginScreenState extends State<LoginScreen> {
             SizedBox(
               height: 30,
             ),
-            valid
-                ? Container(
-                    child: Text("Enter Username and Password",
-                        style: TextStyle(
-                          fontSize: 20,
-                        )),
-                  )
-                : Container(
-                    child: Text("Please Enter Valid Username or Password",
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.red.shade400,
-                        ))),
+            Padding(
+              padding: EdgeInsets.all(8),
+              child: valid
+                  ? Container(
+                      child: Text("Enter Username and Password",
+                          style: TextStyle(
+                            fontSize: 20,
+                          )),
+                    )
+                  : Container(
+                      child: Text("Please Enter Valid Username or Password",
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.red.shade400,
+                          ))),
+            ),
             SizedBox(
               height: 10,
             ),

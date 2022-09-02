@@ -288,7 +288,8 @@ class _DashBoardScreenState extends State<DashBoardScreen>
     userList = DataBaseDataLoad.ListOUser;
     if (userList.isNotEmpty) {
       for (var element in userList) {
-        userNameList.add(element.userName);
+        if (element.userName.toLowerCase() != "admin")
+          userNameList.add(element.userName);
       }
       isFirstTime = false;
 
@@ -378,7 +379,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
         });
   }
 
-  String prerange = 'Select Date';
+  static String prerange = 'Select Date';
   String range = 'Select Date';
   String startedDate = DateFormat('dd-MM-yyyy')
       .format(DateTime.now().subtract(Duration(days: 6)));
@@ -535,7 +536,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                               child: RadioListTile(
                                 value: "Booking",
                                 contentPadding: EdgeInsets.symmetric(
-                                    horizontal: 30, vertical: 10),
+                                    horizontal: 25, vertical: 10),
                                 groupValue: _groupValue,
                                 title: Text("Booking"),
                                 onChanged: (newValue) {
@@ -551,7 +552,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                             Expanded(
                               child: RadioListTile(
                                 contentPadding: EdgeInsets.symmetric(
-                                    horizontal: 30, vertical: 10),
+                                    horizontal: 25, vertical: 10),
                                 // contentPadding: EdgeInsets.all(0),
                                 value: "Execution",
                                 groupValue: _groupValue,
@@ -619,7 +620,8 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                                     split = domain.split(',');
                                     String ip = split[0];
                                     String port = split[1];
-                                    ConnectionScreen.isLocal = false;
+                                    ConnectionScreen.isLocal =
+                                        MyNavigationBar.islocal;
                                     bool isConnected =
                                         await Sql_Connection.connect(
                                             context, ip, port);
@@ -632,7 +634,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                                             start, end);
                                       } else {
                                         DashBoardScreen.isExecution = true;
-                                        await AdminData.deleteBooking(
+                                        await AdminData.deleteExecution(
                                             start, end);
                                         await AdminData.getExecutionData(
                                             start, end);
@@ -1012,8 +1014,8 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                         strokeWidth: 500,
                         dataSource: DashBoardScreen.itemdata,
                         dataLabelSettings: DataLabelSettings(isVisible: true),
-                        xValueMapper: (Items? data, _) => data?.productName,
-                        yValueMapper: (Items? data, _) => data?.ordered)
+                        xValueMapper: (Items? data, _) => data!.productName,
+                        yValueMapper: (Items? data, _) => data!.ordered)
                   ],
                   legend: Legend(
                       shouldAlwaysShowScrollbar: true,

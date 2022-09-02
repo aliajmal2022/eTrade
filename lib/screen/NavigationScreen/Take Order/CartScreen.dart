@@ -440,7 +440,7 @@ class _CartScreenState extends State<CartScreen> {
                                               userID: widget.userID,
                                               isCash: isCash,
                                               totalQuantity: totalQuantity,
-                                              saleID: nowtime,
+                                              saleID: nowtime.toString(),
                                               totalValue: totalAmount,
                                               date: storedateFormat
                                                   .format(DateTime.now()),

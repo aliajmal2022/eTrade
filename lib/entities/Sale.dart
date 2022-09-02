@@ -9,7 +9,7 @@ class Sale {
   String description;
   bool isCash;
   int userID;
-  int saleID;
+  String saleID;
 
   String date;
   Sale(
@@ -32,7 +32,7 @@ class Sale {
         Sale sale = Sale(
             customer: Customer.initializer(),
             totalQuantity: 0,
-            saleID: 0,
+            saleID: "",
             userID: 0,
             totalValue: 0,
             date: "",
@@ -40,7 +40,7 @@ class Sale {
             description: "");
         sale.customer.partyId = element['PartyID'];
         sale.totalQuantity = element['TotalQuantity'].toInt();
-        sale.saleID = int.parse(element['InvoiceID']);
+        sale.saleID = element['InvoiceID'].toString();
         sale.userID = element['UserID'];
         sale.totalValue = element['NetAmount'];
         sale.description = element['Remarks'];
@@ -62,7 +62,6 @@ s.InvoiceID,
 	[PartyID],
 	TotalQuantity,
 	s.TotalValue,
-	s.Dated,
 	s.[Description],
 	s.Dated
 FROM dbo_m.Sale AS s WHERE CONVERT(DATE,s.Dated) BETWEEN '$start' AND '$end'
@@ -74,7 +73,7 @@ FROM dbo_m.Sale AS s WHERE CONVERT(DATE,s.Dated) BETWEEN '$start' AND '$end'
         Sale sale = Sale(
             customer: Customer.initializer(),
             totalQuantity: 0,
-            saleID: 0,
+            saleID: "",
             userID: 0,
             totalValue: 0,
             date: "",
@@ -82,8 +81,8 @@ FROM dbo_m.Sale AS s WHERE CONVERT(DATE,s.Dated) BETWEEN '$start' AND '$end'
             description: "");
         sale.customer.partyId = element['PartyID'];
         sale.totalQuantity = element['TotalQuantity'].toInt();
-        sale.saleID = int.parse(element['InvoiceID']);
-        sale.userID = element['UserID'];
+        sale.saleID = (element['InvoiceID']).toString();
+        sale.userID = element['UserId'];
         sale.totalValue = element['TotalValue'];
         sale.description = element['Description'];
         sale.isCash = element['IsCashInvoice'] == 0 ? false : true;
